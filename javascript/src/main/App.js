@@ -13,6 +13,7 @@ import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
+import SlackUsers from "./pages/Admin/SlackUsers";
 
 function App() {
   const { isLoading, getAccessTokenSilently: getToken } = useAuth0();
@@ -34,8 +35,12 @@ function App() {
           <Route path="/" exact component={Home} />
           <PrivateRoute path="/profile" component={Profile} />
           { isAdmin &&
-            <PrivateRoute path="/admin" component={Admin} />
+              <>
+                <PrivateRoute path="/admin" exact component={Admin} />
+                <PrivateRoute path="/admin/slackUsers" exact component={SlackUsers} />
+              </>
           }
+
           <Route path="/about" component={About} />
         </Switch>
       </Container>
