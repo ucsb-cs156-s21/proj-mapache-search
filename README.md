@@ -1,23 +1,12 @@
-# demo-spring-react-minimal
+# Mapache Search
 
-[![codecov](https://codecov.io/gh/ucsb-cs156-f20/demo-spring-react-minimal/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/demo-spring-react-minimal)
+[![codecov](https://codecov.io/gh/ucsb-cs156-f20/proj-mapache-search/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/proj-mapache-search)
 
 ## Purpose
 
 This app is a course project of <https://ucsb-cs156.github.io>, a course at [UC Santa Barbara](https://ucsb.edu).
 
-This repo is intended to be starter code for apps that have a
-* Spring Boot Backend
-* React Front end
-* Auth0 authentication using Google
-* privilege levels "not logged in", guest, member and admin, where
-  * guest means you've logged in, but with a non ucsb email address
-  * member means you've logged in with a ucsb email address
-  * admin means you are in the list of admins 
-    in the `application.properties` file, or else you've been 
-    added to the admins table by someone that's already an 
-    admin.
-
+The purpose of this application is to allow for searching of a class's slack archive for messages in public channels.
 
 ## Property file values
 
@@ -32,6 +21,7 @@ This section serves as a quick reference for values found in either [`secrets-lo
 | `auth0.clientId`                                                  |              | See `Getting Started` below                                               |
 | `security.oauth2.resource.id`                                     |              | Should always be `${app.namespace}/api`                                   |
 | `security.oauth2.resource.jwk.keySetUri`                          |              | Should always be `https://\${auth0.domain}/.well-known/jwks.json`         |
+| `spring.data.mongodb.uri`                                         |              | Should be the connection uri to your MongoDB cluster + database           |
 | `spring.jpa.database-platform`                                    | Yes          | Should always be `org.hibernate.dialect.PostgreSQLDialect`                |
 | `spring.datasource.driver-class-name`                             | Yes          | Should always be `org.postgresql.Driver`                                  |
 | `spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults` | Yes          | Should always be `false`                                                  |
@@ -66,16 +56,16 @@ The next thing you'll want to do is set up your Auth0 SPA App. Instructions for 
 - Next, you need update the values in your new `secrets-localhost.properties`. You can copy the corresponding values from the `javascript/.env.local`,
   using this guide:
 
-  | For this value in `secrets-localhost.properties` | Use this value from `javascript/.env.local` |
-  | ------------------------------------------------ | ------------------------------------------- |
-  | `auth0.domain`                                   | `REACT_APP_AUTH0_DOMAIN`                    |
-  | `auth0.clientId`                                 | `REACT_APP_AUTH0_CLIENT_ID`                 |
-                    
-  You may see additional values in `secrets-localhost.properties` such as the ones below. You do not need to adjust these; leave the values alone.
+| For this value in `secrets-localhost.properties` | Use this value from `javascript/.env.local` |
+| ------------------------------------------------ | ------------------------------------------- |
+| `auth0.domain`                                   | `REACT_APP_AUTH0_DOMAIN`                    |
+| `auth0.clientId`                                 | `REACT_APP_AUTH0_CLIENT_ID`                 |
 
-  ```
-  security.oauth2.resource.jwk.keySetUri=https://${auth0.domain}/.well-known/jwks.json
-  ```
+You may see additional values in `secrets-localhost.properties` such as the ones below. You do not need to adjust these; leave the values alone.
+
+```
+security.oauth2.resource.jwk.keySetUri=https://${auth0.domain}/.well-known/jwks.json
+```
 
 At this point, you should be able to run the app locally via
 
