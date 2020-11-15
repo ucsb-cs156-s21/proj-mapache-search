@@ -2,6 +2,8 @@ package edu.ucsb.mapache.documents;
 
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 public class SlackUserProfile {
     private String email;
 
@@ -12,7 +14,9 @@ public class SlackUserProfile {
         if (o == null || getClass() != o.getClass())
             return false;
         SlackUserProfile that = (SlackUserProfile) o;
-        return Objects.equals(email, that.email);
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(email, that.getEmail());
+        return builder.build();
     }
 
     @Override
