@@ -7,6 +7,20 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 public class SlackUserProfile {
     private String email;
 
+    public SlackUserProfile() { }
+
+    public SlackUserProfile(String email) {
+        this.email = email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -27,20 +41,5 @@ public class SlackUserProfile {
     @Override
     public String toString() {
         return "SlackUserProfile{" + "email='" + email + '\'' + '}';
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public SlackUserProfile() {
-    }
-
-    public SlackUserProfile(String email) {
-        this.email = email;
     }
 }
