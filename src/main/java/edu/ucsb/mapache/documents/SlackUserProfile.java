@@ -7,8 +7,10 @@ public class SlackUserProfile {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         SlackUserProfile that = (SlackUserProfile) o;
         return Objects.equals(email, that.email);
     }
@@ -20,9 +22,7 @@ public class SlackUserProfile {
 
     @Override
     public String toString() {
-        return "SlackUserProfile{" +
-                "email='" + email + '\'' +
-                '}';
+        return "SlackUserProfile{" + "email='" + email + '\'' + '}';
     }
 
     public void setEmail(String email) {
@@ -33,6 +33,10 @@ public class SlackUserProfile {
         return email;
     }
 
-    public SlackUserProfile(){
+    public SlackUserProfile() {
+    }
+
+    public SlackUserProfile(String email) {
+        this.email = email;
     }
 }

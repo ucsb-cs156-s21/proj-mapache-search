@@ -1,10 +1,14 @@
 package edu.ucsb.mapache.documents;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 @Document(collection = "users")
 public class SlackUser {
     private String id;
@@ -21,18 +25,27 @@ public class SlackUser {
     private String real_name;
     private SlackUserProfile profile;
 
-    public SlackUser(){
+    public SlackUser() {
+    }
+
+    public SlackUser(String id, String name, String real_name, SlackUserProfile profile) {
+        this.id = id;
+        this.name = name;
+        this.real_name = real_name;
+        this.profile = profile;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         SlackUser slackUser = (SlackUser) o;
-        return Objects.equals(id, slackUser.id) &&
-                Objects.equals(name, slackUser.name) &&
-                Objects.equals(real_name, slackUser.real_name) &&
-                Objects.equals(profile, slackUser.profile);
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(id, slackUser.id).append(name, slackUser.name).append(real_name, slackUser.real_name)
+                .append(profile, slackUser.profile);
+        return builder.build();
     }
 
     @Override
@@ -42,12 +55,8 @@ public class SlackUser {
 
     @Override
     public String toString() {
-        return "SlackUser{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", real_name='" + real_name + '\'' +
-                ", profile=" + profile +
-                '}';
+        return "SlackUser{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", real_name='" + real_name + '\''
+                + ", profile=" + profile + '}';
     }
 
     public String getName() {
