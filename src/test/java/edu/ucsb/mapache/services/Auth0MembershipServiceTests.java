@@ -2,6 +2,7 @@ package edu.ucsb.mapache.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ public class Auth0MembershipServiceTests {
 
   @MockBean
   AdminRepository adminRepository;
+  @MockBean
+  SlackUserService slackUserService;
   @InjectMocks
   Auth0MembershipService service = new Auth0MembershipService();
 
@@ -40,6 +43,7 @@ public class Auth0MembershipServiceTests {
   @BeforeEach
   public void setUp() {
     ReflectionTestUtils.setField(service, "memberHostedDomain", "ucsb.edu");
+    ReflectionTestUtils.setField(service, "slackUserService", slackUserService);
     ReflectionTestUtils.setField(service, "adminRepository", adminRepository);
     ReflectionTestUtils.setField(service, "namespace", "namespace");
   }
@@ -51,12 +55,13 @@ public class Auth0MembershipServiceTests {
   }
 
   @Test
-  public void testAuth0MembershipService_isNotMemberOrAdmin_ifEmailNotInOrg() {
+  public void testAuth0MembershipService_isNotMemberOrAdmin_ifEmailNotInSlackWorkspace() {
     assertEquals(false, service.isMember(guestJWT));
   }
 
   @Test
-  public void testAuth0MembershipService_isMember_ifEmailInOrg() {
+  public void testAuth0MembershipService_isMember_ifEmailInSlackWorkspace() {
+    when(slackUserService.isMember(anyString())).thenReturn(true);
     assertEquals(true, service.isMember(memberJWT));
   }
 

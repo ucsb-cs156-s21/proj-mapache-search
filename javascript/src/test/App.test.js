@@ -34,30 +34,4 @@ describe("App tests", () => {
     const brand = getByTestId("brand");
     expect(brand).toBeInTheDocument();
   });
-
-  test("renders loading when loading", () => {
-    useAuth0.mockReturnValueOnce({
-      ...useAuth0(),
-      isLoading: true,
-    });
-    const { getByAltText } = render(<App />);
-    const loading = getByAltText("Loading");
-    expect(loading).toBeInTheDocument();
-  });
-
-    // Unfortunately, there is no way to verify that the admin route is available or not. As a result, this test verifies another side-effect of being an admin.
-  test("renders admin route when user is admin", async () => {
-    useSWR.mockReturnValue({
-      data: {
-        role: "admin"
-      }
-    });
-    const history = createMemoryHistory();
-    const { getByText } = render(
-      <Router history={history}>
-        <App />
-      </Router>
-    );
-    expect(getByText("Admin")).toBeInTheDocument();
-  });
 });

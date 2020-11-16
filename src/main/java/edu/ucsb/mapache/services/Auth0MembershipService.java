@@ -34,6 +34,9 @@ public class Auth0MembershipService implements MembershipService {
   @Autowired
   private AdminRepository adminRepository;
 
+  @Autowired
+  private SlackUserService slackUserService;
+
   /**
    * is current logged in user a member but NOT an admin of the google org
    *
@@ -79,7 +82,7 @@ public class Auth0MembershipService implements MembershipService {
       return true;
     }
 
-    if (roleToTest.equals("member") && memberHostedDomain.equals(hostedDomain)) {
+    if (roleToTest.equals("member") && slackUserService.isMember(email)) {
       return true;
     }
 
