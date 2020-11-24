@@ -1,5 +1,8 @@
 package edu.ucsb.mapache.documents;
+
 import java.util.Objects;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class ChannelPurpose {
     private String value;
@@ -29,7 +32,6 @@ public class ChannelPurpose {
         this.creator = creator;
     }
 
-   
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -37,8 +39,10 @@ public class ChannelPurpose {
         if (!(o instanceof ChannelPurpose)) {
             return false;
         }
-        ChannelPurpose channelPurpose = (ChannelPurpose) o;
-        return Objects.equals(value, channelPurpose.value) && Objects.equals(creator, channelPurpose.creator);
+        ChannelPurpose cp = (ChannelPurpose) o;
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(value, cp.getValue()).append(creator,cp.getCreator());
+        return builder.build();
     }
 
     @Override
@@ -48,22 +52,14 @@ public class ChannelPurpose {
 
     @Override
     public String toString() {
-        return "{" +
-            " value='" + getValue() + "'" +
-            ", creator='" + getCreator() + "'" +
-            "}";
+        return "{" + " value='" + getValue() + "'" + ", creator='" + getCreator() + "'" + "}";
     }
 
 }
 
-/* ChannelPurpose json
-
- "purpose": {
-        "value": "",
-        "creator": "",
-        "last_set": {
-            "$numberInt": "0"
-        }
-    }
-
-*/
+/*
+ * ChannelPurpose json
+ * 
+ * "purpose": { "value": "", "creator": "", "last_set": { "$numberInt": "0" } }
+ * 
+ */

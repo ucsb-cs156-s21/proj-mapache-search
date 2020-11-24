@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
 
+import net.codebox.javabeantester.JavaBeanTester;
+
 public class ChannelTopicTests {
 
   @Test
@@ -16,18 +18,11 @@ public class ChannelTopicTests {
     assertEquals(expected, ct.toString());
   }
 
-  @Test
-  public void test_getAndSetValue() {
-    ChannelTopic ct = new ChannelTopic();
-    ct.setValue("sampleTopic");
-    assertEquals("sampleTopic", ct.getValue());  
-  }
 
   @Test
-  public void test_getAndSetCreator() {
-    ChannelTopic ct = new ChannelTopic();
-    ct.setCreator("sampleCreator");
-    assertEquals("sampleCreator", ct.getCreator());  
+  public void testGettersAndSetters() throws Exception {
+      // See: https://github.com/codebox/javabean-tester
+      JavaBeanTester.test(ChannelTopic.class);
   }
 
   @Test

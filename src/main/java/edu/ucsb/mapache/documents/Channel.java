@@ -115,8 +115,21 @@ public class Channel {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Channel)) {
+            return false;
+        }
+        Channel c = (Channel) o;
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(name, c.getName());
+        return builder.build();
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(id, name, creator, is_archived, is_general, members, topic, purpose);
+        return Objects.hash(name);
     }
 
     @Override
