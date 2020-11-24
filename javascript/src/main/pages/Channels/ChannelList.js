@@ -4,7 +4,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import { Redirect } from "react-router-dom";
 import ChannelTable from "main/components/Channels/ChannelTable"
 import useSWR from "swr";
-import {fetchWithToken} from "../../utils/fetch";
+import {fetchWithToken} from "main/utils/fetch";
 
 const ChannelList = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();

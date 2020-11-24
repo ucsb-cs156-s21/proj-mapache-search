@@ -102,18 +102,6 @@ public class Channel {
         this.purpose = purpose;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Channel)) {
-            return false;
-        }
-        Channel channel = (Channel) o;
-        return Objects.equals(id, channel.id) && Objects.equals(name, channel.name) && Objects.equals(creator, channel.creator) && Objects.equals(is_archived, channel.is_archived) && Objects.equals(is_general, channel.is_general) && Objects.equals(members, channel.members) && Objects.equals(topic, channel.topic) && Objects.equals(purpose, channel.purpose);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
