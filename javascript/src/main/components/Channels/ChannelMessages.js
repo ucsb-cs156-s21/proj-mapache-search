@@ -9,7 +9,7 @@ const ChannelMessages = () => {
     return (
             <Jumbotron>
                 <div className="text-left">
-                    <h5>Channel History</h5>
+                    <h5>Channel Name</h5>
                     <p>Messages go here</p>
                 </div>
             </Jumbotron>
