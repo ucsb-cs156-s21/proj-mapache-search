@@ -4,20 +4,38 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router-dom";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import JSONPrettyCard from "main/components/Utilities/JSONPrettyCard";
+import { fetchWithToken } from "main/utils/fetch";
 
 const Search = () => {
-    const { isAuthenticated } = useAuth0();
+    const { getAccessTokenSilently: getToken } = useAuth0();
     const emptyQuery = {
         searchQuery: "",
     }
 
+    const fetchSearchResults = async (event) => {
+        const url = `/api/member/search/basic?searchQuery=${query.searchQuery}`;
+
+        try {
+            const result = await fetchWithToken(url, getToken, {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                },
+            });
+            console.log(`result=${JSON.stringify(result)}`)
+            return result;
+        } catch (err) {
+            console.log(`err=${err}`)
+        }
+    };
+
     const [query, setQuery] = useState(emptyQuery);
     const [results, setResults] = useState({});
 
-    const handleOnSubmit = (e) => {
+    const handleOnSubmit = async (e) => {
         e.preventDefault();
-        //perform search here
-        //send the query to the backend and get back, and what you get back, send it to setResults
+        const answer = await fetchSearchResults(e);
+        setResults(answer);
     }
 
     return (
@@ -39,8 +57,8 @@ const Search = () => {
                 </Form.Group>
             </Form>
             <JSONPrettyCard
-                    expression={"results"}
-                    value={results}
+                expression={"results"}
+                value={results}
             />
         </>
     );
