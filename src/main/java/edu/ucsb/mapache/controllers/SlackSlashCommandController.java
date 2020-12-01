@@ -7,7 +7,10 @@ import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
+=======
+>>>>>>> 35e5908... pc - add scaffolding for Slack Bot
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
-import edu.ucsb.mapache.repositories.ChannelRepository;
 
 
 /**
@@ -29,9 +31,6 @@ import edu.ucsb.mapache.repositories.ChannelRepository;
 public class SlackSlashCommandController {
 
     private static final Logger logger = LoggerFactory.getLogger(SlackSlashCommandController.class);
-
-    @Autowired
-    ChannelRepository channelRepository;
 
     /**
      * The token you get while creating a new Slash Command. You should paste the
@@ -141,7 +140,6 @@ public class SlackSlashCommandController {
                 String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
         richMessage.setResponseType("ephemeral");
 
-        
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
