@@ -11,4 +11,6 @@ import java.util.List;
 public interface MessageRepository extends MongoRepository<Message, ObjectId> {
     @Query("{ 'user': ?0}")
     List<Message> findByUser(String user);
+    @Query("{ 'channel': ?0}")
+    List<Message> findByChannel(String channel);
 }
