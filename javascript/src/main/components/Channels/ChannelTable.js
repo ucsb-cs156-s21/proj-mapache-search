@@ -1,6 +1,15 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
+const channelLink=(channelName) => {
+    const link = `/member/channels/${channelName}`
+    return (
+
+        < a href= {link} > click here </a>
+    );
+
+}
+
 export default ({ channels }) => {
 
     const columns = [{
@@ -12,6 +21,11 @@ export default ({ channels }) => {
     },{
         dataField: 'topic.value',
         text: 'Topic'
+    },{
+        isDummyField: true,
+        formatter: (cell, row) => channelLink(row.name),
+        dataField: channelLink,
+        text: 'Link'
     }
     ];
 

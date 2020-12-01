@@ -10,10 +10,7 @@ import {fetchWithToken} from "main/utils/fetch";
 const ChannelPage = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { channel } = useParams();
-    //const { data: channels } = useSWR(['/api/members/channels/${channel}', getToken], fetchWithToken);
-
     return (
-           //<ChannelMessages channels={channels|| []} />
            <>
            <h1> {channel} </h1>
            {
