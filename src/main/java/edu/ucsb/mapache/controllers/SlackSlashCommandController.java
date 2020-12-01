@@ -7,6 +7,7 @@ import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
+import edu.ucsb.mapache.repositories.ChannelRepository;
 
 
 /**
@@ -27,6 +29,9 @@ import edu.ucsb.mapache.models.SlackSlashCommandParams;
 public class SlackSlashCommandController {
 
     private static final Logger logger = LoggerFactory.getLogger(SlackSlashCommandController.class);
+
+    @Autowired
+    ChannelRepository channelRepository;
 
     /**
      * The token you get while creating a new Slash Command. You should paste the
@@ -130,6 +135,17 @@ public class SlackSlashCommandController {
         RichMessage richMessage = new RichMessage(
                 String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
         richMessage.setResponseType("ephemeral");
+
+        // TODO: Go through the list of channels, and find out how many channels
+        // have the word "team" in the name of the channel
+
+        // To get all of the channels, you can do this:
+        //   Iterable<Channel> channels = channelRepository.findAll();
+        // then you can loop through and look at the channel names
+
+        // then perhaps add some "attachements" to the message before
+        // sending it back
+        
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
