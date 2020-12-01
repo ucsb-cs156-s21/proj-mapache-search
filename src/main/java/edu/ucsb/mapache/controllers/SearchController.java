@@ -27,14 +27,23 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import edu.ucsb.mapache.models.SearchParameters;
+import org.springframework.beans.factory.annotation.Value;
+import edu.ucsb.mapache.services.GoogleSearchService;
 
 @RestController
 @RequestMapping("/api/member/search")
 public class SearchController {
     private final Logger logger = LoggerFactory.getLogger(RoleController.class);
 
+    @Value("${app.google.search.apiToken}")
+    private String apiToken;
+
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
+
+    @Autowired
+    private GoogleSearchService googleSearchService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -52,9 +61,17 @@ public class SearchController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         //replace the next two lines with code that actually gets the search results from google
-        Map<String, String> fakeMap = new HashMap<String, String>();
+        /*Map<String, String> fakeMap = new HashMap<String, String>();
         fakeMap.put("key","value");
-        String body = mapper.writeValueAsString(fakeMap);
+        String body = mapper.writeValueAsString(fakeMap);*/
+
+        SearchParameters sp = new SearchParameters();
+        sp.setQuery(searchQuery);
+        sp.setPage(1);
+        logger.info("sp={} apiToken={}", sp, apiToken);
+        String body = googleSearchService.getJSON(sp,apiToken);
+        logger.info("body={}", body);
+
         //the body that's passed into line 58 should be the JSON for the search results
         return ResponseEntity.ok().body(body);
     }
