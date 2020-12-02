@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import useSWR from "swr";
 import { useParams} from "react-router-dom";
 import {fetchWithToken} from "main/utils/fetch";
-import MessageList from "main/components/Messages/MessageList"
+import MessageList from "main/components/ChannelMessages/MessageList"
 
 const ChannelPage = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
