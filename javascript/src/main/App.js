@@ -12,7 +12,6 @@ import Admin from "main/pages/Admin/Admin";
 import SlackUsers from "./pages/Admin/SlackUsers";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
-import ChannelMessages from "./components/Channels/ChannelMessages";
 import ChannelPage from "./pages/Channels/ChannelPage";
 
 function App() {
