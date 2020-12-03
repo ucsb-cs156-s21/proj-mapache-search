@@ -14,4 +14,4 @@ export default ({ messages }) => {
     return (
         <BootstrapTable keyField='ts' data={messages} columns={columns}/>
     );
-}
+};
