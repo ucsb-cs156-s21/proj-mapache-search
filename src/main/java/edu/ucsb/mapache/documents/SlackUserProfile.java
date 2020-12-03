@@ -62,10 +62,12 @@ public class SlackUserProfile {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SlackUserProfile that = (SlackUserProfile) o;
-        return Objects.equals(email, that.email) &&
-                Objects.equals(real_name, that.real_name) &&
-                Objects.equals(display_name, that.display_name) &&
-                Objects.equals(name, that.name);
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(email, that.getEmail());
+        builder.append(real_name, that.getReal_name());
+        builder.append(display_name, that.getDisplay_name());
+        builder.append(name, that.getName());
+        return builder.build();
     }
 
     @Override
