@@ -5,16 +5,10 @@ import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "../../utils/fetch";
 
-const SlackUsers = () => {
+const SlackUsersWithMessageCounts = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
+    const { data: slackUsers } = useSWR(["/api/slackUsersWithMessageCounts", getToken], fetchWithToken);
 
-
-    const populateMsgCount = (cell,row ) => {
-        return (
-           0
-        )
-    }
 
     const columns = [{
         dataField: 'id',
@@ -29,14 +23,12 @@ const SlackUsers = () => {
         dataField: 'profile.email',
         text: 'Email'
     },{
-        text: "MessageCount",
-        isDummyField: true,
-        dataField: "msgCount",
-        formatter: (cell, row) => populateMsgCount(cell, row)
+        dataField: 'messageCount',
+        text: 'Message Count'
     }];
 
     return (
         <BootstrapTable keyField='id' data={slackUsers || []} columns={columns} />
     );
 };
-export default SlackUsers;
+export default SlackUsersWithMessageCounts;

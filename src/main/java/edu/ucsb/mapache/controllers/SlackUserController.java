@@ -1,6 +1,8 @@
 package edu.ucsb.mapache.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -10,6 +12,7 @@ import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.models.SlackUserWithStats;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
@@ -54,6 +57,36 @@ public class SlackUserController {
             return getUnauthorizedResponse("admin");
         Iterable<SlackUser> slackUsers = slackUserRepository.findAll();
         String body = mapper.writeValueAsString(slackUsers);
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/slackUsersWithMessageCounts")
+    public ResponseEntity<String> usersWithMsgCounts(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Iterable<SlackUser> slackUsers = slackUserRepository.findAll();
+
+        // add some logic here that creates a new type of object
+        // that has the message count along with the SlackUser.
+
+        List<SlackUserWithStats> usersWithStats = new ArrayList<SlackUserWithStats>();
+
+        for (SlackUser su: slackUsers) {
+            SlackUserWithStats userWithStats = new SlackUserWithStats();
+            userWithStats.setSlackUser(su);
+
+            // figure out how many messages there are in the 
+            // message repository with this user and set the
+            // variable messageCount = to that;
+
+            int messageCount = 0;
+
+            userWithStats.setMessageCount(messageCount);
+        }
+
+        String body = mapper.writeValueAsString(usersWithStats);
+        
         return ResponseEntity.ok().body(body);
     }
 }
