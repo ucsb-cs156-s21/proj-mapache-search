@@ -40,6 +40,10 @@ public class SlackSlashCommandController {
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
 
+    public String getSlackToken() {
+        return slackToken;
+    }
+
     /**
      * Slash Command handler. When a user types for example "/app help" then slack
      * sends a POST request to this endpoint. So, this endpoint should match the url
@@ -136,18 +140,29 @@ public class SlackSlashCommandController {
                 String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
         richMessage.setResponseType("ephemeral");
 
-        // TODO: Go through the list of channels, and find out how many channels
-        // have the word "team" in the name of the channel
-
-        // To get all of the channels, you can do this:
-        //   Iterable<Channel> channels = channelRepository.findAll();
-        // then you can loop through and look at the channel names
-
-        // then perhaps add some "attachements" to the message before
-        // sending it back
         
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
+
+    // public RichMessage teamsCommand(SlackSlashCommandParams params) { // TODO
+    //     // RichMessage richMessage = new RichMessage(
+    //     //         String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
+    //     // richMessage.setResponseType("ephemeral");
+
+    //     // // TODO: Go through the list of channels, and find out how many channels
+    //     // // have the word "team" in the name of the channel
+
+    //     // // To get all of the channels, you can do this:
+    //     // //   Iterable<Channel> channels = channelRepository.findAll();
+    //     // // then you can loop through and look at the channel names
+
+    //     // // then perhaps add some "attachements" to the message before
+    //     // // sending it back
+        
+    //     // return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+    // }
+
+
 
     public RichMessage timeCommand(SlackSlashCommandParams params) {
         String message = String.format("From: %s... the time on the server is %s", params.getCommand(), timeNow());
