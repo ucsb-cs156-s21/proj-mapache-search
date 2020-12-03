@@ -1,6 +1,7 @@
 package edu.ucsb.mapache.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 
@@ -49,10 +50,17 @@ public class SlackSlashCommandParamsTests {
         assertEquals(params1.hashCode(), params2.hashCode());
     }
 
-    // @Test
-    // public void test_toString() throws Exception {
-    //     SlackSlashCommandParams params1 = new SlackSlashCommandParams(1,10,10,new ArrayList<Course>());
-    //     assertEquals("{ pageNumber='1', pageSize='10', total='10', classes='[]'}",params1.toString());
-    // }
+    @Test
+    public void test_toString() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        assertEquals("{ token='null', teamId='null', teamDomain='null', channelId='null', channelName='null', userId='null', userName='null', command='null', text='null', responseUrl='null'}", 
+                    params1.toString());
+    }
 
+    @Test
+    public void test_notEqualsRandomObject() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        Object o = new Object();
+        assertFalse(params1.equals(o));
+    }
 }
