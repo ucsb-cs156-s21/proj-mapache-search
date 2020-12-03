@@ -24,7 +24,7 @@ export default ({ channels }) => {
     },{
         isDummyField: true,
         formatter: (cell, row) => channelLink(row.name),
-        dataField: channelLink,
+        dataField: 'channelLink',
         text: 'Link'
     }
     ];
@@ -32,4 +32,4 @@ export default ({ channels }) => {
     return (
         <BootstrapTable keyField='id' data={channels} columns={columns} />
     );
-}
+};
