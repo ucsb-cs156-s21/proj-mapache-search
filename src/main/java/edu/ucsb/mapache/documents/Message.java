@@ -2,6 +2,8 @@ package edu.ucsb.mapache.documents;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +16,9 @@ public class Message {
     private String text;
     private String channel;
     private SlackUserProfile user_profile;
+
+    public Message(){
+    }
 
     public Message(String type, String subtype, String ts, String user, String text, String channel, SlackUserProfile user_profile) {
         this.type = type;
@@ -86,14 +91,15 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return
-                Objects.equals(type, message.type) &&
-                Objects.equals(subtype, message.subtype) &&
-                Objects.equals(ts, message.ts) &&
-                Objects.equals(user, message.user) &&
-                Objects.equals(text, message.text) &&
-                Objects.equals(channel, message.channel) &&
-                Objects.equals(user_profile, message.user_profile);
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(type, message.type);
+        builder.append(subtype, message.subtype);
+        builder.append(ts, message.ts);
+        builder.append(user, message.user);
+        builder.append(text, message.text);
+        builder.append(channel, message.channel);
+        builder.append(user_profile, message.user_profile);
+        return builder.build();
     }
 
     @Override
