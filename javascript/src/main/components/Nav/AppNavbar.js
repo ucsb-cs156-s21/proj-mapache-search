@@ -26,6 +26,7 @@ function AppNavbar() {
               <NavDropdown title="Admin">
                   <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/slackUsers">Slack Users</NavDropdown.Item>
+                  <NavDropdown.Item href="/admin/students">Manage Students</NavDropdown.Item>
               </NavDropdown>
           }
         <LinkContainer to={"/about"}>
