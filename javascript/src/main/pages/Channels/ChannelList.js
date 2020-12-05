@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Jumbotron } from "react-bootstrap";
 import {useAuth0} from "@auth0/auth0-react";
 import { Redirect } from "react-router-dom";
 import ChannelTable from "main/components/Channels/ChannelTable"
 import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const ChannelList = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
@@ -22,6 +24,21 @@ const ChannelList = () => {
         }
     }
     
+    /*const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(null);
+    const onChange = dates => {
+      const [start, end] = dates;
+      setStartDate(start);
+      setEndDate(end);
+      console.log(startDate);
+      console.log(endDate);
+    };*/
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    //console.log(startDate);
+    //console.log(endDate);
+
     return (
                 // form allows you to type into the search bar
                 <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -30,6 +47,10 @@ const ChannelList = () => {
                     <div class="input-group-append">
                         {/* Uses boostrap to make the search button which stores user input inputVal in the function getInputValue */}
                         <button class="btn btn-primary" type="button" onClick={getInputValue}><i class="fas fa-search"></i>Search</button>
+                        
+                        <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+                        <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+
                     </div>
                      {/* Lists out all of the channels with their respective data */}
                     <ChannelTable channels={channels || []} />
