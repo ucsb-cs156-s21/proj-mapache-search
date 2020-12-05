@@ -32,9 +32,6 @@ public class ChannelTests {
  
   @Test
   public void test_toString() {
-
-    // public Channel(String id, String name, String creator, Boolean is_archived, Boolean is_general, List<String> members, ChannelTopic topic, ChannelPurpose purpose) {
-
     Channel c = new Channel("channelId", "channelName", "channelCreator", true, true, new ArrayList<String>(), new ChannelTopic(), new ChannelPurpose() );
     String expected = "{ id='channelId', name='channelName', creator='channelCreator', is_archived='true', is_general='true', members='[]', topic='{ value='null', creator='null'}', purpose='{ value='null', creator='null'}'}";
     assertEquals(expected, c.toString());
