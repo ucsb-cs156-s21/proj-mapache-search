@@ -31,6 +31,7 @@ import edu.ucsb.mapache.repositories.ChannelRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
 import edu.ucsb.mapache.repositories.MessageRepository;
 
+
 @WebMvcTest(value = ChannelsController.class)
 @WithMockUser
 public class ChannelsControllerTests {

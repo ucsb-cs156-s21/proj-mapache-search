@@ -54,20 +54,13 @@ public class Channel {
         this.creator = creator;
     }
 
-    public Boolean isIs_archived() {
-        return this.is_archived;
-    }
-
+   
     public Boolean getIs_archived() {
         return this.is_archived;
     }
 
     public void setIs_archived(Boolean is_archived) {
         this.is_archived = is_archived;
-    }
-
-    public Boolean isIs_general() {
-        return this.is_general;
     }
 
     public Boolean getIs_general() {
@@ -126,8 +119,8 @@ public class Channel {
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
             ", creator='" + getCreator() + "'" +
-            ", is_archived='" + isIs_archived() + "'" +
-            ", is_general='" + isIs_general() + "'" +
+            ", is_archived='" + getIs_archived() + "'" +
+            ", is_general='" + getIs_general() + "'" +
             ", members='" + getMembers() + "'" +
             ", topic='" + getTopic() + "'" +
             ", purpose='" + getPurpose() + "'" +
