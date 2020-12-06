@@ -19,6 +19,8 @@ public class AppUser {
   private String firstName;
   @Column(nullable = false)
   private String lastName;
+  @Column(nullable = false, columnDefinition = "integer default 100") 
+  private int searchRemain=100;
 
   public AppUser() {
   }
@@ -62,9 +64,17 @@ public class AppUser {
     return email;
   }
 
+  public int getSeachRemain(){
+    return searchRemain;
+  }
+
+  public void setSearchRemain(int searchRemain){
+    this.searchRemain=searchRemain;
+  }
+
   @Override
   public String toString() {
-    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s ]", id, email, firstName, lastName);
+    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s ,searchRemain=%d]", id, email, firstName, lastName, searchRemain);
   }
 
   @Override
@@ -76,7 +86,7 @@ public class AppUser {
     AppUser user = (AppUser) o;
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, user.getId()).append(email, user.getEmail()).append(firstName, user.getFirstName())
-        .append(lastName, user.getLastName());
+        .append(lastName, user.getLastName()).append(searchRemain,user.getSeachRemain());
 
     return builder.isEquals();
   }
