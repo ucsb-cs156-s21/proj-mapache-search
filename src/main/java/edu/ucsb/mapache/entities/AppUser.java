@@ -21,6 +21,8 @@ public class AppUser {
   private String lastName;
   @Column(nullable = false, columnDefinition = "integer default 100") 
   private int searchRemain=100;
+  @Column(nullable = false, columnDefinition = "integer default 0")
+  private long time=0;
 
   public AppUser() {
   }
@@ -64,7 +66,7 @@ public class AppUser {
     return email;
   }
 
-  public int getSeachRemain(){
+  public int getSearchRemain(){
     return searchRemain;
   }
 
@@ -72,6 +74,18 @@ public class AppUser {
     this.searchRemain=searchRemain;
   }
 
+  public int decrSearchRemain(){
+      this.searchRemain--;
+      return this.searchRemain;
+  }
+
+  public int getTime(){
+    return time;
+  }
+
+  public void setTime(long time){
+    this.time=time;
+  }
   @Override
   public String toString() {
     return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s ,searchRemain=%d]", id, email, firstName, lastName, searchRemain);
@@ -86,7 +100,7 @@ public class AppUser {
     AppUser user = (AppUser) o;
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, user.getId()).append(email, user.getEmail()).append(firstName, user.getFirstName())
-        .append(lastName, user.getLastName()).append(searchRemain,user.getSeachRemain());
+        .append(lastName, user.getLastName()).append(searchRemain,user.getSearchRemain());
 
     return builder.isEquals();
   }

@@ -28,14 +28,33 @@ const Search = () => {
             console.log(`err=${err}`)
         }
     };
+    const fetchQuota = async (event) => {
+        const url = `/api/member/search/quota`;
+
+        try {
+            const result = await fetchWithToken(url, getToken, {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                },
+            });
+            console.log(`result=${JSON.stringify(result)}`)
+            return result;
+        } catch (err) {
+            console.log(`err=${err}`)
+        }
+    };
 
     const [query, setQuery] = useState(emptyQuery);
     const [results, setResults] = useState({});
+    const [quota, setQuota] = useState(0);
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const answer = await fetchSearchResults(e);
         setResults(answer);
+        const quotaInfo = await fetchQuota(e);
+        setQuota(quotaInfo.quota);
     }
 
     return (
@@ -56,6 +75,9 @@ const Search = () => {
                     </Col>
                 </Form.Group>
             </Form>
+            <p>
+                searchesRemaining: {quota}
+            </p>
             <JSONPrettyCard
                 expression={"results"}
                 value={results}
