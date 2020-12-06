@@ -50,6 +50,7 @@ import edu.ucsb.mapache.documents.ChannelTopic;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
+import edu.ucsb.mapache.repositories.MessageRepository;
 
 
 @WebMvcTest(value = ChannelsController.class)
@@ -63,6 +64,9 @@ public class ChannelsControllerTests {
   
     @MockBean
     AuthControllerAdvice authControllerAdvice;
+
+    @MockBean
+    MessageRepository mockMessageRepository;
 
     @MockBean
     ChannelRepository channelRepository;
@@ -109,7 +113,7 @@ public class ChannelsControllerTests {
         List<Message> expectedMessages = new ArrayList<Message>();
         expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1", "text1", "channel1", new SlackUserProfile()));
         expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2", "text2", "channel2", new SlackUserProfile()));
-        when(messageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
+        when(mockMessageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
         when(authControllerAdvice.getIsMember(anyString())).thenReturn(true);
         MvcResult response = mockMvc
             .perform(get("/api/members/channel/test-channel/messages").contentType("appication/json")

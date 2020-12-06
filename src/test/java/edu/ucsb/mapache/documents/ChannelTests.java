@@ -1,9 +1,5 @@
 package edu.ucsb.mapache.documents;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ import net.codebox.javabeantester.JavaBeanTester;
 public class ChannelTests {
 
     @Test
-    public void test_toString() {
+    public void test_toString_withPurposeAndTopic() {
         ChannelTopic ct = new ChannelTopic();
         ChannelPurpose cp = new ChannelPurpose();
         Channel c = new Channel("sampleId", "sampleName", "sampleCreator", false, false, new ArrayList<String>(), ct,cp);
@@ -94,7 +90,7 @@ public class ChannelTests {
     }
 
     @Test
-    public void test_hashCode_matchesOnSameContent() {
+    public void test_hashCode_matchesOnSameContent_withPurposeAndTopic() {
         ChannelTopic ct = new ChannelTopic();
         ChannelPurpose cp = new ChannelPurpose();
         Channel c1 = new Channel("sampleId", "sampleName", "sampleCreator", false, false, new ArrayList<String>(), ct,cp);
@@ -108,7 +104,7 @@ public class ChannelTests {
     }
 
     @Test
-    public void test_notEqualDifferentClass() {
+    public void test_notEqualDifferentClass_withNull() {
         Channel c1 = new Channel();
         Assertions.assertFalse(c1.equals(new Object()));
     }
@@ -122,7 +118,7 @@ public class ChannelTests {
   }
 
   @Test
-  public void test_getAndSetMembers() {
+  public void test_getAndSetMembers_withList() {
     Channel channel = new Channel();
     List<String> members = new ArrayList<String>();
     members.add("member1");
@@ -144,11 +140,6 @@ public class ChannelTests {
     Channel c1 = new Channel("channelId", "channelName", "channelCreator", true, true, new ArrayList<String>(), new ChannelTopic(), new ChannelPurpose() );
     Channel c2 = new Channel("channelId", "channelName", "channelCreator", true, true, new ArrayList<String>(), new ChannelTopic(), new ChannelPurpose() );
     assertEquals(c1.hashCode(), c2.hashCode());
-  }
-
-  @Test
-  public void test_notEqualNull() {
-    assertNotEquals(new Channel(), null);
   }
 
   @Test

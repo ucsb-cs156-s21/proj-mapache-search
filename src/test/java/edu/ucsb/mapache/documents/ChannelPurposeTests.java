@@ -1,9 +1,5 @@
 package edu.ucsb.mapache.documents;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.assertEquals;
@@ -77,19 +73,14 @@ public class ChannelPurposeTests {
     }
 
   @Test
-  public void test_hashCode_matchesOnSameContent() {
+  public void test_hashCode_matchesOnSameContent_diffInput() {
     ChannelPurpose cp1 = new ChannelPurpose("value", "creator");
     ChannelPurpose cp2 = new ChannelPurpose("value", "creator");
     assertEquals(cp1.hashCode(), cp2.hashCode());
   }
 
   @Test
-  public void test_notEqualNull() {
-    assertNotEquals(new ChannelPurpose(), null);
-  }
-
-  @Test
-  public void test_notEqualDifferentClass() {
+  public void test_notEqualDifferentClass_diffInput() {
     ChannelPurpose cp1 = new ChannelPurpose("value", "creator");
     assertFalse(cp1.equals(new Object()));
   }
