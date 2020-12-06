@@ -26,7 +26,9 @@ import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.Channel;
 import edu.ucsb.mapache.documents.ChannelPurpose;
 import edu.ucsb.mapache.documents.ChannelTopic;
+import edu.ucsb.mapache.documents.Message;
 import edu.ucsb.mapache.documents.SlackUser;
+import edu.ucsb.mapache.documents.SlackUserProfile;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
 import edu.ucsb.mapache.repositories.MessageRepository;
@@ -60,6 +62,14 @@ public class ChannelsControllerTests {
   }
 
   @Test
+  public void test_getUnauthorizedResponse_2() throws Exception {
+      mockMvc
+          .perform(
+                  get("/api/members/channel/test-channel/messages").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+          .andExpect(status().is(401));
+  }
+
+  @Test
   public void test_getMembers() throws Exception {
     List<Channel> expectedChannels = new ArrayList<Channel>();
     
@@ -84,4 +94,26 @@ public class ChannelsControllerTests {
     assertEquals(expectedChannels, channels);
 
   }
+
+  @Test
+    public void test_get_messageOfChannel_returnsListOfMessages() throws Exception {
+      List<Message> expectedMessages = new ArrayList<Message>();
+
+      expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1", "text1", "channel1", new SlackUserProfile()));
+      expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2", "text2", "channel2", new SlackUserProfile()));
+
+      when(messageRepository.findByChannel("test-channel")).thenReturn(expectedMessages);
+      when(authControllerAdvice.getIsMember(exampleAuthToken)).thenReturn(true);
+
+      MvcResult response = mockMvc
+          .perform(get("/api/members/channel/test-channel/messages").contentType("appication/json")
+                  .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+          .andExpect(status().isOk()).andReturn();
+
+      String responseString = response.getResponse().getContentAsString();
+      List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+      });
+      
+      assertEquals(expectedMessages, messages);
+    }
 }
