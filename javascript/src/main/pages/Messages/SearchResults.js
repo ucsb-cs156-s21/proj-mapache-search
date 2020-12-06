@@ -6,7 +6,6 @@ import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import { fetchWithToken } from "main/utils/fetch";
 import MessageList from "main/components/ChannelMessages/MessageList"
-import JSONPrettyCard from "main/components/Utilities/JSONPrettyCard";
 import { Form, Button } from "react-bootstrap";
 
 const SearchPage = () => {
