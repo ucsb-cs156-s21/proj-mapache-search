@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import useSWR from "swr";
-import { ListGroup } from "react-bootstrap";
 import { StudentCSVButton } from "./StudentCSVButton";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
 import StudentTable from "main/components/Students/StudentTable"
+import AddStudent from "main/components/Students/AddStudent"
 
 const Students = () => {
   const { getAccessTokenSilently: getToken } = useAuth0();
@@ -24,15 +24,49 @@ const Students = () => {
     return <Loading />;
   }
 
+  const createStudent = async (item, id) => {
+    try {
+      await fetchWithToken(`/api/students`, getToken, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+      await mutateStudents();
+    } catch (err) {
+      console.log("Caught error from create student");
+    }
+  };
+
+  const updateStudent = async (item, id) => {
+    try {
+      await fetchWithToken(`/api/students/${id}`, getToken, {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+      await mutateStudents();
+    } catch (err) {
+      console.log("Caught error from update students");
+    }
+  };
+
   const deleteStudent = async (id) => {
-    await fetchWithToken('/api/students/${id}', getToken, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-      },
-      noJSON: true,
-    });
-    await mutateStudents();
+    try {
+      await fetchWithToken(`/api/students/${id}`, getToken, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+        noJSON: true,
+      });
+      await mutateStudents();
+    } catch (err) {
+      console.log("Caught error from delete students");
+    }
   };
 
   const uploadCSV = async (file) => {
@@ -54,6 +88,7 @@ const Students = () => {
           Make sure that the uploaded CSV contains a header
         </p>
         <StudentCSVButton addTask={uploadCSV}/>
+        {/* <AddStudent addStudent={createStudent}/> */}
         <StudentTable students={studentList} deleteStudent={deleteStudent}/>
     </>
   );

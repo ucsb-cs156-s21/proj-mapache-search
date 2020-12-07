@@ -9,6 +9,12 @@ const StudentTable = ({students,deleteStudent}) => {
             <Button variant="danger" data-testid="delete-button" onClick={() => deleteStudent(id)}>Delete</Button>
         )
     }
+
+    // const renderUpdateButton = (id) => {
+    //     return (
+    //         <Button variant="danger" data-testid="delete-button" onClick={() => deleteStudent(id)}>Delete</Button>
+    //     )
+    // }   
     
     const columns = [{
         dataField: 'id',

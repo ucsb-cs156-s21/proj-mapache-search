@@ -40,16 +40,53 @@ public class StudentController {
 
   private ObjectMapper mapper = new ObjectMapper();
 
+  @PostMapping(value = "", produces = "application/json")
+  public ResponseEntity<String> createStudent(@RequestHeader("Authorization") String authorization,
+      @RequestBody @Valid Student student) throws JsonProcessingException {
+    AppUser user = authControllerAdvice.getUser(authorization);
+    Student savedStudent = studentRepository.save(student);
+    String body = mapper.writeValueAsString(savedStudent);
+    return ResponseEntity.ok().body(body);
+  }
+
+  @PutMapping(value = "/{id}", produces = "application/json")
+  public ResponseEntity<String> updateStudent(@RequestHeader("Authorization") String authorization,
+      @PathVariable("id") Long id, @RequestBody @Valid Student incomingStudent)
+      throws JsonProcessingException {
+    AppUser user = authControllerAdvice.getUser(authorization);
+    Optional<Student> student = studentRepository.findById(id);
+    if (!student.isPresent()) {
+      return ResponseEntity.notFound().build();
+    }
+    if (!incomingStudent.getId().equals(id)) {
+      return ResponseEntity.badRequest().build();
+    }
+    studentRepository.save(incomingStudent);
+    String body = mapper.writeValueAsString(incomingStudent);
+    return ResponseEntity.ok().body(body);
+  }
+
   @DeleteMapping(value = "/{id}", produces = "application/json")
   public ResponseEntity<String> deleteStudents(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) {
     AppUser user = authControllerAdvice.getUser(authorization);
     Optional<Student> students = studentRepository.findById(id);
-    if (!students.isPresent() || !students.get().getUserId().equals(user.getEmail())) {
+    if (!students.isPresent()) {
       return ResponseEntity.notFound().build();
     }
     studentRepository.deleteById(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping(value = "/{id}", produces = "application/json")
+  public ResponseEntity<String> getStudent(@PathVariable("id") Long id) throws JsonProcessingException {
+    Optional<Student> student = studentRepository.findById(id);
+    if (student.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    String body = mapper.writeValueAsString(student.get());
+    return ResponseEntity.ok().body(body);
   }
 
   @GetMapping(value = "", produces = "application/json")
