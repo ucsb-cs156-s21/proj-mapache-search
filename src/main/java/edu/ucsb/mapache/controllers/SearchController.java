@@ -5,6 +5,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.Date; 
+import java.util.Calendar; 
 import java.util.Optional;
 import javax.validation.Valid;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -83,7 +85,7 @@ public class SearchController {
         return you;
     }
     
-    public static bool shouldReset(long lastUpdate, long currentTime){
+    public static boolean shouldReset(long lastUpdate, long currentTime){
         long lastUpdateDate= (lastUpdate-8*60*60*1000)/(24*60*60*1000);
         long currentDate= (currentTime-8*60*60*1000)/(24*60*60*1000);
         return currentDate>lastUpdateDate;
@@ -114,6 +116,7 @@ public class SearchController {
         long currentTime=(long) (new Date().getTime());
         if(shouldReset(lastUpdate,currentTime)){
             you.setSearchRemain(100);
+            you.setTime(currentTime);
         }
        
         if(you.getSearchRemain()<=0){

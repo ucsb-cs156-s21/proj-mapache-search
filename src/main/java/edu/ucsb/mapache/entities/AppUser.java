@@ -21,10 +21,11 @@ public class AppUser {
   private String lastName;
   @Column(nullable = false, columnDefinition = "integer default 100") 
   private int searchRemain=100;
-  @Column(nullable = false, columnDefinition = "integer default 0")
-  private long time=0;
+  @Column(nullable = false)
+  private long time;
 
   public AppUser() {
+    time=0;
   }
 
   public AppUser(Long id, String email, String firstName, String lastName) {
@@ -79,7 +80,7 @@ public class AppUser {
       return this.searchRemain;
   }
 
-  public int getTime(){
+  public long getTime(){
     return time;
   }
 
