@@ -20,6 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 
+// imports for google search
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+//
+
 
 /**
  * Sample Slash Command Handler.
@@ -88,7 +98,11 @@ public class SlackSlashCommandController {
         params.setText(text);
         params.setResponseUrl(responseUrl);
 
+<<<<<<< HEAD
         
+=======
+        // String textParts[] = params.getTextParts(); // <------- btkh4 advice was enacted here
+>>>>>>> 3745e20... FU/GZ/BX implemented google search and jacoco test
         String[] textParts = params.getTextParts();
 
         if (textParts.length <= 0 || textParts[0].equals("")) {
@@ -107,6 +121,12 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("debug")) {
             return debugCommand(params);
+        }
+
+        /////// 
+
+        if (firstArg.equals("search") && textParts[1].equals("google")) {
+            return googleSearch(params);
         }
 
         return unknownCommand(params);
@@ -144,6 +164,63 @@ public class SlackSlashCommandController {
         richMessage.setResponseType("ephemeral");
 
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+    }
+
+    public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
+        // richMessage.setResponseType("ephemeral");
+        String[] textParts = params.getTextParts();
+        String finResults = "";
+        try { 
+            String baseURL = "https://www.google.com/search?q=";
+            
+            // make new baseURL using getTextParts as input;
+            // assuming input is formatted as /mapache googleSearch "input words" // textparts is a java array 
+            String attachments = "";
+            for (int i = 2; i < textParts.length; i++) {
+                if (i != 2) {attachments += "+";}
+                attachments += textParts[i];
+            }
+            baseURL = baseURL + attachments;
+            Document searchPage = Jsoup.connect(baseURL).get();
+
+            Elements links = searchPage.select("div.J9WfR eqAnXb");
+            links = searchPage.select("a[href]");
+            //
+
+            ArrayList<String> linkArrays = new ArrayList<String>();
+
+            for (Element l : links) {
+				String temp = l.attr("abs:href");
+				if (temp.contains("https://www.google.com") == false &&
+						temp.contains("https://www.youtube.com") == false &&
+						temp.contains("https://support.google.com") == false &&
+						temp.contains("https://maps.google.com") == false &&
+						temp.contains("https://policies.google.com") == false) {
+					linkArrays.add(temp);
+				}
+            }
+            
+            for (int i = 0; i < 3; i++) {
+                finResults += linkArrays.get(i);
+                if (i != 2) { finResults += "\n";}
+            }
+            RichMessage richMessage = new RichMessage(
+                String.format(finResults, params.getCommand(), params.getTextParts()[0]));
+            
+            return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+            // wikipedia.com
+            // site.com
+            // white.gov
+
+
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        ///// compilation error unless the code below and catch block is there.
+        RichMessage richMessage = new RichMessage(
+                String.format(finResults, params.getCommand(), params.getTextParts()[0]));
+        return richMessage.encodedMessage();
     }
 
 
