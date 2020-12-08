@@ -1,12 +1,12 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import TimeFormatter from "./time"
 const { SearchBar } = Search;
-
 export default ({ messages }) => {
     const columns = [{
-        dataField: 'user',
-        text: 'user',
+        dataField: 'user_profile.real_name',
+        text: 'Name',
         sort: true
     },{
         dataField: 'text',
@@ -17,16 +17,7 @@ export default ({ messages }) => {
             dataField: 'ts',
             text: 'Time',
             sort: true,
-            formatter: (cell, _) => {
-                // convert timestamp to human readable time
-                let date = new Date(cell * 1000);
-                return date.getUTCFullYear() +
-                    '-' + ('0' + date.getMonth()).slice(-2) +
-                    '-' + ('0' + date.getDate()).slice(-2) +
-                    ' ' + ('0' + date.getHours()).slice(-2) +
-                    ':' + ('0' + date.getMinutes()).slice(-2) +
-                    ':' + ('0' + date.getSeconds()).slice(-2)
-            },
+            formatter: TimeFormatter,
             style: {
                 width: "20%"
             }
@@ -40,6 +31,7 @@ export default ({ messages }) => {
                 data={ messages }
                 columns={ columns }
                 search
+                button
             >
                 {
                     props => (

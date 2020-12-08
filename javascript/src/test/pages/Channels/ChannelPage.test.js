@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import ChannelPage from "main/pages/Channels/ChannelPage";
+import ChannelPage from "main/pages/Channels/ListView";
 import { useParams} from "react-router-dom";
 import useSWR from "swr";
 jest.mock("swr");
@@ -10,7 +10,7 @@ jest.mock("react-router-dom", () => {
     };
 });
 
-describe("ChannelPage tests", () => {
+describe("ChannelPageListView tests", () => {
     beforeEach(() => {
         useParams.mockReturnValue({
             'channel': 'test-channel'
