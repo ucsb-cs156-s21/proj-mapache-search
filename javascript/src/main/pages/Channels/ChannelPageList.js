@@ -3,9 +3,9 @@ import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
 import { useParams} from "react-router-dom";
 import {fetchWithToken} from "main/utils/fetch";
-import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView"
+import MessageListView from "main/components/ChannelMessages/MessageListView"
 
-const ChannelPageScrollableView = () => {
+const ChannelPageList = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { channel } = useParams();
     const { data: messages } = useSWR([`/api/members/channel/${channel}/messages`, getToken], fetchWithToken);
@@ -13,11 +13,10 @@ const ChannelPageScrollableView = () => {
     return (
         <>
             <h1> {channel} </h1>
-            <a href={"/member/listViewChannels/" + channel}>Switch to List View to search</a>
-
-            <MessageScrollableView messages={messages || []} channel={channel} />
+            <a href={"/member/channels/" + channel}>Switch to Scrollable View</a>
+            <MessageListView messages={messages || []} />
         </>
     );
 };
 
-export default ChannelPageScrollableView;
+export default ChannelPageList;

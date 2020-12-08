@@ -12,7 +12,7 @@ import userEvent from "@testing-library/user-event";
 //     };
 // });
 
-describe("ChannelPageListView tests", () => {
+describe("ChannelPageList tests", () => {
     // beforeEach(() => {
     //     useParams.mockReturnValue({
     //         'channel': 'test-channel'
@@ -46,7 +46,7 @@ describe("ChannelPageListView tests", () => {
 //             'data': [exampleMessage]
 //         });
 
-//         const { getByText } = render(<ChannelPageListView />);
+//         const { getByText } = render(<ChannelPageList />);
 //         const contentsElement = getByText(exampleMessage.text);
 //         expect(contentsElement).toBeInTheDocument();
 //     });

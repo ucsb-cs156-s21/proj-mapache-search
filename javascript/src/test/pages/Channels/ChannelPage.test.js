@@ -10,7 +10,7 @@ jest.mock("react-router-dom", () => {
     };
 });
 
-describe("ChannelPageListView tests", () => {
+describe("ChannelPageList tests", () => {
     beforeEach(() => {
         useParams.mockReturnValue({
             'channel': 'test-channel'

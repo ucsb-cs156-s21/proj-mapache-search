@@ -1,9 +1,9 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import MessageList from "main/components/ChannelMessages/MessageList";
+import MessageListView from "main/components/ChannelMessages/MessageListView";
 
-describe("MessageList tests", () => {
+describe("MessageListView tests", () => {
     test("renders without crashing", () => {
-        render(<MessageList messages={[]} />);
+        render(<MessageListView messages={[]} />);
     });
 });
