@@ -11,8 +11,6 @@ import edu.ucsb.mapache.documents.SlackUserProfile;
 import edu.ucsb.mapache.documents.Message;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 
-
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,28 +27,18 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-import edu.ucsb.mapache.advice.AuthControllerAdvice;
-import edu.ucsb.mapache.documents.Channel;
-import edu.ucsb.mapache.documents.ChannelPurpose;
 import edu.ucsb.mapache.documents.ChannelTopic;
-import edu.ucsb.mapache.documents.Message;
+
 import edu.ucsb.mapache.documents.SlackUser;
-import edu.ucsb.mapache.documents.SlackUserProfile;
-import edu.ucsb.mapache.repositories.ChannelRepository;
+
 import edu.ucsb.mapache.repositories.SlackUserRepository;
 import edu.ucsb.mapache.repositories.MessageRepository;
 
@@ -72,14 +60,12 @@ public class ChannelsControllerTests {
 
     @MockBean
     ChannelRepository channelRepository;
+    
+    @MockBean
+    MessageRepository messageRepository;
   
     @Autowired
     private MockMvc mockMvc;
-
-
-
-  @MockBean
-  MessageRepository messageRepository;
 
     @Test
     public void test_get_channels_unauthorizedIfNotMember() throws Exception {
