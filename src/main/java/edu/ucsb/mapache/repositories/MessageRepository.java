@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface MessageRepository extends MongoRepository<Message, ObjectId> {
-    @Query("{ 'user': ?0}")
+    @Query("{ 'user_profile.real_name': ?0}")
     List<Message> findByUser(String searchUser);
 
     @Query("{ 'channel': ?0}")
