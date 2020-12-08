@@ -18,7 +18,7 @@ export default ({ messages, channel }) => {
                             borderColor: "#ccc",
                             marginTop: 10
                         }}>
-                            <strong>{el?.user_profile?.real_name}</strong>
+                            <strong>{el?.user_profile?.real_name || el.user}</strong>
                             <label style={{marginLeft: 10}}>{TimeFormatter(el?.ts)}</label>
                             <p>{el?.text}</p>
                         </div>
