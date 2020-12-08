@@ -98,11 +98,9 @@ public class SlackSlashCommandController {
         params.setText(text);
         params.setResponseUrl(responseUrl);
 
-<<<<<<< HEAD
+
         
-=======
-        // String textParts[] = params.getTextParts(); // <------- btkh4 advice was enacted here
->>>>>>> 3745e20... FU/GZ/BX implemented google search and jacoco test
+
         String[] textParts = params.getTextParts();
 
         if (textParts.length <= 0 || textParts[0].equals("")) {
