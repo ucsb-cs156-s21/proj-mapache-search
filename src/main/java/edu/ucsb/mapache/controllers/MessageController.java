@@ -48,12 +48,14 @@ public class MessageController {
     }
 
     @GetMapping("/messages")
-    public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization)
+    public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization, @RequestParam String user)
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
 
-        Iterable<Message> messages = messageRepository.findAll();
+        if (user.equals(""))
+            return ResponseEntity.ok().body("[]");
+        Iterable<Message> messages = messageRepository.findByUser(user);
         String body = mapper.writeValueAsString(messages);
 
         return ResponseEntity.ok().body(body);
