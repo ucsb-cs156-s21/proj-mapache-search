@@ -56,9 +56,6 @@ public class ChannelsControllerTests {
     AuthControllerAdvice authControllerAdvice;
 
     @MockBean
-    MessageRepository mockMessageRepository;
-
-    @MockBean
     ChannelRepository channelRepository;
     
     @MockBean
@@ -105,7 +102,7 @@ public class ChannelsControllerTests {
         List<Message> expectedMessages = new ArrayList<Message>();
         expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1", "text1", "channel1", new SlackUserProfile()));
         expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2", "text2", "channel2", new SlackUserProfile()));
-        when(mockMessageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
+        when(messageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
         when(authControllerAdvice.getIsMember(anyString())).thenReturn(true);
         MvcResult response = mockMvc
             .perform(get("/api/members/channel/test-channel/messages").contentType("appication/json")
