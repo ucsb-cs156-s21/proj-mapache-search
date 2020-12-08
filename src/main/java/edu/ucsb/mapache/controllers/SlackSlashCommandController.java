@@ -193,7 +193,8 @@ public class SlackSlashCommandController {
 						temp.contains("https://www.youtube.com") == false &&
 						temp.contains("https://support.google.com") == false &&
 						temp.contains("https://maps.google.com") == false &&
-						temp.contains("https://policies.google.com") == false) {
+                        temp.contains("https://policies.google.com") == false &&
+                        temp.contains("https://webcache.google") == false){
 					linkArrays.add(temp);
 				}
             }
