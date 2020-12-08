@@ -2,17 +2,18 @@ import React from "react";
 import { render } from "@testing-library/react";
 import ChannelList from "main/pages/Channels/ChannelList";
 
+import useSWR from "swr";
+jest.mock("swr");
 
 import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
-import useSWR from "swr";
-jest.mock("swr");
+
 import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
 
 describe("ChannelList tests", () => {
-
-    const channels = [
+  
+      const channels = [
         {
             "id": "C016GMB0H5L",
             "name": "section-6pm",
@@ -38,14 +39,14 @@ describe("ChannelList tests", () => {
             }
         }
     ];
-
-    beforeEach(() => {
+  
+      beforeEach(() => {
         useAuth0.mockReturnValue({
           getAccessTokenSilently: jest.fn(),
         });
       });
-
-    const mockBackend = (results) => {
+  
+  const mockBackend = (results) => {
         useSWR.mockImplementation(([endpoint, getToken], fetch) => {
             if (endpoint === "/api/members/channels")
               return {
@@ -55,6 +56,35 @@ describe("ChannelList tests", () => {
                 fail(`test called on unexpected endpoint: ${endpoint}`);
           });
     }
+  
+    test("renders without crashing", () => {
+        useSWR.mockReturnValue({});
+        render(<ChannelList />);
+    });
+    
+    test("Accesses channels from backend", () => {
+        const exampleChannel = {
+            'id': 1,
+            'name' : 'test-name',
+            'purpose': {
+                'value': 'Test Purpose'
+            },
+            'topic': {
+                'value': 'Test Value'
+            }
+        };
+
+        useSWR.mockReturnValue({
+            'data': [exampleChannel]
+        });
+        const { getByText } = render(<ChannelList />);
+        const nameElement = getByText(/test-name/);
+        const purposeElement = getByText(/Test Purpose/);
+        const topicElement = getByText(/Test Value/);
+        expect(nameElement).toBeInTheDocument();
+        expect(purposeElement).toBeInTheDocument();
+        expect(topicElement).toBeInTheDocument();
+    });
 
     test("renders empty list without crashing", () => {
         mockBackend(null);
@@ -65,4 +95,5 @@ describe("ChannelList tests", () => {
         mockBackend(channels);
         render(<ChannelList />);
     });
+
 });

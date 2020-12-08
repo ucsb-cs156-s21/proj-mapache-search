@@ -13,6 +13,7 @@ import SlackUsers from "./pages/Admin/SlackUsers";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
 import ChannelPage from "./pages/Channels/ChannelPage";
+import SearchResults from "./pages/Messages/SearchResults";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/channels/:channel"  component={ChannelPage} authorizedRoles={["admin","member"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />

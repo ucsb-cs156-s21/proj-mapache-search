@@ -13,4 +13,6 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
     List<Message> findByUser(String user);
     @Query("{ 'channel': ?0}")
     List<Message> findByChannel(String channel);
+    @Query("{$text: { $search: ?0 }}")
+    List<Message> findByText(String searchString);
 }
