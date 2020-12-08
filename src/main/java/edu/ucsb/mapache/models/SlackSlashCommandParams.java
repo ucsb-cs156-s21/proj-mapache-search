@@ -132,32 +132,8 @@ public class SlackSlashCommandParams {
 
     // For explanation of "[\\s\\p{Z}]" see: https://stackoverflow.com/a/26713907
     public String [] getTextParts() {
-        //String textParts[]= this.text.split("[\\s\\p{Z}]");
-        //return textParts;         bx - replaced faulty code with new code that does getTextParts as intended
-        int len = this.text.length();
-        // create temp ArrayList, then convert to array
-        ArrayList<String> result = new ArrayList<String>();
-        String insert = "";
-        for(int i = 0; i < this.text.length();i++){
-            // if the input is a character, we add it to current string to insert into temp arrayList
-            if(Character.isLetterOrDigit(this.text.charAt(i))){
-                insert+=this.text.substring(i,i+1);
-                // if we are at the last character, we can insert string into temp
-                if(i == this.text.length()-1){
-                    result.add(insert);
-                    insert = "";
-                }
-            } else {
-                // if we are at a space after a word, we insert that word into the arrayList
-                if(i!=0 && Character.isLetterOrDigit(this.text.charAt(i-1))){
-                    result.add(insert);
-                    insert = "";
-                }
-            }    
-        }
-        // convert arrayList to array
-        String[] textParts = result.toArray(new String[result.size()]);
-        return textParts;
+        String textParts[]= this.text.split("[\\s\\p{Z}]+");
+        return textParts;         
     }
 
 }
