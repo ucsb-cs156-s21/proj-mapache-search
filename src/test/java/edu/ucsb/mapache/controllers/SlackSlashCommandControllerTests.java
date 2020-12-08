@@ -51,7 +51,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "value")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
   @Test
@@ -72,7 +72,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "value")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
   @Test
@@ -93,7 +93,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
   @Test
@@ -114,7 +114,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "             ")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
   @Test
@@ -135,7 +135,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "status")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
   @Test
@@ -156,7 +156,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "time")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
   @Test
@@ -177,7 +177,7 @@ public class SlackSlashCommandControllerTests {
         .param("text", "debug")
         .param("response_url", "value")
         )
-        .andExpect(status().is(200));
+        .andExpect(status().is(401));
   }
 
 }

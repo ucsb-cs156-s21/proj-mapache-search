@@ -7,6 +7,7 @@ import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
+import edu.ucsb.mapache.repositories.ChannelRepository;
+
 
 /**
  * Sample Slash Command Handler.
@@ -27,12 +30,19 @@ public class SlackSlashCommandController {
 
     private static final Logger logger = LoggerFactory.getLogger(SlackSlashCommandController.class);
 
+    @Autowired
+    ChannelRepository channelRepository;
+
     /**
      * The token you get while creating a new Slash Command. You should paste the
      * token in application.properties file.
      */
-    @Value("${slashCommandToken}")
+    @Value("${app.slack.slashCommandToken}")
     private String slackToken;
+
+    public String getSlackToken() {
+        return slackToken;
+    }
 
     /**
      * Slash Command handler. When a user types for example "/app help" then slack
@@ -76,7 +86,8 @@ public class SlackSlashCommandController {
         params.setText(text);
         params.setResponseUrl(responseUrl);
 
-        String textParts[] = params.getTextParts();
+        
+        String[] textParts = params.getTextParts();
 
         if (textParts.length <= 0 || textParts[0].equals("")) {
             return emptyCommand(params);
@@ -129,8 +140,11 @@ public class SlackSlashCommandController {
         RichMessage richMessage = new RichMessage(
                 String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
         richMessage.setResponseType("ephemeral");
+
+        
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
+
 
     public RichMessage timeCommand(SlackSlashCommandParams params) {
         String message = String.format("From: %s... the time on the server is %s", params.getCommand(), timeNow());
