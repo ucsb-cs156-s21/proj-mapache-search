@@ -29,8 +29,18 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/students")
 public class StudentController {
   private final Logger logger = LoggerFactory.getLogger(StudentController.class);
+
   @Autowired
   private StudentRepository studentRepository;
+
+  @Autowired
+  private StudentRepository team1Repository;
+
+  @Autowired
+  private StudentRepository team2Repository;
+
+  @Autowired
+  private StudentRepository team3Repository;
 
   @Autowired
   CSVToObjectService<Student> csvToObjectService;
@@ -39,15 +49,6 @@ public class StudentController {
   private AuthControllerAdvice authControllerAdvice;
 
   private ObjectMapper mapper = new ObjectMapper();
-
-  @PostMapping(value = "", produces = "application/json")
-  public ResponseEntity<String> createStudent(@RequestHeader("Authorization") String authorization,
-      @RequestBody @Valid Student student) throws JsonProcessingException {
-    AppUser user = authControllerAdvice.getUser(authorization);
-    Student savedStudent = studentRepository.save(student);
-    String body = mapper.writeValueAsString(savedStudent);
-    return ResponseEntity.ok().body(body);
-  }
 
   @PutMapping(value = "/{id}", produces = "application/json")
   public ResponseEntity<String> updateStudent(@RequestHeader("Authorization") String authorization,
@@ -66,6 +67,28 @@ public class StudentController {
     return ResponseEntity.ok().body(body);
   }
 
+  @GetMapping(value = "/{id}", produces = "application/json")
+  public ResponseEntity<String> getStudent(@PathVariable("id") Long id) throws JsonProcessingException {
+    Optional<Student> student = studentRepository.findById(id);
+    if (student.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    String body = mapper.writeValueAsString(student.get());
+    return ResponseEntity.ok().body(body);
+  }
+
+  //finished and working
+
+  @PostMapping(value = "", produces = "application/json")
+  public ResponseEntity<String> createStudent(@RequestHeader("Authorization") String authorization,
+      @RequestBody @Valid Student student) throws JsonProcessingException {
+    AppUser user = authControllerAdvice.getUser(authorization);
+    Student savedStudent = studentRepository.save(student);
+    String body = mapper.writeValueAsString(savedStudent);
+    return ResponseEntity.ok().body(body);
+  }
+
   @DeleteMapping(value = "/{id}", produces = "application/json")
   public ResponseEntity<String> deleteStudents(@RequestHeader("Authorization") String authorization,
       @PathVariable("id") Long id) {
@@ -76,17 +99,6 @@ public class StudentController {
     }
     studentRepository.deleteById(id);
     return ResponseEntity.noContent().build();
-  }
-
-  @GetMapping(value = "/{id}", produces = "application/json")
-  public ResponseEntity<String> getStudent(@PathVariable("id") Long id) throws JsonProcessingException {
-    Optional<Student> student = studentRepository.findById(id);
-    if (student.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
-    ObjectMapper mapper = new ObjectMapper();
-    String body = mapper.writeValueAsString(student.get());
-    return ResponseEntity.ok().body(body);
   }
 
   @GetMapping(value = "", produces = "application/json")
@@ -112,6 +124,18 @@ public class StudentController {
 
       // save list of students into repository
       List<Student> savedStudents = (List<Student>) studentRepository.saveAll(uploadedStudents);
+      // for(int i = 0; i < uploadedStudents.size(); i++){
+      //   if(uploadedStudents.get(i).getTeamName() == "team1"){
+      //     List<Student> team1Students = (List<Student>) team1Repository.save(uploadedStudents.get(i));
+      //   }
+      //   else if(uploadedStudents.get(i).getTeamName() == "team2"){
+      //     List<Student> team2Students = (List<Student>) team2Repository.save(uploadedStudents.get(i));
+      //   }
+      //   else if(uploadedStudents.get(i).getTeamName() == "team3"){
+      //     List<Student> team3Students = (List<Student>) team3Repository.save(uploadedStudents.get(i));
+      //   }
+      // }
+      
       // convert to json
       String body = mapper.writeValueAsString(savedStudents);
       return ResponseEntity.ok().body(body);

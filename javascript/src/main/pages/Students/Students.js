@@ -1,13 +1,16 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 import useSWR from "swr";
 import { StudentCSVButton } from "./StudentCSVButton";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "main/components/Loading/Loading";
-import StudentTable from "main/components/Students/StudentTable"
-import AddStudent from "main/components/Students/AddStudent"
+import StudentTable from "main/components/Students/StudentTable";
+
+import {useHistory} from "react-router-dom";
 
 const Students = () => {
+  const history = useHistory();
   const { getAccessTokenSilently: getToken } = useAuth0();
   // retrieves data 
   const { data: studentList, error, mutate: mutateStudents } = useSWR(
@@ -23,36 +26,6 @@ const Students = () => {
   if (!studentList) {
     return <Loading />;
   }
-
-  const createStudent = async (item, id) => {
-    try {
-      await fetchWithToken(`/api/students`, getToken, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(item),
-      });
-      await mutateStudents();
-    } catch (err) {
-      console.log("Caught error from create student");
-    }
-  };
-
-  const updateStudent = async (item, id) => {
-    try {
-      await fetchWithToken(`/api/students/${id}`, getToken, {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(item),
-      });
-      await mutateStudents();
-    } catch (err) {
-      console.log("Caught error from update students");
-    }
-  };
 
   const deleteStudent = async (id) => {
     try {
@@ -88,8 +61,17 @@ const Students = () => {
           Make sure that the uploaded CSV contains a header
         </p>
         <StudentCSVButton addTask={uploadCSV}/>
-        {/* <AddStudent addStudent={createStudent}/> */}
+        {/* <StudentForm addStudent={createStudent} existingStudents={studentList}/> */}
+        <Button onClick={()=>history.push("/students/new")}>New Course</Button>
+        <br/>
+        <br/>
         <StudentTable students={studentList} deleteStudent={deleteStudent}/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
     </>
   );
 };

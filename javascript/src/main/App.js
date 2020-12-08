@@ -10,7 +10,9 @@ import Profile from "main/pages/Profile/Profile";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
 import Admin from "main/pages/Admin/Admin";
 import SlackUsers from "./pages/Admin/SlackUsers";
-import Students from "./pages/Admin/Student";
+import Students from "./pages/Students/Students";
+import EditStudent from "main/pages/Students/EditStudent"
+import NewStudent from "main/pages/Students/NewStudent"
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/students" exact component={Students} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/students/new" exact component={NewStudent} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/students/edit/:studentId" exact component={EditStudent} authorizedRoles={["admin"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
