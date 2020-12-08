@@ -1,7 +1,6 @@
 package edu.ucsb.mapache.models;
 
 import java.util.Objects;
-import java.util.ArrayList; 
 
 public class SlackSlashCommandParams {
     private String token;
