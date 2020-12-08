@@ -16,18 +16,9 @@ const CountMessagesByUser = () => {
     }
 
     const columns = [{
-        dataField: 'id',
-        text: 'id'
+        dataField: 'user_Profile.real_Name',
+        text: 'user'
     }, {
-        dataField: 'user',
-        text: 'Slack Username'
-    }, {
-        dataField: 'real_name',
-        text: 'Name'
-    }, {
-        dataField: 'profile.email',
-        text: 'Email'
-    },{
         text: "MessageCount",
         isDummyField: true,
         dataField: "msgCount",

@@ -14,11 +14,12 @@ public class Message {
     private String user;
     private String text;
     private String channel;
+    private Profile user_profile;
 
     public Message() {
     }
 
-    public Message(String id, String type, String subtype, String ts, String user, String text, String channel) {
+    public Message(String id, String type, String subtype, String ts, String user, String text, String channel, Profile user_profile) {
         this.id = id;
         this.type = type;
         this.subtype = subtype;
@@ -26,6 +27,7 @@ public class Message {
         this.user = user;
         this.text = text;
         this.channel = channel;
+        this.user_profile = user_profile;
     }
 
     public String getId() {
@@ -84,6 +86,9 @@ public class Message {
         this.channel = channel;
     }
 
+    public Profile getUser_Profile(){return user_profile;}
+
+    public void setUser_Profile(Profile user_profile){this.user_profile = user_profile;}
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -106,6 +111,6 @@ public class Message {
     public String toString() {
         return "{" + " id='" + getId() + "'" + ", type='" + getType() + "'" + ", subtype='" + getSubtype() + "'"
                 + ", ts='" + getTs() + "'" + ", user='" + getUser() + "'" + ", text='" + getText() + "'" + ", channel='"
-                + getChannel() + "'" + "}";
+                + getChannel() +"'" +", user_profile='" + getUser_Profile()+"'"+ "}";
     }
 }

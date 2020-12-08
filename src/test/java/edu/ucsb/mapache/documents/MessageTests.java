@@ -30,18 +30,20 @@ public class MessageTests {
 
     @Test
     public void test_toString() {
+        Profile user = new Profile();
         Message m = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser", "messageText",
-                "messageChannel");
+                "messageChannel", user);
         String expected = "{ id='messageId', type='messageType', subtype='messageSubtype', ts='messageTs', user='messageUser', text='messageText', channel='messageChannel'}";
         assertEquals(expected, m.toString());
     }
 
     @Test
     public void test_hashCode_matchesOnSameContent() {
+        Profile user = new Profile();
         Message m1 = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser",
-                "messageText", "messageChannel");
+                "messageText", "messageChannel", user);
         Message m2 = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser",
-                "messageText", "messageChannel");
+                "messageText", "messageChannel", user);
         assertEquals(m1.hashCode(), m2.hashCode());
     }
 
@@ -52,24 +54,27 @@ public class MessageTests {
 
     @Test
     public void test_notEqualDifferentClass() {
+        Profile user = new Profile();
         Message m = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser", "messageText",
-                "messageChannel");
+                "messageChannel", user);
         assertFalse(m.equals(new Object()));
     }
 
     @Test
     public void test_equalsCopy() {
+        Profile user = new Profile();
         Message m1 = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser",
-                "messageText", "messageChannel");
+                "messageText", "messageChannel", user);
         Message m2 = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser",
-                "messageText", "messageChannel");
+                "messageText", "messageChannel", user);
         assertTrue(m1.equals(m2));
     }
 
     @Test
     public void test_equalsSelf() {
+        Profile user = new Profile();
         Message m = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser", "messageText",
-                "messageChannel");
+                "messageChannel", user);
         assertTrue(m.equals(m));
     }
 

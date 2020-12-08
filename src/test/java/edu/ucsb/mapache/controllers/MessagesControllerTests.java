@@ -24,6 +24,8 @@ import org.springframework.http.MediaType;
 
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.Message;
+import edu.ucsb.mapache.documents.Profile;
+
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.repositories.MessageRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
@@ -53,11 +55,11 @@ public class MessagesControllerTests {
     @Test
     public void test_getMembers() throws Exception {
         List<Message> expectedMessages = new ArrayList<Message>();
-
+        Profile user = new Profile();
         Message m1 = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser",
-                "messageText", "messageChannel");
+                "messageText", "messageChannel", user);
         Message m2 = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser",
-                "messageText", "messageChannel");
+                "messageText", "messageChannel", user);
 
         expectedMessages.add(m1);
         expectedMessages.add(m2);
