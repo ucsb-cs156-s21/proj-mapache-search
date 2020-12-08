@@ -99,4 +99,28 @@ public class RoleController {
     String body = mapper.writeValueAsString(response);
     return ResponseEntity.ok().body(body);
   }
+
+  // Added two functions below to modify DB to add API Token field
+  
+  @GetMapping("/apiKey")
+  public ResponseEntity<String> myRole()
+      throws JsonProcessingException {
+    String role = authControllerAdvice.getRole(authorization);
+    Map<String, String> response = new HashMap<>();
+    response.put("role", role);
+    String body = mapper.writeValueAsString(response);
+    return ResponseEntity.ok().body(body);
+  }
+
+  //Sets API Token
+
+  @PutMapping("/apiKey/{token}")
+  public ResponseEntity<String> setApiToken(@RequestHeader("Authorization") String authorization, 
+  @PathVariable("token") String token) 
+      throws JsonProcessingException {
+        AppUser user = authControllerAdvice.getUser(authorization);
+        user.setApiToken(token);
+        appUserRepository.save(user);
+        return new ResponseEntity<> (HttpStatus.NO_CONTENT);
+  }
 }
