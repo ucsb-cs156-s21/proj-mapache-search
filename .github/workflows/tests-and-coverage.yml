@@ -26,7 +26,7 @@ jobs:
         working-directory: ./javascript
       - name: Upload to Codecov
         env:
-          CODECOV_TOKEN: d3df349e-2d9c-4a6d-9bf5-ddd448281344
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
         working-directory: ./javascript
       - name: Set up JDK 11
@@ -41,5 +41,5 @@ jobs:
         run: mvn -B test jacoco:report -Dskip.npm
       - name: Upload to Codecov
         env:
-          CODECOV_TOKEN: d3df349e-2d9c-4a6d-9bf5-ddd448281344
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
