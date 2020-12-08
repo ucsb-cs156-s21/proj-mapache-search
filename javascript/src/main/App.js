@@ -12,10 +12,15 @@ import Admin from "main/pages/Admin/Admin";
 import SlackUsers from "./pages/Admin/SlackUsers";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
+<<<<<<< HEAD
 import AnalyzeReactions from "../main/pages/AnalyzeMessageData/AnalyzeReactions";
 import CountMessagesByUser from "../main/pages/AnalyzeMessageData/CountMessagesByUser";
 import HistogramOfMessagesByUser from "../main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "../main/pages/AnalyzeMessageData/SearchMessagesByUser";
+=======
+import ChannelPage from "./pages/Channels/ChannelPage";
+import SearchResults from "./pages/Messages/SearchResults";
+>>>>>>> 822d5c31d3058501c3613d3e9b3ed85794ae9f7c
 
 function App() {
   return (
@@ -25,7 +30,13 @@ function App() {
         <Switch>
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
+<<<<<<< HEAD
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin", "member"]} />
+=======
+          <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/channels/:channel"  component={ChannelPage} authorizedRoles={["admin","member"]} />
+>>>>>>> 822d5c31d3058501c3613d3e9b3ed85794ae9f7c
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
