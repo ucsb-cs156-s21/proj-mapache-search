@@ -8,13 +8,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.Channel;
-import edu.ucsb.mapache.documents.Message;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.ChannelRepository;
-import edu.ucsb.mapache.repositories.MessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +34,6 @@ public class ChannelsController {
 
     @Autowired
     ChannelRepository channelRepository;
-    @Autowired
-    MessageRepository messageRepository;
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
@@ -58,18 +54,6 @@ public class ChannelsController {
             return getUnauthorizedResponse("member");
 
         Iterable<Channel> channels = channelRepository.findAll();
-        String body = mapper.writeValueAsString(channels);
-
-        return ResponseEntity.ok().body(body);
-    }
-
-    @GetMapping("/channel/{channel}/messages")
-    public ResponseEntity<String> getMessageOfChannel(@RequestHeader("Authorization") String authorization,
-                                         @PathVariable("channel") String channel) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMember(authorization))
-            return getUnauthorizedResponse("member");
-
-        Iterable<Message> channels = messageRepository.findByChannel(channel);
         String body = mapper.writeValueAsString(channels);
 
         return ResponseEntity.ok().body(body);
