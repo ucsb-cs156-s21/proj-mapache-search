@@ -115,7 +115,7 @@ public class ChannelsControllerTests {
     }
 
     @Test
-    public void test_get_messageOfChannel_returnsListOfMessages() throws Exception {
+    public void test_get_mockmessageOfChannel_returnsListOfMessages() throws Exception {
         List<Message> expectedMessages = new ArrayList<Message>();
         expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1", "text1", "channel1", new SlackUserProfile()));
         expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2", "text2", "channel2", new SlackUserProfile()));
