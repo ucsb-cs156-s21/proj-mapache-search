@@ -9,8 +9,6 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Search from "../../../main/pages/Search/Search.js";
 
-import SearchParameters from "../../../../../main/java/edu/ucsb/mapache/models/SearchParameters.java"
-
 describe("Search tests", () => {
     test("it renders without crashing", () => {
         render(<Search/>);
