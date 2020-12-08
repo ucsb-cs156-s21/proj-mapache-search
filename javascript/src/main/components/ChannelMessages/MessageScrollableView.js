@@ -3,10 +3,9 @@ import {Button, Form} from "react-bootstrap";
 import TimeFormatter from "./time"
 
 
-export default ({ messages }) => {
+export default ({ messages, channel }) => {
     return (
         <div style={{textAlign: "left", marginTop: 20}}>
-            <Form.Control type="text" placeholder="Enter Search String" />
             {
                 messages.map((el) => {
                     return (

@@ -26,8 +26,8 @@ function App() {
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
-          <AuthorizedRoute path="/member/channels/:channel" component={ChannelPageListView} authorizedRoles={["admin","member"]} />
-          <AuthorizedRoute path="/member/scrollableChannels/:channel" component={ChannelPageScrollableView} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageListView} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/channels/:channel" component={ChannelPageScrollableView} authorizedRoles={["admin","member"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
