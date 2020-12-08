@@ -7,8 +7,8 @@ import {fetchWithToken} from "../../utils/fetch";
 
 const CountMessagesByUser = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: slackUsers } = useSWR(["/api/CountMessagesByUser", getToken], fetchWithToken);
-
+    const { data: slackUsers } = useSWR(["/api/messages", getToken], fetchWithToken);
+    console.log(slackUsers);
     const populateMsgCount = (cell,row ) => {
         return (
            0
@@ -19,7 +19,7 @@ const CountMessagesByUser = () => {
         dataField: 'id',
         text: 'id'
     }, {
-        dataField: 'name',
+        dataField: 'user',
         text: 'Slack Username'
     }, {
         dataField: 'real_name',
