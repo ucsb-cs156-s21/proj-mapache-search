@@ -19,6 +19,9 @@ public class AppUser {
   private String firstName;
   @Column(nullable = false)
   private String lastName;
+  // Added below instance variable to associate custom API token w/ an AppUser
+  @Column(nullable = true)
+  private String apiToken;
 
   public AppUser() {
   }
@@ -62,11 +65,52 @@ public class AppUser {
     return email;
   }
 
-  @Override
-  public String toString() {
-    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s ]", id, email, firstName, lastName);
+  // Getter for API Token
+  public String getAPIToken() {
+    return apiToken;
   }
 
+  public AppUser(long id, String email, String firstName, String lastName, String apiToken) {
+    this.id = id;
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.apiToken = apiToken;
+  }
+
+  public String getApiToken() {
+    return this.apiToken;
+  }
+
+  public void setApiToken(String apiToken) {
+    this.apiToken = apiToken;
+  }
+
+  public AppUser id(long id) {
+    this.id = id;
+    return this;
+  }
+
+  public AppUser email(String email) {
+    this.email = email;
+    return this;
+  }
+
+  public AppUser firstName(String firstName) {
+    this.firstName = firstName;
+    return this;
+  }
+
+  public AppUser lastName(String lastName) {
+    this.lastName = lastName;
+    return this;
+  }
+
+  public AppUser apiToken(String apiToken) {
+    this.apiToken = apiToken;
+    return this;
+  }
+  
   @Override
   public boolean equals(Object o) {
     if (this == o)
