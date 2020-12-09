@@ -5,7 +5,7 @@ import { fetchWithToken } from "../../utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import { XYPlot, VerticalBarSeries, XAxis, YAxis } from 'react-vis';
 import BootstrapTable, { TableHeaderColumn } from 'react-bootstrap-table-next';
-import { Button } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 
 const data = [
     { x: 0, y: 8 },
@@ -31,29 +31,35 @@ const columns = [{
 
 const HistogramOfMessagesByUser = () => {
     const [selectedUser, setSelectedUser] = useState('');
+    const [sameUser, setSameUser] = useState(false); //Case for when the same user is selected as the currently selected one
     const [userMessages, setUserMessages] = useState([]);
     const [displayHistogram, setDisplayHistogram] = useState(false);
+    const [dataIsFetched, setDataIsFetched] = useState(true);
+    const [modifiedHistogramData, setModifiedHistogramData] = useState([]);
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
     const userOptions = [];
-    const modifiedHistogramData = [];
 
-    const handleSelectUserSubmit = async () => {
-        setDisplayHistogram(false);
+    const handleSelectUserSubmit = () => {
+        if (sameUser) return; //Removes the warning for duplicate keys in the BootstrapTable
+        setDataIsFetched(false);
+        setDisplayHistogram(true);
+        setModifiedHistogramData([]);
         const url = `/api/members/messages/usersearch?searchUser=${selectedUser}`;
         fetchWithToken(url, getToken, {
             method: 'GET'
         }).then(response => {
-            console.log("Response", response);
             response.map(i => {
                 const formatDate = new Date(parseInt(i.ts));
-                modifiedHistogramData.push({
-                    text: i.text,
-                    ts: formatDate.toString()
-                })
+                setModifiedHistogramData(modifiedHistogramData => [
+                    ...modifiedHistogramData,
+                    {
+                        text: i.text,
+                        ts: formatDate.toString()
+                    }
+                ]);
             })
-            console.log(modifiedHistogramData);
-            setDisplayHistogram(true);
+            setDataIsFetched(true);
         });
     }
 
@@ -70,24 +76,42 @@ const HistogramOfMessagesByUser = () => {
 
     return (
         <div>
-            <h1>Histogram of Messages By User</h1>
-            <p>Select a user:</p>
-            <Select
-                options={userOptions}
-                value={userOptions.filter(option => option.label === selectedUser)}
-                onChange={event => setSelectedUser(event.label)}
-                isSearchable
-            />
-            <Button onClick={handleSelectUserSubmit}>Go</Button>
-            {displayHistogram && <p>Activity Histogram for {selectedUser}</p>}
-            <Button onClick={() => console.log(modifiedHistogramData)}>Modified Histogram Data</Button>
+            <h3>Histogram of Messages By User</h3>
+            <p style={{ textAlign: "left" }}>Select a user</p>
+            <Row>
+                <Col>
+                    <Select
+                        options={userOptions}
+                        value={userOptions.filter(option => option.label === selectedUser)}
+                        onChange={event => {
+                            if (event.label === selectedUser)
+                                setSameUser(true);
+                            else {
+                                setSameUser(false);
+                                setSelectedUser(event.label)
+                            }
+                        }}
+                        isSearchable
+                    />
+                </Col>
+                <Col xs={1}>
+                    <Button outline onClick={handleSelectUserSubmit}>Go</Button>
+                </Col>
+            </Row>
+            {displayHistogram &&
+                (dataIsFetched ? <div>
+                    <h3>Activity Histogram for {selectedUser}</h3>
+                    <BootstrapTable keyField='text' data={modifiedHistogramData || []} columns={columns} />
+                </div> : <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>)
+            }
             {/* {displayHistogram && <XYPlot height={400} width={400}>
                 <VerticalBarSeries data={data} />
                 <XAxis title="Week #" />
                 <YAxis title="Message Count" />
             </XYPlot>} */}
-            {displayHistogram && <BootstrapTable keyField='text' data={modifiedHistogramData || []} columns={columns} />}
-        </div>);
+        </div >);
 
 };
 
