@@ -1,17 +1,31 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import UserMessageList from "main/components/UserMessages/UserMessageList"
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
+import useSWR from 'swr';
 
 const SearchMessagesByUser = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const [searchUser, setSearchUser] = useState('');
-    const { data: searchResults } = useSWR([`/api/members/messages/usersearch?searchUser=${searchUser}`, getToken], fetchWithToken);
+    const [ searchUser, setSearchUser ] = useState('');
+    const [ searchResults, setSearchResults ] = useState('');
+    // const { data: searchResults } = useSWR([`/api/members/messages/usersearch?searchUser=${searchUser}`, getToken], fetchWithToken);
+
     const handleSearchUserOnChange = (event) => {
         setSearchUser(event.target.value);
     };
+    
+    const handleSearchUserOnSubmit = () => {
+        const url = `/api/members/messages/usersearch?searchUser=${searchUser}`;
+        const options = {
+            method: 'GET',
+        }
+        fetchWithToken(url, getToken, options)
+            .then((response) => {
+                setSearchResults(response);
+            })
+    };
+
     return (
         <>
             <h1> Search Results </h1>
@@ -19,6 +33,7 @@ const SearchMessagesByUser = () => {
                 <Form.Group controlId="searchUser" onChange={handleSearchUserOnChange}>
                     <Form.Label>Search User</Form.Label>
                     <Form.Control type="text" placeholder="Enter Search User" />
+                    <Button onClick={handleSearchUserOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
             <UserMessageList messages = {searchResults || []} />
