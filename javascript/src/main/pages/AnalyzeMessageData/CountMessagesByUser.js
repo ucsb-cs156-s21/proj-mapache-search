@@ -10,6 +10,7 @@ const CountMessagesByUser = () => {
         dataField: 'real_name',
         text: 'user'
     } , {
+        dataField: "",
         text: 'Message Count'
     } ]);
     const { getAccessTokenSilently: getToken } = useAuth0();
