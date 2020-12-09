@@ -19,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -54,6 +56,13 @@ public class SearchControllerTests {
             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
         .andExpect(status().is(401));
   }
+  @Test
+  public void test_quota_unauthorizedIfNotMember() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/member/search/quota").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().is(401));
+  }
 
   @Test
   public void test_basicSearch() throws Exception {
@@ -74,9 +83,26 @@ public class SearchControllerTests {
   }
 
   @Test
+  public void test_basicSearch_searchQuotaExceeded() throws Exception {
+    AppUser appUser = getAppUser();
+    appUser.setSearchRemain(0);
+    when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isForbidden()).andReturn();
+
+    // String responseString = response.getResponse().getContentAsString();
+
+    // assertEquals("SampleResult", responseString);
+
+  }
+
+  @Test
   public void test_basicSearch_shouldReset() throws Exception {
     AppUser appUser = getAppUser();
-  
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
@@ -89,6 +115,24 @@ public class SearchControllerTests {
     String responseString = response.getResponse().getContentAsString();
 
     assertEquals("SampleResult", responseString);
+
+  }
+  @Test
+  public void test_Quota() throws Exception {
+    AppUser appUser = getAppUser();
+  
+    when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/quota").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+    Map<String, Object> sampleResponse = new HashMap<String, Object>();
+    sampleResponse.put("quota", appUser.getSearchRemain());
+    String expected = mapper.writeValueAsString(sampleResponse);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expected, responseString);
 
   }
 
