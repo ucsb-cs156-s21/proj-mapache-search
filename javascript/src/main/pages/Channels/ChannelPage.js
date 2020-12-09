@@ -11,10 +11,11 @@ const ChannelPage = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { channel } = useParams();
     const { data: messages } = useSWR([`/api/members/channel/${channel}/messages`, getToken], fetchWithToken);
+    const { data: users } = useSWR(["/api/slackUsers/", getToken], fetchWithToken);
     return (
         <>
             <h1> {channel} </h1>
-            <MessageList messages={messages || []} />
+            <MessageList messages={messages || []} users = {users || []}/>
         </>
     );
 };
