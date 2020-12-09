@@ -10,9 +10,6 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Search from "../../../main/pages/Search/Search.js";
 
-import useSWR from "swr";
-jest.mock("swr");
-
 describe("Search tests", () => {
     test("it renders without crashing", () => {
         render(<Search/>);
