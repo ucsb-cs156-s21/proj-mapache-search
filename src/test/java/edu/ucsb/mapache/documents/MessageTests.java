@@ -33,7 +33,7 @@ public class MessageTests {
         Profile user = new Profile();
         Message m = new Message("messageId", "messageType", "messageSubtype", "messageTs", "messageUser", "messageText",
                 "messageChannel", user);
-        String expected = "{ id='messageId', type='messageType', subtype='messageSubtype', ts='messageTs', user='messageUser', text='messageText', channel='messageChannel'}";
+        String expected = "{ id='messageId', type='messageType', subtype='messageSubtype', ts='messageTs', user='messageUser', text='messageText', channel='messageChannel', user_profile='Profile{real_name'null'}'}";
         assertEquals(expected, m.toString());
     }
 
