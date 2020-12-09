@@ -1,46 +1,26 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import useSWR from "swr";
-import {useAuth0} from "@auth0/auth0-react";
-import {fetchWithToken} from "main/utils/fetch";
-import ReactDOMServer from "react-dom/server";
 
-const GetUserName = ({userId}) => {
-    const { getAccessTokenSilently: getToken } = useAuth0();
-    const {data: slackUser} = useSWR([`/api/slackUsers/${userId}`, getToken], fetchWithToken);
-    let result;
-    if(slackUser == null || slackUser.length == 0) {
-        result = <p>{userId}</p>;
-        return result;
+const userName = (userId, users) => {
+    let result = ""
+    for(let i = 0; i < users.length; i++) {
+        if(users[i].id == userId) {
+            result = users[i].real_name;
+        }
     }
-    result = <p>{slackUser[0].real_name}</p>;
-    return result;
+    if(result === "") {
+        result = userId;
+    }
+    return <p> {result}</p>;
 }
-
-const UserName = (userId) => {
-    return (
-        <GetUserName userId={userId} />
-    );
-}
-
-const MessageContents = (text) => {
-    return (
-        <GetMessageContents text={text} />
-    );
-}
-
-const GetMessageContents = ({text}) => {
-    const { getAccessTokenSilently: getToken } = useAuth0();
-    const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
+const messageContents = (text, users) => {
     return (
         <p>
-        {text.replaceAll(/<@([A-Z0-9]{11})>/g, (_,userId) => {
-        if(slackUsers != null) {
-        for(let i = 0; i < slackUsers.length; i++) {
-            if(slackUsers[i].id == userId) {
-                return slackUsers[i].real_name;
+        {text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+        for(let i = 0; i < users.length; i++) {
+            if(users[i].id == userId) {
+                return users[i].real_name;
             }
-        }
         }
         return userId;
         })}
@@ -49,15 +29,15 @@ const GetMessageContents = ({text}) => {
 }
 
 
-export default ({ messages }) => {
+export default ({ messages, users}) => {
     const columns = [{
         isDummyField: true,
-        formatter: (cell, row) => UserName(row.user),
+        formatter: (cell, row) => userName(row.user,users),
         dataField: 'name',
         text: 'Username'
     },{
         isDummyField: true,
-        formatter: (cell, row) => MessageContents(row.text),
+        formatter: (cell, row) => messageContents(row.text, users),
         dataField: 'text',
         text: 'Contents'
     }
