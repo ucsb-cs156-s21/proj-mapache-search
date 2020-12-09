@@ -39,19 +39,4 @@ describe("Search tests", () => {
         expect(fetchWithToken).toHaveBeenCalled();
     });
 
-    // test("renders when no admins exist", () => {
-    //     useSWR.mockImplementation(([endpoint, getToken], fetch) => {
-    //       if (endpoint === "/api/users")
-    //         return {
-    //           searchQuery,
-    //         };
-    //       else
-    //         return {
-    //           data: null,
-    //         };
-    //     });
-    //     const { getByText } = render(<Search />);
-    //     expect(getByText("Admin Panel")).toBeInTheDocument();
-    //     expect(queryByText("Admin")).not.toBeInTheDocument();
-    //   });
 });
