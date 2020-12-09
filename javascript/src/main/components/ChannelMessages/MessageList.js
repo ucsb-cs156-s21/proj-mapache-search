@@ -29,7 +29,7 @@ const messageContents = (text, users) => {
 }
 
 
-export default ({ messages, users}) => {
+export default ({ messages, users = [] }) => {
     const columns = [{
         isDummyField: true,
         formatter: (cell, row) => userName(row.user,users||[]),
