@@ -108,7 +108,7 @@
 			<groupId>me.ramswaroop.jbot</groupId>
 			<artifactId>jbot</artifactId>
 			<version>3.0.2</version>
-    </dependency>
+    		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.codebox/javabean-tester -->
 		<dependency>
