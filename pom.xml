@@ -143,6 +143,13 @@
 			<groupId>me.ramswaroop.jbot</groupId>
 			<artifactId>jbot</artifactId>
 			<version>3.0.2</version>
+    	</dependency>
+
+		<!-- https://mvnrepository.com/artifact/net.codebox/javabean-tester -->
+		<dependency>
+			<groupId>net.codebox</groupId>
+			<artifactId>javabean-tester</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
