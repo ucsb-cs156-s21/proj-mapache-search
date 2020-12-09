@@ -138,7 +138,6 @@ public class SlackSlashCommandParams {
 
     // For explanation of "[\\s\\p{Z}]" see: https://stackoverflow.com/a/26713907
     public String[] getTextParts() {
-        
         String[] textParts = this.text.split("[\\s\\p{Z}]+");
         return textParts;
     } // 
