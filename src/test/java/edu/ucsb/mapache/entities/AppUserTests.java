@@ -9,7 +9,7 @@ public class AppUserTests {
   @Test
   public void testAppUser_toString() {
     AppUser user = new AppUser(1L, "test@test.org", "test", "user");
-    assertEquals(user.toString(), "AppUser[ id=1, email=test@test.org, firstName=test, lastName=user ]");
+    assertEquals(user.toString(), "AppUser[ id=1, email=test@test.org, firstName=test, lastName=user, searchRemain=100]");
   }
 
   @Test
