@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package edu.ucsb.mapache.repositories;
 
 import edu.ucsb.mapache.documents.Message;
@@ -23,3 +24,5 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
     @Query("{'reactions': {'$elemMatch': {'name' : ?0} }}")
     List<Message> findByReactionName(String emojiSymbol);
 }
+
+

@@ -16,6 +16,8 @@ import AnalyzeReactions from "../main/pages/AnalyzeMessageData/AnalyzeReactions"
 import CountMessagesByUser from "../main/pages/AnalyzeMessageData/CountMessagesByUser";
 import HistogramOfMessagesByUser from "../main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "../main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import ChannelPage from "./pages/Channels/ChannelPage";
+import SearchResults from "./pages/Messages/SearchResults";
 
 function App() {
   return (
@@ -25,7 +27,9 @@ function App() {
         <Switch>
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
-          <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/channels/:channel"  component={ChannelPage} authorizedRoles={["admin","member"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
@@ -33,7 +37,6 @@ function App() {
           <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/messagehistogram" exact component={HistogramOfMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
-
         </Switch>
       </Container>
       <AppFooter />
