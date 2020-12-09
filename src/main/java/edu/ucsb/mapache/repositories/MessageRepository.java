@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package edu.ucsb.mapache.repositories;
 
 import edu.ucsb.mapache.documents.Message;

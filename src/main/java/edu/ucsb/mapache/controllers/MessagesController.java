@@ -59,7 +59,6 @@ public class MessagesController {
     @GetMapping("/contentsearch")
     public ResponseEntity<String> getMessageOfChannel(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchString) throws JsonProcessingException {
-<<<<<<< HEAD
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         if (searchString.equals("")) {
@@ -79,4 +78,7 @@ public class MessagesController {
             return ResponseEntity.ok().body("[]");
         }
         Iterable<Message> messages = messageRepository.findByReactionName(searchReaction);
+        String body = mapper.writeValueAsString(messages);
+        return ResponseEntity.ok().body(body);
     }
+}
