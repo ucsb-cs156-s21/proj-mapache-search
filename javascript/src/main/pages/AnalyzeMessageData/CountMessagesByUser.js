@@ -6,30 +6,41 @@ import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "../../utils/fetch";
 
 const CountMessagesByUser = () => {
+    const [columns, setColumns] = useState([{
+        dataField: 'real_name',
+        text: 'user'
+    } , {
+        text: 'Message Count'
+    } ]);
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
     const{ data: messages} = useSWR(["/api/messages", getToken], fetchWithToken);
     useEffect(()=>{
-        var i;
-        for(i = 0; i<slackUsers.length;i++){
-            var count = 0;
-            var j;
-            for(j=0; j < messages.length; j++) {
-                if (messages[i].user_Profile.real_Name === slackUsers[i].real_name){
-                    count++;
+        if(typeof messages !== 'undefined' && typeof slackUsers !=='undefined'){
+            var i;
+            for(i = 0; i<slackUsers.length;i++){
+                var count = 0;
+                var j;
+                for(j=0; j < messages.length; j++) {
+                    if (messages[j].user_Profile !== null && messages[j].user_Profile.real_Name === slackUsers[i].real_name){
+                        count++;
+                    }
                 }
+                slackUsers[i]["messageCount"]=count.toString();
             }
-            slackUsers[i]["messageCount"]=count;
+            console.log(slackUsers);
+            setColumns([{
+                dataField: 'real_name',
+                text: 'user'
+            } , {
+                dataField: 'messageCount',
+                text: 'Message Count'
+            } ]);
         }
-    },[slackUsers, messages]); 
 
-    const columns = [{
-        dataField: 'real_name',
-        text: 'user'
-    } , {
-        text: "MessageCount",
-        dataField: "messageCount",
-    } ];
+
+    },[messages]); 
+
 
     return (
         <div>
