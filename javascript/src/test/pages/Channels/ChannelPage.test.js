@@ -38,7 +38,7 @@ describe("ChannelPage tests", () => {
         });
 
         const { getByText } = render(<ChannelPage />);
-        const contentsElement = getByText(exampleMessage.text);
+        const contentsElement = getByText("U017218J9B3 has joined the channel");
         expect(contentsElement).toBeInTheDocument();
     });
 });

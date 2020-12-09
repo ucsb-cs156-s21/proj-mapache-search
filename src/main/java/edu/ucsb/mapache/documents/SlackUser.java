@@ -8,9 +8,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
 public class SlackUser {
+    @Field("id")
     private String id;
     private String name;
     private String real_name;
