@@ -1,30 +1,70 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import ReactDOMServer from "react-dom/server";
+import {useAuth0} from "@auth0/auth0-react";
+import useSWR from "swr";
+import {fetchWithToken} from "main/utils/fetch";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import TimeFormatter from "./time"
 const { SearchBar } = Search;
 
 
-const userName = (message) => {
-    let userProfile = message.user_profile;
-    let result = "";
-    if(userProfile == null) {
-        result += message.user;
-    } else {
-        result += userProfile.real_name;
+const GetUserName = ({userId, slackUsers}) => {
+    if (slackUsers == null || slackUsers.length === 0) {
+        return <p>{userId}</p>;
     }
-    return(
-        <p>{result}</p>
+    for(let i = 0; i < slackUsers.length; i++) {
+        if(slackUsers[i].id === userId) {
+            return <p> {slackUsers[i].real_name} </p>;
+        }
+    }
+    return <p>{userId}</p>;
+}
+
+const UserName = (userId, slackUsers) => {
+    return (
+        <GetUserName userId={userId} slackUsers={slackUsers} />
+    );
+}
+
+const MessageContents = (text, slackUsers) => {
+    return (
+        <GetMessageContents text={text} slackUsers={slackUsers} />
+    );
+}
+
+const GetMessageContents = ({text, slackUsers}) => {
+    if (text === undefined || text.replaceAll == undefined){
+        return <p>{text}</p>;
+    }
+    console.log(text)
+    return (
+        <p>
+            {text.replaceAll(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+                if(slackUsers != null) {
+                    for(let i = 0; i < slackUsers.length; i++) {
+                        if(slackUsers[i].id === userId) {
+                            return "@" + slackUsers[i].real_name;
+                        }
+                    }
+                }
+                return "@" + userId;
+            })}
+        </p>
     );
 }
 
 export default ({ messages }) => {
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
     const columns = [{
         isDummyField: true,
-        formatter: (cell, row) => userName(row),
+        formatter: (cell, row) => UserName(row.user, slackUsers),
         dataField: 'name',
         text: 'Username'
     },{
+        isDummyField: true,
+        formatter: (cell, row) => MessageContents(row.text, slackUsers),
         dataField: 'text',
         text: 'Contents',
         sort: true

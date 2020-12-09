@@ -1,9 +1,28 @@
 import React from "react";
-import {Button, Form} from "react-bootstrap";
 import TimeFormatter from "./time"
+import {useAuth0} from "@auth0/auth0-react";
+import useSWR from "swr";
+import {fetchWithToken} from "../../utils/fetch";
 
+const replaceMessage = (text, slackUsers) => {
+    if (text === undefined || text.replaceAll == undefined){
+        return text;
+    }
+    return text.replaceAll(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+        if(slackUsers != null) {
+            for(let i = 0; i < slackUsers.length; i++) {
+                if(slackUsers[i].id === userId) {
+                    return "@" + slackUsers[i].real_name;
+                }
+            }
+        }
+        return "@" + userId;
+    })
+}
 
 export default ({ messages, channel }) => {
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
     return (
         <div style={{textAlign: "left", marginTop: 20}}>
             {
@@ -20,7 +39,7 @@ export default ({ messages, channel }) => {
                         }}>
                             <strong>{el?.user_profile?.real_name || el.user}</strong>
                             <label style={{marginLeft: 10}}>{TimeFormatter(el?.ts)}</label>
-                            <p>{el?.text}</p>
+                            <p>{replaceMessage(el?.text, slackUsers)}</p>
                         </div>
                     )
                 })
