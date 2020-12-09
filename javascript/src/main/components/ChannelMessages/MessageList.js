@@ -32,12 +32,12 @@ const messageContents = (text, users) => {
 export default ({ messages, users}) => {
     const columns = [{
         isDummyField: true,
-        formatter: (cell, row) => userName(row.user,users),
+        formatter: (cell, row) => userName(row.user,users||[]),
         dataField: 'name',
         text: 'Username'
     },{
         isDummyField: true,
-        formatter: (cell, row) => messageContents(row.text, users),
+        formatter: (cell, row) => messageContents(row.text, users||[]),
         dataField: 'text',
         text: 'Contents'
     }
