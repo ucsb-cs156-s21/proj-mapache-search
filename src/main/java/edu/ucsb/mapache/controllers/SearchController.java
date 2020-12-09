@@ -5,8 +5,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.Date; 
-import java.util.Calendar; 
+import java.util.Date;
+import java.util.Calendar;
 import java.util.Optional;
 import javax.validation.Valid;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.ucsb.mapache.models.SearchParameters;
 import org.springframework.beans.factory.annotation.Value;
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.SearchSupportService;
 
 @RestController
 @RequestMapping("/api/member/search")
@@ -58,38 +59,10 @@ public class SearchController {
 
     private ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private SearchSupportService searchSupportService;
 
-    public DecodedJWT getJWT(String authorization) {
-        return JWT.decode(authorization.substring(7));
-    }
-
-    private AppUser getCurrentUser(String authorization){
-        DecodedJWT jwt = getJWT(authorization);
-        Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
-        String email = (String) customClaims.get("email");
-        logger.info("email={}", email);
-        List<AppUser> users = appUserRepository.findByEmail(email);// obtain email of current user
-        logger.info("user={}", users);
-        AppUser you =null;
-        if(users.isEmpty()){
-            you = new AppUser();
-            you.setEmail(email);
-            String firstName = (String) customClaims.get("given_name");
-            String lastName = (String) customClaims.get("family_name");
-            you.setFirstName(firstName);
-            you.setLastName(lastName);
-            appUserRepository.save(you);
-        }else{
-            you=users.get(0);
-        }
-        return you;
-    }
     
-    public static boolean shouldReset(long lastUpdate, long currentTime){
-        long lastUpdateDate= (lastUpdate-8*60*60*1000)/(24*60*60*1000);
-        long currentDate= (currentTime-8*60*60*1000)/(24*60*60*1000);
-        return currentDate>lastUpdateDate;
-    }
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
         response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -110,11 +83,11 @@ public class SearchController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
 
-        AppUser you =getCurrentUser(authorization);
+        AppUser you = searchSupportService.getCurrentUser(authorization);
 
         long lastUpdate=you.getTime();
         long currentTime=(long) (new Date().getTime());
-        if(shouldReset(lastUpdate,currentTime)){
+        if(searchSupportService.shouldReset(lastUpdate,currentTime)){
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
@@ -143,11 +116,11 @@ public class SearchController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
 
-        AppUser you =getCurrentUser(authorization);
+        AppUser you = searchSupportService.getCurrentUser(authorization);
         int searchRemain = you.getSearchRemain();
 
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("quota",new Integer(searchRemain));
+        response.put("quota", searchRemain);
         String body = mapper.writeValueAsString(response);
 
         //the body that's passed into line 58 should be the JSON for the search results

@@ -27,6 +27,7 @@ import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.SearchSupportService;
 
 @WebMvcTest(value = SearchController.class)
 @WithMockUser
@@ -41,6 +42,9 @@ public class SearchControllerTests {
   GoogleSearchService googleSearchService;
   @MockBean
   AuthControllerAdvice authControllerAdvice;
+  @MockBean
+  private SearchSupportService searchSupportService;
+
 
   @Test
   public void test_basicSearch_unauthorizedIfNotMember() throws Exception {
@@ -52,8 +56,11 @@ public class SearchControllerTests {
 
   @Test
   public void test_getAppUsers_getsListOfAppUsers() throws Exception {
+    AppUser appUser = getAppUser();
+  
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     MvcResult response = mockMvc
         .perform(
             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
@@ -64,4 +71,16 @@ public class SearchControllerTests {
     assertEquals("SampleResult", responseString);
 
   }
+
+  private AppUser getAppUser() {
+    AppUser appUser = new AppUser();
+    appUser.setId(1);
+    appUser.setEmail("haixinlin@umail.ucsb.edu");
+    appUser.setFirstName("Hunter");
+    appUser.setLastName("Lin");
+    appUser.setSearchRemain(100);
+    appUser.setTime(0);
+    return appUser;
+  }
+
 }
