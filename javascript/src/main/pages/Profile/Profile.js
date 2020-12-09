@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
-import { Row, Container, Col, Badge, InputGroup, FormControl, Button } from "react-bootstrap";
+import { Form, Row, Container, Col, Badge, InputGroup, FormControl, Button } from "react-bootstrap";
 
 import ReactJson from "react-json-view";
 
@@ -36,18 +36,33 @@ const Profile = () => {
         } 
   };
 
+  const fetchApiToken = async (event) => {
+    const url = `/apiKey`;
+    try {
+        const result = await fetchWithToken(url, getToken, {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+            },
+        });
+        console.log(`result=${JSON.stringify(result)}`)
+        return result;
+    } catch (err) {
+        console.log(`err=${err}`)
+    }
+};
   const [apiToken, setApiToken] = useState(emptyToken);
   const [results, setResults] = useState({});
-
   // Function to put handle on submit
   const handleOnSubmit = async (e) => {
      e.preventDefault();
     const answer = await addAPIToken(e);
     setResults(answer);
-    alert('API was submitted');
+    const apiReturn = await fetchApiToken(e);
+    if(apiReturn === null)
+      alert('API null !!!!!!!!!');
+    alert('API was submitted: ' + apiReturn);
   }
-
-
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -67,7 +82,7 @@ const Profile = () => {
           }
         </Col>
       </Row>
-      <Row className="align-items-center mb-5 text-center text-md-left">
+      {/* <Row className="align-items-center mb-5 text-center text-md-left">
         <InputGroup className="mb-3" onSubmit={handleOnSubmit}>
           <InputGroup.Prepend>
             <InputGroup.Text id="inputGroup-sizing-default">API Key</InputGroup.Text>
@@ -82,7 +97,24 @@ const Profile = () => {
           </InputGroup.Append>
         </InputGroup>
 
-      </Row>
+      </Row> */}
+      <Form onSubmit={handleOnSubmit}>
+                <Form.Group as={Row} controlId="search">
+                    <Form.Label column sm={2}>Search</Form.Label>
+                    <Col sm={10}>
+                        <Form.Control type="text" placeholder="type your token" onChange={(e) => setApiToken({
+                            ...apiToken,
+                            inputApiToken: e.target.value
+                        })} />
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Col sm={{ span: 10, offset: 2 }}>
+                        <Button type="submit">Submit</Button>
+                    </Col>
+                </Form.Group>
+            </Form>
+      ur api is ${fetchApiToken}
       <Row className="text-left">
         <ReactJson src={user} />
       </Row>
