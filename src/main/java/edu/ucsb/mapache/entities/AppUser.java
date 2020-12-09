@@ -89,7 +89,7 @@ public class AppUser {
   }
   @Override
   public String toString() {
-    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s ,searchRemain=%d]", id, email, firstName, lastName, searchRemain);
+    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s, searchRemain=%d ]", id, email, firstName, lastName, searchRemain);
   }
 
   @Override
@@ -101,7 +101,7 @@ public class AppUser {
     AppUser user = (AppUser) o;
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, user.getId()).append(email, user.getEmail()).append(firstName, user.getFirstName())
-        .append(lastName, user.getLastName()).append(searchRemain,user.getSearchRemain());
+        .append(lastName, user.getLastName()).append(searchRemain,user.getSearchRemain()).append(time,user.getTime());
 
     return builder.isEquals();
   }

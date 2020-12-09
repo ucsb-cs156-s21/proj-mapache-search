@@ -9,7 +9,7 @@ public class AppUserTests {
   @Test
   public void testAppUser_toString() {
     AppUser user = new AppUser(1L, "test@test.org", "test", "user");
-    assertEquals(user.toString(), "AppUser[ id=1, email=test@test.org, firstName=test, lastName=user ]");
+    assertEquals(user.toString(), "AppUser[ id=1, email=test@test.org, firstName=test, lastName=user, searchRemain=100 ]");
   }
 
   @Test
@@ -24,6 +24,18 @@ public class AppUserTests {
     AppUser user = new AppUser();
     user.setEmail("test@example.com");
     assertEquals("test@example.com", user.getEmail());
+  }
+  @Test
+  public void testAppUser_getAndSetSearchRemain() {
+    AppUser user = new AppUser();
+    user.setSearchRemain(22);
+    assertEquals(22, user.getSearchRemain());
+  }
+  @Test
+  public void testAppUser_getAndSetTime() {
+    AppUser user = new AppUser();
+    user.setTime(22);
+    assertEquals(22, user.getTime());
   }
 
   @Test
@@ -62,6 +74,22 @@ public class AppUserTests {
   public void testAppUser_equalsAnother() throws Exception {
     AppUser user1 = new AppUser(1L, "test@ucsb.edu", "Test", "User");
     AppUser user2 = new AppUser(1L, "test@ucsb.edu", "Test", "User");
+    assertEquals(user1, user2);
+  }
+  @Test
+  public void testAppUser_equalsTime() throws Exception {
+    AppUser user1 = new AppUser(1L, "test@ucsb.edu", "Test", "User");
+    user1.setTime(12);
+    AppUser user2 = new AppUser(1L, "test@ucsb.edu", "Test", "User");
+    user2.setTime(12);
+    assertEquals(user1, user2);
+  }
+  @Test
+  public void testAppUser_equalsSearchRemain() throws Exception {
+    AppUser user1 = new AppUser(1L, "test@ucsb.edu", "Test", "User");
+    user1.setSearchRemain(12);
+    AppUser user2 = new AppUser(1L, "test@ucsb.edu", "Test", "User");
+    user2.setSearchRemain(12);
     assertEquals(user1, user2);
   }
 }
