@@ -27,11 +27,13 @@ function AppNavbar() {
               <NavDropdown title="Admin">
                   <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/slackUsers">Slack Users</NavDropdown.Item>
+                  <NavDropdown.Item href="/admin/searchInfo">Search Information</NavDropdown.Item>
               </NavDropdown>
           }
           { (isMember || isAdmin)  &&
               <NavDropdown title="Channels">
                   <NavDropdown.Item href="/member/channels">List Channels</NavDropdown.Item>
+                  <NavDropdown.Item href="/member/search">Search</NavDropdown.Item>
               </NavDropdown>
           }
         <LinkContainer to={"/about"}>

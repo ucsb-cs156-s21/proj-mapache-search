@@ -89,7 +89,7 @@ public class AppUser {
   }
   @Override
   public String toString() {
-    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s ,searchRemain=%d]", id, email, firstName, lastName, searchRemain);
+    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s, searchRemain=%d]", id, email, firstName, lastName, searchRemain);
   }
 
   @Override
