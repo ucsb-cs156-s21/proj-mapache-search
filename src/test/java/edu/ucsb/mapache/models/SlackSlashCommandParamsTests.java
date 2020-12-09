@@ -37,6 +37,96 @@ public class SlackSlashCommandParamsTests {
         assertEquals(params, params);
     }
 
+	@Test
+    public void test_notEqualsToken() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setToken("token");
+        params2.setToken("wrongToken");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsTeamID() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setTeamId("team Id");
+        params2.setTeamId("wrong team Id");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsTeamDomain() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setTeamDomain("team domain");
+        params2.setTeamDomain("wrong team domain");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsChannelId() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setChannelId("channel id");
+        params2.setChannelId("wrong channel id");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsChannelName() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setChannelName("channel name");
+        params2.setChannelName("wrong channel name");
+        assertFalse(params1.equals(params2));
+    }
+
+     @Test
+    public void test_notEqualsUserId() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setUserId("user id");
+        params2.setUserId("wrong user id");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsUsername() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setUserName("user username");
+        params2.setUserName("wrong username");
+        assertFalse(params1.equals(params2));
+    }
+
+	@Test
+    public void test_notEqualsCommand() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setCommand("command");
+        params2.setCommand("wrong command");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsText() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setText("text");
+        params2.setText("wrong text");
+        assertFalse(params1.equals(params2));
+    }
+
+    @Test
+    public void test_notEqualsResponseURL() throws Exception {
+        SlackSlashCommandParams params1 = new SlackSlashCommandParams();
+        SlackSlashCommandParams params2 = new SlackSlashCommandParams();
+        params1.setResponseUrl("response URL");
+        params2.setResponseUrl("wrong response URL");
+        assertFalse(params1.equals(params2));
+    }
+
     @Test
     public void test_equalsAnother() throws Exception {
         SlackSlashCommandParams params1 = new SlackSlashCommandParams();
