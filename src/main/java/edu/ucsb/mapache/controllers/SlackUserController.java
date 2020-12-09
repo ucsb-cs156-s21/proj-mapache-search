@@ -56,14 +56,4 @@ public class SlackUserController {
         String body = mapper.writeValueAsString(slackUsers);
         return ResponseEntity.ok().body(body);
     }
-
-    @GetMapping("/slackUsers/{userId}")
-    public ResponseEntity<String> get_user(@RequestHeader("Authorization") String authorization,
-            @PathVariable("userId") String userId) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsAdmin(authorization))
-            return getUnauthorizedResponse("admin");
-        Iterable<SlackUser> slackUsers = slackUserRepository.findByUserId(userId);
-        String body = mapper.writeValueAsString(slackUsers);
-        return ResponseEntity.ok().body(body);
-    }
 }
