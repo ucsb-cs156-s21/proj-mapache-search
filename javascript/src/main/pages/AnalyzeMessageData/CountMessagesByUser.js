@@ -14,7 +14,7 @@ const CountMessagesByUser = () => {
     } ]);
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
-    const{ data: messages} = useSWR(["/api/messages", getToken], fetchWithToken);
+    const{ data: messages} = useSWR(["/api/members/messages/allmessages", getToken], fetchWithToken);
     useEffect(()=>{
         if(typeof messages !== 'undefined' && typeof slackUsers !=='undefined'){
             var i;
@@ -22,7 +22,7 @@ const CountMessagesByUser = () => {
                 var count = 0;
                 var j;
                 for(j=0; j < messages.length; j++) {
-                    if (messages[j].user_Profile !== null && messages[j].user_Profile.real_Name === slackUsers[i].real_name){
+                    if (messages[j].user_profile !== null && messages[j].user_profile.real_name === slackUsers[i].real_name){
                         count++;
                     }
                 }
@@ -39,8 +39,8 @@ const CountMessagesByUser = () => {
         }
 
 
-    },[messages]); 
-
+    },[messages]);
+    
 
     return (
         <div>

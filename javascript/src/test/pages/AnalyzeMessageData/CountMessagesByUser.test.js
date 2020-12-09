@@ -7,3 +7,4 @@ describe('Count Messages By User tests', () => {
     render(<CountMessagesByUser />);
   });
 });
+
