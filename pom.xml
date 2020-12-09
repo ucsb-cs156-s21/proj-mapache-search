@@ -123,6 +123,12 @@
 			<artifactId>javabean-tester</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.codebox/javabean-tester -->
+		<dependency>
+			<groupId>net.codebox</groupId>
+			<artifactId>javabean-tester</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -238,6 +244,17 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
+				<configuration>
+                    <excludes>
+                       <!-- Exclude class from test coverage -->
+                        <exclude>**/edu/ucsb/mapache/services/SearchSupportService.*</exclude>
+						<exclude>**/edu/ucsb/mapache/services/GoogleSearchService.*</exclude>
+						<exclude>**/edu/ucsb/mapache/config/*</exclude>
+						<exclude>**/edu/ucsb/mapache/DemoApplication.*</exclude>
+                        <!-- Exclude full package from test coverage -->
+                        <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
+                    </excludes>
+                </configuration>
 				<executions>
 					<execution>
 						<goals>
