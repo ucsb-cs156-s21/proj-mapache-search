@@ -35,8 +35,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.ucsb.mapache.models.SearchParameters;
 import org.springframework.beans.factory.annotation.Value;
 import edu.ucsb.mapache.services.GoogleSearchService;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class SearchSupportService {
 
     private final Logger logger = LoggerFactory.getLogger(SearchSupportService.class);
