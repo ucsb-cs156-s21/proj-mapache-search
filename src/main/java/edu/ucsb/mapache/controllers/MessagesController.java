@@ -1,5 +1,6 @@
 package edu.ucsb.mapache.controllers;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,12 +45,13 @@ public class MessagesController {
     @GetMapping("/usersearch")
     public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchUser) throws JsonProcessingException {
+        String decoded = searchUser.replaceAll("%20", " ");
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
-        if (searchUser.equals("")) {
+        if (decoded.equals("")) {
             return ResponseEntity.ok().body("[]");
         }
-        Iterable<Message> messages = messageRepository.findByUser(searchUser);
+        Iterable<Message> messages = messageRepository.findByUser(decoded);
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
