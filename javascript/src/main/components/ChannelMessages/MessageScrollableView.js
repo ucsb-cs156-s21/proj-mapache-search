@@ -5,10 +5,7 @@ import useSWR from "swr";
 import {fetchWithToken} from "../../utils/fetch";
 
 const replaceMessage = (text, slackUsers) => {
-    if (text === undefined || text.replaceAll == undefined){
-        return text;
-    }
-    return text.replaceAll(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+    return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
         if(slackUsers != null) {
             for(let i = 0; i < slackUsers.length; i++) {
                 if(slackUsers[i].id === userId) {
@@ -28,7 +25,9 @@ export default ({ messages, channel }) => {
             {
                 messages.map((el) => {
                     return (
-                        <div style={{
+                        <div
+                            key={el?.ts}
+                            style={{
                             borderRadius: 10,
                             paddingTop: 15,
                             paddingLeft: 10,

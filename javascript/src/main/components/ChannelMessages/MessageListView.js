@@ -34,13 +34,9 @@ const MessageContents = (text, slackUsers) => {
 }
 
 const GetMessageContents = ({text, slackUsers}) => {
-    if (text === undefined || text.replaceAll == undefined){
-        return <p>{text}</p>;
-    }
-    console.log(text)
     return (
         <p>
-            {text.replaceAll(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+            {text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
                 if(slackUsers != null) {
                     for(let i = 0; i < slackUsers.length; i++) {
                         if(slackUsers[i].id === userId) {

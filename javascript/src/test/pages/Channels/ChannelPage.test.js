@@ -35,7 +35,7 @@ describe("ChannelPageList tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "<@U017218J9B3> has joined the channel",
+            "text": "Someone has joined the channel",
             "channel": "section-6pm"
         }
 
@@ -55,7 +55,7 @@ describe("ChannelPageList tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "<@U017218J9B3> has joined the channel",
+            "text": "Someone has joined the channel",
             "channel": "section-6pm"
         }
 
