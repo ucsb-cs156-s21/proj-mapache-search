@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { useHistory } from "react-router-dom";
 
-const StudentTable = ({students,deleteStudent,updateStudent}) => {
+const StudentTable = ({students,deleteStudent}) => {
     const history = useHistory();
 
     const renderDeleteButton = (id) => {

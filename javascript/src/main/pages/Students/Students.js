@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import useSWR from "swr";
 import { StudentCSVButton } from "./StudentCSVButton";
 import { fetchWithToken } from "main/utils/fetch";
@@ -38,7 +38,22 @@ const Students = () => {
       });
       await mutateStudents();
     } catch (err) {
-      console.log("Caught error from delete students");
+      console.log("Caught error from delete student");
+    }
+  };
+
+  const deleteAllStudents = async () => {
+    try {
+      await fetchWithToken(`/api/students`, getToken, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+        noJSON: true,
+      });
+      await mutateStudents();
+    } catch (err) {
+      console.log("Caught error from delete all students");
     }
   };
 
@@ -62,7 +77,14 @@ const Students = () => {
         </p>
         <StudentCSVButton addTask={uploadCSV}/>
         {/* <StudentForm addStudent={createStudent} existingStudents={studentList}/> */}
-        <Button onClick={()=>history.push("/students/new")}>New Course</Button>
+        <Row style={{paddingTop: 10}}>
+            <Col xs={6} style={{ padding: 0 }}>
+              <Button onClick={()=>history.push("/students/new")}>New Course</Button>
+            </Col>
+            <Col xs={6} style={{ padding: 0 }}>
+            <Button variant="danger" data-testid="delete-button" onClick={() => deleteAllStudents()}>Delete All</Button>
+            </Col>
+        </Row>
         <br/>
         <br/>
         <StudentTable students={studentList} deleteStudent={deleteStudent}/>

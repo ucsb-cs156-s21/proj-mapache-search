@@ -1,14 +1,14 @@
-package edu.ucsb.mapache.repositories;
+// package edu.ucsb.mapache.repositories;
 
-import java.util.List;
-import java.util.Optional;
+// import java.util.List;
+// import java.util.Optional;
 
-import edu.ucsb.mapache.entities.Student;
+// import edu.ucsb.mapache.entities.Student2;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+// import org.springframework.data.repository.CrudRepository;
+// import org.springframework.stereotype.Repository;
 
-@Repository
-public interface TeamRepository extends CrudRepository<Student, Long> {
-  public List<Student> findAll();
-}
+// @Repository
+// public interface TeamRepository extends CrudRepository<Student2, Long> {
+//   public List<Student2> findAll();
+// }
