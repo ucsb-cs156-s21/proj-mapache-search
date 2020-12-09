@@ -5,19 +5,53 @@ import { Redirect } from "react-router-dom";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import JSONPrettyCard from "main/components/Utilities/JSONPrettyCard";
 import { fetchWithToken } from "main/utils/fetch";
+jest.mock("main/utils/fetch");
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Search from "../../../main/pages/Search/Search.js";
+
+import useSWR from "swr";
+jest.mock("swr");
 
 describe("Search tests", () => {
     test("it renders without crashing", () => {
         render(<Search/>);
     });
 
-    /*test("when I enter a query, the state for query changes", () => {
-        const { getQuery } = render(<Search />);
-        const enterQuery = setQuery("enter-query")
+    test("when I enter a query, the state for query changes", () => {
+        const { getByPlaceholderText } = render(<Search />);
+        const enterQuery = getByPlaceholderText("type your query");
         userEvent.type(enterQuery, "github");
         expect(enterQuery.value).toBe("github");
-    });*/
+    });
+
+    test("renders when submit button is pressed", () => {
+        fetchWithToken.mockResolvedValue([]);
+        const { getByText } = render(<Search />);
+        userEvent.click(getByText("Submit"));
+        expect(fetchWithToken).toHaveBeenCalled();
+    });
+
+    test("when I click submit button, ", () => {
+        fetchWithToken.mockImplementation(new Error());
+        const { getByText } = render(<Search />);
+        userEvent.click(getByText("Submit"));
+        expect(fetchWithToken).toHaveBeenCalled();
+    });
+
+    // test("renders when no admins exist", () => {
+    //     useSWR.mockImplementation(([endpoint, getToken], fetch) => {
+    //       if (endpoint === "/api/users")
+    //         return {
+    //           searchQuery,
+    //         };
+    //       else
+    //         return {
+    //           data: null,
+    //         };
+    //     });
+    //     const { getByText } = render(<Search />);
+    //     expect(getByText("Admin Panel")).toBeInTheDocument();
+    //     expect(queryByText("Admin")).not.toBeInTheDocument();
+    //   });
 });
