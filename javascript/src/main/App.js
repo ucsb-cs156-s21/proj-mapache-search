@@ -18,7 +18,6 @@ import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 
 import Search from "main/pages/Search/Search";
-import ChannelPage from "./pages/Channels/ChannelPage";
 
 import SearchResults from "./pages/Messages/SearchResults";
 
