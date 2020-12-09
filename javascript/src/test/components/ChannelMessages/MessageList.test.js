@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import MessageListView from "main/components/ChannelMessages/MessageListView";
 import useSWR from "swr";
+import MessageScrollableView from "../../../main/components/ChannelMessages/MessageScrollableView";
 jest.mock("swr");
 jest.mock("react-router-dom", () => {
     return {
@@ -63,6 +64,27 @@ describe("MessageListView tests", () => {
             const nameElement = getByText(/Test Person has joined the channel/);
             expect(nameElement).toBeInTheDocument();
         }, 500)
+    });
+
+    test("Username not found", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const nameElement = getByText(/@U017218J9B3/);
+        expect(nameElement).toBeInTheDocument();
+
     });
 
 

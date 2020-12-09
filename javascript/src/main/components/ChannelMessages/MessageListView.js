@@ -10,9 +10,6 @@ const { SearchBar } = Search;
 
 
 const GetUserName = ({userId, slackUsers}) => {
-    if (slackUsers == null || slackUsers.length === 0) {
-        return <p>{userId}</p>;
-    }
     for(let i = 0; i < slackUsers.length; i++) {
         if(slackUsers[i].id === userId) {
             return <p> {slackUsers[i].real_name} </p>;
@@ -37,11 +34,9 @@ const GetMessageContents = ({text, slackUsers}) => {
     return (
         <p>
             {text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
-                if(slackUsers != null) {
-                    for(let i = 0; i < slackUsers.length; i++) {
-                        if(slackUsers[i].id === userId) {
-                            return "@" + slackUsers[i].real_name;
-                        }
+                for(let i = 0; i < slackUsers.length; i++) {
+                    if(slackUsers[i].id === userId) {
+                        return "@" + slackUsers[i].real_name;
                     }
                 }
                 return "@" + userId;
