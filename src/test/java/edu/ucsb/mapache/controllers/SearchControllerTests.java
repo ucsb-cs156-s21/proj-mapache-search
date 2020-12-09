@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.services.GoogleSearchService;
 
@@ -49,31 +50,18 @@ public class SearchControllerTests {
         .andExpect(status().is(401));
   }
 
-  // @Test
-  // public void test_getAppUsers_getsListOfAppUsers() throws Exception {
-  //   List<AppUser> expectedAppUsers = new ArrayList<AppUser>();
-  //   AppUser appUser = new AppUser();
-  //   appUser.setId(1);
-  //   appUser.setEmail("haixinlin@umail.ucsb.edu");
-  //   appUser.setFirstName("Hunter");
-  //   appUser.setLastName("Lin");
-  //   appUser.setSearchRemain(100);
-  //   appUser.setTime(0);
-  //   expectedAppUsers.add(appUser);
+  @Test
+  public void test_getAppUsers_getsListOfAppUsers() throws Exception {
+    when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
 
-  //   when(appUserRepository.findAll()).thenReturn(expectedAppUsers);
-  //   when(authControllerAdvice.getIsAdmin(exampleAuthToken)).thenReturn(true);
+    String responseString = response.getResponse().getContentAsString();
 
-  //   MvcResult response = mockMvc
-  //       .perform(
-  //           get("/api/searchInfo").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-  //       .andExpect(status().isOk()).andReturn();
+    assertEquals("SampleResult", responseString);
 
-  //   String responseString = response.getResponse().getContentAsString();
-  //   List<AppUser> appUsers = mapper.readValue(responseString, new TypeReference<List<AppUser>>() {
-  //   });
-
-  //   assertEquals(expectedAppUsers, appUsers);
-
-  // }
+  }
 }
