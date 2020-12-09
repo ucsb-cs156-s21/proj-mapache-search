@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Button } from "react-bootstrap";
 import useSWR from "swr";
@@ -7,23 +7,29 @@ import {fetchWithToken} from "../../utils/fetch";
 
 const CountMessagesByUser = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: slackUsers } = useSWR(["/api/messages", getToken], fetchWithToken);
-    console.log(slackUsers);
-    const populateMsgCount = (cell,row ) => {
-        return (
-           0
-        )
-    }
+    const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
+    const{ data: messages} = useSWR(["/api/messages", getToken], fetchWithToken);
+    useEffect(()=>{
+        var i;
+        for(i = 0; i<slackUsers.length;i++){
+            var count = 0;
+            var j;
+            for(j=0; j < messages.length; j++) {
+                if (messages[i].user_Profile.real_Name === slackUsers[i].real_name){
+                    count++;
+                }
+            }
+            slackUsers[i]["messageCount"]=count;
+        }
+    },[slackUsers, messages]); 
 
     const columns = [{
-        dataField: 'user_Profile.real_Name',
+        dataField: 'real_name',
         text: 'user'
-    }, {
+    } , {
         text: "MessageCount",
-        isDummyField: true,
-        dataField: "msgCount",
-        formatter: (cell, row) => populateMsgCount(cell, row)
-    }];
+        dataField: "messageCount",
+    } ];
 
     return (
         <div>
