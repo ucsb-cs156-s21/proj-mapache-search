@@ -1,5 +1,6 @@
 package edu.ucsb.mapache.models;
 
+import java.util.Objects;
 import edu.ucsb.mapache.documents.SlackUser;
 
 public class SlackUserWithStats {
