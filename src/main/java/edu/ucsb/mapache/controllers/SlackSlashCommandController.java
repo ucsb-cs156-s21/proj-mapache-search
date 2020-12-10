@@ -169,7 +169,8 @@ public class SlackSlashCommandController {
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
-    
+    @Value("${app.google.search.apiToken}")
+    private String apiToken;
     public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
         
         
