@@ -246,16 +246,18 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.5</version>
 				<configuration>
-                    <excludes>
-                       <!-- Exclude class from test coverage -->
-                        <exclude>**/edu/ucsb/mapache/services/SearchSupportService.*</exclude>
+					<excludes>
+						<!-- Exclude class from test coverage -->
+						<exclude>**/edu/ucsb/mapache/services/SearchSupportService.*</exclude>
 						<exclude>**/edu/ucsb/mapache/services/GoogleSearchService.*</exclude>
 						<exclude>**/edu/ucsb/mapache/config/*</exclude>
 						<exclude>**/edu/ucsb/mapache/DemoApplication.*</exclude>
-                        <!-- Exclude full package from test coverage -->
-                        <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
-                    </excludes>
-                </configuration>
+					<!-- Exclude full package from test coverage -->
+					<!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
+						<exclude>**/edu/ucsb/mapache/services/CSVToObjectService.class</exclude>
+						<exclude>**/edu/ucsb/mapache/services/CSVToObjectServiceImpl.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
