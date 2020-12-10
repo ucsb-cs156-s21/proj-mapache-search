@@ -20,13 +20,13 @@ const GetUserName = ({userId, slackUsers}) => {
 
 const UserName = (userId, slackUsers) => {
     return (
-        <GetUserName userId={userId} slackUsers={slackUsers} />
+        <GetUserName userId={userId} slackUsers={slackUsers || []} />
     );
 }
 
 const MessageContents = (text, slackUsers) => {
     return (
-        <GetMessageContents text={text} slackUsers={slackUsers} />
+        <GetMessageContents text={text} slackUsers={slackUsers || []} />
     );
 }
 
