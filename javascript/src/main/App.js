@@ -8,16 +8,20 @@ import About from "main/pages/About/About";
 import Home from "main/pages/Home/Home";
 import Profile from "main/pages/Profile/Profile";
 import PrivateRoute from "main/components/Auth/PrivateRoute";
+import Teams from "main/pages/Admin/Teams";
 import Admin from "main/pages/Admin/Admin";
 import SlackUsers from "./pages/Admin/SlackUsers";
+import SearchInfo from "./pages/Admin/SearchInfo";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
 import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
 import CountMessagesByUser from "main/pages/AnalyzeMessageData/CountMessagesByUser";
 import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import Search from "main/pages/Search/Search";
 import ChannelPage from "./pages/Channels/ChannelPage";
 import SearchResults from "./pages/Messages/SearchResults";
+
 
 function App() {
   return (
@@ -41,7 +45,7 @@ function App() {
         </Switch>
       </Container>
       <AppFooter />
-    </div>
+    </div >
   );
 }
 
