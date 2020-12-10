@@ -34,11 +34,6 @@ public class SlackSlashCommandControllerTests {
   ChannelRepository channelRepository;
 
   private final String testURL="/api/public/slash-command";
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> c44f086... bx - created more test cases for code coverage, WIP because unable to test for IOException
   @Test
   public void test_postSlashMessage() throws Exception { 
     // content type: https://api.slack.com/interactivity/slash-commands
@@ -209,8 +204,6 @@ public class SlackSlashCommandControllerTests {
         .andExpect(status().is(200));
   }
 
-<<<<<<< HEAD
-=======
   @Test
   public void test_googleSearchNotSearchGoogle() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
@@ -275,7 +268,6 @@ public class SlackSlashCommandControllerTests {
         .andExpect(status().is(200));
   }
 }
->>>>>>> c44f086... bx - created more test cases for code coverage, WIP because unable to test for IOException
 
 
   @Test
