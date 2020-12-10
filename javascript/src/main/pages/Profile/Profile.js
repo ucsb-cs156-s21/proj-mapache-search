@@ -18,32 +18,22 @@ const Profile = () => {
     inputApiToken: "",
   }
 
-<<<<<<< HEAD
   const [apiToken, setApiToken] = useState(emptyToken);
   const [results, setResults] = useState({});
 
   // Function to add token to account here
   const addAPIToken = async (event) => {
     const url = `/api/addApiKey`;
-=======
-  // Function to add token to account here
-  const addAPIToken = async (event) => {
-    const url = `/apiKey/${apiToken.inputApiToken}`;
->>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
     
         try {
           const result = await fetchWithToken(url, getToken, {
             method: "PUT",
             headers: {
               "content-type": "application/json",
-<<<<<<< HEAD
             }, 
             body: {
               "token": apiToken
             }
-=======
-            },
->>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
           });
           console.log(`result=${JSON.stringify(result)}`)
           return result;
@@ -53,11 +43,7 @@ const Profile = () => {
   };
 
   const fetchApiToken = async (event) => {
-<<<<<<< HEAD
     const url = `/api/apiKey`;
-=======
-    const url = `/apiKey`;
->>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
     try {
         const result = await fetchWithToken(url, getToken, {
             method: "GET",
@@ -71,12 +57,6 @@ const Profile = () => {
         console.log(`err=${err}`)
     }
 };
-<<<<<<< HEAD
-
-=======
-  const [apiToken, setApiToken] = useState(emptyToken);
-  const [results, setResults] = useState({});
->>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
   // Function to put handle on submit
   const handleOnSubmit = async (e) => {
      e.preventDefault();
@@ -87,6 +67,15 @@ const Profile = () => {
       alert('API null !!!!!!!!!');
     alert('API was submitted: ' + apiReturn);
   }
+
+  let currentApiTokenStatus = <p>You do not have an API Token associated with your account!</p>;
+
+  if (fetchApiToken == undefined){
+    currentApiTokenStatus = <p>
+    Your current API Token is: {fetchApiToken}
+    </p>;
+  }
+
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -106,27 +95,18 @@ const Profile = () => {
           }
         </Col>
       </Row>
-      {/* <Row className="align-items-center mb-5 text-center text-md-left">
-        <InputGroup className="mb-3" onSubmit={handleOnSubmit}>
-          <InputGroup.Prepend>
-            <InputGroup.Text id="inputGroup-sizing-default">API Key</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            placeholder="Enter API Key"
-            aria-label="Enter API Key"
-            aria-describedby="inputGroup-sizing-default"
-          />
-          <InputGroup.Append>
-            <Button type="submit" variant="outline-secondary">Submit</Button>
-          </InputGroup.Append>
-        </InputGroup>
 
-      </Row> */}
+      {currentApiTokenStatus}
+      
+      <p>
+      Don't have an API key or want to learn more? <a href="https://developers.google.com/custom-search/v1/overview">Consider clicking here!</a>
+      </p>
+
       <Form onSubmit={handleOnSubmit}>
                 <Form.Group as={Row} controlId="search">
-                    <Form.Label column sm={2}>Search</Form.Label>
+                    <Form.Label column sm={2}>API Search Token</Form.Label>
                     <Col sm={10}>
-                        <Form.Control type="text" placeholder="type your token" onChange={(e) => setApiToken({
+                        <Form.Control type="text" placeholder="Enter your API token" onChange={(e) => setApiToken({
                             ...apiToken,
                             inputApiToken: e.target.value
                         })} />
@@ -138,10 +118,12 @@ const Profile = () => {
                     </Col>
                 </Form.Group>
             </Form>
-      ur api is ${fetchApiToken}
       <Row className="text-left">
         <ReactJson src={user} />
       </Row>
+      <Container className="mb-5"><Row></Row></Container>
+      <Container className="mb-5"><Row></Row></Container>
+      <Container className="mb-5"><Row></Row></Container>
     </Container>
   );
 };
