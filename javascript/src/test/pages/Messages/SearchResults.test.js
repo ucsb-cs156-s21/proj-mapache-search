@@ -5,12 +5,6 @@ import SearchResults from "main/pages/Messages/SearchResults";
 import userEvent from "@testing-library/user-event";
 
 describe("ChannelPage tests", () => {
-    // beforeEach(() => {
-    //     useParams.mockReturnValue({
-    //         'channel': 'test-channel'
-    //     });
-    // });
-
     test("renders without crashing", () => {
         //useSWR.mockReturnValue({});
         render(<SearchResults />);
