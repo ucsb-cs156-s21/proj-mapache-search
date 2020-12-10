@@ -1,7 +1,7 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
-export default ({ messages }) => {
+export default ({ messages = [] }) => {
     const columns = [{
         dataField: 'channel',
         text: 'Channel'
