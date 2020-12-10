@@ -6,47 +6,44 @@ import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "../../utils/fetch";
 
 const CountMessagesByUser = () => {
-    const [columns, setColumns] = useState([{
-        dataField: 'real_name',
+    const columns = [{
+        dataField: 'name',
         text: 'user'
     } , {
-        dataField: "",
+        dataField: "count",
         text: 'Message Count'
-    } ]);
+    }];
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
     const{ data: messages} = useSWR(["/api/members/messages/allmessages", getToken], fetchWithToken);
-    useEffect(()=>{
-        if(typeof messages !== 'undefined' && typeof slackUsers !=='undefined'){
-            var i;
-            for(i = 0; i<slackUsers.length;i++){
-                var count = 0;
-                var j;
-                for(j=0; j < messages.length; j++) {
-                    if (messages[j].user_profile !== null && messages[j].user_profile.real_name === slackUsers[i].real_name){
-                        count++;
-                    }
+
+    const aggregateUserMessageCount = (agg_messages, agg_slackUsers) => {
+        const userMessageCounts = [];
+
+        var i;
+        for(i = 0; i<agg_slackUsers.length;i++){
+            var count = 0;
+            var j;
+            for(j=0; j < agg_messages.length; j++) {
+                if (agg_messages[j].user_profile !== null && agg_messages[j].user_profile.real_name === agg_slackUsers[i].real_name){
+                    count++;
                 }
-                slackUsers[i]["messageCount"]=count.toString();
             }
-            console.log(slackUsers);
-            setColumns([{
-                dataField: 'real_name',
-                text: 'user'
-            } , {
-                dataField: 'messageCount',
-                text: 'Message Count'
-            } ]);
+            const userCountPair = {
+                name: agg_slackUsers[i].real_name,
+                count: count.toString()
+            }
+            userMessageCounts.push(userCountPair);
         }
+        return userMessageCounts;
+    }
 
-
-    },[messages]);
+    const userMessageCount = messages && slackUsers ? aggregateUserMessageCount(messages, slackUsers) : []
     
-
     return (
         <div>
         <h1>Count Messages By User</h1>
-        <BootstrapTable keyField='id' data={slackUsers || []} columns={columns} />
+        <BootstrapTable keyField='id' data={userMessageCount} columns={columns} />
         </div>
     );
 };
