@@ -251,14 +251,11 @@
 						<exclude>**/edu/ucsb/mapache/services/GoogleSearchService.*</exclude>
 						<exclude>**/edu/ucsb/mapache/config/*</exclude>
 						<exclude>**/edu/ucsb/mapache/DemoApplication.*</exclude>
+						<exclude>**/edu/ucsb/mapache/services/CSVToObjectService.class</exclude>
+						<exclude>**/edu/ucsb/mapache/services/CSVToObjectServiceImpl.class</exclude>
                         <!-- Exclude full package from test coverage -->
                         <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
                     </excludes>
-                </configuration>
-					<excludes>
-						<exclude>/edu/ucsb/mapache/services/CSVToObjectService.class</exclude>
-						<exclude>/edu/ucsb/mapache/services/CSVToObjectServiceImpl.class</exclude>
-					</excludes>
 				</configuration>
 				<executions>
 					<execution>
