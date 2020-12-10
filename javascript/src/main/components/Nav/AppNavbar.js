@@ -28,6 +28,7 @@ function AppNavbar() {
                   <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/slackUsers">Slack Users</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/teams">Manage Teams</NavDropdown.Item>
+                  <NavDropdown.Item href="/admin/students">Manage Students</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/searchInfo">Search Information</NavDropdown.Item>
               </NavDropdown>
           }

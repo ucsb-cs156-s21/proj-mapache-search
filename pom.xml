@@ -255,6 +255,11 @@
                         <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
                     </excludes>
                 </configuration>
+					<excludes>
+						<exclude>/edu/ucsb/mapache/services/CSVToObjectService.class</exclude>
+						<exclude>/edu/ucsb/mapache/services/CSVToObjectServiceImpl.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
