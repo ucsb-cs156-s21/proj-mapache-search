@@ -65,15 +65,13 @@ const HistogramOfMessagesByUser = () => {
             method: 'GET'
         }).then(response => {
             response.map(i => {
-                const formatDate = new Date(parseInt(i.ts) * 1000);
+                const formatDate = moment.unix(i.ts).format('YYYY-MM-DD');
                 setModifiedHistogramData(modifiedHistogramData => [
                     ...modifiedHistogramData,
-                    {
-                        ts: formatDate
-                    }
+                    formatDate
                 ]);
             })
-            setGroupedResults(_.groupBy(modifiedHistogramData, modifiedHistogramData => moment(modifiedHistogramData['Date'], 'DD/MM/YY').startOf('isoWeek')))
+            setGroupedResults(_.groupBy(modifiedHistogramData, modifiedHistogramData => moment(modifiedHistogramData['ts'], 'YYYY-MM-DD'))
             setDataIsFetched(true);
         });
     }
@@ -103,7 +101,7 @@ const HistogramOfMessagesByUser = () => {
                 </Col>
             </Row>
             <Button onClick={() => console.log(modifiedHistogramData)}>modifiedHistogramData</Button>
-
+            <Button onClick={() => console.log(groupedResults)}>Grouped Results</Button>
             {displayHistogram &&
                 (dataIsFetched ? <div>
                     <h3>Activity Histogram for {selectedUser}</h3>
