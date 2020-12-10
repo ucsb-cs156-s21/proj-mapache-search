@@ -1,6 +1,6 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
-import SearchMessagesByUser from "../../../main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
