@@ -6,7 +6,6 @@ import useSWR from "swr";
 import SearchMessagesByUser from "../../../main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("swr");
 jest.mock("react-router-dom", () => {
     return {
         'useParams': jest.fn(),
@@ -14,21 +13,21 @@ jest.mock("react-router-dom", () => {
 });
 
 describe("SearchMessagesByUser tests", () => {
-    beforeEach(() => {
-        useParams.mockReturnValue({
-            'user': 'test-user'
-        });
-    });
 
     test("renders without crashing", () => {
-        //useSWR.mockReturnValue({});
         render(<SearchMessagesByUser />);
     });
 
-    test("renders without crashing", () => {
-        //useSWR.mockReturnValue({});
+    test("renders without crashing on search", () => {
         const { getByLabelText } = render(<SearchMessagesByUser />);
         const selectSearchUser = getByLabelText("Search User");
         userEvent.type(selectSearchUser, "springboot");
+    });
+
+    test("searchUser state changes when user types in search bar", () => {
+        const { getByLabelText } = render(<SearchMessagesByUser />); 
+        const selectSearchUser = getByLabelText("Search User");
+        userEvent.type(selectSearchUser, "Test Jones");
+        expect(selectSearchUser.value).toBe("Test Jones");
     });
 });
