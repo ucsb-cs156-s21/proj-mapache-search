@@ -16,7 +16,7 @@ describe("StudentForm tests", () => {
   });
 
   test("component with existing course renders without crashing", () => {
-    render(<StudentForm existingStudent={sampleStudent}/>);
+    render(<StudentForm existingStudents={sampleStudent}/>);
   });
 
   test("updating student team works", async () => {
@@ -24,7 +24,7 @@ describe("StudentForm tests", () => {
     const updateStudentMock = jest.fn();
 
     const { getByText, getByDisplayValue } = render
-      (<StudentForm updateStudent={updateStudentMock} existingStudent={sampleStudent}/>)
+      (<StudentForm updateStudent={updateStudentMock} existingStudents={sampleStudent}/>)
     ;
 
     const updatedStudent = {
@@ -41,7 +41,6 @@ describe("StudentForm tests", () => {
 
     expect(updateStudentMock).toHaveBeenCalledTimes(1);
     expect(updateStudentMock).toHaveBeenCalledWith(updatedStudent, updatedStudent.id);
-
   });
 
   test("creating student works", async () => {
@@ -49,13 +48,13 @@ describe("StudentForm tests", () => {
     const createStudentMock = jest.fn();
 
     const { getByLabelText, getByText } = render
-      (<StudentForm createStudent={createStudentMock} />)
+      (<StudentForm addStudent={createStudentMock} />)
     ;
 
-    const emailInput = getByLabelText("email");
+    const emailInput = getByLabelText("Email");
     userEvent.type(emailInput, sampleStudent.email);
 
-    const teamInput = getByLabelText("teamName");
+    const teamInput = getByLabelText("TeamName");
     userEvent.type(teamInput, sampleStudent.teamName);
 
     const submitButton = getByText("Submit");

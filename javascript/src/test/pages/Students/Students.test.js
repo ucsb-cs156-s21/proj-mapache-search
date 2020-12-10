@@ -2,19 +2,25 @@ import React from "react";
 import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
 jest.mock("swr");
+
 import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
+
 import Students from "main/pages/Students/Students";
+import { buildCreateStudent, buildDeleteStudent, buildUpdateStudent, buildDeleteAllStudents, uploadStudentsCSV } from "main/services/StudentServices";
+jest.mock("main/services/StudentServices", () => ({
+  buildCreateStudent: jest.fn(),
+  buildDeleteStudent: jest.fn(),
+  buildUpdateStudent: jest.fn(),
+  buildDeleteAllStudents: jest.fn(),
+  uploadStudentsCSV: jest.fn()
+}) );
+
 import userEvent from "@testing-library/user-event";
+
 import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-import { buildCreateCourse, buildDeleteCourse, buildUpdateCourse } from "main/services/Courses/CourseService";
 
-jest.mock("main/services/Courses/CourseService", () => ({
-  buildCreateCourse: jest.fn(),
-  buildDeleteCourse: jest.fn(),
-  buildUpdateCourse: jest.fn()
-}) );
 import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
@@ -82,7 +88,8 @@ describe("Students page test", () => {
 
   test("can delete a student", async () => {
     const fakeDeleteFunction = jest.fn();
-    buildDeleteCourse.mockReturnValue(fakeDeleteFunction);
+    buildDeleteStudent.mockReturnValue(fakeDeleteFunction);
+
     const { getAllByTestId } = render(<Students />);
     const deleteButtons = getAllByTestId("delete-button");
     userEvent.click(deleteButtons[0]);
@@ -90,7 +97,6 @@ describe("Students page test", () => {
   });
 
   test("can edit a course", async () => {
-
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
       push: pushSpy
@@ -104,14 +110,13 @@ describe("Students page test", () => {
   });
 
   test("can click to add a course", async () => {
-
     const pushSpy = jest.fn();
     useHistory.mockReturnValue({
       push: pushSpy
     });
 
     const { getByText } = render(<Students />);
-    const newCourseButton = getByText("New Course");
+    const newCourseButton = getByText("New Student");
     userEvent.click(newCourseButton);
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
