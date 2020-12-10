@@ -15,7 +15,7 @@ export default ({ messages = [] }) => {
     ];
 
     if(!(messages === undefined) || !(messages.length == 0)) {
-        for (let i = 0; i < messagesLength; i++) {
+        for (let i = 0; i < messages.length; i++) {
             if(!messageChannels.some(e => e.channel == messages[i].channel)) {
                 const channelCountPair = {
                     channel: messages[i].channel,
