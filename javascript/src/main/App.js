@@ -12,10 +12,10 @@ import Admin from "main/pages/Admin/Admin";
 import SlackUsers from "./pages/Admin/SlackUsers";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
-import AnalyzeReactions from "../main/pages/AnalyzeMessageData/AnalyzeReactions";
-import CountMessagesByUser from "../main/pages/AnalyzeMessageData/CountMessagesByUser";
-import HistogramOfMessagesByUser from "../main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
-import SearchMessagesByUser from "../main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
+import CountMessagesByUser from "main/pages/AnalyzeMessageData/CountMessagesByUser";
+import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
+import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import ChannelPage from "./pages/Channels/ChannelPage";
 import SearchResults from "./pages/Messages/SearchResults";
 
@@ -31,14 +31,13 @@ function App() {
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/channels/:channel" component={ChannelPage} authorizedRoles={["admin", "member"]} />
-          <PrivateRoute path="/profile" component={Profile} />
-          <Route path="/about" component={About} />
-          <Route path="/" exact component={Home} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/messagehistogram" exact component={HistogramOfMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
-
+          <PrivateRoute path="/profile" component={Profile} />
+          <Route path="/about" component={About} />
+          <Route path="/" exact component={Home} />
         </Switch>
       </Container>
       <AppFooter />
