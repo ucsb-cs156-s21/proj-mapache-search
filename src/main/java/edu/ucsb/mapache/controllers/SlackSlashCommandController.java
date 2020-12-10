@@ -171,7 +171,6 @@ public class SlackSlashCommandController {
 
     
     public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
-<<<<<<< HEAD
         
         
         SearchParameters sp = new SearchParameters();
@@ -185,57 +184,7 @@ public class SlackSlashCommandController {
         sp.setQuery(attachments);
         sp.setPage(1);
         String body = googleSearchService.getJSON(sp,apiToken);
-=======
-        // richMessage.setResponseType("ephemeral");
-        String[] textParts = params.getTextParts();
-        String finResults = "";
-        try { 
-            String baseURL = "https://www.google.com/search?q=";
-            
-            // make new baseURL using getTextParts as input;
-            // assuming input is formatted as /mapache googleSearch "input words" // textparts is a java array 
-            String attachments = "";
-            for (int i = 2; i < textParts.length; i++) {
-                if (i != 2) {attachments += "+";}
-                attachments += textParts[i];
-            }
-	    // for testing IOexception
-	    if (attachments == "") { throw new IOException(); }
-	    // end of testing IOexception
-            baseURL = baseURL + attachments;
-            Document searchPage = Jsoup.connect(baseURL).get();
 
-            Elements links = searchPage.select("div.J9WfR eqAnXb");
-            links = searchPage.select("a[href]");
-            //
-
-            ArrayList<String> linkArrays = new ArrayList<String>();
-
-            for (Element l : links) {
-				String temp = l.attr("abs:href");
-				if (temp.contains("https://www.google.com") == false &&
-						temp.contains("https://www.youtube.com") == false &&
-						temp.contains("https://support.google.com") == false &&
-						temp.contains("https://maps.google.com") == false &&
-                        			temp.contains("https://policies.google.com") == false &&
-                        			temp.contains("https://webcache.google") == false){
-					linkArrays.add(temp);
-				}
-            }
-            
-            for (int i = 0; i < 3; i++) {
-                finResults += linkArrays.get(i);
-                if (i != 2) { finResults += "\n";}
-            }
-            
-
-
-        } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
->>>>>>> 1aea20c... FU - added coverage for IOException and general codecoverage
         RichMessage richMessage = new RichMessage(
                 String.format("google search results = %s", body));
         richMessage.setResponseType("ephemeral");
