@@ -5,6 +5,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
 import useSWR from "swr";
 jest.mock("swr");
+import { fetchWithToken } from "main/utils/fetch";
+import userEvent from "@testing-library/user-event";
+jest.mock("main/utils/fetch");
 
 describe("Profile tests", () => {
   beforeEach(() => {
@@ -35,4 +38,22 @@ describe("Profile tests", () => {
     const { getByText } =render(<Profile />);
     expect(getByText("Admin")).toBeInTheDocument();
   });
+  test("renders when submit button is pressed", () => {
+    fetchWithToken.mockResolvedValue([]);
+    const { getByText } = render(<Profile />);
+    userEvent.click(getByText("Submit"));
+    expect(fetchWithToken).toHaveBeenCalled();
+  });
+  test("when I click submit button, ", () => {
+    fetchWithToken.mockImplementation(new Error());
+    const { getByText } = render(<Profile />);
+    userEvent.click(getByText("Submit"));
+    expect(fetchWithToken).toHaveBeenCalled();
+  });
+  test("when I enter a token, the state for token changes", () => {
+    const { getByPlaceholderText } = render(<Profile />);
+    const enterToken = getByPlaceholderText("Enter your API token");
+    userEvent.type(enterToken, "github");
+    expect(enterToken.value).toBe("github");
+});
 });

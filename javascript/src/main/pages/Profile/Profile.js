@@ -63,19 +63,14 @@ const Profile = () => {
     const answer = await addAPIToken(e);
     setResults(answer);
     const apiReturn = await fetchApiToken(e);
-    if(apiReturn === null)
-      alert('API null !!!!!!!!!');
     alert('API was submitted: ' + apiReturn);
   }
-
-  let currentApiTokenStatus = <p>You do not have an API Token associated with your account!</p>;
-
-  if (fetchApiToken == undefined){
-    currentApiTokenStatus = <p>
-    Your current API Token is: {fetchApiToken}
-    </p>;
+  
+  function returnApiTokenStatus(){
+    return <p>You do not have an API Token associated with your account!</p>;
   }
-
+  let currentApiTokenStatus = returnApiTokenStatus();
+  
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -97,7 +92,7 @@ const Profile = () => {
       </Row>
 
       {currentApiTokenStatus}
-      
+
       <p>
       Don't have an API key or want to learn more? <a href="https://developers.google.com/custom-search/v1/overview">Consider clicking here!</a>
       </p>
