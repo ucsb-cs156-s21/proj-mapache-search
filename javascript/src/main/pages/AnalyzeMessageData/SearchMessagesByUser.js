@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import UserMessageList from "main/components/UserMessages/UserMessageList"
 import { Form, Button } from "react-bootstrap";
-import useSWR from 'swr';
 
 const SearchMessagesByUser = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const [ searchUser, setSearchUser ] = useState('');
     const [ searchResults, setSearchResults ] = useState([]);
-    // const { data: searchResults } = useSWR([`/api/members/messages/usersearch?searchUser=${searchUser}`, getToken], fetchWithToken);
 
     const handleSearchUserOnChange = (event) => {
         setSearchUser(event.target.value);
