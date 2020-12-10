@@ -18,8 +18,10 @@ import AnalyzeReactions from "../main/pages/AnalyzeMessageData/AnalyzeReactions"
 import CountMessagesByUser from "../main/pages/AnalyzeMessageData/CountMessagesByUser";
 import HistogramOfMessagesByUser from "../main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "../main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import ChannelPageList from "./pages/Channels/ChannelPageList";
+import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
-import ChannelPage from "./pages/Channels/ChannelPage";
+
 import SearchResults from "./pages/Messages/SearchResults";
 
 
@@ -36,7 +38,8 @@ function App() {
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/search" exact component={Search} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
-          <AuthorizedRoute path="/member/channels/:channel"  component={ChannelPage} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageList} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/channels/:channel" component={ChannelPageScrollable} authorizedRoles={["admin","member"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
