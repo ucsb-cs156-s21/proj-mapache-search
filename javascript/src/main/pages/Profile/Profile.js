@@ -18,16 +18,22 @@ const Profile = () => {
     inputApiToken: "",
   }
 
+  const [apiToken, setApiToken] = useState(emptyToken);
+  const [results, setResults] = useState({});
+
   // Function to add token to account here
   const addAPIToken = async (event) => {
-    const url = `/apiKey/${apiToken.inputApiToken}`;
+    const url = `/api/addApiKey`;
     
         try {
           const result = await fetchWithToken(url, getToken, {
             method: "PUT",
             headers: {
               "content-type": "application/json",
-            },
+            }, 
+            body: {
+              "token": apiToken
+            }
           });
           console.log(`result=${JSON.stringify(result)}`)
           return result;
@@ -37,7 +43,7 @@ const Profile = () => {
   };
 
   const fetchApiToken = async (event) => {
-    const url = `/apiKey`;
+    const url = `/api/apiKey`;
     try {
         const result = await fetchWithToken(url, getToken, {
             method: "GET",
@@ -51,8 +57,7 @@ const Profile = () => {
         console.log(`err=${err}`)
     }
 };
-  const [apiToken, setApiToken] = useState(emptyToken);
-  const [results, setResults] = useState({});
+
   // Function to put handle on submit
   const handleOnSubmit = async (e) => {
      e.preventDefault();

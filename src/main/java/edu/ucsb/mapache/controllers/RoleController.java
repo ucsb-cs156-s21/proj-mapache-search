@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/api")
@@ -112,9 +113,9 @@ public class RoleController {
 
   //Sets API Token
 
-  @PutMapping("/apiKey/{token}")
+  @PutMapping(value = "/api/addApiKey", produces = "application/json")
   public ResponseEntity<String> setApiToken(@RequestHeader("Authorization") String authorization, 
-  @PathVariable("token") String token) 
+  @RequestBody @Valid String token) 
       throws JsonProcessingException {
         AppUser user = authControllerAdvice.getUser(authorization);
         user.setApiToken(token);

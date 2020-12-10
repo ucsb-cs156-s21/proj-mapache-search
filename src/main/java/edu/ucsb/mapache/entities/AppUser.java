@@ -70,7 +70,6 @@ public class AppUser {
     return email;
   }
 
-<<<<<<< HEAD
   public int getSearchRemain(){
     return searchRemain;
   }
@@ -94,18 +93,6 @@ public class AppUser {
   @Override
   public String toString() {
     return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s, searchRemain=%d]", id, email, firstName, lastName, searchRemain);
-=======
-  // Getter for API Token
-  public String getAPIToken() {
-    return apiToken;
-  }
-
-  public AppUser(long id, String email, String firstName, String lastName, String apiToken) {
-    this.id = id;
-    this.email = email;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.apiToken = apiToken;
   }
 
   public String getApiToken() {
@@ -114,27 +101,6 @@ public class AppUser {
 
   public void setApiToken(String apiToken) {
     this.apiToken = apiToken;
-  }
-
-  public AppUser id(long id) {
-    this.id = id;
-    return this;
-  }
-
-  public AppUser email(String email) {
-    this.email = email;
-    return this;
-  }
-
-  public AppUser firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-  public AppUser lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
->>>>>>> b79d168... cb/sc - implemented api controller for search token
   }
 
   public AppUser apiToken(String apiToken) {
