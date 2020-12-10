@@ -18,16 +18,4 @@ describe("SearchMessagesByUser tests", () => {
         render(<SearchMessagesByUser />);
     });
 
-    test("renders without crashing on search", () => {
-        const { getByLabelText } = render(<SearchMessagesByUser />);
-        const selectSearchUser = getByLabelText("Search User");
-        userEvent.type(selectSearchUser, "springboot");
-    });
-
-    test("searchUser state changes when user types in search bar", () => {
-        const { getByLabelText } = render(<SearchMessagesByUser />); 
-        const selectSearchUser = getByLabelText("Search User");
-        userEvent.type(selectSearchUser, "Test Jones");
-        expect(selectSearchUser.value).toBe("Test Jones");
-    });
 });
