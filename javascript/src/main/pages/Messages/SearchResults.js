@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import { fetchWithToken } from "main/utils/fetch";
-import MessageList from "main/components/ChannelMessages/MessageList"
+import MessageListView from "main/components/ChannelMessages/MessageListView"
 import { Form, Button } from "react-bootstrap";
 
 const SearchPage = () => {
@@ -24,7 +24,7 @@ const SearchPage = () => {
                     <Form.Control type="text" placeholder="Enter Search String" />
                 </Form.Group>
             </Form>
-            <MessageList messages = {searchResults || []} />
+            <MessageListView messages = {searchResults || []} />
         </>
     );
 };
