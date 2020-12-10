@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Button } from "react-bootstrap";
 import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "../../utils/fetch";
+import aggregateUserMessageCount from "../../utils/aggregateUserMessageCount";
 
 const CountMessagesByUser = () => {
     const columns = [{
@@ -17,7 +17,7 @@ const CountMessagesByUser = () => {
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
     const{ data: messages} = useSWR(["/api/members/messages/allmessages", getToken], fetchWithToken);
 
-    const aggregateUserMessageCount = (agg_messages, agg_slackUsers) => {
+    /* const aggregateUserMessageCount = (agg_messages, agg_slackUsers) => {
         const userMessageCounts = [];
 
         var i;
@@ -36,7 +36,7 @@ const CountMessagesByUser = () => {
             userMessageCounts.push(userCountPair);
         }
         return userMessageCounts;
-    }
+    } */
 
     const userMessageCount = messages && slackUsers ? aggregateUserMessageCount(messages, slackUsers) : []
     

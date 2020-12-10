@@ -96,6 +96,34 @@ public class MessagesControllerTests {
         }
 
         @Test
+        public void test_getMessages_unauthorizedIfNotMember() throws Exception {
+          mockMvc
+              .perform(
+                  get("/api/members/messages/allmessages").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+              .andExpect(status().is(401));
+        }
+
+        @Test
+        public void test_getMessages_getsListOfMessages() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+            
+                when(mockMessageRepository.findAll()).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+            
+                MvcResult response = mockMvc
+                    .perform(
+                        get("/api/members/messages/allmessages").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                    .andExpect(status().isOk()).andReturn();
+            
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+            
+                assertEquals(expectedMessages, messages);
+            
+              }
+
+        @Test
         public void test_contentsearch_messages_with_empty_string() throws Exception {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByText("")).thenReturn(expectedMessages);
@@ -107,6 +135,7 @@ public class MessagesControllerTests {
                 List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
                 });
                 assertEquals(expectedMessages, messages);
+        
         }
 
         // @Test
