@@ -33,6 +33,7 @@ public class GoogleSearchService {
     public GoogleSearchService() {
     }
 
+    // This is the full format of the google api endpoint!
     // private static final String SEARCH_ENDPOINT =
     //     "https://www.googleapis.com/customsearch/v1?key={key}&cx={searchId}&q={query}&alt={outputFormat}&start={start}&siteSearch={siteRestrict}&dateRestrict={dateRestrict}";
     private static final String SEARCH_ENDPOINT =
@@ -57,9 +58,6 @@ public class GoogleSearchService {
                 "searchId", searchId,
                 "query", params.getQuery(),
                 "outputFormat", "json"
-                // "start", Integer.toString(startIndex),
-                // "siteRestrict", params.getWebsite(),
-                // "dateRestrict", params.getLastUpdated()
             );
 
         String retVal = "";

@@ -94,10 +94,6 @@ public class SearchControllerTests {
             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
         .andExpect(status().isForbidden()).andReturn();
 
-    // String responseString = response.getResponse().getContentAsString();
-
-    // assertEquals("SampleResult", responseString);
-
   }
 
   @Test

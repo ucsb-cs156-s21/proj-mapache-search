@@ -6,7 +6,7 @@ import ProfileNav from "main/components/Nav/ProfileNav";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
-
+import Search from "main/pages/Search/Search";
 
 function AppNavbar() {
   const { getAccessTokenSilently: getToken } = useAuth0();
@@ -27,6 +27,7 @@ function AppNavbar() {
               <NavDropdown title="Admin">
                   <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/slackUsers">Slack Users</NavDropdown.Item>
+                  <NavDropdown.Item href="/admin/teams">Manage Teams</NavDropdown.Item>
                   <NavDropdown.Item href="/admin/searchInfo">Search Information</NavDropdown.Item>
               </NavDropdown>
           }
@@ -35,10 +36,20 @@ function AppNavbar() {
                   <NavDropdown.Item href="/member/channels">List Channels</NavDropdown.Item>
               </NavDropdown>
           }
+          { (isMember || isAdmin)  &&
+              <NavDropdown title="Search">
+                  <NavDropdown.Item href="/member/messages/search">Message Search</NavDropdown.Item>
+              </NavDropdown>
+          }
         <LinkContainer to={"/about"}>
             <Nav.Link>About</Nav.Link>
         </LinkContainer>
         <ProfileNav />
+          { (isMember || isAdmin) && 
+              <LinkContainer to={"/member/search"}>
+                  <Nav.Link>Search</Nav.Link>
+              </LinkContainer> 
+          }
       </Nav>
       <Navbar.Collapse className="justify-content-end">
         <AuthNav />

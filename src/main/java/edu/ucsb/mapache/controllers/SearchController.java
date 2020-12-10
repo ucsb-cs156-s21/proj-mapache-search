@@ -106,7 +106,6 @@ public class SearchController {
         String body = googleSearchService.getJSON(sp,apiToken);
         logger.info("body={}", body);
 
-        //the body that's passed into line 58 should be the JSON for the search results
         return ResponseEntity.ok().body(body);
     }
 
@@ -123,7 +122,6 @@ public class SearchController {
         response.put("quota", searchRemain);
         String body = mapper.writeValueAsString(response);
 
-        //the body that's passed into line 58 should be the JSON for the search results
         return ResponseEntity.ok().body(body);
     }
 }
