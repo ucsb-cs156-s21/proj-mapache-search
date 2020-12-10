@@ -44,7 +44,7 @@ describe("students CSV Upload test", () => {
     });
     test("upload file without crashing", () => {
         const addTask = jest.fn();
-        addTask.mockImplementation(async () => {
+        addTask.mockImplementation(async () => {   
             throw new Error();
         });
         const testFile = new File(['test'], 'test.csv', {type: 'text/csv'});
@@ -55,7 +55,6 @@ describe("students CSV Upload test", () => {
         expect(input.files.item(0)).toStrictEqual(testFile)
         expect(input.files).toHaveLength(1)
 
-        userEvent.click(getByText("Submit"));
-        
+        userEvent.click(getByText("Submit")); 
     });
 });

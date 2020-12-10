@@ -83,5 +83,4 @@ describe("New Student page test", () => {
     expect(submitButton).toBeInTheDocument();
     userEvent.click(submitButton);
   });
-
 });

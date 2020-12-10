@@ -45,6 +45,12 @@ public class Student {
     if (obj == null || getClass() != obj.getClass())
       return false;
     Student other = (Student) obj;
+<<<<<<< HEAD
+=======
+    // Using EqualsBuilder cuts down on the number of branches/tests we end up having to write.
+    // Instead of needing to test equals failing on a difference in every single field, we can
+    // just test one difference.
+>>>>>>> kn : added student CRUD operations which can only be done by admins. Furthermore, there is an added csvupload option which converts the student csvs into student objects. The backend/frontend is done for these and the testcoverages.
     EqualsBuilder builder = new EqualsBuilder();
     builder.append(id, other.id).append(email, other.email).append(teamName, other.teamName);
     return builder.isEquals();

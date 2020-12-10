@@ -47,7 +47,6 @@ const Students = () => {
           Make sure that the uploaded CSV contains a header
         </p>
         <StudentCSVButton addTask={uploadedStudents}/>
-        {/* <StudentForm addStudent={createStudent} existingStudents={studentList}/> */}
         <Row style={{paddingTop: 10}}>
             <Col xs={6} style={{ padding: 0 }}>
               <Button onClick={()=>history.push("/students/new")}>New Student</Button>

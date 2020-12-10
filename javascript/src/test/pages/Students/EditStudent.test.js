@@ -129,6 +129,4 @@ describe("Edit Course page test", () => {
     expect(submitButton).toBeInTheDocument();
     userEvent.click(submitButton);
   });
-
-
 });
