@@ -34,7 +34,7 @@ const SearchMessagesByUser = () => {
                     <Button onClick={handleSearchUserOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
-            <UserMessageList messages = {searchResults || []} />
+            <UserMessageList messages = {searchResults} />
         </>
     );
 };
