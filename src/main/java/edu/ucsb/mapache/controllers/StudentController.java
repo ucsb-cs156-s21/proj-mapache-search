@@ -82,7 +82,7 @@ public class StudentController {
   public ResponseEntity<String> deleteStudents(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
-    studentRepository.deleteAll();
+      studentRepository.deleteAll();
     return ResponseEntity.noContent().build();
   }
   @GetMapping(value = "", produces = "application/json")
