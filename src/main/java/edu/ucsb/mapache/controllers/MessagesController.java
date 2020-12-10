@@ -72,17 +72,13 @@ public class MessagesController {
     @GetMapping("/reactionsearch")
     public ResponseEntity<String> getReactionofChannel(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchReaction) throws JsonProcessingException {
-        String new_S = searchReaction;
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
-        // logger.info("searchReaction=%s",searchReaction);
+        logger.info("searchReaction=" + searchReaction);
         if (searchReaction.equals("")) {
             return ResponseEntity.ok().body("[]");
         }
-        if (searchReaction.equals("1") || searchReaction.equals("+1")) {
-            new_S = "+1";
-        }
-        Iterable<Message> messages = messageRepository.findByReactionName(new_S);
+        Iterable<Message> messages = messageRepository.findByReactionName(searchReaction);
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }

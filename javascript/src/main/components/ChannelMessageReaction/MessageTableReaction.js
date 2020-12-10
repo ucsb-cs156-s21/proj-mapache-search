@@ -8,7 +8,7 @@ export default ({ messages=[],reaction }) => {
 
         if (row.message_reactions !== null) {
             const correctReaction = row.message_reactions.find((message_reaction) => {
-                return message_reaction.name === reaction;
+                return message_reaction[0].name == reaction;
             });
             console.log(correctReaction);
             return correctReaction.count;

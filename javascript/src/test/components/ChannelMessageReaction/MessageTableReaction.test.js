@@ -7,3 +7,33 @@ describe("MessageTableReactions tests", () => {
         render(<MessageTableReaction/>);
     });
 });
+
+// test("row.message_reactions is null", () => {
+    //     const testMessages = [{
+    //         user: "test-user",
+    //         text: "test-text",
+    //         message_reactions = [{}]
+    //     }]
+    //     const { getByText } = render(<MessageTableReaction messages = {testMessages} reactions = {'test-reaction'}/>);
+    //     const subjectFormattter = getByText(/reactions field not found/);
+    //     expect(subjectFormattter).toBeInTheDocument();
+    // });
+
+    test("row.message_reactions is not null", () => {
+        const testMessages = [{
+            user: "test-user",
+            text: "test-text",
+            message_reactions: [{
+                count: 1,
+                name: "test-name"
+            }]
+        }];
+        const testReaction = "test-name";
+        const { getByText } = render(<MessageTableReaction messages = {testMessages} reactions = {testReaction}/>);
+        const testUser = getByText(/test-user/);
+        const testText = getByText(/test-text/);
+        const testCount = getByText(/1/);
+        expect(testUser).toBeInTheDocument();
+        expect(testText).toBeInTheDocument();
+        expect(testCount).toBeInTheDocument();
+    });
