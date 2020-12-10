@@ -18,22 +18,32 @@ const Profile = () => {
     inputApiToken: "",
   }
 
+<<<<<<< HEAD
   const [apiToken, setApiToken] = useState(emptyToken);
   const [results, setResults] = useState({});
 
   // Function to add token to account here
   const addAPIToken = async (event) => {
     const url = `/api/addApiKey`;
+=======
+  // Function to add token to account here
+  const addAPIToken = async (event) => {
+    const url = `/apiKey/${apiToken.inputApiToken}`;
+>>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
     
         try {
           const result = await fetchWithToken(url, getToken, {
             method: "PUT",
             headers: {
               "content-type": "application/json",
+<<<<<<< HEAD
             }, 
             body: {
               "token": apiToken
             }
+=======
+            },
+>>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
           });
           console.log(`result=${JSON.stringify(result)}`)
           return result;
@@ -43,7 +53,11 @@ const Profile = () => {
   };
 
   const fetchApiToken = async (event) => {
+<<<<<<< HEAD
     const url = `/api/apiKey`;
+=======
+    const url = `/apiKey`;
+>>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
     try {
         const result = await fetchWithToken(url, getToken, {
             method: "GET",
@@ -57,7 +71,12 @@ const Profile = () => {
         console.log(`err=${err}`)
     }
 };
+<<<<<<< HEAD
 
+=======
+  const [apiToken, setApiToken] = useState(emptyToken);
+  const [results, setResults] = useState({});
+>>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
   // Function to put handle on submit
   const handleOnSubmit = async (e) => {
      e.preventDefault();

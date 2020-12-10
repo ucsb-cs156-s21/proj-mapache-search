@@ -19,10 +19,13 @@ public class AppUser {
   private String firstName;
   @Column(nullable = false)
   private String lastName;
+<<<<<<< HEAD
   @Column(nullable = false, columnDefinition = "integer default 100") 
   private int searchRemain=100;
   @Column(nullable = false)
   private long time;
+=======
+>>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
   // Added below instance variable to associate custom API token w/ an AppUser
   @Column(nullable = true)
   private String apiToken;
@@ -70,6 +73,7 @@ public class AppUser {
     return email;
   }
 
+<<<<<<< HEAD
   public int getSearchRemain(){
     return searchRemain;
   }
@@ -103,6 +107,49 @@ public class AppUser {
     this.apiToken = apiToken;
   }
 
+=======
+  // Getter for API Token
+  public String getAPIToken() {
+    return apiToken;
+  }
+
+  public AppUser(long id, String email, String firstName, String lastName, String apiToken) {
+    this.id = id;
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.apiToken = apiToken;
+  }
+
+  public String getApiToken() {
+    return this.apiToken;
+  }
+
+  public void setApiToken(String apiToken) {
+    this.apiToken = apiToken;
+  }
+
+  public AppUser id(long id) {
+    this.id = id;
+    return this;
+  }
+
+  public AppUser email(String email) {
+    this.email = email;
+    return this;
+  }
+
+  public AppUser firstName(String firstName) {
+    this.firstName = firstName;
+    return this;
+  }
+
+  public AppUser lastName(String lastName) {
+    this.lastName = lastName;
+    return this;
+  }
+
+>>>>>>> 6dca1329b74d108ad745acb32b232132ce3bb751
   public AppUser apiToken(String apiToken) {
     this.apiToken = apiToken;
     return this;
