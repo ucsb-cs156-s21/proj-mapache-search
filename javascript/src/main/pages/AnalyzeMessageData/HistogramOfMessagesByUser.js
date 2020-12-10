@@ -3,26 +3,16 @@ import Select from "react-select";
 import useSWR from "swr";
 import { fetchWithToken } from "../../utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
-import { XYPlot, VerticalBarSeries, XAxis, YAxis } from 'react-vis';
-import BootstrapTable, { TableHeaderColumn } from 'react-bootstrap-table-next';
+import BootstrapTable from 'react-bootstrap-table-next';
 import { Row, Col, Button } from "react-bootstrap";
 
-const data = [
-    { x: 0, y: 8 },
-    { x: 1, y: 5 },
-    { x: 2, y: 4 },
-    { x: 3, y: 9 },
-    { x: 4, y: 1 },
-    { x: 5, y: 7 },
-    { x: 6, y: 6 },
-    { x: 7, y: 3 },
-    { x: 8, y: 2 },
-    { x: 9, y: 0 }
-];
-
 const columns = [{
-    dataField: 'ts',
-    text: 'Timestamp'
+    dataField: 'week',
+    text: 'Week'
+},
+{
+    dataField: 'count',
+    text: 'Count'
 }
 ];
 
@@ -33,7 +23,7 @@ const HistogramOfMessagesByUser = () => {
     const [displayHistogram, setDisplayHistogram] = useState(false);
     const [dataIsFetched, setDataIsFetched] = useState(true);
     const [modifiedHistogramData, setModifiedHistogramData] = useState([]);
-    const [groupedResults, setGroupedResults] = useState([]);
+    const [perWeekHistogramData, setPerWeekHistogramData] = useState([]);
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
     const [userOptions, setUserOptions] = useState([]);
@@ -65,13 +55,24 @@ const HistogramOfMessagesByUser = () => {
             method: 'GET'
         }).then(response => {
             response.map(i => {
-                const formatDate = moment.unix(i.ts).format('YYYY-MM-DD');
+                const formatDate = moment.unix(i.ts).format('DD/MM/YYYY');
+                const formatWeek = moment.unix(i.ts).isoWeek()
                 setModifiedHistogramData(modifiedHistogramData => [
                     ...modifiedHistogramData,
-                    formatDate
+                    formatWeek
                 ]);
             })
-            setGroupedResults(_.groupBy(modifiedHistogramData, modifiedHistogramData => moment(modifiedHistogramData['ts'], 'YYYY-MM-DD'))
+            modifiedHistogramData.map((element) => {
+                let tmp = modifiedHistogramData.filter((week) => week === element);
+                setPerWeekHistogramData(perWeekHistogramData => [
+                    ...perWeekHistogramData,
+                    {
+                        "week": element,
+                        "count": tmp.length
+                    }
+                ])
+                setModifiedHistogramData(modifiedHistogramData => modifiedHistogramData.filter((week) => week !== element));
+            })
             setDataIsFetched(true);
         });
     }
@@ -97,23 +98,19 @@ const HistogramOfMessagesByUser = () => {
                     />
                 </Col>
                 <Col xs={1}>
-                    <Button outline onClick={handleSelectUserSubmit}>Go</Button>
+                    <Button outline id="submit-button" onClick={handleSelectUserSubmit}>Go</Button>
                 </Col>
             </Row>
             <Button onClick={() => console.log(modifiedHistogramData)}>modifiedHistogramData</Button>
-            <Button onClick={() => console.log(groupedResults)}>Grouped Results</Button>
+            <Button onClick={() => console.log(_.uniqWith(perWeekHistogramData, _.isEqual))}>perWeekHistogramData</Button>
             {displayHistogram &&
                 (dataIsFetched ? <div>
-                    <h3>Activity Histogram for {selectedUser}</h3>
+                    <h3>Activity for {selectedUser}</h3>
+                    <BootstrapTable keyField='week' data={_.uniqWith(perWeekHistogramData, _.isEqual) || []} columns={columns}></BootstrapTable>
                 </div> : <div className="spinner-border text-primary" role="status">
                         <span className="sr-only">Loading...</span>
                     </div>)
             }
-            {/* {displayHistogram && <XYPlot height={400} width={400}>
-                <VerticalBarSeries data={data} />
-                <XAxis title="Week #" />
-                <YAxis title="Message Count" />
-            </XYPlot>} */}
         </div >);
 
 };
