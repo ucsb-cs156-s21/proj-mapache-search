@@ -203,4 +203,91 @@ public class SlackSlashCommandControllerTests {
         .andExpect(status().is(200));
   }
 
+
+
+  @Test
+  public void test_googleSearch_1() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+    mockMvc
+        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                
+                .param("token", slackSlashCommandController.getSlackToken())
+
+        .param("team_id", "value")
+        .param("team_domain", "value")
+        .param("channel_id", "value")
+        .param("channel_name", "value")
+        .param("user_id", "value")
+        .param("user_name", "value")
+        .param("command", "/mapache")
+        .param("text", "search google")
+        .param("response_url", "value")
+        )
+        .andExpect(status().is(200));
+  }
+
+  //testing google search
+
+  @Test
+  public void test_googleSearch_2() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+    mockMvc
+        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                
+                .param("token", slackSlashCommandController.getSlackToken())
+
+        .param("team_id", "value")
+        .param("team_domain", "value")
+        .param("channel_id", "value")
+        .param("channel_name", "value")
+        .param("user_id", "value")
+        .param("user_name", "value")
+        .param("command", "/mapache")
+        .param("text", "placeholder google")
+        .param("response_url", "value")
+        )
+        .andExpect(status().is(200));
+  }
+
+  @Test
+  public void test_googleSearch_3() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+    mockMvc
+        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                
+                .param("token", slackSlashCommandController.getSlackToken())
+
+        .param("team_id", "value")
+        .param("team_domain", "value")
+        .param("channel_id", "value")
+        .param("channel_name", "value")
+        .param("user_id", "value")
+        .param("user_name", "value")
+        .param("command", "/mapache")
+        .param("text", "search placeholder")
+        .param("response_url", "value")
+        )
+        .andExpect(status().is(200));
+  }
+
+  @Test
+  public void test_googleSearch_4() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+    mockMvc
+        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                
+                .param("token", slackSlashCommandController.getSlackToken())
+
+        .param("team_id", "value")
+        .param("team_domain", "value")
+        .param("channel_id", "value")
+        .param("channel_name", "value")
+        .param("user_id", "value")
+        .param("user_name", "value")
+        .param("command", "/mapache")
+        .param("text", "placeholder placeholder")
+        .param("response_url", "value")
+        )
+        .andExpect(status().is(200));
+  }
 }

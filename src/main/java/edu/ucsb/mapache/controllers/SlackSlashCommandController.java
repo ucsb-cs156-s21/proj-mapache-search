@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 
+
 // imports for google search
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,6 +29,10 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import java.util.HashMap;
 //
 
 
@@ -51,6 +56,8 @@ public class SlackSlashCommandController {
      */
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
+    @Value("${app.google.search.apiToken}")
+    private String apiToken;
 
     public String getSlackToken() {
         return slackToken;
@@ -121,6 +128,7 @@ public class SlackSlashCommandController {
             return debugCommand(params);
         }
 
+
         /////// 
 
         if (firstArg.equals("search") && textParts[1].equals("google")) {
@@ -158,68 +166,32 @@ public class SlackSlashCommandController {
 
     public RichMessage statusCommand(SlackSlashCommandParams params) {
         RichMessage richMessage = new RichMessage(
-                String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
+                String.format("From: %s Status is ok!", params.getCommand()));
         richMessage.setResponseType("ephemeral");
 
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
+    
     public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
-        // richMessage.setResponseType("ephemeral");
-        String[] textParts = params.getTextParts();
-        String finResults = "";
-        try { 
-            String baseURL = "https://www.google.com/search?q=";
-            
-            // make new baseURL using getTextParts as input;
-            // assuming input is formatted as /mapache googleSearch "input words" // textparts is a java array 
-            String attachments = "";
-            for (int i = 2; i < textParts.length; i++) {
-                if (i != 2) {attachments += "+";}
-                attachments += textParts[i];
-            }
-            baseURL = baseURL + attachments;
-            Document searchPage = Jsoup.connect(baseURL).get();
+        
+        
+        SearchParameters sp = new SearchParameters();
 
-            Elements links = searchPage.select("div.J9WfR eqAnXb");
-            links = searchPage.select("a[href]");
-            //
+        String attachments = "";
+        for (int i = 2; i < textParts.length; i++) {
+            if (i != 2) {attachments += "+";}
+            attachments += textParts[i];
+        }
 
-            ArrayList<String> linkArrays = new ArrayList<String>();
-
-            for (Element l : links) {
-				String temp = l.attr("abs:href");
-				if (temp.contains("https://www.google.com") == false &&
-						temp.contains("https://www.youtube.com") == false &&
-						temp.contains("https://support.google.com") == false &&
-						temp.contains("https://maps.google.com") == false &&
-                        temp.contains("https://policies.google.com") == false &&
-                        temp.contains("https://webcache.google") == false){
-					linkArrays.add(temp);
-				}
-            }
-            
-            for (int i = 0; i < 3; i++) {
-                finResults += linkArrays.get(i);
-                if (i != 2) { finResults += "\n";}
-            }
-            RichMessage richMessage = new RichMessage(
-                String.format(finResults, params.getCommand(), params.getTextParts()[0]));
-            
-            return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
-            // wikipedia.com
-            // site.com
-            // white.gov
-
-
-        } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        ///// compilation error unless the code below and catch block is there.
+        sp.setQuery(attachments);
+        sp.setPage(1);
+        String body = googleSearchService.getJSON(sp,apiToken);
         RichMessage richMessage = new RichMessage(
-                String.format(finResults, params.getCommand(), params.getTextParts()[0]));
-        return richMessage.encodedMessage();
+                String.format("google search results = %s", body));
+        richMessage.setResponseType("ephemeral");
+
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
 

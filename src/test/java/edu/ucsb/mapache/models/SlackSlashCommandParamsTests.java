@@ -1,22 +1,28 @@
-package edu.ucsb.mapache.models;
+package edu.ucsb.mapache.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.web.servlet.MockMvc;
 
-import net.codebox.javabeantester.JavaBeanTester;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import edu.ucsb.mapache.config.SecurityConfig;
+import edu.ucsb.mapache.repositories.ChannelRepository;
+
+import org.springframework.http.MediaType;
+
+import java.io.IOException;
 
 
-public class SlackSlashCommandParamsTests {
-
-    @Test
-    public void testGettersAndSetters() throws Exception {
-        // See: https://github.com/codebox/javabean-tester
-        // The classes that should NOT be tested with the Bean are the
-        // ones that set and get List<> instances
-        JavaBeanTester.test(SlackSlashCommandParams.class,"textParts");
-    }
+@WebMvcTest(value = SlackSlashCommandController.class)
+@Import(SecurityConfig.class)
+public class SlackSlashCommandControllerTests {
   
     @Test
     public void test_getTextParts() {
@@ -64,3 +70,4 @@ public class SlackSlashCommandParamsTests {
         assertFalse(params1.equals(o));
     }
 }
+
