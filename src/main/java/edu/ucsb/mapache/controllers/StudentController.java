@@ -62,7 +62,7 @@ public class StudentController {
   }
   @DeleteMapping(value = "/{id}", produces = "application/json")
   public ResponseEntity<String> deleteStudent(@RequestHeader("Authorization") String authorization,
-      @PathVariable("id") Long id) {
+      @PathVariable("id") Long id) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     Optional<Student> students = studentRepository.findById(id);
@@ -73,7 +73,7 @@ public class StudentController {
     return ResponseEntity.noContent().build();
   }
   @DeleteMapping(value = "", produces = "application/json")
-  public ResponseEntity<String> deleteStudents(@RequestHeader("Authorization") String authorization) {
+  public ResponseEntity<String> deleteStudents(@RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     studentRepository.deleteAll();
@@ -109,7 +109,7 @@ public class StudentController {
     return ResponseEntity.ok().body(body);
   }
   @PostMapping(value = "/upload", produces = "application/json")
-  public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) {
+  public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     logger.info("Starting upload CSV");
     String error = "";
     if (!authControllerAdvice.getIsAdmin(authorization))
