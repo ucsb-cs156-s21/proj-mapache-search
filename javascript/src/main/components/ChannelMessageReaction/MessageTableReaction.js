@@ -2,7 +2,7 @@ import React from "react";
 import BootstrapTable  from 'react-bootstrap-table-next';
 //import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-export default ({ messages = []}, {reaction = [] }) => {
+export default ({ messages=[],reaction }) => {
 
     function subjectFormatter(cell, row, rowIndex) {
 

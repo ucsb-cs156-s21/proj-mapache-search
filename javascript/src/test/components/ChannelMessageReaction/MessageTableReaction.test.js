@@ -6,12 +6,4 @@ describe("MessageTableReactions tests", () => {
     test("it renders without crashing", () => {
         render(<MessageTableReaction/>);
     });
-
-    test("row.message_reactions is null", () => {
-        const { getByText } = render(<MessageTableReaction/>);
-        const SubjectFormattter = getByText(//)
-        expect().toBe("");
-    });
-
-    test()
 });
