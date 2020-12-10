@@ -16,7 +16,7 @@ function AppNavbar() {
   );
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
   const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
-
+  
   return (
     <Navbar bg="dark" variant="dark">
       <LinkContainer to={""}>
