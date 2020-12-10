@@ -69,11 +69,11 @@ const HistogramOfMessagesByUser = () => {
                 setModifiedHistogramData(modifiedHistogramData => [
                     ...modifiedHistogramData,
                     {
-                        ts: formatDate.toString()
+                        ts: formatDate
                     }
                 ]);
-                setGroupedResults(_.groupBy(modifiedHistogramData, modifiedHistogramData => moment(modifiedHistogramData['Date'], 'DD/MM/YY').startOf('isoWeek')))
             })
+            setGroupedResults(_.groupBy(modifiedHistogramData, modifiedHistogramData => moment(modifiedHistogramData['Date'], 'DD/MM/YY').startOf('isoWeek')))
             setDataIsFetched(true);
         });
     }
@@ -102,12 +102,13 @@ const HistogramOfMessagesByUser = () => {
                     <Button outline onClick={handleSelectUserSubmit}>Go</Button>
                 </Col>
             </Row>
+            <Button onClick={() => console.log(modifiedHistogramData)}>modifiedHistogramData</Button>
+
             {displayHistogram &&
                 (dataIsFetched ? <div>
                     <h3>Activity Histogram for {selectedUser}</h3>
-                    <BootstrapTable keyField='ts' data={modifiedHistogramData || []} columns={columns} />
-                </div> : <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only">Loading...</span>
+                </div> : <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
                     </div>)
             }
             {/* {displayHistogram && <XYPlot height={400} width={400}>
@@ -115,7 +116,6 @@ const HistogramOfMessagesByUser = () => {
                 <XAxis title="Week #" />
                 <YAxis title="Message Count" />
             </XYPlot>} */}
-            <Button onClick={() => console.log(groupedResults)}>Grouped Results</Button>
         </div >);
 
 };
