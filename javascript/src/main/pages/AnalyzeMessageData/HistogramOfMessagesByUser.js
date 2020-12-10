@@ -21,9 +21,6 @@ const data = [
 ];
 
 const columns = [{
-    dataField: 'text',
-    text: 'Text',
-}, {
     dataField: 'ts',
     text: 'Timestamp'
 }
@@ -36,9 +33,27 @@ const HistogramOfMessagesByUser = () => {
     const [displayHistogram, setDisplayHistogram] = useState(false);
     const [dataIsFetched, setDataIsFetched] = useState(true);
     const [modifiedHistogramData, setModifiedHistogramData] = useState([]);
+    const [groupedResults, setGroupedResults] = useState([]);
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
-    const userOptions = [];
+    const [userOptions, setUserOptions] = useState([]);
+    var _ = require('lodash');
+    var moment = require('moment');
+
+    useEffect(() => {
+        if (!slackUsers) setUserOptions([])
+        else {
+            slackUsers.map(i => {
+                setUserOptions(userOptions => [
+                    ...userOptions,
+                    {
+                        value: i.id,
+                        label: i.real_name
+                    }
+                ])
+            })
+        }
+    }, [slackUsers])
 
     const handleSelectUserSubmit = () => {
         if (sameUser) return; //Removes the warning for duplicate keys in the BootstrapTable
@@ -50,28 +65,17 @@ const HistogramOfMessagesByUser = () => {
             method: 'GET'
         }).then(response => {
             response.map(i => {
-                const formatDate = new Date(parseInt(i.ts));
+                const formatDate = new Date(parseInt(i.ts) * 1000);
                 setModifiedHistogramData(modifiedHistogramData => [
                     ...modifiedHistogramData,
                     {
-                        text: i.text,
                         ts: formatDate.toString()
                     }
                 ]);
+                setGroupedResults(_.groupBy(modifiedHistogramData, modifiedHistogramData => moment(modifiedHistogramData['Date'], 'DD/MM/YY').startOf('isoWeek')))
             })
             setDataIsFetched(true);
         });
-    }
-
-    if (!slackUsers)
-        return <div>Loading...</div>
-    else {
-        slackUsers.map(i => {
-            userOptions.push({
-                value: i.id,
-                label: i.real_name
-            })
-        })
     }
 
     return (
@@ -81,6 +85,7 @@ const HistogramOfMessagesByUser = () => {
             <Row>
                 <Col>
                     <Select
+                        isSearchable
                         options={userOptions}
                         value={userOptions.filter(option => option.label === selectedUser)}
                         onChange={event => {
@@ -91,7 +96,6 @@ const HistogramOfMessagesByUser = () => {
                                 setSelectedUser(event.label)
                             }
                         }}
-                        isSearchable
                     />
                 </Col>
                 <Col xs={1}>
@@ -101,7 +105,7 @@ const HistogramOfMessagesByUser = () => {
             {displayHistogram &&
                 (dataIsFetched ? <div>
                     <h3>Activity Histogram for {selectedUser}</h3>
-                    <BootstrapTable keyField='text' data={modifiedHistogramData || []} columns={columns} />
+                    <BootstrapTable keyField='ts' data={modifiedHistogramData || []} columns={columns} />
                 </div> : <div class="spinner-border text-primary" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>)
@@ -111,6 +115,7 @@ const HistogramOfMessagesByUser = () => {
                 <XAxis title="Week #" />
                 <YAxis title="Message Count" />
             </XYPlot>} */}
+            <Button onClick={() => console.log(groupedResults)}>Grouped Results</Button>
         </div >);
 
 };
