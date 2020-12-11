@@ -23,12 +23,6 @@ function AppNavbar() {
         <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
       </LinkContainer>
       <Nav>
-        {isAdmin &&
-          <NavDropdown title="Admin">
-            <NavDropdown.Item href="/admin">Maintain Admins</NavDropdown.Item>
-            <NavDropdown.Item href="/admin/slackUsers">Slack Users</NavDropdown.Item>
-          </NavDropdown>
-        }
         {(isMember || isAdmin) &&
           <NavDropdown title="Channels">
             <NavDropdown.Item href="/member/channels">List Channels</NavDropdown.Item>
