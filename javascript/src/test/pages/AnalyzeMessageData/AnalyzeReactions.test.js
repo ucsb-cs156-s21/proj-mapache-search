@@ -1,6 +1,6 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
-import AnalyzeReactions from "../../../main/pages/AnalyzeMessageData/AnalyzeReactions";
+import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
 import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
