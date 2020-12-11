@@ -15,8 +15,6 @@ import SearchInfo from "./pages/Admin/SearchInfo";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
 import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
-import CountMessagesByUser from "main/pages/AnalyzeMessageData/CountMessagesByUser";
-import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import ChannelPage from "./pages/Channels/ChannelPage";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
