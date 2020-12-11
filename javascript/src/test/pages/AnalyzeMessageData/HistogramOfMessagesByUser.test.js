@@ -5,6 +5,8 @@ import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOf
 import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import useSWR from "swr";
+import weekComparator from "main/utils/weekComparator";
+import renderer from 'react-test-renderer'
 
 jest.mock("@auth0/auth0-react");
 
@@ -45,5 +47,24 @@ describe("HistogramOfMessagesByUser tests", () => {
       expect(fetchWithToken).toHaveBeenCalledTimes(1);
       expect(fetchWithToken).toHaveBeenCalledWith(expectedURL, "fakeToken", options);
     })
+  })
+
+  test("sorting by week", () => {
+    const weekOne = {
+      "week": "startDate - endDate",
+      "weekNum": 3,
+      "count": 1
+    }
+    const weekTwo = {
+      "week": "startDate - endDate",
+      "weekNum": 4,
+      "count": 1
+    }
+    const expected = -1;
+    const result = weekComparator(weekOne, weekTwo);
+    expect(result).toBe(expected);
+    const expected2 = 1;
+    const result2 = weekComparator(weekTwo, weekOne);
+    expect(result2).toBe(expected2);
   })
 });

@@ -3,6 +3,7 @@ import { fetchWithToken } from "../../utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Row, Col, Button, Form } from "react-bootstrap";
+import weekComparator from "../../utils/weekComparator";
 
 const columns = [{
     dataField: 'week',
@@ -29,27 +30,22 @@ const HistogramOfMessagesByUser = () => {
         setDataIsFetched(false);
         setDisplayHistogram(true);
         setModifiedHistogramData([]);
-        setPerWeekHistogramData([]);
         const url = `/api/members/messages/usersearch?searchUser=${selectedUser}`;
         fetchWithToken(url, getToken, {
             method: 'GET'
         }).then(response => {
             response.map(i => {
                 const formatDate = moment.unix(i.ts).format('DD/MM/YYYY');
-                const formatWeek = moment.unix(i.ts).isoWeek();
-                const formatYear = moment.unix(i.ts).isoWeekYear();
+                const formatWeek = moment.unix(i.ts).isoWeek()
                 setModifiedHistogramData(modifiedHistogramData => [
                     ...modifiedHistogramData,
-                    {
-                        week: formatWeek,
-                        year: formatYear
-                    }
+                    formatWeek
                 ]);
             })
             setDataIsFetched(true);
         }).then(() => {
             modifiedHistogramData.map((element) => {
-                let tmp = modifiedHistogramData.filter((elem) => (elem.week === element.week) && (elem.year === element.year));
+                let tmp = modifiedHistogramData.filter((week) => week === element);
                 let weekStartDate = moment().isoWeekYear(element.year).isoWeek(element.week).startOf('week').format('MM/DD/YYYY');
                 let weekEndDate = moment().isoWeekYear(element.year).isoWeek(element.week).endOf('week').format('MM/DD/YYYY');
                 setPerWeekHistogramData(perWeekHistogramData => [
@@ -60,11 +56,7 @@ const HistogramOfMessagesByUser = () => {
                         "count": tmp.length
                     }
                 ])
-                setPerWeekHistogramData(perWeekHistogramData => perWeekHistogramData.sort((a, b) => {
-                    if (a.week < b.week)
-                        return -1;
-                    return 1;
-                }))
+                setPerWeekHistogramData(perWeekHistogramData => perWeekHistogramData.sort(weekComparator));
                 setPerWeekHistogramData(perWeekHistogramData => _.uniqWith(perWeekHistogramData, _.isEqual));
                 setModifiedHistogramData(modifiedHistogramData => modifiedHistogramData.filter((week) => week !== element));
             })
