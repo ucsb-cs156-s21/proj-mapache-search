@@ -33,8 +33,8 @@ describe("AnalyzeReactions tests", () => {
   test("searchReaction state changes when user types in search bar", () => {
       const { getByLabelText } = render(<AnalyzeReactions/>); 
       const selectSearchReaction = getByLabelText("Search Reaction");
-      userEvent.type(selectSearchReaction, "Test Jones");
-      expect(selectSearchReaction.value).toBe("Test Jones");
+      userEvent.type(selectSearchReaction, "Test_Jones");
+      expect(selectSearchReaction.value).toBe("Test_Jones");
   });
 
   test("Fetch is called once and with correct url when user clicks on search button", async () => {
@@ -45,7 +45,7 @@ describe("AnalyzeReactions tests", () => {
       fetchWithToken.mockResolvedValue([]);
       const { getByText, getByLabelText } = render(<AnalyzeReactions/>);
       const selectSearchReaction = getByLabelText("Search Reaction");
-      userEvent.type(selectSearchReaction, "Test Jones");
+      userEvent.type(selectSearchReaction, "Test_Jones");
       const search = getByText("Search");
       userEvent.click(search);
       await waitFor(() => {
