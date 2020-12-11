@@ -6,19 +6,6 @@ describe("MessageTableReactions tests", () => {
     test("it renders without crashing", () => {
         render(<MessageTableReaction/>);
     });
-});
-
-// test("row.message_reactions is null", () => {
-    //     const testMessages = [{
-    //         user: "test-user",
-    //         text: "test-text",
-    //         message_reactions = [{}]
-    //     }]
-    //     const { getByText } = render(<MessageTableReaction messages = {testMessages} reactions = {'test-reaction'}/>);
-    //     const subjectFormattter = getByText(/reactions field not found/);
-    //     expect(subjectFormattter).toBeInTheDocument();
-    // });
-
     test("row.message_reactions is not null", () => {
         const testMessages = [{
             user: "test-user",
@@ -29,7 +16,7 @@ describe("MessageTableReactions tests", () => {
             }]
         }];
         const testReaction = "test-name";
-        const { getByText } = render(<MessageTableReaction messages = {testMessages} reactions = {testReaction}/>);
+        const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
         const testUser = getByText(/test-user/);
         const testText = getByText(/test-text/);
         const testCount = getByText(/1/);
@@ -37,3 +24,6 @@ describe("MessageTableReactions tests", () => {
         expect(testText).toBeInTheDocument();
         expect(testCount).toBeInTheDocument();
     });
+});
+
+
