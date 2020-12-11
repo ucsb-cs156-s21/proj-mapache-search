@@ -37,10 +37,10 @@ const AnalyzeReactions = () => {
         <>
             <h1> Search Results </h1>
             <Form>
-                <Form.Group controlId="searchReaction" onSubmit={handleSearchReactionOnChange}>
+                <Form.Group controlId="searchReaction" onChange={handleSearchReactionOnChange}>
                     <Form.Label>Search Reaction</Form.Label> <br/>
                     <a href = "https://www.webfx.com/tools/emoji-cheat-sheet/"> This is the link for the emoji names </a>
-                    <Form.Control type="submit" placeholder="Enter Search Reaction" />
+                    <Form.Control type="text" placeholder="Enter Search Reaction" />
                     <Button onClick={handleSearchReactionOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
