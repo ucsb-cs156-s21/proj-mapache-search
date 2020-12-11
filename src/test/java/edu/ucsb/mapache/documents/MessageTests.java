@@ -19,7 +19,7 @@ public class MessageTests {
         Message m = new Message("sampleType", "sampleSubtype", "sampleTs", "sampleUser", "sampleText", "sampleChannel",
                 sup, mr1);
         String expected = "Message{type='sampleType', subtype='sampleSubtype', ts='sampleTs', "
-                + "user='sampleUser', text='sampleText', channel='sampleChannel', user_profile=" + sup + mr1 + "}";
+                + "user='sampleUser', text='sampleText', channel='sampleChannel', user_profile=" + sup + ", reactions=" + mr1 + "}";
         assertEquals(expected, m.toString());
     }
 
@@ -71,16 +71,6 @@ public class MessageTests {
         SlackUserProfile newProfile = new SlackUserProfile("test@test.com", "real", "display", "name");
         m.setUser_profile(newProfile);
         assertEquals(newProfile, m.getUser_profile());
-    }
-    
-    @Test
-    public void test_getAndSetMessage_reactions() {
-        Message m = new Message();
-        MessageReactions mr = new MessageReactions(5, "name");
-        List<MessageReactions> mr1 = new ArrayList<MessageReactions>();
-        mr1.add(mr); 
-        m.setMessage_reactions(mr1);
-        assertEquals(mr, m.getMessage_reactions());
     }
 
     @Test
