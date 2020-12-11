@@ -1,44 +1,57 @@
-import React, {useEffect, useState} from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
+import { waitFor, render } from "@testing-library/react";
+import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import userEvent from "@testing-library/user-event";
 import { fetchWithToken } from "main/utils/fetch";
-import UserMessageList from "main/components/UserMessages/UserMessageList"
-import { Form, Button } from "react-bootstrap";
-import useSWR from 'swr';
+import { useAuth0 } from "@auth0/auth0-react";
 
-const SearchMessagesByUser = () => {
-    const { getAccessTokenSilently: getToken } = useAuth0();
-    const [ searchUser, setSearchUser ] = useState('');
-    const [ searchResults, setSearchResults ] = useState([]);
-   
-    const handleSearchUserOnChange = (event) => {
-        setSearchUser(event.target.value);
-    };
-    
-    const handleSearchUserOnSubmit = () => {
-        const url = `/api/members/messages/usersearch?searchUser=${searchUser}`;
+
+jest.mock("@auth0/auth0-react");
+
+jest.mock("main/utils/fetch", () => ({
+  fetchWithToken: jest.fn()
+}));
+
+describe("SearchMessagesByUser tests", () => {
+
+    beforeEach(() => {
+        useAuth0.mockReturnValue({
+          getAccessTokenSilently: "fakeToken"
+        });
+    });
+
+    test("renders without crashing", () => {
+        render(<SearchMessagesByUser />);
+    });
+
+    test("renders without crashing on search", () => {
+        const { getByLabelText } = render(<SearchMessagesByUser />);
+        const selectSearchUser = getByLabelText("Search User");
+        userEvent.type(selectSearchUser, "springboot");
+    });
+
+    test("searchUser state changes when user types in search bar", () => {
+        const { getByLabelText } = render(<SearchMessagesByUser />); 
+        const selectSearchUser = getByLabelText("Search User");
+        userEvent.type(selectSearchUser, "Test Jones");
+        expect(selectSearchUser.value).toBe("Test Jones");
+    });
+
+    test("Fetch is called once and with correct url when user clicks on search button", async () => {
+        const expectedURL = `/api/members/messages/usersearch?searchUser=Test Jones`;
         const options = {
             method: 'GET',
         }
-        fetchWithToken(url, getToken, options)
-            .then((response) => {
-                setSearchResults(response);
-            })
-    };
-
-    return (
-        <>
-            <h1> Search Results </h1>
-            <Form>
-                <Form.Group controlId="searchUser" onChange={handleSearchUserOnChange}>
-                    <Form.Label>Search User</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Search User" />
-                    <Button onClick={handleSearchUserOnSubmit}>Search</Button>
-                </Form.Group>
-            </Form>
-            <UserMessageList messages = {searchResults || []} />
-        </>
-    );
-};
-
-export default SearchMessagesByUser;
+        fetchWithToken.mockResolvedValue([]);
+        const { getByText, getByLabelText } = render(<SearchMessagesByUser />);
+        const selectSearchUser = getByLabelText("Search User");
+        userEvent.type(selectSearchUser, "Test Jones");
+        const search = getByText("Search");
+        userEvent.click(search);
+        await waitFor(() => {
+            expect(fetchWithToken).toHaveBeenCalledTimes(1);
+            expect(fetchWithToken).toHaveBeenCalledWith(expectedURL, "fakeToken", options);
+        });
+    });
+});
 
