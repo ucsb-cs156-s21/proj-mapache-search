@@ -67,19 +67,11 @@ public class SlackUserController {
             return getUnauthorizedResponse("admin");
         Iterable<SlackUser> slackUsers = slackUserRepository.findAll();
 
-        // add some logic here that creates a new type of object
-        // that has the message count along with the SlackUser.
-
         List<SlackUserWithStats> usersWithStats = new ArrayList<SlackUserWithStats>();
 
         for (SlackUser su: slackUsers) {
             SlackUserWithStats userWithStats = new SlackUserWithStats();
             userWithStats.setSlackUser(su);
-
-            // figure out how many messages there are in the 
-            // message repository with this user and set the
-            // variable messageCount = to that;
-
             int messageCount = 0;
 
             userWithStats.setMessageCount(messageCount);
