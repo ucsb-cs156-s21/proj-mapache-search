@@ -93,7 +93,7 @@ public class ChannelsControllerTests {
         when(channelRepository.findAll()).thenReturn(expectedChannels);
         when(authControllerAdvice.getIsMember(anyString())).thenReturn(true);
         MvcResult response = mockMvc
-            .perform(get("/api/members/channels").contentType("appication/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+            .perform(get("/api/members/channels").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
             .andExpect(status().isOk()).andReturn();
         String responseString = response.getResponse().getContentAsString();
         List<Channel> channels = mapper.readValue(responseString, new TypeReference<List<Channel>>() {
@@ -117,7 +117,7 @@ public class ChannelsControllerTests {
         when(mockMessageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
         when(authControllerAdvice.getIsMember(anyString())).thenReturn(true);
         MvcResult response = mockMvc
-            .perform(get("/api/members/channel/test-channel/messages").contentType("appication/json")
+            .perform(get("/api/members/channel/test-channel/messages").contentType("application/json")
                     .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
             .andExpect(status().isOk()).andReturn();
         String responseString = response.getResponse().getContentAsString();
