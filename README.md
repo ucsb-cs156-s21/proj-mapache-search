@@ -29,6 +29,7 @@ This section serves as a quick reference for values found in either [`secrets-lo
 | `spring.datasource.username`                                      | Yes          | Should always be `${JDBC_DATABASE_USERNAME}`                              |
 | `spring.datasource.password`                                      | Yes          | Should always be `${JDBC_DATABASE_PASSWORD}`                              |
 | `spring.jpa.hibernate.ddl-auto`                                   | Yes          | Should always be `update`                                                 |
+| `app.google.search.apiToken`                                      |              | See `https://developers.google.com/custom-search/v1/overview`             |
 
 ## Getting started
 
