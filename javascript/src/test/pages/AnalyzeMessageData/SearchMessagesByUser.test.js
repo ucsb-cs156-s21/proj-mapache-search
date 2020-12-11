@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import ChannelPage from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import { useParams} from "react-router-dom";
 import useSWR from "swr";
-import SearchMessagesByUser from "../../../main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("swr");
@@ -21,7 +21,6 @@ describe("SearchMessagesByUser tests", () => {
     });
 
     test("renders without crashing", () => {
-        //useSWR.mockReturnValue({});
         render(<SearchMessagesByUser />);
     });
 
