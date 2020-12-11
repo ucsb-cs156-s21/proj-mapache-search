@@ -269,8 +269,6 @@ public class SlackSlashCommandControllerTests {
   }
 
 
-}
-
 
   @Test
   public void test_googleSearch_1() throws Exception {

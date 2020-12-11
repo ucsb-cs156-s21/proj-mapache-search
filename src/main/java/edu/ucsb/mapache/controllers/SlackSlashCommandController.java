@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
-
+import edu.ucsb.mapache.services.GoogleSearchService;
 
 // imports for google search
 import org.jsoup.Jsoup;
@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.HashMap;
+
+import edu.ucsb.mapache.models.SearchParameters;
 //
 
 
@@ -49,6 +51,9 @@ public class SlackSlashCommandController {
 
     @Autowired
     ChannelRepository channelRepository;
+    
+    @Autowired
+    GoogleSearchService googleSearchService;
 
     /**
      * The token you get while creating a new Slash Command. You should paste the
@@ -169,14 +174,15 @@ public class SlackSlashCommandController {
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
-    @Value("${app.google.search.apiToken}")
-    private String apiToken;
+    
+    
     public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
         
         
         SearchParameters sp = new SearchParameters();
 
         String attachments = "";
+        String[] textParts = params.getTextParts();
         for (int i = 2; i < textParts.length; i++) {
             if (i != 2) {attachments += "+";}
             attachments += textParts[i];
