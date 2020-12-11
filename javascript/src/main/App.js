@@ -15,7 +15,6 @@ import SearchInfo from "./pages/Admin/SearchInfo";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
 import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
-import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
@@ -36,7 +35,6 @@ function App() {
           <AuthorizedRoute path="/member/search" exact component={Search} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/channels/:channel" component={ChannelPageScrollable} authorizedRoles={["admin","member"]} />
           <PrivateRoute path="/profile" component={Profile} />
