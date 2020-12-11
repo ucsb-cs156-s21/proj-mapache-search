@@ -18,7 +18,7 @@ import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
 import CountMessagesByUser from "main/pages/AnalyzeMessageData/CountMessagesByUser";
 import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
-import ChannelPage from "./pages/Channels/ChannelPage";
+import ChannelPage from "main/pages/Channels/ChannelPage";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
