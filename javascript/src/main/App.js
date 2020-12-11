@@ -16,7 +16,6 @@ import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
 import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
-import ChannelPage from "./pages/Channels/ChannelPage";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
