@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+
 import edu.ucsb.mapache.services.GoogleSearchService;
 
 // imports for google search
@@ -38,6 +40,7 @@ import edu.ucsb.mapache.models.SearchParameters;
 //
 
 
+
 /**
  * Sample Slash Command Handler.
  *
@@ -51,9 +54,10 @@ public class SlackSlashCommandController {
 
     @Autowired
     ChannelRepository channelRepository;
-    
+
     @Autowired
     GoogleSearchService googleSearchService;
+
 
     /**
      * The token you get while creating a new Slash Command. You should paste the
@@ -61,8 +65,10 @@ public class SlackSlashCommandController {
      */
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
+
     @Value("${app.google.search.apiToken}")
     private String apiToken;
+
 
     public String getSlackToken() {
         return slackToken;
@@ -131,6 +137,7 @@ public class SlackSlashCommandController {
         }
 
 
+
         /////// 
 
         if (firstArg.equals("search") && textParts[1].equals("google")) {
@@ -168,6 +175,7 @@ public class SlackSlashCommandController {
 
     public RichMessage statusCommand(SlackSlashCommandParams params) {
         RichMessage richMessage = new RichMessage(
+
                 String.format("From: %s Status is ok!", params.getCommand()));
         richMessage.setResponseType("ephemeral");
 
@@ -198,6 +206,7 @@ public class SlackSlashCommandController {
 
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
+
 
     public RichMessage timeCommand(SlackSlashCommandParams params) {
         String message = String.format("From: %s... the time on the server is %s", params.getCommand(), timeNow());
