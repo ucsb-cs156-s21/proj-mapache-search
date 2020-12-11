@@ -21,29 +21,29 @@ describe("AnalyzeReactions tests", () => {
   });
 
   test("renders without crashing", () => {
-    render(<AnalyzeReactions/>);
+    render(<AnalyzeReactions />);
   });
 
   test("renders without crashing on search", () => {
-    const { getByLabelText } = render(<AnalyzeReactions/>);
+    const { getByLabelText } = render(<AnalyzeReactions />);
     const selectSearchReaction = getByLabelText("Search Reaction");
     userEvent.type(selectSearchReaction, "springboot");
   });
 
   test("searchReaction state changes when user types in search bar", () => {
-      const { getByLabelText } = render(<AnalyzeReactions/>); 
+      const { getByLabelText } = render(<AnalyzeReactions />); 
       const selectSearchReaction = getByLabelText("Search Reaction");
       userEvent.type(selectSearchReaction, "Test_Jones");
       expect(selectSearchReaction.value).toBe("Test_Jones");
   });
 
   test("Fetch is called once and with correct url when user clicks on search button", async () => {
-      const expectedURL = `/api/members/messages/reactionsearch?searchReaction=Test Jones`;
+      const expectedURL = `/api/members/messages/reactionsearch?searchReaction=Test_Jones`;
       const options = {
           method: 'GET',
       }
       fetchWithToken.mockResolvedValue([]);
-      const { getByText, getByLabelText } = render(<AnalyzeReactions/>);
+      const { getByText, getByLabelText } = render(<AnalyzeReactions />);
       const selectSearchReaction = getByLabelText("Search Reaction");
       userEvent.type(selectSearchReaction, "Test_Jones");
       const search = getByText("Search");
@@ -60,7 +60,7 @@ describe("AnalyzeReactions tests", () => {
           method: 'GET',
       }
       fetchWithToken.mockResolvedValue([]);
-      const { getByText, getByLabelText } = render(<AnalyzeReactions/>);
+      const { getByText, getByLabelText } = render(<AnalyzeReactions />);
       const selectSearchReaction = getByLabelText("Search Reaction");
       userEvent.type(selectSearchReaction, "+1");
       const search = getByText("Search");
