@@ -9,8 +9,7 @@ const SearchMessagesByUser = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const [ searchUser, setSearchUser ] = useState('');
     const [ searchResults, setSearchResults ] = useState([]);
-    // const { data: searchResults } = useSWR([`/api/members/messages/usersearch?searchUser=${searchUser}`, getToken], fetchWithToken);
-
+   
     const handleSearchUserOnChange = (event) => {
         setSearchUser(event.target.value);
     };
