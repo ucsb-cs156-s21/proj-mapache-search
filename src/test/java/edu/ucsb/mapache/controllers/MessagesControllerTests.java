@@ -125,6 +125,8 @@ public class MessagesControllerTests {
                                 .perform(get("/api/members/messages/reactionsearch?searchReaction=springboot")
                                                 .contentType("application/json")
                                                 .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+       }
+       
        @Test
        public void test_reactionsearch_messages_with_empty_string() throws Exception {
                 List<Message> expectedMessages = new ArrayList<Message>();
