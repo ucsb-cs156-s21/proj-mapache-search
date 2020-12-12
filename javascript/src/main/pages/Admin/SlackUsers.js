@@ -9,13 +9,6 @@ const SlackUsers = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
 
-
-    const populateMsgCount = (cell,row ) => {
-        return (
-           0
-        )
-    }
-
     const columns = [{
         dataField: 'id',
         text: 'id'
@@ -28,11 +21,6 @@ const SlackUsers = () => {
     }, {
         dataField: 'profile.email',
         text: 'Email'
-    },{
-        text: "MessageCount",
-        isDummyField: true,
-        dataField: "msgCount",
-        formatter: (cell, row) => populateMsgCount(cell, row)
     }];
 
     return (
