@@ -1,8 +1,9 @@
+
 import React from "react";
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import useSWR from "swr";
-import { useParams} from "react-router-dom";
-import {fetchWithToken} from "main/utils/fetch";
+import { useParams } from "react-router-dom";
+import { fetchWithToken } from "main/utils/fetch";
 import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView"
 
 const ChannelPageScrollable = () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SearchResults from "main/pages/Messages/SearchResults";
 import userEvent from "@testing-library/user-event";
 
@@ -13,14 +13,13 @@ jest.mock("react-router-dom", () => {
 });
 
 describe("ChannelPageList tests", () => {
-
     test("renders without crashing", () => {
-        useSWR.mockReturnValue({'data': []});
+        useSWR.mockReturnValue({ 'data': [] });
         render(<SearchResults />);
     });
 
     test("renders without crashing", () => {
-        useSWR.mockReturnValue({'data': []});
+        useSWR.mockReturnValue({ 'data': [] });
         const { getByLabelText } = render(<SearchResults />);
         const selectSearchString = getByLabelText("Search String");
         userEvent.type(selectSearchString, "springboot");

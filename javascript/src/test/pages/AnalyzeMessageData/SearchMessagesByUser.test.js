@@ -9,14 +9,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 jest.mock("@auth0/auth0-react");
 
 jest.mock("main/utils/fetch", () => ({
-  fetchWithToken: jest.fn()
+    fetchWithToken: jest.fn()
 }));
 
 describe("SearchMessagesByUser tests", () => {
 
     beforeEach(() => {
         useAuth0.mockReturnValue({
-          getAccessTokenSilently: "fakeToken"
+            getAccessTokenSilently: "fakeToken"
         });
     });
 
@@ -31,7 +31,7 @@ describe("SearchMessagesByUser tests", () => {
     });
 
     test("searchUser state changes when user types in search bar", () => {
-        const { getByLabelText } = render(<SearchMessagesByUser />); 
+        const { getByLabelText } = render(<SearchMessagesByUser />);
         const selectSearchUser = getByLabelText("Search User");
         userEvent.type(selectSearchUser, "Test Jones");
         expect(selectSearchUser.value).toBe("Test Jones");

@@ -1,8 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import MessageList from "main/components/ChannelMessages/MessageList";
 import MessageListView from "main/components/ChannelMessages/MessageListView";
 import useSWR from "swr";
-import MessageScrollableView from "../../../main/components/ChannelMessages/MessageScrollableView";
+import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView";
+
 jest.mock("swr");
 jest.mock("react-router-dom", () => {
     return {
@@ -10,12 +12,12 @@ jest.mock("react-router-dom", () => {
     };
 });
 describe("MessageListView tests", () => {
-
     test("renders without crashing", () => {
         useSWR.mockReturnValue({
-            data:  []
+            data: []
         });
         render(<MessageListView messages={[]} />);
+        render(<MessageList messages={[]} />);
     });
 
     test("Displays username", () => {
@@ -25,6 +27,9 @@ describe("MessageListView tests", () => {
                 real_name: "Test Person"
             }]
         });
+    })
+
+    test("loads names", () => {
         const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
@@ -36,10 +41,10 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getAllByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const { getAllByText } = render(<MessageListView messages={[exampleMessage]} />);
         const nameElement = getAllByText(/Test Person/);
         expect(nameElement).toHaveLength(2);
-    });
+    })
 
     test("Displays username in message", () => {
         useSWR.mockReturnValue({
@@ -59,12 +64,12 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        setTimeout(function (){
+        const { getByText } = render(<MessageListView messages={[exampleMessage]} />);
+        setTimeout(function () {
             const nameElement = getByText(/Test Person has joined the channel/);
             expect(nameElement).toBeInTheDocument();
         }, 500)
-    });
+    })
 
     test("Username not found", () => {
         useSWR.mockReturnValue({
@@ -81,11 +86,9 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const { getByText } = render(<MessageListView messages={[exampleMessage]} />);
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
 
     });
-
-
-});
+})

@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import { Form, Button } from "react-bootstrap";
@@ -7,13 +7,13 @@ import UserChannelMessageList from "../../components/UserMessages/UserChannelMes
 
 const SearchMessagesByUser = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const [ searchUser, setSearchUser ] = useState('');
-    const [ searchResults, setSearchResults ] = useState([]);
+    const [searchUser, setSearchUser] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     const handleSearchUserOnChange = (event) => {
         setSearchUser(event.target.value);
     };
-    
+
     const handleSearchUserOnSubmit = () => {
         const url = `/api/members/messages/usersearch?searchUser=${searchUser}`;
         const options = {
@@ -35,8 +35,8 @@ const SearchMessagesByUser = () => {
                     <Button onClick={handleSearchUserOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
-            <UserChannelMessageList messages = {searchResults} />
-            <UserMessageList messages = {searchResults} />
+            <UserChannelMessageList messages={searchResults} />
+            <UserMessageList messages={searchResults} />
         </>
     );
 };
