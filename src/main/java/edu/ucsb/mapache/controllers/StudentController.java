@@ -39,16 +39,6 @@ public class StudentController {
   private AuthControllerAdvice authControllerAdvice;
   private ObjectMapper mapper = new ObjectMapper();
   
-  // @GetMapping(value = "/team1", produces = "application/json")
-  // public ResponseEntity<String> getTeam1Students(@RequestHeader("Authorization") String authorization)
-  //     throws JsonProcessingException {
-  //   AppUser user = authControllerAdvice.getUser(authorization);
-  //   Iterable<Student2> studentList = team1Repository.findAll();
-  //   ObjectMapper mapper = new ObjectMapper();
-  //   String body = mapper.writeValueAsString(studentList);
-  //   return ResponseEntity.ok().body(body);
-  // }
-  // finished
   private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
       Map<String, String> response = new HashMap<String, String>();
       response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -95,7 +85,6 @@ public class StudentController {
     if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
     Iterable<Student> studentList = studentRepository.findAll();
-    // Iterable<Student> studentList = team1Repository.findAll();
     ObjectMapper mapper = new ObjectMapper();
     String body = mapper.writeValueAsString(studentList);
     return ResponseEntity.ok().body(body);
@@ -123,8 +112,6 @@ public class StudentController {
   public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
     logger.info("Starting upload CSV");
     String error = "";
-    // if (!authControllerAdvice.getIsAdmin(authorization))
-    //   return getUnauthorizedResponse("admin");
     AppUser user = authControllerAdvice.getUser(authorization);
     try {
       Reader reader = new InputStreamReader(csv.getInputStream());
@@ -139,40 +126,5 @@ public class StudentController {
     } catch(RuntimeException e){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
     }
-    // try(Reader reader = new InputStreamReader(csv.getInputStream())){
-    //   logger.info(new String(csv.getInputStream().readAllBytes()));
-    //   // list of uploaded students
-    //   List<Student2> uploadedTeam1Students = csvToObjectService2.parse(reader, Student2.class);
-    //   team1Repository.deleteAll();
-    //   logger.info("Entering loop");
-    //   for(int i = 0; i < uploadedTeam1Students.size(); i++){
-    //     logger.info("Entered loop");
-    //     logger.info(uploadedTeam1Students.get(i).getTeamName());
-    //     if(uploadedTeam1Students.get(i).getTeamName().equals("team1")){
-    //       logger.info("Entering team1");
-    //       logger.info(uploadedTeam1Students.get(i).getEmail());
-    //       team1Repository.save(uploadedTeam1Students.get(i));
-    //       //team1Students.add(uploadedStudents.get(i));
-    //     }
-    //     // else{
-    //     //   team1Students.remove(uploadedStudents.get(i));
-    //     // }
-    //   }
-    //   List<Student2> team1Students = team1Repository.findAll();
-    //   logger.info("Exited loop");
-    //   logger.info("Entered loop2");
-    //   for(int i = 0; i < team1Students.size(); i++){
-    //     logger.info("iteration");
-    //     System.out.println(i);
-    //     logger.info(team1Students.get(i).toString());
-    //   }
-    //   String body = mapper.writeValueAsString(team1Students);
-    //   return ResponseEntity.ok().body(body);
-    // }catch(IOException e){
-    //   logger.error(e.toString());
-    //   throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error processing CSV", e);
-    // } catch(RuntimeException e){
-    //   throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
-    // }
   }
 }

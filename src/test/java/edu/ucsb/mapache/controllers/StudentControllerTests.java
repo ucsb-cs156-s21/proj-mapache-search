@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-// import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -127,8 +126,6 @@ public class StudentControllerTests {
       verify(mockStudentRepository, times(1)).deleteAll();
 
       String responseString = response.getResponse().getContentAsString();
-      // List<Student> actualStudents = objectMapper.readValue(responseString, new TypeReference<List<Student>>() {
-      // });
       assertEquals(responseString.length(), 0);
    }
 
@@ -175,26 +172,12 @@ public class StudentControllerTests {
     mockMvc.perform(get("/api/students/99999").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
         "Bearer " + userToken())).andExpect(status().isNotFound());
   }
-  // @Test
-  // public void testDeleteCourse_courseNotFound() throws Exception {
-  //   long id = 1L;
-  //   when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-  //   when(mockCourseRepository.findById(id)).thenReturn(Optional.empty());
-  //   mockMvc
-  //       .perform(delete("/api/admin/courses/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-  //           .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-  //       .andExpect(status().isNotFound()).andReturn();
-  //   verify(mockCourseRepository, times(1)).findById(id);
-  //   verify(mockCourseRepository, times(0)).deleteById(id);
-  // }
 
    @Test
    public void getStudent() throws Exception {
       Student expectedStudent = new Student(1L, "email", "team");
       ObjectMapper mapper = new ObjectMapper();
       String requestBody = mapper.writeValueAsString(expectedStudent);
-      // when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-      // when(mockStudentRepository.save(any())).thenReturn(expectedStudent);
       when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
       MvcResult response = mockMvc
          .perform(get("/api/students/1").contentType("application/json")
@@ -301,10 +284,7 @@ public class StudentControllerTests {
      when(mockStudentRepository.findById(2L)).thenReturn(expectedStudents);
      ObjectMapper mapper = new ObjectMapper();
      String requestBody = mapper.writeValueAsString(expectedStudents);
-    //  Student inputStudent = new Student(2L, "email", "team");
-    //  Student savedStudent = new Student(2L, "email2", "team");
-    //  String body = objectMapper.writeValueAsString(inputStudent);
-
+  
      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
      mockMvc
          .perform(put("/api/students/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -312,43 +292,10 @@ public class StudentControllerTests {
          .andExpect(status().isNotFound());
    }
 
-  // @Test
-  //   public void testCSV() throws Exception {
-  //       Student student = new Student(1L, "email", "team");
-  //       MockMultipartFile file =
-  //               new MockMultipartFile(
-  //                       "file",
-  //                       "students.csv",
-  //                       "text/csv",
-  //                       "<<pdf data>>".getBytes());
-
-  //       ObjectMapper objectMapper = new ObjectMapper();
-
-  //       MockMultipartFile metadata =
-  //               new MockMultipartFile(
-  //                       "metadata",
-  //                       "student",
-  //                       "text/csv",
-  //                       objectMapper.writeValueAsString(student).getBytes());
-
-  //       // mockMvc.perform(
-  //       //         multipart("/api/students")
-  //       //                 .file(file)
-  //       //                 .file(metadata))
-  //       //         .andExpect(status().isOk());
-  //               // .andExpect(content().string("students.csv"));
-  //     MockHttpServletRequestBuilder builder =
-  //     MockMvcRequestBuilders.fileUpload("/api/students/upload")
-  //                         .file(mockMultipartFile);
-  //     this.mockMvc.perform(builder).andExpect(ok);
-  //       // .andDo(MockMvcResultHandlers.print());;
-  //   }
-
   @Test
   public void testUploadFile() throws Exception{
     List<Student> expectedStudents = new ArrayList<Student>();
     expectedStudents.add(new Student(1L, "email", "team"));
-    // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(mockUser);
     when(mockCSVToObjectService.parse(any(Reader.class), eq(Student.class))).thenReturn(expectedStudents);
     MockMultipartFile mockFile = new MockMultipartFile(
             "csv",
@@ -381,7 +328,3 @@ public class StudentControllerTests {
     verify(mockStudentRepository, never()).saveAll(any());
   }
 }
-
-
-
-//when(mockCSVToObjectService.parse(any(), Student.class)).thenReturn();
