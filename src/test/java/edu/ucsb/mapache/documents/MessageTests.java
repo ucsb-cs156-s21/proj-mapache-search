@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.ArrayList;
+
 public class MessageTests {
 
     @Test
@@ -19,7 +20,7 @@ public class MessageTests {
         Message m = new Message("sampleType", "sampleSubtype", "sampleTs", "sampleUser", "sampleText", "sampleChannel",
                 sup, mr1);
         String expected = "Message{type='sampleType', subtype='sampleSubtype', ts='sampleTs', "
-                + "user='sampleUser', text='sampleText', channel='sampleChannel', user_profile=" + sup + ", reactions=" + mr1 + "}";
+                + "user='sampleUser', text='sampleText', channel='sampleChannel', user_profile=" + sup + ", reactions='" + mr1 + "}";
         assertEquals(expected, m.toString());
     }
 

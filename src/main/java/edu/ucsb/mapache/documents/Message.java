@@ -122,7 +122,7 @@ public class Message {
     public String toString() {
         return "Message{" + "type='" + type + '\'' + ", subtype='" + subtype + '\'' + ", ts='" + ts + '\'' + ", user='"
                 + user + '\'' + ", text='" + text + '\'' + ", channel='" + channel + '\'' + ", user_profile="
-                + user_profile + ", reactions=" + reactions + '}';
+                + user_profile + ", reactions='" + reactions + '}';
     }
 }
 

@@ -24,4 +24,3 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
     List<Message> findByReactionName(String emojiSymbol);
 }
 
-

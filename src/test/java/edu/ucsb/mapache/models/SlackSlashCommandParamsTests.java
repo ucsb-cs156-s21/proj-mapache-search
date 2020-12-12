@@ -24,6 +24,7 @@ public class SlackSlashCommandParamsTests {
         params.setText("a b   c  \t d");
         String[] result = params.getTextParts();
 
+
         assertEquals(4, result.length);
         assertEquals("a",result[0]);
         assertEquals("b",result[1]);
