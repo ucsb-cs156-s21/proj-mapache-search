@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { render } from "@testing-library/react";
-import UserMessageList from "main/components/UserMessages/UserMessageList.js";
+import UserMessageList from "main/components/UserMessages/UserMessageList";
 
 describe("UserMessageList tests", () => {
     test("it renders without crashing", () => {
