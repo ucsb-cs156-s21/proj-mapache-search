@@ -21,8 +21,8 @@ import CountMessagesByUser from "main/pages/AnalyzeMessageData/CountMessagesByUs
 import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import Search from "main/pages/Search/Search";
-import ChannelPage from "./pages/Channels/ChannelPage";
-import SearchResults from "./pages/Messages/SearchResults";
+import ChannelPage from "main/pages/Channels/ChannelPage";
+import SearchResults from "main/pages/Messages/SearchResults";
 
 
 function App() {
