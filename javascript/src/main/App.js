@@ -50,7 +50,7 @@ function App() {
         </Switch>
       </Container>
       <AppFooter />
-    </div >
+    </div>
   );
 }
 
