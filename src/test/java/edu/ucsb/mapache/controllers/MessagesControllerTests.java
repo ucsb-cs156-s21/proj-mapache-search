@@ -125,6 +125,12 @@ public class MessagesControllerTests {
                                 .perform(get("/api/members/messages/reactionsearch?searchReaction=springboot")
                                                 .contentType("application/json")
                                                 .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+                
        }
        
        @Test
