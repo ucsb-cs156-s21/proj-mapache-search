@@ -1,7 +1,7 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
-export default ({ messages = [] }) => {
+export default ({ messages }) => {
 
     const messageChannels = [];
 
@@ -14,22 +14,18 @@ export default ({ messages = [] }) => {
     }
     ];
 
-    if(messages == []) {
-        return (
-            <BootstrapTable keyField='channel' data={messageChannels} columns={columns}/>
-        );
-    }
-
-    for (let i = 0; i < messages.length; i++) {
-        if(!messageChannels.some(e => e.channel == messages[i].channel)) {
-            const channelCountPair = {
-                channel: messages[i].channel,
-                count: 1
+    if((messages != []) || (messages.length != 0))) {
+        for (let i = 0; i < messages.length; i++) {
+            if(!messageChannels.some(e => e.channel == messages[i].channel)) {
+                const channelCountPair = {
+                    channel: messages[i].channel,
+                    count: 1
+                }
+                messageChannels.push(channelCountPair);
+            } else {
+                const index = messageChannels.findIndex(channelCountPair => channelCountPair.channel == messages[i].channel);
+                messageChannels[index].count++;
             }
-            messageChannels.push(channelCountPair);
-        } else {
-            const index = messageChannels.findIndex(channelCountPair => channelCountPair.channel == messages[i].channel);
-            messageChannels[index].count++;
         }
     }
 
