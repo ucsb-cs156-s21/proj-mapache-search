@@ -79,6 +79,8 @@ public class MessagesController {
             return ResponseEntity.ok().body("[]");
         }
         Iterable<Message> messages = messageRepository.findByReactionName(searchReaction);
+        String body = mapper.writeValueAsString(messages);
+        return ResponseEntity.ok().body(body);
     }
         
     @GetMapping("/allmessages")
