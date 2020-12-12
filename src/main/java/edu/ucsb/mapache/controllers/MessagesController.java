@@ -79,7 +79,8 @@ public class MessagesController {
             return ResponseEntity.ok().body("[]");
         }
         Iterable<Message> messages = messageRepository.findByReactionName(searchReaction);
-
+    }
+        
     @GetMapping("/allmessages")
     public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
