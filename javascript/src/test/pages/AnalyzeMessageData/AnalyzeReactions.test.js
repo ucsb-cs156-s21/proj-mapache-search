@@ -54,7 +54,7 @@ describe("AnalyzeReactions tests", () => {
       });
   });
 
-  test("Fetch is called once and with correct url when user clicks on search button", async () => {
+  test("Fetch is called once and with correct url when user searches '+1'", async () => {
       const expectedURL = `/api/members/messages/reactionsearch?searchReaction=%2B1`
       const options = {
           method: 'GET',
