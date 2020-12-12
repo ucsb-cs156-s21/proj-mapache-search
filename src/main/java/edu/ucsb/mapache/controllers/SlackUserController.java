@@ -12,7 +12,6 @@ import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
-import edu.ucsb.mapache.models.SlackUserWithStats;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
