@@ -101,7 +101,6 @@ describe("Edit Course page test", () => {
 
     await waitFor(() => expect(pushSpy).toHaveBeenCalledTimes(1));
     expect(pushSpy).toHaveBeenCalledWith("/admin/students");
-
   });
 
   test("clicking submit button redirects to home page on error", async () => {
