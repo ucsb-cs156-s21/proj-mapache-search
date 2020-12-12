@@ -35,7 +35,6 @@ function AppNavbar() {
           { (isMember || isAdmin)  &&
               <NavDropdown title="Channels">
                   <NavDropdown.Item href="/member/channels">List Channels</NavDropdown.Item>
-                  <NavDropdown.Item href="/member/search">Search</NavDropdown.Item>
               </NavDropdown>
           }
           { (isMember || isAdmin)  &&
