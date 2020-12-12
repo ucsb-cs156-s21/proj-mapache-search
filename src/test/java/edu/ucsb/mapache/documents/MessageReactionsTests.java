@@ -59,7 +59,7 @@ public class MessageReactionsTests {
     @Test
     public void testAdmin_equalsSelf() {
         MessageReactions mr = new MessageReactions("sampleName", 1);
-        Assertions.assertFalse(mr.equals(mr));
+        Assertions.assertTrue(mr.equals(mr));
     }
 
 }
