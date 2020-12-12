@@ -14,18 +14,22 @@ export default ({ messages = [] }) => {
     }
     ];
 
-    if(!(messages === undefined) || !(messages.length == 0)) {
-        for (let i = 0; i < messages.length; i++) {
-            if(!messageChannels.some(e => e.channel == messages[i].channel)) {
-                const channelCountPair = {
-                    channel: messages[i].channel,
-                    count: 1
-                }
-                messageChannels.push(channelCountPair);
-            } else {
-                const index = messageChannels.findIndex(channelCountPair => channelCountPair.channel == messages[i].channel);
-                messageChannels[index].count++;
+    if(messages == []) {
+        return (
+            <BootstrapTable keyField='channel' data={messageChannels} columns={columns}/>
+        );
+    }
+
+    for (let i = 0; i < messages.length; i++) {
+        if(!messageChannels.some(e => e.channel == messages[i].channel)) {
+            const channelCountPair = {
+                channel: messages[i].channel,
+                count: 1
             }
+            messageChannels.push(channelCountPair);
+        } else {
+            const index = messageChannels.findIndex(channelCountPair => channelCountPair.channel == messages[i].channel);
+            messageChannels[index].count++;
         }
     }
 
