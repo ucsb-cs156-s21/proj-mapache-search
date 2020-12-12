@@ -23,12 +23,6 @@ import edu.ucsb.mapache.repositories.ChannelRepository;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
 
-// imports for google search
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -37,9 +31,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.HashMap;
 
 import edu.ucsb.mapache.models.SearchParameters;
-//
-
-
 
 /**
  * Sample Slash Command Handler.
@@ -58,11 +49,6 @@ public class SlackSlashCommandController {
     @Autowired
     GoogleSearchService googleSearchService;
 
-
-    /**
-     * The token you get while creating a new Slash Command. You should paste the
-     * token in application.properties file.
-     */
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
 
@@ -135,10 +121,6 @@ public class SlackSlashCommandController {
         if (firstArg.equals("debug")) {
             return debugCommand(params);
         }
-
-
-
-        /////// 
 
         if (firstArg.equals("search") && textParts[1].equals("google")) {
             return googleSearch(params);
