@@ -28,7 +28,7 @@ describe("UserChannelMessageList tests", () => {
     });
 
     test("it renders when given null messages", () => {
-        const { getByText } = render(<UserChannelMessageList messages={}/>);
+        const { getByText } = render(<UserChannelMessageList messages={[]}/>);
         const channelElement = getByText(/Channel/);
         const countElement = getByText(/Message Count/);
         expect(channelElement).toBeInTheDocument();
