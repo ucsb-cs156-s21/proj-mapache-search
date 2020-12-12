@@ -34,7 +34,6 @@ function AppNavbar() {
           { (isMember || isAdmin)  &&
               <NavDropdown title="Channels">
                   <NavDropdown.Item href="/member/channels">List Channels</NavDropdown.Item>
-                  <NavDropdown.Item href="/member/search">Search</NavDropdown.Item>
               </NavDropdown>
           }
           { (isMember || isAdmin)  &&
@@ -43,9 +42,17 @@ function AppNavbar() {
               </NavDropdown>
           }
         <LinkContainer to={"/about"}>
-            <Nav.Link>About</Nav.Link>
+          <Nav.Link>About</Nav.Link>
         </LinkContainer>
         <ProfileNav />
+          { (isAdmin || isMember) &&
+              <NavDropdown title="Analyze Message Data">
+                  <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>
+                  <NavDropdown.Item href="/member/analyzemessages/countmessages">Count Messages By User</NavDropdown.Item>
+                  <NavDropdown.Item href="/member/analyzemessages/messagehistogram">Histogram of Messages for a User</NavDropdown.Item>
+                  <NavDropdown.Item href="/member/analyzemessages/searchmessages">Search Messages By User</NavDropdown.Item>
+              </NavDropdown>
+          }
           { (isMember || isAdmin) && 
               <LinkContainer to={"/member/search"}>
                   <Nav.Link>Search</Nav.Link>
