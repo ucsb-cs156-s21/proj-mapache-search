@@ -123,9 +123,11 @@ public class StudentController {
   public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws JsonProcessingException {
     logger.info("Starting upload CSV");
     String error = "";
-    if (!authControllerAdvice.getIsAdmin(authorization))
-      return getUnauthorizedResponse("admin");
-    try(Reader reader = new InputStreamReader(csv.getInputStream())){
+    // if (!authControllerAdvice.getIsAdmin(authorization))
+    //   return getUnauthorizedResponse("admin");
+    AppUser user = authControllerAdvice.getUser(authorization);
+    try {
+      Reader reader = new InputStreamReader(csv.getInputStream());
       logger.info(new String(csv.getInputStream().readAllBytes()));
       // convert to list of students
       List<Student> uploadedStudents = csvToObjectService.parse(reader, Student.class);
