@@ -16,15 +16,7 @@ const AnalyzeReactions = () => {
     };
     
     const handleSearchReactionOnSubmit = () => {
-        var url = '';
-        if(searchReaction === "+1") {
-            const searchReaction2 = "%2B1";
-            const url1 = `/api/members/messages/reactionsearch?searchReaction=${searchReaction2}`;
-            url = url1;
-        } else {
-            const url2 = `/api/members/messages/reactionsearch?searchReaction=${searchReaction}`;
-            url = url2;
-        }
+        let url = searchReaction="+1" ? url=`/api/members/messages/reactionsearch?searchReaction=%2B1` : url=`/api/members/messages/reactionsearch?searchReaction=${searchReaction}`;
         const options = {
             method: 'GET',
         }
@@ -37,11 +29,11 @@ const AnalyzeReactions = () => {
         <>
             <h1> Search Results </h1>
             <Form>
-                <Form.Group controlId="searchReaction" onChange={handleSearchReactionOnChange}>
+                <Form.Group controlId="searchReaction" onSubmit={handleSearchReactionOnSubmit}>
                     <Form.Label>Search Reaction</Form.Label> <br/>
                     <a href = "https://www.webfx.com/tools/emoji-cheat-sheet/"> This is the link for the emoji names </a>
-                    <Form.Control type="text" placeholder="Enter Search Reaction" />
-                    <Button onClick={handleSearchReactionOnSubmit}>Search</Button>
+                    <Form.Control type="text" placeholder="Enter Search Reaction" onChange={handleSearchReactionOnChange} />
+                    <Button type="submit">Search</Button>
                 </Form.Group>
             </Form>
         <MessageTableReaction messages = {searchResults} reaction={searchReaction}/>

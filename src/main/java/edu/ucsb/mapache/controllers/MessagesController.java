@@ -70,7 +70,7 @@ public class MessagesController {
     }
 
     @GetMapping("/reactionsearch")
-    public ResponseEntity<String> getReactionofChannel(@RequestHeader("Authorization") String authorization,
+    public ResponseEntity<String> getReactionOfChannel(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchReaction) throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
@@ -82,12 +82,12 @@ public class MessagesController {
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
-        
+
     @GetMapping("/allmessages")
     public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
-            if (!authControllerAdvice.getIsMember(authorization))
-                return getUnauthorizedResponse("member");
+        if (!authControllerAdvice.getIsMember(authorization))
+            return getUnauthorizedResponse("member");
         Iterable<Message> messages = messageRepository.findAll();
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
