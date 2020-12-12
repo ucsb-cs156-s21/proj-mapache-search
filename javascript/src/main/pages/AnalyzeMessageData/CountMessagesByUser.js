@@ -21,8 +21,8 @@ const CountMessagesByUser = () => {
     
     return (
         <div>
-        <h1>Count Messages By User</h1>
-        <BootstrapTable keyField='id' data={userMessageCount} columns={columns} />
+            <h1>Count Messages By User</h1>
+            <BootstrapTable keyField='id' data={userMessageCount} columns={columns} />
         </div>
     );
 };
