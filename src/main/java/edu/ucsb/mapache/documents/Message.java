@@ -4,7 +4,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import java.util.List;
 import java.util.Objects;
 
 @Document(collection = "messages")
@@ -17,10 +16,11 @@ public class Message {
     private String channel;
     private SlackUserProfile user_profile;
 
-    public Message(){
+    public Message() {
     }
 
-    public Message(String type, String subtype, String ts, String user, String text, String channel, SlackUserProfile user_profile) {
+    public Message(String type, String subtype, String ts, String user, String text, String channel,
+            SlackUserProfile user_profile) {
         this.type = type;
         this.subtype = subtype;
         this.ts = ts;
@@ -88,8 +88,10 @@ public class Message {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Message message = (Message) o;
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(type, message.type);
@@ -109,14 +111,8 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "type='" + type + '\'' +
-                ", subtype='" + subtype + '\'' +
-                ", ts='" + ts + '\'' +
-                ", user='" + user + '\'' +
-                ", text='" + text + '\'' +
-                ", channel='" + channel + '\'' +
-                ", user_profile=" + user_profile +
-                '}';
+        return "Message{" + "type='" + type + '\'' + ", subtype='" + subtype + '\'' + ", ts='" + ts + '\'' + ", user='"
+                + user + '\'' + ", text='" + text + '\'' + ", channel='" + channel + '\'' + ", user_profile="
+                + user_profile + '}';
     }
 }

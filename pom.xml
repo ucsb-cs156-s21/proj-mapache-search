@@ -94,6 +94,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<version>2.2.5.RELEASE</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/me.ramswaroop.jbot/jbot -->

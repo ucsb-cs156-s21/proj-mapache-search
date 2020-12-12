@@ -14,10 +14,12 @@ import SlackUsers from "./pages/Admin/SlackUsers";
 import SearchInfo from "./pages/Admin/SearchInfo";
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
-
+import AnalyzeReactions from "../main/pages/AnalyzeMessageData/AnalyzeReactions";
+import CountMessagesByUser from "../main/pages/AnalyzeMessageData/CountMessagesByUser";
+import HistogramOfMessagesByUser from "../main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
+import SearchMessagesByUser from "../main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
-
 import Search from "main/pages/Search/Search";
 
 import SearchResults from "./pages/Messages/SearchResults";
@@ -41,6 +43,10 @@ function App() {
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
+          <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/member/analyzemessages/messagehistogram" exact component={HistogramOfMessagesByUser} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
         </Switch>
       </Container>
       <AppFooter />
