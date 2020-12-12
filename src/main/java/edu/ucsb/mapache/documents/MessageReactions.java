@@ -30,11 +30,6 @@ public class MessageReactions {
         this.name = name;
     }
 
-    public MessageReactions(int count, String name) {
-        this.count = count;
-        this.name = name;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
