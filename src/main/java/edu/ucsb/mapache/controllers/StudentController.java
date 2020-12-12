@@ -109,20 +109,17 @@ public class StudentController {
     return ResponseEntity.ok().body(body);
   }
   @PostMapping(value = "/upload", produces = "application/json")
-  public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws JsonProcessingException {
+  public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
     logger.info("Starting upload CSV");
     String error = "";
-    if (!authControllerAdvice.getIsAdmin(authorization))
-      return getUnauthorizedResponse("admin");
-    try(Reader reader = new InputStreamReader(csv.getInputStream())){
+    AppUser user = authControllerAdvice.getUser(authorization);
+    try {
+      Reader reader = new InputStreamReader(csv.getInputStream());
       logger.info(new String(csv.getInputStream().readAllBytes()));
       List<Student> uploadedStudents = csvToObjectService.parse(reader, Student.class);
       List<Student> savedStudents = (List<Student>) studentRepository.saveAll(uploadedStudents);
       String body = mapper.writeValueAsString(savedStudents);
       return ResponseEntity.ok().body(body);
-    } catch(IOException e){
-      logger.error(e.toString());
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error processing CSV", e);
     } catch(RuntimeException e){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Malformed CSV", e);
     }
