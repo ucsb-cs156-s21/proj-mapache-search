@@ -44,4 +44,4 @@ describe("ChannelPageList tests", () => {
         const contentsElement = getByText(exampleMessage.text);
         expect(contentsElement).toBeInTheDocument();
     });
-}
+});
