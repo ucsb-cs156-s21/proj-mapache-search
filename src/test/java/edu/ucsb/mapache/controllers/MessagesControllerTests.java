@@ -147,6 +147,7 @@ public class MessagesControllerTests {
                 assertEquals(expectedMessages, messages);
         }                  
 
+        @Test
         public void test_getMessages_unauthorizedIfNotMember() throws Exception {
           mockMvc
               .perform(
