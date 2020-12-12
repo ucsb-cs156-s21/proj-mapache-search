@@ -145,15 +145,6 @@
 			<artifactId>javabean-tester</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
-    	</dependency>
-
-		<!-- https://mvnrepository.com/artifact/net.codebox/javabean-tester -->
-		<dependency>
-			<groupId>net.codebox</groupId>
-			<artifactId>javabean-tester</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>
