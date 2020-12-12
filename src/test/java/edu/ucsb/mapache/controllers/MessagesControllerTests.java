@@ -109,56 +109,40 @@ public class MessagesControllerTests {
                 assertEquals(expectedMessages, messages);
         }
 
-        // @Test
-        // public void test_get_channels_returnsListOfChannels() throws Exception {
-        // List<Channel> expectedChannels = new ArrayList<Channel>();
-        // expectedChannels.add(new Channel("id1", "name1", "creator1", true, true, new
-        // ArrayList<String>(),
-        // new ChannelTopic(), new ChannelPurpose()));
-        // expectedChannels.add(new Channel("id2", "name2", "creator2", true, true, new
-        // ArrayList<String>(),
-        // new ChannelTopic(), new ChannelPurpose()));
-        // when(mockChannelRepository.findAll()).thenReturn(expectedChannels);
-        // when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-        // MvcResult response = mockMvc
-        // .perform(get("/api/members/channels").contentType("appication/json").header(HttpHeaders.AUTHORIZATION,
-        // exampleAuthToken))
-        // .andExpect(status().isOk()).andReturn();
-        // String responseString = response.getResponse().getContentAsString();
-        // List<Channel> channels = mapper.readValue(responseString, new
-        // TypeReference<List<Channel>>() {
-        // });
-        // assertEquals(expectedChannels, channels);
-        // }
+        @Test
+        public void test_reactionsearch_messages_unauthorizedIfNotMember() throws Exception {
+                mockMvc.perform(get("/api/members/messages/reactionsearch?searchReaction=springboot")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().is(401));
+        }
 
-        // @Test
-        // public void test_get_messageOfChannel_unauthorizedIfNotMember() throws
-        // Exception {
-        // mockMvc
-        // .perform(get("/api/members/channel/test-channel/messages").contentType("application/json")
-        // .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-        // .andExpect(status().is(401));
-        // }
+        @Test
+        public void test_reactionsearch_messages() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByReactionName("springboot")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                MvcResult response = mockMvc
+                                .perform(get("/api/members/messages/reactionsearch?searchReaction=springboot")
+                                                .contentType("application/json")
+                                                .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
 
-        // @Test
-        // public void test_get_messageOfChannel_returnsListOfMessages() throws
-        // Exception {
-        // List<Message> expectedMessages = new ArrayList<Message>();
-        // expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1",
-        // "text1", "channel1", new SlackUserProfile()));
-        // expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2",
-        // "text2", "channel2", new SlackUserProfile()));
-        // when(mockMessageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
-        // when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-        // MvcResult response = mockMvc
-        // .perform(get("/api/members/channel/test-channel/messages").contentType("appication/json")
-        // .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-        // .andExpect(status().isOk()).andReturn();
-        // String responseString = response.getResponse().getContentAsString();
-        // List<Message> messages = mapper.readValue(responseString, new
-        // TypeReference<List<Message>>() {
-        // });
-        // assertEquals(expectedMessages, messages);
-        // }
-
+        @Test
+        public void test_reactionsearch_messages_with_empty_string() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByReactionName("")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/reactionsearch?searchReaction=")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
 }
