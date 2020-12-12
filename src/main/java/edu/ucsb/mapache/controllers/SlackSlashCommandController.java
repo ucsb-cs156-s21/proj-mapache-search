@@ -102,7 +102,7 @@ public class SlackSlashCommandController {
         params.setText(text);
         params.setResponseUrl(responseUrl);
 
-        String[] textParts = params.getTextParts();//
+        String[] textParts = params.getTextParts();
 
         if (textParts.length <= 0 || textParts[0].equals("")) {
             return emptyCommand(params);
