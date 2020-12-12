@@ -83,7 +83,7 @@ public class StudentController {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
       studentRepository.deleteAll();
-    return ResponseEntity.noContent().build();
+      return ResponseEntity.noContent().build();
   }
   @GetMapping(value = "", produces = "application/json")
   public ResponseEntity<String> getStudents(@RequestHeader("Authorization") String authorization)
