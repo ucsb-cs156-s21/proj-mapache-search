@@ -31,7 +31,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -67,7 +66,6 @@ public class StudentControllerTests {
 
   @MockBean
   Reader mockReader;
-
   private String userToken() {
     return "blah";
   }
@@ -109,6 +107,7 @@ public class StudentControllerTests {
          .andExpect(status().isNoContent()).andReturn();
      verify(mockStudentRepository, times(1)).findById(expectedStudent.getId());
      verify(mockStudentRepository, times(1)).deleteById(expectedStudent.getId());
+
      String responseString = response.getResponse().getContentAsString();
 
      assertEquals(responseString.length(), 0);
@@ -125,6 +124,7 @@ public class StudentControllerTests {
              .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
          .andExpect(status().isNoContent()).andReturn();
       verify(mockStudentRepository, times(1)).deleteAll();
+
       String responseString = response.getResponse().getContentAsString();
       assertEquals(responseString.length(), 0);
    }
@@ -165,6 +165,7 @@ public class StudentControllerTests {
             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isNotFound());
   }
+
   @Test
   public void testGetANonExistingStudent() throws Exception {
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -187,6 +188,7 @@ public class StudentControllerTests {
     Student actualStudent = objectMapper.readValue(responseString, Student.class);
     assertEquals(actualStudent, expectedStudent);
    }
+
   @Test
   public void testGetStudent_notAdmin() throws Exception {
     Student expectedStudent = new Student(1L, "email", "team");
