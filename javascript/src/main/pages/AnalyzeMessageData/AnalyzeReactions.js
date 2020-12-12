@@ -16,7 +16,7 @@ const AnalyzeReactions = () => {
     };
     
     const handleSearchReactionOnSubmit = () => {
-        let url = searchReaction="+1" ? url=`/api/members/messages/reactionsearch?searchReaction=%2B1` : url=`/api/members/messages/reactionsearch?searchReaction=${searchReaction}`;
+        let url = (searchReaction == "+1") ? `/api/members/messages/reactionsearch?searchReaction=%2B1` : `/api/members/messages/reactionsearch?searchReaction=${searchReaction}`;
         const options = {
             method: 'GET',
         }
