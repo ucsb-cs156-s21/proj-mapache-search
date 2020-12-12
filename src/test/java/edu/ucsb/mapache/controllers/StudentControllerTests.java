@@ -8,17 +8,36 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.View;
+
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+// import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.io.IOException;
+import java.io.Reader;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,12 +53,19 @@ public class StudentControllerTests {
   private MockMvc mockMvc;
   @Autowired
   private ObjectMapper objectMapper;
+
+  @Autowired
+  private WebApplicationContext webApplicationContext;
+
   @MockBean
   StudentRepository mockStudentRepository;
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
   @MockBean
   CSVToObjectService mockCSVToObjectService;
+  @MockBean
+  Reader mockReader;
+
 
   private String userToken() {
     return "blah";
@@ -70,59 +96,79 @@ public class StudentControllerTests {
             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isUnauthorized());
   }
-  @Test
-  public void deleteStudent() throws Exception {
+
+   @Test
+   public void deleteStudent() throws Exception {
+     Student expectedStudent = new Student(1L, "email", "team");
+     when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
+     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+     MvcResult response = mockMvc        
+             .perform(delete("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+         .andExpect(status().isNoContent()).andReturn();
+     verify(mockStudentRepository, times(1)).findById(expectedStudent.getId());
+     verify(mockStudentRepository, times(1)).deleteById(expectedStudent.getId());
+
+     String responseString = response.getResponse().getContentAsString();
+
+     assertEquals(responseString.length(), 0);
+   }
+
+    @Test
+    public void deleteAllStudents() throws Exception {
+      List<Student> expectedStudents = new ArrayList<Student>();
+      expectedStudents.add(new Student(1L, "email", "team"));
+      when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      MvcResult response = mockMvc         
+             .perform(delete("/api/students").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+         .andExpect(status().isNoContent()).andReturn();
+      verify(mockStudentRepository, times(1)).deleteAll();
+
+      String responseString = response.getResponse().getContentAsString();
+      // List<Student> actualStudents = objectMapper.readValue(responseString, new TypeReference<List<Student>>() {
+      // });
+      assertEquals(responseString.length(), 0);
+   }
+
+   @Test
+   public void testDeleteAllStudents_unauthorizedIfNotAdmin() throws Exception {
     Student expectedStudent = new Student(1L, "email", "team");
-    when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedStudent);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    mockMvc
+        .perform(delete("/api/students").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isUnauthorized());
+  }
+
+   @Test
+   public void testDeleteStudent_unauthorizedIfNotAdmin() throws Exception {
+    Student expectedStudent = new Student(1L, "email", "team");
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedStudent);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+    mockMvc
+        .perform(delete("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isUnauthorized());
+   }
+
+   @Test
+   public void testDeleteStudent_ifNoStudents() throws Exception {
+    Optional<Student> expectedStudents = Optional.ofNullable(null);
+    when(mockStudentRepository.findById(1L)).thenReturn(expectedStudents);
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedStudents);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    MvcResult response = mockMvc
-            .perform(delete("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-        .andExpect(status().isNoContent()).andReturn();
-    verify(mockStudentRepository, times(1)).findById(expectedStudent.getId());
-    verify(mockStudentRepository, times(1)).deleteById(expectedStudent.getId());
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(responseString.length(), 0);
+    mockMvc
+        .perform(delete("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+        .andExpect(status().isNotFound());
   }
-  @Test
-  public void deleteAllStudents() throws Exception {
-    List<Student> expectedStudents = new ArrayList<Student>();
-    expectedStudents.add(new Student(1L, "email", "team"));
-    when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    MvcResult response = mockMvc
-            .perform(delete("/api/students").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-        .andExpect(status().isNoContent()).andReturn();
-    verify(mockStudentRepository, times(1)).deleteAll();
-    String responseString = response.getResponse().getContentAsString();
-    // List<Student> actualStudents = objectMapper.readValue(responseString, new TypeReference<List<Student>>() {
-    // });
-    assertEquals(responseString.length(), 0);
-  }
-  @Test
-  public void testDeleteStudent_unauthorizedIfNotAdmin() throws Exception {
-  Student expectedStudent = new Student(1L, "email", "team");
-  ObjectMapper mapper = new ObjectMapper();
-  String requestBody = mapper.writeValueAsString(expectedStudent);
-  when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-  mockMvc
-      .perform(delete("/api/students").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-      .andExpect(status().isUnauthorized());
-  } 
-  @Test
-  public void testDeleteStudent_ifNoStudents() throws Exception {
-  Optional<Student> expectedStudents = Optional.ofNullable(null);
-  when(mockStudentRepository.findById(1L)).thenReturn(expectedStudents);
-  ObjectMapper mapper = new ObjectMapper();
-  String requestBody = mapper.writeValueAsString(expectedStudents);
-  when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-  mockMvc
-      .perform(delete("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-      .andExpect(status().isNotFound());
-  }
+
   @Test
   public void testGetANonExistingStudent() throws Exception {
     when(mockStudentRepository.findById(99999L)).thenReturn(Optional.ofNullable(null));
@@ -141,65 +187,79 @@ public class StudentControllerTests {
   //   verify(mockCourseRepository, times(1)).findById(id);
   //   verify(mockCourseRepository, times(0)).deleteById(id);
   // }
+
    @Test
    public void getStudent() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
-    ObjectMapper mapper = new ObjectMapper();
-    String requestBody = mapper.writeValueAsString(expectedStudent);
-    // when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    // when(mockStudentRepository.save(any())).thenReturn(expectedStudent);
-    when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
-    MvcResult response = mockMvc
-        .perform(get("/api/students/1").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-    verify(mockStudentRepository, times(1)).findById(1L);
-    String responseString = response.getResponse().getContentAsString();
-    Student actualStudent = objectMapper.readValue(responseString, Student.class);
-    assertEquals(actualStudent, expectedStudent);
+      Student expectedStudent = new Student(1L, "email", "team");
+      ObjectMapper mapper = new ObjectMapper();
+      String requestBody = mapper.writeValueAsString(expectedStudent);
+      // when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      // when(mockStudentRepository.save(any())).thenReturn(expectedStudent);
+      when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
+      MvcResult response = mockMvc
+         .perform(get("/api/students/1").contentType("application/json")
+         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+      verify(mockStudentRepository, times(1)).findById(1L);
+
+      String responseString = response.getResponse().getContentAsString();
+      Student actualStudent = objectMapper.readValue(responseString, Student.class);
+      assertEquals(actualStudent, expectedStudent);
    }
+
+
    @Test
    public void getAllStudents() throws Exception {
-    List<Student> expectedStudents = new ArrayList<Student>();
-    expectedStudents.add(new Student(1L, "email", "team"));
-    ObjectMapper mapper = new ObjectMapper();
-    String requestBody = mapper.writeValueAsString(expectedStudents);
-    when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    MvcResult response = mockMvc.perform(get("/api/students").contentType("application/json")
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-    verify(mockStudentRepository, times(1)).findAll();
-    String responseString = response.getResponse().getContentAsString();
-    List<Student> actualStudents = objectMapper.readValue(responseString, new TypeReference<List<Student>>() {
-    });
-    assertEquals(actualStudents, expectedStudents);
+      List<Student> expectedStudents = new ArrayList<Student>();
+      expectedStudents.add(new Student(1L, "email", "team"));
+      ObjectMapper mapper = new ObjectMapper();
+      String requestBody = mapper.writeValueAsString(expectedStudents);
+      when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+      MvcResult response = mockMvc.perform(get("/api/students").contentType("application/json")
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
+
+      verify(mockStudentRepository, times(1)).findAll();
+
+      String responseString = response.getResponse().getContentAsString();
+      List<Student> actualStudents = objectMapper.readValue(responseString, new TypeReference<List<Student>>() {
+      });
+      assertEquals(actualStudents, expectedStudents);
    }
+
   @Test
   public void testGetStudents_notAdmin() throws Exception {
-    List<Student> expectedStudents = new ArrayList<Student>();
-    ObjectMapper mapper = new ObjectMapper();
-    String requestBody = mapper.writeValueAsString(expectedStudents);
-    when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
-    MvcResult response = mockMvc.perform(get("/api/students").contentType("application/json")
-          .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized()).andReturn();
+      List<Student> expectedStudents = new ArrayList<Student>();
+      ObjectMapper mapper = new ObjectMapper();
+      String requestBody = mapper.writeValueAsString(expectedStudents);
+      when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
+      when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
+      MvcResult response = mockMvc.perform(get("/api/students").contentType("application/json")
+           .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized()).andReturn();
   }
-  @Test
-  public void updateStudent() throws Exception {
-    Student inputStudent = new Student(1L, "email", "team");
-    Student savedStudent = new Student(1L, "email2", "team");
-    String body = objectMapper.writeValueAsString(inputStudent);
-    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
-    when(mockStudentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedStudent));
-    when(mockStudentRepository.save(inputStudent)).thenReturn(inputStudent);
-    MvcResult response = mockMvc
-        .perform(put("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
-        .andExpect(status().isOk()).andReturn();
-    verify(mockStudentRepository, times(1)).findById(inputStudent.getId());
-    verify(mockStudentRepository, times(1)).save(inputStudent);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(body, responseString);
-  }
+
+   @Test
+   public void updateStudent() throws Exception {
+     Student inputStudent = new Student(1L, "email", "team");
+     Student savedStudent = new Student(1L, "email2", "team");
+     String body = objectMapper.writeValueAsString(inputStudent);
+
+     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+     when(mockStudentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedStudent));
+     when(mockStudentRepository.save(inputStudent)).thenReturn(inputStudent);
+     MvcResult response = mockMvc
+         .perform(put("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
+         .andExpect(status().isOk()).andReturn();
+
+     verify(mockStudentRepository, times(1)).findById(inputStudent.getId());
+     verify(mockStudentRepository, times(1)).save(inputStudent);
+
+     String responseString = response.getResponse().getContentAsString();
+
+     assertEquals(body, responseString);
+   }
+
   @Test
   public void testUpdateStudent_studentAtPathOwned_butTryingToOverwriteAnotherStudent() throws Exception {
     Student inputStudent = new Student(1L, "email", "team");
@@ -226,9 +286,123 @@ public class StudentControllerTests {
         .perform(put("/api/students/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()).content(body))
         .andExpect(status().isOk()).andReturn();
+
     verify(mockStudentRepository, times(1)).findById(inputStudent.getId());
     verify(mockStudentRepository, times(1)).save(inputStudent);
+
     String responseString = response.getResponse().getContentAsString();
+
     assertEquals(body, responseString);
   }
+
+   @Test
+   public void testUpdateStudent_ifNotPresent() throws Exception {
+     Optional<Student> expectedStudents = Optional.ofNullable(null);
+     when(mockStudentRepository.findById(2L)).thenReturn(expectedStudents);
+     ObjectMapper mapper = new ObjectMapper();
+     String requestBody = mapper.writeValueAsString(expectedStudents);
+    //  Student inputStudent = new Student(2L, "email", "team");
+    //  Student savedStudent = new Student(2L, "email2", "team");
+    //  String body = objectMapper.writeValueAsString(inputStudent);
+
+     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+     mockMvc
+         .perform(put("/api/students/2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+             .characterEncoding("utf-8").content(requestBody).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+         .andExpect(status().isNotFound());
+   }
+
+  // @Test
+  //   public void testCSV() throws Exception {
+  //       Student student = new Student(1L, "email", "team");
+  //       MockMultipartFile file =
+  //               new MockMultipartFile(
+  //                       "file",
+  //                       "students.csv",
+  //                       "text/csv",
+  //                       "<<pdf data>>".getBytes());
+
+  //       ObjectMapper objectMapper = new ObjectMapper();
+
+  //       MockMultipartFile metadata =
+  //               new MockMultipartFile(
+  //                       "metadata",
+  //                       "student",
+  //                       "text/csv",
+  //                       objectMapper.writeValueAsString(student).getBytes());
+
+  //       // mockMvc.perform(
+  //       //         multipart("/api/students")
+  //       //                 .file(file)
+  //       //                 .file(metadata))
+  //       //         .andExpect(status().isOk());
+  //               // .andExpect(content().string("students.csv"));
+  //     MockHttpServletRequestBuilder builder =
+  //     MockMvcRequestBuilders.fileUpload("/api/students/upload")
+  //                         .file(mockMultipartFile);
+  //     this.mockMvc.perform(builder).andExpect(ok);
+  //       // .andDo(MockMvcResultHandlers.print());;
+  //   }
+
+  @Test
+  public void testUploadFile() throws Exception{
+    List<Student> expectedStudents = new ArrayList<Student>();
+    expectedStudents.add(new Student(1L, "email", "team"));
+    // when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(mockUser);
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Student.class))).thenReturn(expectedStudents);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/students/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isOk()).andReturn();
+    verify(mockStudentRepository, times(1)).saveAll(expectedStudents);
+  }
+
+  @Test
+  public void testUploadFileThrowsRuntime() throws Exception{
+    StudentController studentController = mock(StudentController.class);
+    when(mockCSVToObjectService.parse(any(Reader.class), eq(Student.class))).thenThrow(RuntimeException.class);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/students/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isBadRequest()).andReturn();
+
+    verify(mockStudentRepository, never()).saveAll(any());
+  }
+
+  @Test
+  public void testUploadFileThrowsIO() throws Exception{
+    StudentController studentController = mock(StudentController.class);
+    // when(mockCSVToObjectService.parse(any(Reader.class), eq(Student.class))).thenThrow(IOException.class);
+    MockMultipartFile mockFile = new MockMultipartFile(
+            "csv",
+            "test.csv",
+            MediaType.TEXT_PLAIN_VALUE,
+            "value,done\ntodo,false".getBytes()
+    );
+    MultipartFile file = mock(MultipartFile.class);
+
+    when(mockFile.getInputStream()).thenThrow(IOException.class);
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    MvcResult response = mockMvc.perform(multipart("/api/students/upload").file(mockFile)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
+            .andExpect(status().isInternalServerError()).andReturn();
+
+    verify(mockStudentRepository, never()).saveAll(any());
+  }
  }
+
+
+
+//when(mockCSVToObjectService.parse(any(), Student.class)).thenReturn();
