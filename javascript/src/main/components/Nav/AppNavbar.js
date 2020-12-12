@@ -47,12 +47,14 @@ function AppNavbar() {
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
         <ProfileNav />
-        {(isMember || isAdmin) && <NavDropdown title="Analyze Message Data">
-          <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>
-          <NavDropdown.Item href="/member/analyzemessages/countmessages">Count Messages By User</NavDropdown.Item>
-          <NavDropdown.Item href="/member/analyzemessages/messagehistogram">Histogram of Messages for a User</NavDropdown.Item>
-          <NavDropdown.Item href="/member/analyzemessages/searchmessages">Search Messages By User</NavDropdown.Item>
-        </NavDropdown>}
+        {(isMember || isAdmin) && 
+           <NavDropdown title="Analyze Message Data">
+            <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>
+            <NavDropdown.Item href="/member/analyzemessages/countmessages">Count Messages By User</NavDropdown.Item>
+            <NavDropdown.Item href="/member/analyzemessages/messagehistogram">Histogram of Messages for a User</NavDropdown.Item>
+            <NavDropdown.Item href="/member/analyzemessages/searchmessages">Search Messages By User</NavDropdown.Item>
+          </NavDropdown>
+        }
         {(isMember || isAdmin) &&
           <LinkContainer to={"/member/search"}>
             <Nav.Link>Search</Nav.Link>
