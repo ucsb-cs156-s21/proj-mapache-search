@@ -42,4 +42,3 @@ const SearchMessagesByUser = () => {
 };
 
 export default SearchMessagesByUser;
-
