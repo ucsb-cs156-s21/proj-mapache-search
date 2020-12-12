@@ -47,7 +47,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-
 @WebMvcTest(value = StudentController.class)
 @WithMockUser
 public class StudentControllerTests {
@@ -58,6 +57,7 @@ public class StudentControllerTests {
 
   @Autowired
   private WebApplicationContext webApplicationContext;
+
   @MockBean
   StudentRepository mockStudentRepository;
   @MockBean
@@ -67,6 +67,7 @@ public class StudentControllerTests {
 
   @MockBean
   Reader mockReader;
+
   private String userToken() {
     return "blah";
   }
@@ -189,7 +190,6 @@ public class StudentControllerTests {
     Student expectedStudent = new Student(1L, "email", "team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
-    // when(mockStudentRepository.findById(1L).thenReturn(Optional.of(expectedStudent)));
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
     MvcResult response = mockMvc.perform(get("/api/students/1").contentType("application/json")
       .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized()).andReturn();
@@ -234,9 +234,7 @@ public class StudentControllerTests {
         .andExpect(status().isOk()).andReturn();
     verify(mockStudentRepository, times(1)).findById(inputStudent.getId());
     verify(mockStudentRepository, times(1)).save(inputStudent);
-
     String responseString = response.getResponse().getContentAsString();
-
     assertEquals(body, responseString);
   }
   @Test

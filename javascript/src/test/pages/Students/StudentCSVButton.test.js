@@ -54,7 +54,6 @@ describe("students CSV Upload test", () => {
         expect(input.files[0]).toStrictEqual(testFile)
         expect(input.files.item(0)).toStrictEqual(testFile)
         expect(input.files).toHaveLength(1)
-
         userEvent.click(getByText("Submit")); 
     });
 });
