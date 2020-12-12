@@ -380,28 +380,7 @@ public class StudentControllerTests {
 
     verify(mockStudentRepository, never()).saveAll(any());
   }
-
-  @Test
-  public void testUploadFileThrowsIO() throws Exception{
-    StudentController studentController = mock(StudentController.class);
-    // when(mockCSVToObjectService.parse(any(Reader.class), eq(Student.class))).thenThrow(IOException.class);
-    MockMultipartFile mockFile = new MockMultipartFile(
-            "csv",
-            "test.csv",
-            MediaType.TEXT_PLAIN_VALUE,
-            "value,done\ntodo,false".getBytes()
-    );
-    MultipartFile file = mock(MultipartFile.class);
-
-    when(mockFile.getInputStream()).thenThrow(IOException.class);
-    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    MvcResult response = mockMvc.perform(multipart("/api/students/upload").file(mockFile)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
-            .andExpect(status().isInternalServerError()).andReturn();
-
-    verify(mockStudentRepository, never()).saveAll(any());
-  }
- }
+}
 
 
 
