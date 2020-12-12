@@ -7,6 +7,9 @@ import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -18,6 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 
+import edu.ucsb.mapache.services.GoogleSearchService;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import java.util.HashMap;
+
+import edu.ucsb.mapache.models.SearchParameters;
 
 /**
  * Sample Slash Command Handler.
@@ -33,12 +46,15 @@ public class SlackSlashCommandController {
     @Autowired
     ChannelRepository channelRepository;
 
-    /**
-     * The token you get while creating a new Slash Command. You should paste the
-     * token in application.properties file.
-     */
+    @Autowired
+    GoogleSearchService googleSearchService;
+
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
+
+    @Value("${app.google.search.apiToken}")
+    private String apiToken;
+
 
     public String getSlackToken() {
         return slackToken;
@@ -86,7 +102,6 @@ public class SlackSlashCommandController {
         params.setText(text);
         params.setResponseUrl(responseUrl);
 
-        
         String[] textParts = params.getTextParts();
 
         if (textParts.length <= 0 || textParts[0].equals("")) {
@@ -105,6 +120,10 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("debug")) {
             return debugCommand(params);
+        }
+
+        if (firstArg.equals("search") && textParts[1].equals("google")) {
+            return googleSearch(params);
         }
 
         return unknownCommand(params);
@@ -138,10 +157,35 @@ public class SlackSlashCommandController {
 
     public RichMessage statusCommand(SlackSlashCommandParams params) {
         RichMessage richMessage = new RichMessage(
-                String.format("From: %s Status is ok!", params.getCommand(), params.getTextParts()[0]));
+
+                String.format("From: %s Status is ok!", params.getCommand()));
         richMessage.setResponseType("ephemeral");
 
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+    }
+
+    
+    
+    public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
         
+        
+        SearchParameters sp = new SearchParameters();
+
+        String attachments = "";
+        String[] textParts = params.getTextParts();
+        for (int i = 2; i < textParts.length; i++) {
+            if (i != 2) {attachments += "+";}
+            attachments += textParts[i];
+        }
+
+        sp.setQuery(attachments);
+        sp.setPage(1);
+        String body = googleSearchService.getJSON(sp,apiToken);
+
+        RichMessage richMessage = new RichMessage(
+                String.format("google search results = %s", body));
+        richMessage.setResponseType("ephemeral");
+
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
