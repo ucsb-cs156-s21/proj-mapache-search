@@ -167,6 +167,7 @@ public class StudentControllerTests {
   }
   @Test
   public void testGetANonExistingStudent() throws Exception {
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockStudentRepository.findById(99999L)).thenReturn(Optional.ofNullable(null));
     mockMvc.perform(get("/api/students/99999").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
         "Bearer " + userToken())).andExpect(status().isNotFound());
@@ -176,6 +177,7 @@ public class StudentControllerTests {
     Student expectedStudent = new Student(1L, "email", "team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
+    when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
       MvcResult response = mockMvc
          .perform(get("/api/students/1").contentType("application/json")
