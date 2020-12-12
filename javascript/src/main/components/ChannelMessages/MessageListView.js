@@ -9,7 +9,7 @@ import TimeFormatter from "./time"
 const { SearchBar } = Search;
 
 
-const GetUserName = ({userId, slackUsers}) => {
+const GetUserName = ({userId, slackUsers = []}) => {
     for(let i = 0; i < slackUsers.length; i++) {
         if(slackUsers[i].id === userId) {
             return <p> {slackUsers[i].real_name} </p>;
@@ -20,13 +20,13 @@ const GetUserName = ({userId, slackUsers}) => {
 
 const UserName = (userId, slackUsers) => {
     return (
-        <GetUserName userId={userId} slackUsers={slackUsers || []} />
+        <GetUserName userId={userId} slackUsers={slackUsers} />
     );
 }
 
 const MessageContents = (text, slackUsers) => {
     return (
-        <GetMessageContents text={text} slackUsers={slackUsers || []} />
+        <GetMessageContents text={text} slackUsers={slackUsers} />
     );
 }
 
