@@ -2,6 +2,9 @@ package edu.ucsb.mapache.models;
 
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+
 public class SlackSlashCommandParams {
     private String token;
     private String teamId;
@@ -105,14 +108,18 @@ public class SlackSlashCommandParams {
             return false;
         }
         SlackSlashCommandParams SlackSlashCommandParams = (SlackSlashCommandParams) o;
-        return Objects.equals(token, SlackSlashCommandParams.token) && Objects.equals(teamId, SlackSlashCommandParams.teamId)
-                && Objects.equals(teamDomain, SlackSlashCommandParams.teamDomain)
-                && Objects.equals(channelId, SlackSlashCommandParams.channelId)
-                && Objects.equals(channelName, SlackSlashCommandParams.channelName)
-                && Objects.equals(userId, SlackSlashCommandParams.userId)
-                && Objects.equals(userName, SlackSlashCommandParams.userName)
-                && Objects.equals(command, SlackSlashCommandParams.command) && Objects.equals(text, SlackSlashCommandParams.text)
-                && Objects.equals(responseUrl, SlackSlashCommandParams.responseUrl);
+        EqualsBuilder builder = new EqualsBuilder();
+        
+        builder.append(token, SlackSlashCommandParams.token).append(teamId, SlackSlashCommandParams.teamId)
+                .append(teamDomain, SlackSlashCommandParams.teamDomain)
+                .append(channelId, SlackSlashCommandParams.channelId)
+                .append(channelName, SlackSlashCommandParams.channelName)
+                .append(userId, SlackSlashCommandParams.userId)
+                .append(userName, SlackSlashCommandParams.userName)
+                .append(command, SlackSlashCommandParams.command).append(text, SlackSlashCommandParams.text)
+                .append(responseUrl, SlackSlashCommandParams.responseUrl);
+                
+        return builder.isEquals();
     }
 
     @Override
@@ -130,9 +137,10 @@ public class SlackSlashCommandParams {
     }
 
     // For explanation of "[\\s\\p{Z}]" see: https://stackoverflow.com/a/26713907
-    public String [] getTextParts() {
-        String textParts[]= this.text.split("[\\s\\p{Z}]+");
-        return textParts;         
-    }
+    public String[] getTextParts() {
+        String[] textParts = this.text.split("[\\s\\p{Z}]+");
+        return textParts;
+    } // 
+
 
 }
