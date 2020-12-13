@@ -31,8 +31,7 @@ public interface CSVToObjectService<T> {
                 try {
                     reader.close();
                 } catch (IOException ex) {
-                    // ignore for now as any significant errors
-                    // should already have been reported
+                    getLogger.error("IOException: {}",ex);
                 }
             }
         }

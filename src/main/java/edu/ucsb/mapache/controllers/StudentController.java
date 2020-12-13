@@ -119,7 +119,6 @@ public class StudentController {
   @PostMapping(value = "/upload", produces = "application/json")
   public ResponseEntity<String> uploadCSV(@RequestParam("csv") MultipartFile csv, @RequestHeader("Authorization") String authorization) throws IOException{
     logger.info("Starting upload CSV");
-    String error = "";
     AppUser user = authControllerAdvice.getUser(authorization);
     try {
       Reader reader = new InputStreamReader(csv.getInputStream());
