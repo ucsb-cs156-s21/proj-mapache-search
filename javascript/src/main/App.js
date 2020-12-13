@@ -12,6 +12,9 @@ import Teams from "main/pages/Admin/Teams";
 import Admin from "main/pages/Admin/Admin";
 import SlackUsers from "./pages/Admin/SlackUsers";
 import SearchInfo from "./pages/Admin/SearchInfo";
+import Students from "./pages/Students/Students";
+import EditStudent from "main/pages/Students/EditStudent"
+import NewStudent from "main/pages/Students/NewStudent"
 import AuthorizedRoute from "main/components/Nav/AuthorizedRoute";
 import ChannelList from "main/pages/Channels/ChannelList";
 import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
@@ -31,6 +34,9 @@ function App() {
       <Container className="flex-grow-1 mt-5">
         <Switch>
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/students" exact component={Students} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/students/new" exact component={NewStudent} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/students/edit/:studentId" exact component={EditStudent} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/teams" exact component={Teams} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/searchInfo" exact component={SearchInfo} authorizedRoles={["admin"]} />

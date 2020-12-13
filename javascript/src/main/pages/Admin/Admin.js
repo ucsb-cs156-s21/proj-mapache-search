@@ -88,6 +88,7 @@ const Admin = () => {
           }
         </tbody>
       </Table>
+      
     </>
   );
 }
