@@ -8,6 +8,7 @@ import edu.ucsb.mapache.documents.Channel;
 import edu.ucsb.mapache.documents.ChannelTopic;
 import edu.ucsb.mapache.documents.ChannelPurpose;
 import edu.ucsb.mapache.documents.SlackUserProfile;
+import edu.ucsb.mapache.documents.MessageReactions;
 import edu.ucsb.mapache.documents.Message;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 
@@ -111,8 +112,8 @@ public class ChannelsControllerTests {
     @Test
     public void test_get_messageOfChannel_returnsListOfMessages() throws Exception {
         List<Message> expectedMessages = new ArrayList<Message>();
-        expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1", "text1", "channel1", new SlackUserProfile()));
-        expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2", "text2", "channel2", new SlackUserProfile()));
+        expectedMessages.add(new Message("type1", "subtype1", "ts1", "user1", "text1", "channel1", new SlackUserProfile(), new ArrayList<MessageReactions>()));
+        expectedMessages.add(new Message("type2", "subtype2", "ts2", "user2", "text2", "channel2", new SlackUserProfile(), new ArrayList<MessageReactions>()));
         when(mockMessageRepository.findByChannel(anyString())).thenReturn(expectedMessages);
         when(authControllerAdvice.getIsMember(anyString())).thenReturn(true);
         MvcResult response = mockMvc
