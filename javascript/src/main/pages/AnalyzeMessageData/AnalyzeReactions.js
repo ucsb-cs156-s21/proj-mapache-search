@@ -15,8 +15,9 @@ const AnalyzeReactions = () => {
         setSearchReaction(event.target.value);
     };
     
-    const handleSearchReactionOnSubmit = () => {
-        let url = `/api/members/messages/reactionsearch?searchReaction=${URIEncode(searchReaction)}`;
+    const handleSearchReactionOnSubmit = (e) => {
+        e.preventDefault();
+        let url = `/api/members/messages/reactionsearch?searchReaction=${encodeURIComponent(searchReaction)}`;
         const options = {
             method: 'GET',
         }
