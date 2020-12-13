@@ -40,7 +40,6 @@ function AppNavbar() {
           { (isMember || isAdmin)  &&
               <NavDropdown title="Search">
                   <NavDropdown.Item href="/member/messages/search">Message Search</NavDropdown.Item>
-                  <NavDropdown.Item href="/admin/students/team1">Manage Team1 Students</NavDropdown.Item>
               </NavDropdown>
           }
         <LinkContainer to={"/about"}>
