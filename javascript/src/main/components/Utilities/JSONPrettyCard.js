@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { Card } from 'react-bootstrap'
 import JSONPretty from 'react-json-pretty';
 const JSONPrettyCard = ({expression, value}) => {
