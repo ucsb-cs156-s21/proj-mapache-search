@@ -4,7 +4,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import NewStudent from "main/pages/Students/NewStudent";
 import userEvent from "@testing-library/user-event";
 
-import useSWR from "swr";
 
 import { useHistory } from 'react-router-dom';
 
@@ -23,7 +22,7 @@ describe("New Student page test", () => {
     name: "test user",
   };
   const getAccessTokenSilentlySpy = jest.fn();
-  const student =
+  const _student =
   {
     email: "jeff@ucsb.edu",
     teamName: "team-7pm-b",

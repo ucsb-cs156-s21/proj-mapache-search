@@ -1,12 +1,11 @@
 import React from "react";
-import { waitFor, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import useSWR from "swr";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
 import userEvent from "@testing-library/user-event";
 
-import { fetchWithToken } from "main/utils/fetch";
 import {StudentCSVButton} from "main/pages/Students/StudentCSVButton";
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");

@@ -5,11 +5,9 @@ import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import Students from "main/pages/Students/Students";
-import { buildCreateStudent, buildDeleteStudent, buildUpdateStudent, buildDeleteAllStudents, uploadStudentsCSV } from "main/services/StudentServices";
+import { buildDeleteStudent, buildDeleteAllStudents } from "main/services/StudentServices";
 
 import userEvent from "@testing-library/user-event";
-
-import { fetchWithToken } from "main/utils/fetch";
 
 import { useHistory } from "react-router-dom";
 jest.mock("swr");
@@ -122,7 +120,7 @@ describe("Students page test", () => {
   });
 
   test("can click to delete all", async () => {
-    buildDeleteAllStudents.mockImplementation((getToken, onSuccess, onError)=>{
+    buildDeleteAllStudents.mockImplementation((_getToken, onSuccess, _onError)=>{
       return () => {
         onSuccess();
       }

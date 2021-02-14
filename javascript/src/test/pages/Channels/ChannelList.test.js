@@ -6,7 +6,6 @@ import useSWR from "swr";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
@@ -47,13 +46,13 @@ describe("ChannelList tests", () => {
       });
   
   const mockBackend = (results) => {
-        useSWR.mockImplementation(([endpoint, getToken], fetch) => {
+        useSWR.mockImplementation(([endpoint, _getToken], _fetch) => {
             if (endpoint === "/api/members/channels")
               return {
                 data: results,
               };
             else
-                fail(`test called on unexpected endpoint: ${endpoint}`);
+                throw new Error(`test called on unexpected endpoint: ${endpoint}`);
           });
     }
   

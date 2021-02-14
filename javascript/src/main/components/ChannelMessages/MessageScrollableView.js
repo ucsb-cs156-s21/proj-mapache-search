@@ -17,7 +17,7 @@ const replaceMessage = (text, slackUsers) => {
     })
 }
 
-export default ({ messages, channel }) => {
+export default ({ messages, _channel }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
     return (
