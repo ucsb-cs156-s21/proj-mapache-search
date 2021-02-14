@@ -1,15 +1,15 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
-jest.mock("swr");
 
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 
 import userEvent from "@testing-library/user-event";
 
 import { fetchWithToken } from "main/utils/fetch";
 import {StudentCSVButton} from "main/pages/Students/StudentCSVButton";
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
 jest.mock("main/utils/fetch");
 
 describe("students CSV Upload test", () => {

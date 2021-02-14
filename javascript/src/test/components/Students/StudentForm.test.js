@@ -61,6 +61,6 @@ describe("StudentForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createStudentMock).toHaveBeenCalledTimes(1);
-    expect(createStudentMock).toHaveBeenCalledWith({ ... sampleStudent, id: undefined });
+    expect(createStudentMock).toHaveBeenCalledWith({ ...sampleStudent, id: undefined });
   });
 });

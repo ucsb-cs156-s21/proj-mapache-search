@@ -1,6 +1,5 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import ReactDOMServer from "react-dom/server";
 import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
