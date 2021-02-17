@@ -96,6 +96,58 @@ public class MessagesControllerTests {
         }
 
         @Test
+        public void test_contentsearch_messages_with_empty_string() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByText("")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/contentsearch?searchString=")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
+
+        @Test
+        public void test_reactionsearch_messages_unauthorizedIfNotMember() throws Exception {
+                mockMvc.perform(get("/api/members/messages/reactionsearch?searchReaction=springboot")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().is(401));
+        }
+
+        @Test
+        public void test_reactionsearch_messages() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByReactionName("springboot")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                MvcResult response = mockMvc
+                                .perform(get("/api/members/messages/reactionsearch?searchReaction=springboot")
+                                                .contentType("application/json")
+                                                .header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+                
+       }
+       
+       @Test
+       public void test_reactionsearch_messages_with_empty_string() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByReactionName("")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/reactionsearch?searchReaction=")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }                  
+
+        @Test
         public void test_getMessages_unauthorizedIfNotMember() throws Exception {
           mockMvc
               .perform(
@@ -122,20 +174,5 @@ public class MessagesControllerTests {
                 assertEquals(expectedMessages, messages);
             
               }
-
-        @Test
-        public void test_contentsearch_messages_with_empty_string() throws Exception {
-                List<Message> expectedMessages = new ArrayList<Message>();
-                when(mockMessageRepository.findByText("")).thenReturn(expectedMessages);
-                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
-                MvcResult response = mockMvc.perform(get("/api/members/messages/contentsearch?searchString=")
-                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-                                .andExpect(status().isOk()).andReturn();
-                String responseString = response.getResponse().getContentAsString();
-                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
-                });
-                assertEquals(expectedMessages, messages);
-        
-        }
-
+          
 }

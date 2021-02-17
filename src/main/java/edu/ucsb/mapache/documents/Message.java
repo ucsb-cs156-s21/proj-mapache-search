@@ -3,7 +3,7 @@ package edu.ucsb.mapache.documents;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-
+import java.util.List;
 import java.util.Objects;
 
 @Document(collection = "messages")
@@ -15,12 +15,13 @@ public class Message {
     private String text;
     private String channel;
     private SlackUserProfile user_profile;
+    private List<MessageReactions> reactions;
 
     public Message() {
     }
 
     public Message(String type, String subtype, String ts, String user, String text, String channel,
-            SlackUserProfile user_profile) {
+            SlackUserProfile user_profile, List<MessageReactions> reactions) {
         this.type = type;
         this.subtype = subtype;
         this.ts = ts;
@@ -28,6 +29,7 @@ public class Message {
         this.text = text;
         this.channel = channel;
         this.user_profile = user_profile;
+        this.reactions = reactions;
     }
 
     public String getType() {
@@ -85,7 +87,13 @@ public class Message {
     public void setUser_profile(SlackUserProfile user_profile) {
         this.user_profile = user_profile;
     }
-
+    
+    public List<MessageReactions> getMessage_reactions() {
+        return reactions;
+    }
+    public void setMessage_reactions(List<MessageReactions> reactions) {
+        this.reactions = reactions;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -101,18 +109,20 @@ public class Message {
         builder.append(text, message.text);
         builder.append(channel, message.channel);
         builder.append(user_profile, message.user_profile);
+        builder.append(reactions, message.reactions);
         return builder.build();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, subtype, ts, user, text, channel, user_profile);
+        return Objects.hash(type, subtype, ts, user, text, channel, user_profile, reactions);
     }
 
     @Override
     public String toString() {
         return "Message{" + "type='" + type + '\'' + ", subtype='" + subtype + '\'' + ", ts='" + ts + '\'' + ", user='"
                 + user + '\'' + ", text='" + text + '\'' + ", channel='" + channel + '\'' + ", user_profile="
-                + user_profile + '}';
+                + user_profile + ", reactions='" + reactions + '}';
     }
 }
+

@@ -1,6 +1,8 @@
 package edu.ucsb.mapache.repositories;
 
 import edu.ucsb.mapache.documents.Message;
+import edu.ucsb.mapache.entities.AppUser;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -17,4 +19,8 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
 
     @Query("{$text: { $search: ?0 }}")
     List<Message> findByText(String searchString);
+
+    @Query("{'reactions': {'$elemMatch': {'name' : ?0} }}")
+    List<Message> findByReactionName(String emojiSymbol);
 }
+

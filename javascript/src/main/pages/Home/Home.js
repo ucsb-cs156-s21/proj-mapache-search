@@ -1,10 +1,9 @@
 import React from "react";
 import { Jumbotron } from "react-bootstrap";
 import {useAuth0} from "@auth0/auth0-react";
-import { Redirect } from "react-router-dom";
 
 const Home = () => {
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated: _isAuthenticated } = useAuth0();
 
     return (
             <Jumbotron>
