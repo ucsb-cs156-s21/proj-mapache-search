@@ -39,8 +39,6 @@ describe("AppNavbar tests", () => {
       </Router>
     );
 
-    const userInfoLink = getByText(/Profile/);
-    expect(userInfoLink.href).toMatch("/profile");
   });
 
   test("should render admin links when admin", () => {
