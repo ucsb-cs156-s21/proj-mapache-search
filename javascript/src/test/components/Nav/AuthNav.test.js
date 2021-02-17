@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import AuthNav from "main/components/Nav/AuthNav";
 import { useAuth0 } from "@auth0/auth0-react";
+import { MemoryRouter } from "react-router-dom";
 jest.mock("@auth0/auth0-react");
 describe("AuthNav tests", () => {
   const user = {
@@ -22,7 +23,10 @@ describe("AuthNav tests", () => {
     useAuth0.mockReturnValueOnce({
       isAuthenticated: false,
     });
-    const { getByText } = render(<AuthNav />);
+    const { getByText } = render(
+    <MemoryRouter>
+      <AuthNav />
+    </MemoryRouter>);
     const loginButton = getByText(/Log In/);
     expect(loginButton).toBeInTheDocument();
   });
@@ -31,7 +35,10 @@ describe("AuthNav tests", () => {
     useAuth0.mockReturnValueOnce({
       user
     });
-    const { getByText } = render(<AuthNav />);
+    const { getByText } = render(
+      <MemoryRouter>
+        <AuthNav />
+      </MemoryRouter>);
     const loginButton = getByText(/Log Out/);
     expect(loginButton).toBeInTheDocument();
   });
@@ -41,7 +48,10 @@ describe("AuthNav tests", () => {
     useAuth0.mockReturnValueOnce({
       user
     });
-    const { getByText, getByAltText } = render(<AuthNav />);
+    const { getByText, getByAltText } = render(
+      <MemoryRouter>
+        <AuthNav />
+      </MemoryRouter>);
     const welcomeText = getByText("Hello, " + user.name);
     expect(welcomeText).toBeInTheDocument();
     expect(welcomeText.closest('a')).toHaveAttribute('href', '/profile');
