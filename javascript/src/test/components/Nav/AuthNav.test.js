@@ -44,6 +44,7 @@ describe("AuthNav tests", () => {
     const { getByText, getByAltText } = render(<AuthNav />);
     const welcomeText = getByText("Hello, " + user.name);
     expect(welcomeText).toBeInTheDocument();
+    expect(welcomeText.closest('a')).toHaveAttribute('href', '/profile');
     const profileImage = getByAltText("Profile");
     expect(profileImage).toBeInTheDocument();
   });
