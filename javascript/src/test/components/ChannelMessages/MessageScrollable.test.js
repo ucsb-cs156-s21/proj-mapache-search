@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "@testing-library/react";
 import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView";
 import useSWR from "swr";
-import MessageListView from "../../../main/components/ChannelMessages/MessageListView";
 jest.mock("swr");
 jest.mock("react-router-dom", () => {
     return {
