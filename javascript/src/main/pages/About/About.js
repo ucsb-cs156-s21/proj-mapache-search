@@ -1,5 +1,5 @@
 import React from "react";
-import { CardDeck, Card, Button } from "react-bootstrap";
+import { CardDeck, Card } from "react-bootstrap";
 
 const About = () => {
   return (
