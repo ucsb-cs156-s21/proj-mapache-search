@@ -46,7 +46,6 @@ function AppNavbar() {
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
-        <ProfileNav />
           { (isAdmin || isMember) &&
               <NavDropdown title="Analyze Message Data">
                   <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>
