@@ -3,7 +3,7 @@ import BootstrapTable  from 'react-bootstrap-table-next';
 
 export default ({ messages=[],reaction }) => {
 
-    function subjectFormatter(cell, row, rowIndex) {
+    function subjectFormatter(_cell, row, _rowIndex) {
         const correctReaction = row.message_reactions.find((message_reaction) => {
             return message_reaction.name === reaction;
         });

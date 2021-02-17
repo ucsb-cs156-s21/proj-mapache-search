@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import StudentForm from "main/components/Students/StudentForm";
 import userEvent from "@testing-library/user-event";
 
@@ -23,7 +23,7 @@ describe("StudentForm tests", () => {
 
     const updateStudentMock = jest.fn();
 
-    const { getByText, getByDisplayValue, getByLabelText } = render
+    const { getByText, _getByDisplayValue, getByLabelText } = render
       (<StudentForm updateStudent={updateStudentMock} existingStudents={sampleStudent}/>)
     ;
 
@@ -61,6 +61,6 @@ describe("StudentForm tests", () => {
     userEvent.click(submitButton);
 
     expect(createStudentMock).toHaveBeenCalledTimes(1);
-    expect(createStudentMock).toHaveBeenCalledWith({ ... sampleStudent, id: undefined });
+    expect(createStudentMock).toHaveBeenCalledWith({ ...sampleStudent, id: undefined });
   });
 });

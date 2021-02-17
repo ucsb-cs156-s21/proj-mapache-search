@@ -5,7 +5,6 @@ import AuthNav from "main/components/Nav/AuthNav";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
-import Search from "main/pages/Search/Search";
 
 function AppNavbar() {
   const { getAccessTokenSilently: getToken } = useAuth0();
