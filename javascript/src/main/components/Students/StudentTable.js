@@ -32,13 +32,13 @@ const StudentTable = ({students,deleteStudent}) => {
         text: "Edit",
         isDummyField: true,
         dataField: "edit",
-        formatter: (cell, row) => renderUpdateButton(row.id)
+        formatter: (_cell, row) => renderUpdateButton(row.id)
     });
     columns.push({
         text: "Delete",
         isDummyField: true,
         dataField: "delete",
-        formatter: (cell, row) => renderDeleteButton(row.id)
+        formatter: (_cell, row) => renderDeleteButton(row.id)
     });
     return (
         <BootstrapTable keyField='id' data={students} columns={columns} />
