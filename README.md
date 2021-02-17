@@ -1,3 +1,9 @@
+This is a test commit to test Codecov status checks.
+
+DO NOT MERGE THIS IN.
+
+---
+
 # Mapache Search
 
 [![codecov](https://codecov.io/gh/ucsb-cs156-f20/proj-mapache-search/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/proj-mapache-search)
