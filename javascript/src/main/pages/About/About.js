@@ -22,7 +22,7 @@ const About = () => {
           <Card.Body>
             <Card.Title>Researchers</Card.Title>
             <Card.Text>Researchers can use the data from Mapache Search to study metacognition - in particular, the way students formulate questions.</Card.Text>
-            <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1915198&HistoricalAwards=false" target="_blank">
+            <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1915198&HistoricalAwards=false" target="_blank" rel="noopener noreferrer">
               Read More About The Research Project
             </a>
           </Card.Body>
