@@ -6,7 +6,6 @@ import ProfileNav from "main/components/Nav/ProfileNav";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
-import Search from "main/pages/Search/Search";
 
 function AppNavbar() {
   const { getAccessTokenSilently: getToken } = useAuth0();
@@ -39,7 +38,7 @@ function AppNavbar() {
               </NavDropdown>
           }
           { (isMember || isAdmin)  &&
-              <NavDropdown title="Search">
+              <NavDropdown title="Slack Search">
                   <NavDropdown.Item href="/member/messages/search">Message Search</NavDropdown.Item>
               </NavDropdown>
           }
@@ -48,7 +47,7 @@ function AppNavbar() {
         </LinkContainer>
         <ProfileNav />
           { (isAdmin || isMember) &&
-              <NavDropdown title="Analyze Message Data">
+              <NavDropdown title="Analyze Slack Data">    
                   <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>
                   <NavDropdown.Item href="/member/analyzemessages/countmessages">Count Messages By User</NavDropdown.Item>
                   <NavDropdown.Item href="/member/analyzemessages/messagehistogram">Histogram of Messages for a User</NavDropdown.Item>
@@ -56,8 +55,8 @@ function AppNavbar() {
               </NavDropdown>
           }
           { (isMember || isAdmin) && 
-              <LinkContainer to={"/member/search"}>
-                  <Nav.Link>Search</Nav.Link>
+              <LinkContainer to={"/member/GoogleSearch"}>   
+                  <Nav.Link>Google Search</Nav.Link>     
               </LinkContainer> 
           }
       </Nav>
