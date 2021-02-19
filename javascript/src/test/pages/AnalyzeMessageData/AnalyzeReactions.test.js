@@ -24,6 +24,12 @@ describe("AnalyzeReactions tests", () => {
     render(<AnalyzeReactions />);
   });
 
+  //test added feature
+  test("renders without crashing", () => {
+    const { getByText } =  render(<AnalyzeReactions/>);
+    expect(getByText("To properly search the emoji, please remove the colons in the emoji name. (Ex: \":+1:\" should be \"+1\")")).toBeInTheDocument();
+  });
+  
   test("renders without crashing on search", () => {
     const { getByLabelText } = render(<AnalyzeReactions />);
     const selectSearchReaction = getByLabelText("Search Reaction");
