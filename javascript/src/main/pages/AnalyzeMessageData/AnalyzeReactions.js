@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import MessageTableReaction from "main/components/ChannelMessageReaction/MessageTableReaction"
 import { Form, Button } from "react-bootstrap";
