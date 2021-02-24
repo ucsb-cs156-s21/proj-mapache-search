@@ -31,6 +31,8 @@ services that require configuration
 * Google (for authentication)
 * A postgres database provisioned on Heroku
 * MongoDB Database provisioned at <https://cloud.mongodb.com/>
+* Google Search API (a key is needed for this)
+* A Slack bot (a token is needed for this)
 
 
 ## Step 0: Get Organized
@@ -43,9 +45,9 @@ heroku.url:
 auth0.tenant:
 auth0.domain:
 auth0.clientId: 
-google.clientId:
-google.clientSecret:
 spring.data.mongodb.uri:
+app.google.search.apiToken: 
+app.slackslashCommandToken:
 ```
 
 This file should be in your `.gitignore`, and should not be committed to GitHub.
@@ -76,9 +78,9 @@ heroku.url: https://dsr-min-cgaucho.herokuapp.com
 auth0.tenant: 
 auth0.domain:
 auth0.clientId: 
-google.clientId:
-google.clientSecret: 
 spring.data.mongodb.uri:
+app.google.search.apiToken: 
+app.slackslashCommandToken:
 ```
 
 ## Step 2: Create an Auth0.com Account and/or Tenant
@@ -133,10 +135,10 @@ heroku.app: dsr-min-cgaucho
 heroku.url: https://dsr-min-cgaucho.herokuapp.com
 auth0.tenant: ucsb-cs156-cgaucho
 auth0.domain: ucsb-cs156-cgaucho.us.auth0.com
-auth0.clientid: 6KoPsWMM2A27PjAejHHWTXApra8CVQ6C
-google.clientId:
-google.clientSecret: 
+auth0.clientid: 6KoPsWMM2A27PjAejHHWTXApra8CVQ6C 
 spring.data.mongodb.uri:
+app.google.search.apiToken: 
+app.slackslashCommandToken:
 ```
 
 ## Step 4: Set up an API under Auth0
@@ -202,7 +204,19 @@ Step 8 is where we put special configuration that is particular this this applic
 
 ## Step 8a: MongoDB Database credentials
 
-See the top level README.md for details about how to set the value of `spring.data.mongodb.uri:` in `temp-credentials.txt`
+To set up the value of `spring.data.mongodb.uri` in `temp-credentials.txt` you should follow the instructions in this file: [docs/mongo-db-credentials.md](./mongo-db-credentials.md)
+
+
+## Step 8b: Google Custom Search API key
+
+To set up the value of `app.google.search.apiToken` in `temp-credentials.txt` you should follow the instructions in this file: [docs/google-search-api-key.md](./google-search-api-key.md)
+
+
+## Step 8c: Slack Slash Command Token
+
+To set up the value of `app.slack.slashCommandToken` in `temp-credentials.txt` you should follow the instructions in this file: [docs/slack-slash-command-token.md](./slack-slash-command-token.md)
+
+
 
 ## Step 9: Set up the secrets files
 

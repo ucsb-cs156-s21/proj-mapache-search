@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Jumbotron } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Redirect } from "react-router-dom";
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import JSONPrettyCard from "main/components/Utilities/JSONPrettyCard";
 import { fetchWithToken } from "main/utils/fetch";
 
@@ -12,7 +10,7 @@ const Search = () => {
         searchQuery: "",
     }
 
-    const fetchSearchResults = async (event) => {
+    const fetchSearchResults = async (_event) => {
         const url = `/api/member/search/basic?searchQuery=${query.searchQuery}`;
 
         try {
@@ -28,7 +26,7 @@ const Search = () => {
             console.log(`err=${err}`)
         }
     };
-    const fetchQuota = async (event) => {
+    const fetchQuota = async (_event) => {
         const url = `/api/member/search/quota`;
 
         try {

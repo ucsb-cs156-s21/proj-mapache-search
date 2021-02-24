@@ -4,7 +4,6 @@ about: This is the format for defining user story issues.
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 # User Story
