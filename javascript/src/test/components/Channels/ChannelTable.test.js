@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import ChannelTable from "main/components/Channels/ChannelTable";
+import userEvent from "@testing-library/user-event";
 
 describe("ChannelTable tests", () => {
 
@@ -56,6 +57,50 @@ describe("ChannelTable tests", () => {
     ];
 
     render(<ChannelTable channels={channels}/>);
+  });
+
+  test("ascending and descending buttons can be pressed", () => {
+    
+    const channels = [
+        {
+            'id': 1,
+            'name' : 'announcements',
+            'purpose': {
+                'value': 'This is the one channel that will always include everyone. It’s a great spot for announcements and team-wide conversations.'
+            },
+            'topic': {
+                'value': 'Zoom link: Website: '
+            }
+        },
+        {
+            'id': 2,
+            'name' : 'class-notes',
+            'purpose': {
+                'value': 'Instructor notes from lecture/discussion'
+            },
+            'topic': {
+                'value': 'Course website: '
+            }
+        },
+        {
+            'id': 3,
+            'name' : 'general',
+            'purpose': {
+                'value': 'This channel is for working on a project. Hold meetings, share docs, and make decisions together with your team.'
+            },
+            'topic': {
+                'value': 'What’s up for discussion?'
+            }
+        },
+    ];
+    
+    const { getByText } = render(<ChannelTable channels={channels}/>)
+    const purposeHeader = getByText(/Purpose/);
+    
+    userEvent.click(purposeHeader);
+    userEvent.click(purposeHeader);
+    const descendingOFF = String.fromCharCode(0x25bd);
+    expect(getByText(descendingOFF)).toBeInTheDocument();
   });
 
 });
