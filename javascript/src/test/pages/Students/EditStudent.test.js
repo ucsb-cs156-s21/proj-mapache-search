@@ -1,14 +1,15 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { Router, useHistory, useParams } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { useHistory, useParams } from 'react-router-dom';
 import EditStudent from "main/pages/Students/EditStudent";
 import userEvent from "@testing-library/user-event";
 
 import useSWR from "swr";
-jest.mock("swr");
 
 import { useAuth0 } from "@auth0/auth0-react";
+
+import { fetchWithToken } from "main/utils/fetch";
+jest.mock("swr");
 jest.mock("@auth0/auth0-react");
 
 jest.mock("react-router-dom", () => ({
@@ -16,8 +17,6 @@ jest.mock("react-router-dom", () => ({
   useParams: jest.fn(), 
   useHistory: jest.fn() 
 }));
-
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
 }));

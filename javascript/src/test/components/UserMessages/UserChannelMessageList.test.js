@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { render } from "@testing-library/react";
 import UserChannelMessageList from "main/components/UserMessages/UserChannelMessageList"
 

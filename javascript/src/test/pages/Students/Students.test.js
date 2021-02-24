@@ -1,13 +1,17 @@
 import React from "react";
 import { waitFor, render } from "@testing-library/react";
 import useSWR from "swr";
-jest.mock("swr");
 
 import { useAuth0 } from "@auth0/auth0-react";
-jest.mock("@auth0/auth0-react");
 
 import Students from "main/pages/Students/Students";
-import { buildCreateStudent, buildDeleteStudent, buildUpdateStudent, buildDeleteAllStudents, uploadStudentsCSV } from "main/services/StudentServices";
+import { buildDeleteStudent, buildDeleteAllStudents } from "main/services/StudentServices";
+
+import userEvent from "@testing-library/user-event";
+
+import { useHistory } from "react-router-dom";
+jest.mock("swr");
+jest.mock("@auth0/auth0-react");
 jest.mock("main/services/StudentServices", () => ({
   buildCreateStudent: jest.fn(),
   buildDeleteStudent: jest.fn(),
@@ -15,13 +19,7 @@ jest.mock("main/services/StudentServices", () => ({
   buildDeleteAllStudents: jest.fn(),
   uploadStudentsCSV: jest.fn()
 }) );
-
-import userEvent from "@testing-library/user-event";
-
-import { fetchWithToken } from "main/utils/fetch";
 jest.mock("main/utils/fetch");
-
-import { useHistory } from "react-router-dom";
 jest.mock("react-router-dom", () => ({
   useHistory: jest.fn(),
 }));
@@ -122,7 +120,7 @@ describe("Students page test", () => {
   });
 
   test("can click to delete all", async () => {
-    buildDeleteAllStudents.mockImplementation((getToken, onSuccess, onError)=>{
+    buildDeleteAllStudents.mockImplementation((_getToken, onSuccess, _onError)=>{
       return () => {
         onSuccess();
       }

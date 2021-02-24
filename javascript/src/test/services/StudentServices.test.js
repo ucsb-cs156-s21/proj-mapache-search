@@ -1,6 +1,3 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import AppFooter from "main/components/Footer/AppFooter";
 import { buildCreateStudent, buildDeleteStudent, buildUpdateStudent, buildDeleteAllStudents, uploadStudentsCSV } from "main/services/StudentServices";
 
 import { fetchWithToken } from "main/utils/fetch";
