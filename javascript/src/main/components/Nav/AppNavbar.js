@@ -18,7 +18,9 @@ function AppNavbar() {
   const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
   
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar.Toggle />
+      <Navbar.Collapse>
       <LinkContainer to={""}>
         <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
       </LinkContainer>
@@ -63,6 +65,7 @@ function AppNavbar() {
       </Nav>
       <Navbar.Collapse className="justify-content-end">
         <AuthNav />
+      </Navbar.Collapse>
       </Navbar.Collapse>
     </Navbar>
   );
