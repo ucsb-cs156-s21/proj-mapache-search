@@ -87,7 +87,7 @@ public class SlackSlashCommandController {
         // validate token
         logger.info("slash command processing...");
         if (!token.equals(slackToken)) {
-            return new RichMessage("Sorry: the slack bot received an invalid token.");
+            return new RichMessage("Sorry: the slack bot received an invalid token: " + token);
         }
 
         SlackSlashCommandParams params = new SlackSlashCommandParams();
