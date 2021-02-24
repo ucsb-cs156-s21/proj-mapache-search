@@ -3,10 +3,8 @@ import React from "react";
 import StudentForm from "main/components/Students/StudentForm";
 import {buildCreateStudent} from "main/services/StudentServices";
 
-import { fetchWithToken } from "main/utils/fetch";
 import { useAuth0 } from "@auth0/auth0-react";
-import Loading from "main/components/Loading/Loading";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const NewStudent = () => {
   const history = useHistory();
