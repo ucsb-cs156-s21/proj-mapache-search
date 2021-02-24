@@ -1,6 +1,5 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import { Button } from "react-bootstrap";
 import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "../../utils/fetch";

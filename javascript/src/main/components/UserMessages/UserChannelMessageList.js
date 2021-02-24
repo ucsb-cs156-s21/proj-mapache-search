@@ -16,14 +16,14 @@ export default ({ messages }) => {
 
     if(Array.isArray(messages) && messages.length) {
         for (let i = 0; i < messages.length; i++) {
-            if(!messageChannels.some(e => e.channel == messages[i].channel)) {
+            if(!messageChannels.some(e => e.channel === messages[i].channel)) {
                 const channelCountPair = {
                     channel: messages[i].channel,
                     count: 1
                 }
                 messageChannels.push(channelCountPair);
             } else {
-                const index = messageChannels.findIndex(channelCountPair => channelCountPair.channel == messages[i].channel);
+                const index = messageChannels.findIndex(channelCountPair => channelCountPair.channel === messages[i].channel);
                 messageChannels[index].count++;
             }
         }

@@ -23,7 +23,7 @@ export default ({ channels }) => {
         text: 'Topic'
     },{
         isDummyField: true,
-        formatter: (cell, row) => channelLink(row.name),
+        formatter: (_cell, row) => channelLink(row.name),
         dataField: 'channelLink',
         text: 'Link'
     }

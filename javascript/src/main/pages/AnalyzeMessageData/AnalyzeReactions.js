@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
 import MessageTableReaction from "main/components/ChannelMessageReaction/MessageTableReaction"
 import { Form, Button } from "react-bootstrap";
@@ -33,6 +32,9 @@ const AnalyzeReactions = () => {
                 <Form.Group controlId="searchReaction">
                     <Form.Label>Search Reaction</Form.Label> <br/>
                     <a href = "https://www.webfx.com/tools/emoji-cheat-sheet/"> This is the link for the emoji names </a>
+                    <Form.Text className="text-muted">
+                    To properly search the emoji, please remove the colons in the emoji name. (Ex: ":+1:" should be "+1")
+                    </Form.Text>
                     <Form.Control type="text" placeholder="Enter Search Reaction" onChange={(e) => handleSearchReactionOnChange(e)} />
                 </Form.Group>
                 <Form.Group>
