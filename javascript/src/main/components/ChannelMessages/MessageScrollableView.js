@@ -18,8 +18,16 @@ const replaceMessage = (text, slackUsers) => {
 }
 
 const replaceLink = (text) => {
-    var link = /<(http(?:.*?))>/g;
+    var link = /<(.*?)>/g;
     return text.replace(link, '<a href = "$1">$1</a>')
+}
+
+const createMarkup = (text, slackUsers) => {
+    text = replaceMessage(text, slackUsers)
+    text = replaceLink(text)
+    return {
+        __html: text
+    }
 }
 
 export default ({ messages, _channel }) => {
@@ -43,7 +51,7 @@ export default ({ messages, _channel }) => {
                         }}>
                             <strong>{el?.user_profile?.real_name || el.user}</strong>
                             <label style={{marginLeft: 10}}>{TimeFormatter(el?.ts)}</label>
-                            <p>{replaceMessage(el?.text, slackUsers), replaceLink(el?.text)}</p>
+                            <p dangerouslySetInnerHTML={createMarkup(el?.text, slackUsers)}></p>
                         </div>
                     )
                 })
