@@ -112,4 +112,26 @@ describe("MessageScrollableView tests", () => {
         }, 500)
     });
 
+    test("Links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Office hours at https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
+            expect(linkElement.href).toMatch("/https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        }, 500)
+    });
+
 });
