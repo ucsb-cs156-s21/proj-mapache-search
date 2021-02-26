@@ -2,7 +2,6 @@ import React from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import AuthNav from "main/components/Nav/AuthNav";
-import ProfileNav from "main/components/Nav/ProfileNav";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
@@ -45,7 +44,6 @@ function AppNavbar() {
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
-        <ProfileNav />
           { (isAdmin || isMember) &&
               <NavDropdown title="Analyze Slack Data">    
                   <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>

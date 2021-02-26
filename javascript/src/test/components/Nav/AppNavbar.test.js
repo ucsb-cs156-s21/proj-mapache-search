@@ -43,6 +43,7 @@ describe("AppNavbar tests", () => {
     expect(userInfoLink.href).toMatch("/profile");
   });
   
+
   test("should render admin links when admin", () => {
     useSWR.mockReturnValue({
       data: {
