@@ -1,6 +1,5 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import ReactDOMServer from "react-dom/server";
 import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
@@ -50,12 +49,12 @@ export default ({ messages }) => {
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
     const columns = [{
         isDummyField: true,
-        formatter: (cell, row) => UserName(row.user, slackUsers),
+        formatter: (_cell, row) => UserName(row.user, slackUsers),
         dataField: 'name',
         text: 'Username'
     },{
         isDummyField: true,
-        formatter: (cell, row) => MessageContents(row.text, slackUsers),
+        formatter: (_cell, row) => MessageContents(row.text, slackUsers),
         dataField: 'text',
         text: 'Contents',
         sort: true

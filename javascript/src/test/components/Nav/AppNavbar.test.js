@@ -32,6 +32,7 @@ describe("AppNavbar tests", () => {
     expect(brandElement).toBeInTheDocument();
   });
   
+
   test("should render admin links when admin", () => {
     useSWR.mockReturnValue({
       data: {
