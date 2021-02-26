@@ -2,6 +2,7 @@ package edu.ucsb.mapache.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.lang.StringBuilder;
 
 import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.entities.Student;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
 
@@ -126,6 +129,10 @@ public class SlackSlashCommandController {
             return googleSearch(params);
         }
 
+        if (firstArg.equals("teamlist")) {
+            return getTeamEmail(params);
+        }
+
         return unknownCommand(params);
 
     }
@@ -218,6 +225,25 @@ public class SlackSlashCommandController {
 
         richMessage.setAttachments(attachments);
 
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+    }
+
+    public RichMessage getTeamEmail(SlackSlashCommandParams params) {
+        String[] textParts = params.getTextParts();
+        String teamName = textParts[1];
+        //StudentController s = new StudentController();
+        //String Students = s.getStudents();
+        StringBuilder emailList = new StringBuilder();
+        
+        StudentRepository studentRepository;
+        Iterable<Student> studentList = studentRepository.findByTeamName(teamName);
+        for (Student s : studentList){
+            emailList.append(s.getEmail());
+            emailList.append("\n");
+        }
+        
+        RichMessage richMessage = new RichMessage(emailList.toString());
+        richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
