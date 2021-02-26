@@ -50,6 +50,9 @@ public class SlackSlashCommandController {
     ChannelRepository channelRepository;
 
     @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
     GoogleSearchService googleSearchService;
 
     @Value("${app.slack.slashCommandToken}")
@@ -235,7 +238,6 @@ public class SlackSlashCommandController {
         //String Students = s.getStudents();
         StringBuilder emailList = new StringBuilder();
         
-        StudentRepository studentRepository;
         Iterable<Student> studentList = studentRepository.findByTeamName(teamName);
         for (Student s : studentList){
             emailList.append(s.getEmail());
