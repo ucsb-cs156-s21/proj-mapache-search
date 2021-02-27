@@ -240,7 +240,7 @@ describe("MessageScrollableView tests", () => {
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
         setTimeout(function (){
             const bracketElement = getByText(/!channel/);
-            expect(bracketElement).toBeInTheDocument;
+            expect(bracketElement).toBeInTheDocument();
         }, 500)
     });
 
