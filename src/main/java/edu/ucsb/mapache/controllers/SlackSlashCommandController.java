@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +24,7 @@ import edu.ucsb.mapache.repositories.StudentRepository;
 import edu.ucsb.mapache.entities.Student;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.TeamEmailListService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,8 +49,6 @@ public class SlackSlashCommandController {
     @Autowired
     ChannelRepository channelRepository;
 
-    @Autowired
-    StudentRepository studentRepository;
 
     @Autowired
     GoogleSearchService googleSearchService;
@@ -234,17 +232,8 @@ public class SlackSlashCommandController {
     public RichMessage getTeamEmail(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
         String teamName = textParts[1];
-        //StudentController s = new StudentController();
-        //String Students = s.getStudents();
-        StringBuilder emailList = new StringBuilder();
-        
-        Iterable<Student> studentList = studentRepository.findByTeamName(teamName);
-        for (Student s : studentList){
-            emailList.append(s.getEmail());
-            emailList.append("\n");
-        }
-        
-        RichMessage richMessage = new RichMessage(emailList.toString());
+        TeamEmailListService teamEmailListService = new TeamEmailListService();
+        RichMessage richMessage = new RichMessage(teamEmailListService.getTeamEmails(teamName));
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
