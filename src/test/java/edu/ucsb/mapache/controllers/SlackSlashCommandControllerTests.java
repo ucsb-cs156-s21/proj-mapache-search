@@ -368,6 +368,26 @@ public class SlackSlashCommandControllerTests {
         )
         .andExpect(status().is(200));
   }
+  @Test
+  public void test_teamlistCommand_emptyTeamName() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+    mockMvc
+        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+
+                .param("token", slackSlashCommandController.getSlackToken())
+
+        .param("team_id", "value")
+        .param("team_domain", "value")
+        .param("channel_id", "value")
+        .param("channel_name", "value")
+        .param("user_id", "value")
+        .param("user_name", "value")
+        .param("command", "/mapache")
+        .param("text", "teamlist")
+        .param("response_url", "value")
+        )
+        .andExpect(status().is(200));
+  }
 
 }
 

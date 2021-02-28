@@ -23,6 +23,9 @@ public class TeamEmailListService {
   }
   public Optional<String> getTeamEmails(String teamName) {
     List <Student> studentsInTeam = studentRepository.findByTeamName(teamName);
-    return Optional.ofNullable(this.formatTeamEmails(studentsInTeam));
+    if(studentsInTeam.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(this.formatTeamEmails(studentsInTeam));
   }
 }
