@@ -53,6 +53,9 @@ public class SlackSlashCommandController {
     @Autowired
     GoogleSearchService googleSearchService;
 
+    @Autowired
+    TeamEmailListService teamEmailListService;
+
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
 
@@ -231,9 +234,13 @@ public class SlackSlashCommandController {
 
     public RichMessage getTeamEmail(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
+        if(textParts.length < 2) {
+            RichMessage richMessage = new RichMessage("Please enter a team name");
+            return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+        }
         String teamName = textParts[1];
-        TeamEmailListService teamEmailListService = new TeamEmailListService();
-        RichMessage richMessage = new RichMessage(teamEmailListService.getTeamEmails(teamName));
+        String emailText = teamEmailListService.getTeamEmails(teamName);
+        RichMessage richMessage = new RichMessage((emailText == null) ? "Team Not found." : emailText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
