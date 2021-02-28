@@ -23,7 +23,7 @@ public class TeamEmailListService {
   public String getTeamEmails(String teamName) {
     List <Student> studentsInTeam = studentRepository.findByTeamName(teamName);
     String emailString = this.formatTeamEmails(studentsInTeam);
-    if(studentsInTeam.isEmpty() || studentsInTeam == null || emailString == null) {
+    if(studentsInTeam.isEmpty()) {
       return "Team Not Found!";
     }
     return emailString;
