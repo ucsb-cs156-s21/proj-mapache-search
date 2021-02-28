@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.HashMap;
+import java.util.Optional;
 
 import edu.ucsb.mapache.models.SearchParameters;
 
@@ -239,8 +240,8 @@ public class SlackSlashCommandController {
             return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
         }
         String teamName = textParts[1];
-        String emailText = teamEmailListService.getTeamEmails(teamName);
-        RichMessage richMessage = new RichMessage((emailText == null) ? "Team Not found." : emailText);
+        Optional<String> emailText = teamEmailListService.getTeamEmails(teamName);
+        RichMessage richMessage = new RichMessage((emailText.isEmpty()) ? "Team Not found." : emailText.get());
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
