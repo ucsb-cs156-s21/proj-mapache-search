@@ -1,7 +1,6 @@
 package edu.ucsb.mapache.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,12 @@ public class TeamEmailListService {
     }
     return emailList;
   }
-  public Optional<String> getTeamEmails(String teamName) {
+  public String getTeamEmails(String teamName) {
     List <Student> studentsInTeam = studentRepository.findByTeamName(teamName);
-    if(studentsInTeam.isEmpty()) {
-      return Optional.empty();
+    String emailString = this.formatTeamEmails(studentsInTeam);
+    if(studentsInTeam.isEmpty() || studentsInTeam == null || emailString == null) {
+      return "Team Not Found!";
     }
-    return Optional.of(this.formatTeamEmails(studentsInTeam));
+    return emailString;
   }
 }

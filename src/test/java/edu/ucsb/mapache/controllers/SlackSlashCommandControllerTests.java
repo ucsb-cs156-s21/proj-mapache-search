@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -350,7 +351,8 @@ public class SlackSlashCommandControllerTests {
 
   @Test
   public void test_teamlistCommand() throws Exception {
-        // content type: https://api.slack.com/interactivity/slash-commands
+    // fixes null error
+    when(teamEmailListService.getTeamEmails("team")).thenReturn("email");
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 

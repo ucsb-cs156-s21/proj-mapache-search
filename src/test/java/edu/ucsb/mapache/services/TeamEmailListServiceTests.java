@@ -43,13 +43,12 @@ public class TeamEmailListServiceTests
     students.add(new Student(3L, "email3", "team1"));
     when(mockStudentRepository.findByTeamName(teamName)).thenReturn(students);
     String expectedSring = "email\nemail2\nemail3\n";
-    assertEquals(true, teamEmailListService.getTeamEmails(teamName).isPresent());
-    assertEquals(expectedSring, teamEmailListService.getTeamEmails(teamName).get());
+    assertEquals(expectedSring, teamEmailListService.getTeamEmails(teamName));
   }
   @Test void test_getTeamEmails_emptyCase() {
     String teamName = "team";
     List<Student> students = new ArrayList<Student>();
     when(mockStudentRepository.findByTeamName(teamName)).thenReturn(students);
-    assertEquals(true, teamEmailListService.getTeamEmails(teamName).isEmpty());
+    assertEquals("Team Not Found!",  teamEmailListService.getTeamEmails(teamName));
   }
 }
