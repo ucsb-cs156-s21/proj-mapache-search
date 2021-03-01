@@ -114,7 +114,7 @@ public class RoleController {
 
   //Sets API Token
 
-  @PutMapping(value = "/api/addApiKey", produces = "application/json")
+  @PutMapping(value = "/addApiKey", produces = "application/json")
   public ResponseEntity<String> setApiToken(@RequestHeader("Authorization") String authorization, 
   @RequestBody @Valid String token) 
       throws JsonProcessingException {

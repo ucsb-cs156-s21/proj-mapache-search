@@ -27,13 +27,13 @@ const Profile = () => {
     
         try {
           const result = await fetchWithToken(url, getToken, {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "content-type": "application/json",
+              'content-type': 'application/json',
             }, 
-            body: {
-              "token": apiToken
-            }
+            body: JSON.stringify({
+              token: apiToken
+            })
           });
           console.log(`result=${JSON.stringify(result)}`)
           return result;
