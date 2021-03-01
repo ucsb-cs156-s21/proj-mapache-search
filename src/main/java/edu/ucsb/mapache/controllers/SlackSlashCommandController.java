@@ -2,7 +2,6 @@ package edu.ucsb.mapache.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.lang.StringBuilder;
 
 import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
-import edu.ucsb.mapache.repositories.StudentRepository;
 import edu.ucsb.mapache.entities.Student;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.HashMap;
-import java.util.Optional;
 
 import edu.ucsb.mapache.models.SearchParameters;
 
