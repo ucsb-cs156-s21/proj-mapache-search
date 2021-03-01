@@ -42,8 +42,7 @@ public class TeamEmailListServiceTests
     students.add(new Student(2L, "email2", "team1"));
     students.add(new Student(3L, "email3", "team1"));
     when(mockStudentRepository.findByTeamName(teamName)).thenReturn(students);
-    String expectedSring = "email\nemail2\nemail3\n";
-    assertEquals(expectedSring, teamEmailListService.getEmailsStringFromTeamname(teamName));
+    assertEquals(teamEmailListService.formatTeamEmails(students), teamEmailListService.getEmailsStringFromTeamname(teamName));
   }
   @Test void test_getEmailsStringFromTeamname_emptyCase() {
     String teamName = "team";
