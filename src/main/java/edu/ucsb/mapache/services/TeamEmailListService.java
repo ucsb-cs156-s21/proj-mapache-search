@@ -20,7 +20,7 @@ public class TeamEmailListService {
     }
     return emailList;
   }
-  public String getTeamEmails(String teamName) {
+  public String getEmailsStringFromTeamname(String teamName) {
     List<Student> studentsInTeam = studentRepository.findByTeamName(teamName);
     String emailString = this.formatTeamEmails(studentsInTeam);
     if(studentsInTeam.isEmpty()) {

@@ -352,7 +352,7 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_teamlistCommand() throws Exception {
     // fixes null error
-    when(teamEmailListService.getTeamEmails("team")).thenReturn("email");
+    when(teamEmailListService.getEmailsStringFromTeamname("team")).thenReturn("email");
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 
