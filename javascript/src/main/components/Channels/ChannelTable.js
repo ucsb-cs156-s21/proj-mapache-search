@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 const channelLink=(channelName) => {
@@ -9,6 +9,20 @@ const channelLink=(channelName) => {
     );
 
 }
+
+
+const topicLinks = (text) => {
+    var bracketRegEx = /<(http(?:.*?))>/g;
+    return text.replace(bracketRegEx, '<a href = "$1" target = "_blank">$1</a>');
+}
+
+const createMarkup = (text) => {
+    text = topicLinks(text)
+    return {
+        __html: text
+    }
+}
+
 
 export default ({ channels }) => {
 
@@ -40,6 +54,7 @@ export default ({ channels }) => {
     },{
         dataField: 'topic.value',
         text: 'Topic',
+        formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell)}></p>,
         sort: true,
         sortCaret: sortCaret
     },{
