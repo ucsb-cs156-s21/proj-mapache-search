@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, act} from "@testing-library/react";
+import { render, fireEvent, act} from "@testing-library/react";
 import NavbarHover from "../../../main/components/Nav/NavbarHover";
 
 describe("NavbarHover tests", () => {
