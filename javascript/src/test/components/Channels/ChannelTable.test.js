@@ -103,12 +103,12 @@ describe("ChannelTable tests", () => {
     expect(getByText(descendingOFF)).toBeInTheDocument();
   });
 
-  test("channel purpose and topic includes clickable links", () => {
+  test("channel topic includes clickable links", () => {
     const exampleChannel = {
         'id': 1,
         'name' : 'test-name',
         'purpose': {
-            'value': 'Help with: <https://ucsb-cs156.github.io/w21/lab/jpa03>'
+            'value': 'Test Purpose'
         },
         'topic': {
             'value': 'Course website: <https://ucsb-cs156.github.io/w21/>'
@@ -116,9 +116,23 @@ describe("ChannelTable tests", () => {
     };
     const { getByText} = render(<ChannelTable channels={[exampleChannel]} />);
     const topicLinkElement = getByText(/https:\/\/ucsb-cs156.github.io\/w21\//);
-    const purposeLinkElement = getByText(/https:\/\/ucsb-cs156.github.io\/w21\/lab\/jpa03/);
     expect(topicLinkElement).toBeInTheDocument();
     expect(topicLinkElement.href).toMatch('https://ucsb-cs156.github.io/w21/');
+});
+
+test("channel purpose includes clickable links", () => {
+    const exampleChannel = {
+        'id': 1,
+        'name' : 'test-name',
+        'purpose': {
+            'value': 'Help with: <https://ucsb-cs156.github.io/w21/lab/jpa03>'
+        },
+        'topic': {
+            'value': 'Test topic'
+        }
+    };
+    const { getByText} = render(<ChannelTable channels={[exampleChannel]} />);
+    const purposeLinkElement = getByText(/https:\/\/ucsb-cs156.github.io\/w21\/lab\/jpa03/);
     expect(purposeLinkElement).toBeInTheDocument();
     expect(purposeLinkElement.href).toMatch('https://ucsb-cs156.github.io/w21/lab/jpa03');
 });
