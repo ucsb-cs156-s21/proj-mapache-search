@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 const channelLink=(channelName) => {
