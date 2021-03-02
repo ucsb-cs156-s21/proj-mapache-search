@@ -103,4 +103,21 @@ describe("ChannelTable tests", () => {
     expect(getByText(descendingOFF)).toBeInTheDocument();
   });
 
+  test("channel topic includes clickable links", () => {
+    const exampleChannel = {
+        'id': 1,
+        'name' : 'test-name',
+        'purpose': {
+            'value': 'Test Purpose'
+        },
+        'topic': {
+            'value': 'Course website: <https://ucsb-cs156.github.io/w21/>'
+        }
+    };
+    const { getByText} = render(<ChannelTable channels={[exampleChannel]} />);
+    const linkElement = getByText(/https:\/\/ucsb-cs156.github.io\/w21\//);
+    expect(linkElement).toBeInTheDocument();
+    expect(linkElement.href).toMatch('https://ucsb-cs156.github.io/w21/');
+});
+
 });
