@@ -12,7 +12,7 @@ function NavbarHover( {title, items = [] } ){
             onMouseLeave={()=>setShow(false)}
         >
             {items.map(item => (
-                <NavDropdown.Item href={item.link}>{item.name}</NavDropdown.Item>
+                <NavDropdown.Item key={item.name} href={item.link}>{item.name}</NavDropdown.Item>
             ))}
         </NavDropdown>
     )
