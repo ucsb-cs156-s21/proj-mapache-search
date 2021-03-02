@@ -137,4 +137,28 @@ test("channel purpose includes clickable links", () => {
     expect(purposeLinkElement.href).toMatch('https://ucsb-cs156.github.io/w21/lab/jpa03');
 });
 
+test("multiple links clickable in channel topic or purpose", () => {
+    const exampleChannel = {
+        'id': 1,
+        'name' : 'test-name',
+        'purpose': {
+            'value': 'Help with: <https://ucsb-cs156.github.io/w21/lab/jpa03> Second link: <https://ucsb-cs156.github.io/w21/lab/jpa02>'
+        },
+        'topic': {
+            'value': 'Course website: <https://ucsb-cs156.github.io/w21/> Zoom link: <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>'
+        }
+    };
+    const { getAllByText} = render(<ChannelTable channels={[exampleChannel]} />);
+    const LinkElements = getAllByText(/(http(?:.*))/);
+    expect(LinkElements).toHaveLength(4);
+    expect(LinkElements[0]).toBeInTheDocument();
+    expect(LinkElements[0].href).toMatch('https://ucsb-cs156.github.io/w21/lab/jpa03');
+    expect(LinkElements[1]).toBeInTheDocument();
+    expect(LinkElements[1].href).toMatch('https://ucsb-cs156.github.io/w21/lab/jpa02');
+    expect(LinkElements[2]).toBeInTheDocument();
+    expect(LinkElements[2].href).toMatch('https://ucsb-cs156.github.io/w21/');
+    expect(LinkElements[3]).toBeInTheDocument();
+    expect(LinkElements[3].href).toMatch('https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09');
+});
+
 });
