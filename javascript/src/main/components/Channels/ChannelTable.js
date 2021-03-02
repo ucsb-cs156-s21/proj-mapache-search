@@ -11,13 +11,13 @@ const channelLink=(channelName) => {
 }
 
 
-const topicLinks = (text) => {
+const textLinks = (text) => {
     var bracketRegEx = /<(http(?:.*?))>/g;
     return text.replace(bracketRegEx, '<a href = "$1" target = "_blank">$1</a>');
 }
 
 const createMarkup = (text) => {
-    text = topicLinks(text)
+    text = textLinks(text)
     return {
         __html: text
     }
@@ -49,6 +49,7 @@ export default ({ channels }) => {
     },{
         dataField: 'purpose.value',
         text: 'Purpose',
+        formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell)}></p>,
         sort: true,
         sortCaret: sortCaret
     },{
