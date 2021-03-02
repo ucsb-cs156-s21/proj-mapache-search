@@ -112,4 +112,138 @@ describe("MessageScrollableView tests", () => {
         }, 500)
     });
 
+    test("Unembedded https links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
+            expect(linkElement.href).toMatch("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        }, 500)
+    });
+
+    test("Unembedded email links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Email me at <mailto:test@ucsb.edu>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const linkElement = getByText(/mailto:test@ucsb.edu/);
+            expect(linkElement.href).toMatch("mailto:test@ucsb.edu");
+        }, 500)
+    });
+
+    test("Embedded https links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09|zoom>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const linkElement = getByText(/zoom/);
+            expect(linkElement.href).toMatch("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        }, 500)
+    });
+
+    test("Embedded email links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Email me at <mailto:test@ucsb.edu|this email>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const linkElement = getByText(/this email/);
+            expect(linkElement.href).toMatch("mailto:test@ucsb.edu");
+        }, 500)
+    });
+
+    test("Brackets removed from elements that are not links", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            var bracketElement = getByText(/<!channel>/);
+            expect(bracketElement).toHaveLength(0);
+            bracketElement = getByText(/!channel/);
+            expect(bracketElement).toBeInTheDocument();
+        }, 500)
+    });
+
+    test("Bracketed text that is not an http or mailto link is not clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const bracketElement = getByText(/!channel/);
+            expect(bracketElement.href).toMatch(null);
+        }, 500)
+    });
+
 });
