@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import JSONPrettyCard from "main/components/Utilities/JSONPrettyCard";
 import { fetchWithToken } from "main/utils/fetch";
+import SearchCard from "main/components/SearchCard/SearchCard";
+
 
 const Search = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
@@ -44,7 +45,7 @@ const Search = () => {
     };
 
     const [query, setQuery] = useState(emptyQuery);
-    const [results, setResults] = useState({});
+    const [results, setResults] = useState({items:[]});
     const [quota, setQuota] = useState(0);
 
     const handleOnSubmit = async (e) => {
@@ -54,6 +55,18 @@ const Search = () => {
         const quotaInfo = await fetchQuota(e);
         setQuota(quotaInfo.quota);
     }
+
+
+    const cardList = results.items.map(search => {
+        console.log("Search = ", search);
+        return (
+            <SearchCard
+                title={search.title}
+                description={search.snippet}
+                link={search.link}
+            />
+        )
+    })
 
     return (
         <>
@@ -76,10 +89,11 @@ const Search = () => {
             <p>
                 searchesRemaining: {quota}
             </p>
-            <JSONPrettyCard
-                expression={"results"}
-                value={results}
-            />
+
+            <div>
+                {cardList}        
+            </div>
+
         </>
     );
 };
