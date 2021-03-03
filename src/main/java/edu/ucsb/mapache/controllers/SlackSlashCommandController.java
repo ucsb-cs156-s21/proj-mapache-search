@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 import edu.ucsb.mapache.entities.Student;
-
+import edu.ucsb.mapache.google.SearchResult;
 import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 
@@ -190,6 +190,9 @@ public class SlackSlashCommandController {
         sp.setQuery(attachments);
         sp.setPage(1);
         String body = googleSearchService.getJSON(sp,apiToken);
+
+        SearchResult searchResult = SearchResult.fromJSON(body);
+        logger.info("searchResult = {}", searchResult);
 
         RichMessage richMessage = new RichMessage(
                 String.format("google search results = %s", body));

@@ -1,0 +1,250 @@
+{
+    "kind": "customsearch#search",
+    "url": {
+      "type": "application/json",
+      "template": "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&relatedSite={relatedSite?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json"
+    },
+    "queries": {
+      "request": [
+        {
+          "title": "Google Custom Search - springboot",
+          "totalResults": "408000",
+          "searchTerms": "springboot",
+          "count": 10,
+          "startIndex": 1,
+          "inputEncoding": "utf8",
+          "outputEncoding": "utf8",
+          "safe": "off",
+          "cx": "001539284272632380888:kn5n6ubsr7x"
+        }
+      ],
+      "nextPage": [
+        {
+          "title": "Google Custom Search - springboot",
+          "totalResults": "408000",
+          "searchTerms": "springboot",
+          "count": 10,
+          "startIndex": 11,
+          "inputEncoding": "utf8",
+          "outputEncoding": "utf8",
+          "safe": "off",
+          "cx": "001539284272632380888:kn5n6ubsr7x"
+        }
+      ]
+    },
+    "context": {
+      "title": "mapache-search"
+    },
+    "searchInformation": {
+      "searchTime": 0.319404,
+      "formattedSearchTime": "0.32",
+      "totalResults": "408000",
+      "formattedTotalResults": "408,000"
+    },
+    "spelling": {
+      "correctedQuery": "spring boot",
+      "htmlCorrectedQuery": "\u003cb\u003e\u003ci\u003espring boot\u003c/i\u003e\u003c/b\u003e"
+    },
+    "items": [
+      {
+        "kind": "customsearch#result",
+        "title": "Newest 'spring-boot' Questions - Stack Overflow",
+        "htmlTitle": "Newest &#39;\u003cb\u003espring-boot\u003c/b\u003e&#39; Questions - Stack Overflow",
+        "link": "https://stackoverflow.com/questions/tagged/spring-boot",
+        "displayLink": "stackoverflow.com",
+        "snippet": "Spring Boot is a framework that allows to easily create Spring-powered, \nproduction-grade applications and services with the absolute minimum fuss. It \ntakes an ...",
+        "htmlSnippet": "\u003cb\u003eSpring Boot\u003c/b\u003e is a framework that allows to easily create Spring-powered, \u003cbr\u003e\nproduction-grade applications and services with the absolute minimum fuss. It \u003cbr\u003e\ntakes an&nbsp;...",
+        "cacheId": "PqNKp8ZgzfUJ",
+        "formattedUrl": "https://stackoverflow.com/questions/tagged/spring-boot",
+        "htmlFormattedUrl": "https://stackoverflow.com/questions/tagged/\u003cb\u003espring-boot\u003c/b\u003e",
+        "pagemap": {
+          "metatags": [
+            {
+              "viewport": "width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "customsearch#result",
+        "title": "Springboot -The AJP Connector is configured with secretRequired ...",
+        "htmlTitle": "\u003cb\u003eSpringboot\u003c/b\u003e -The AJP Connector is configured with secretRequired ...",
+        "link": "https://stackoverflow.com/questions/60501470/springboot-the-ajp-connector-is-configured-with-secretrequired-true-but-the-s",
+        "displayLink": "stackoverflow.com",
+        "snippet": "Here is one solution, though probably not the best one, but my focus was not this, \njust to pass through the error, I was enabling AJP on Spring ...",
+        "htmlSnippet": "Here is one solution, though probably not the best one, but my focus was not this, \u003cbr\u003e\njust to pass through the error, I was enabling AJP on \u003cb\u003eSpring\u003c/b\u003e&nbsp;...",
+        "cacheId": "DhhFMiU1HdYJ",
+        "formattedUrl": "https://stackoverflow.com/.../springboot-the-ajp-connector-is-configured-with -secretrequired-true-but-the-s",
+        "htmlFormattedUrl": "https://stackoverflow.com/.../\u003cb\u003espringboot\u003c/b\u003e-the-ajp-connector-is-configured-with -secretrequired-true-but-the-s",
+        "pagemap": {
+          "question": [
+            {
+              "image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a",
+              "upvotecount": "18",
+              "answercount": "3",
+              "name": "Springboot -The AJP Connector is configured with secretRequired=\"true\" but the secret attribute is either null or \"\" after upgrade to 2.2.5",
+              "text": "Caused by: java.lang.IllegalArgumentException: The AJP Connector is configured with secretRequired=\"true\" but the secret attribute is either null or \"\". This combination is not valid. at org.apache...",
+              "datecreated": "2020-03-03T06:44:48",
+              "url": "Share"
+            }
+          ],
+          "answer": [
+            {
+              "upvotecount": "9",
+              "text": "Here is one solution, though probably not the best one, but my focus was not this, just to pass through the error, I was enabling AJP on Spring Boot 2.2.5.RELEASE version. Add this: ((AbstractAjpPr...",
+              "datecreated": "2020-03-03T08:40:33",
+              "url": "https://stackoverflow.com/questions/60501470/springboot-the-ajp-connector-is-configured-with-secretrequired-true-but-the-s/60503165#60503165"
+            },
+            {
+              "upvotecount": "28",
+              "text": "Navigate to the server.xml in tomcat : Replace AJP with: \u003cConnector protocol=\"AJP/1.3\" address=\"::1\" port=\"8009\" redirectPort=\"8443\" secretRequired=\"false\" /\u003e But make sure that you understand...",
+              "datecreated": "2020-04-07T13:55:37",
+              "url": "https://stackoverflow.com/questions/60501470/springboot-the-ajp-connector-is-configured-with-secretrequired-true-but-the-s/61081680#61081680"
+            },
+            {
+              "upvotecount": "11",
+              "text": "Using secretRequired=\"false\" reintroduces Ghostcat breach what has been explained e.g. here: This is a configuration issue with AJP protocol in Tomcat/Undertow. AJP is a highly trusted protocol...",
+              "datecreated": "2020-04-24T12:41:15",
+              "url": "https://stackoverflow.com/questions/60501470/springboot-the-ajp-connector-is-configured-with-secretrequired-true-but-the-s/61408594#61408594"
+            }
+          ],
+          "person": [
+            {
+              "name": "Manjunath"
+            },
+            {
+              "name": "TechFree"
+            },
+            {
+              "name": "Jainender Chauhan"
+            },
+            {
+              "name": "Krzysztof Skrzynecki"
+            }
+          ],
+          "metatags": [
+            {
+              "viewport": "width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0"
+            }
+          ]
+        }
+      },
+      {
+        "kind": "customsearch#result",
+        "title": "Disable Logback in SpringBoot - Stack Overflow",
+        "htmlTitle": "Disable Logback in \u003cb\u003eSpringBoot\u003c/b\u003e - Stack Overflow",
+        "link": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot",
+        "displayLink": "stackoverflow.com",
+        "snippet": "Add exclusion to both the spring-boot-starter and spring-boot-starter-web to \nresolve the conflict. \u003cdependency\u003e ...",
+        "htmlSnippet": "Add exclusion to both the \u003cb\u003espring-boot\u003c/b\u003e-starter and \u003cb\u003espring-boot\u003c/b\u003e-starter-web to \u003cbr\u003e\nresolve the conflict. &lt;dependency&gt;&nbsp;...",
+        "cacheId": "DfCVARa6IsIJ",
+        "formattedUrl": "https://stackoverflow.com/questions/.../disable-logback-in-springboot",
+        "htmlFormattedUrl": "https://stackoverflow.com/questions/.../disable-logback-in-\u003cb\u003espringboot\u003c/b\u003e",
+        "pagemap": {
+          "question": [
+            {
+              "image": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png?v=c78bd457575a",
+              "upvotecount": "125",
+              "answercount": "22",
+              "name": "Disable Logback in SpringBoot",
+              "text": "It appears Springboot autoconfigures itself to use Logback with Tomcat. I would like to disable this and use the one I provide in my classpath. The error message below. LoggerFactory is not...",
+              "datecreated": "2014-06-01T20:10:47",
+              "url": "Share"
+            }
+          ],
+          "answer": [
+            {
+              "upvotecount": "149",
+              "text": "Add exclusion to both the spring-boot-starter and spring-boot-starter-web to resolve the conflict. \u003cdependency\u003e \u003cgroupId\u003eorg.springframework.boot\u003c/groupId\u003e \u003cartifactId\u003espring-boot-starter\u003c/artifact...",
+              "datecreated": "2014-06-02T09:51:01",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/23991715#23991715"
+            },
+            {
+              "upvotecount": "64",
+              "text": "To add a better, more generic solution in Gradle (all instances will be excluded): configurations { all*.exclude module : 'spring-boot-starter-logging' } From https://docs.gradle.org/current/usergu...",
+              "datecreated": "2015-06-08T10:31:15",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/30706816#30706816"
+            },
+            {
+              "upvotecount": "41",
+              "text": "To add a solution in gradle. dependencies { compile ('org.springframework.boot:spring-boot-starter') { exclude module : 'spring-boot-starter-logging' } compile ('org.springframework.boot:spring-boo...",
+              "datecreated": "2015-03-24T17:26:16",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/29239121#29239121"
+            },
+            {
+              "upvotecount": "16",
+              "text": "I found that excluding the full spring-boot-starter-logging module is not necessary. All that is needed is to exclude the org.slf4j:slf4j-log4j12 module. Adding this to a Gradle build file...",
+              "datecreated": "2016-02-25T16:59:21",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/35633612#35633612"
+            },
+            {
+              "upvotecount": "11",
+              "text": "I do like this to solve my problem \u003cdependency\u003e \u003cgroupId\u003eorg.springframework.boot\u003c/groupId\u003e \u003cartifactId\u003espring-boot-starter-log4j\u003c/artifactId\u003e \u003cexclusions\u003e \u003cexclusion\u003e \u003cgroupId\u003eorg.slf4j\u003c/groupId\u003e...",
+              "datecreated": "2016-09-27T09:33:49",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/39721128#39721128"
+            },
+            {
+              "upvotecount": "10",
+              "text": "For gradle, You can see this solution at: http://www.idanfridman.com/how-to-exclude-libraries-from-dependcies-using-gradle/ Just need add exclude in configurations: configurations { providedRuntime...",
+              "datecreated": "2017-08-14T14:37:36",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/45677024#45677024"
+            },
+            {
+              "upvotecount": "9",
+              "text": "Find spring-boot-starter-test in your pom.xml and modify it as follows: \u003cdependency\u003e \u003cgroupId\u003eorg.springframework.boot\u003c/groupId\u003e \u003cartifactId\u003espring-boot-starter-test\u003c/artifactId\u003e \u003cexclusions\u003e...",
+              "datecreated": "2017-12-30T01:09:02",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/48030033#48030033"
+            },
+            {
+              "upvotecount": "7",
+              "text": "Following works for me \u003cdependency\u003e \u003cgroupId\u003eorg.springframework.boot\u003c/groupId\u003e \u003cartifactId\u003espring-boot-starter\u003c/artifactId\u003e \u003cexclusions\u003e \u003cexclusion\u003e \u003cgroupId\u003eorg.springframework.boot\u003c/groupId\u003e...",
+              "datecreated": "2018-08-30T13:05:59",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/52097867#52097867"
+            },
+            {
+              "upvotecount": "7",
+              "text": "It might help if you say what your preferred logger is exactly, and what you did to try and install it. Anyway, Spring Boot tries to work with whatever is in the classpath, so if you don't...",
+              "datecreated": "2014-06-01T20:52:43",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/23984363#23984363"
+            },
+            {
+              "upvotecount": "5",
+              "text": "I resolved my problem through this below: compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.0'){ exclude module: 'log4j-slf4j-impl' exclude module: 'logback-classic' } compile('org.s...",
+              "datecreated": "2017-06-27T11:25:53",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/44779122#44779122"
+            },
+            {
+              "upvotecount": "5",
+              "text": "This worked for me just fine configurations { all*.exclude module : 'spring-boot-starter-logging' } But it wouldn't work out for maven users. All my dependencies was in libs.gradle and I didn't...",
+              "datecreated": "2018-09-28T17:04:48",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/52559890#52559890"
+            },
+            {
+              "upvotecount": "5",
+              "text": "In my case, it was only required to exclude the spring-boot-starter-logging artifact from the spring-boot-starter-security one. This is in a newly generated spring boot 2.2.6.RELEASE project...",
+              "datecreated": "2020-04-08T19:55:35",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/61108982#61108982"
+            },
+            {
+              "upvotecount": "4",
+              "text": "Add this in your build.gradle configurations.all { exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat' exclude group: 'org.springframework.boot', module: 'spring-boot-st...",
+              "datecreated": "2016-06-13T06:32:23",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/37783132#37783132"
+            },
+            {
+              "upvotecount": "4",
+              "text": "Correct way to exclude default logging, and configure log4j for logging. \u003cdependency\u003e \u003cgroupId\u003eorg.springframework.boot\u003c/groupId\u003e \u003cartifactId\u003espring-boot-starter\u003c/artifactId\u003e \u003cexclusions\u003e \u003cexclusio...",
+              "datecreated": "2019-06-25T12:39:43",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/56754302#56754302"
+            },
+            {
+              "upvotecount": "2",
+              "text": "If this error occurred in SpringBoot when you are trying to use log4j2 then do these steps: Remove the jar from while packeging by adding this \"excludeGroupIds log4j-slf4j-impl /excludeGroupIds\"...",
+              "datecreated": "2019-03-15T09:59:50",
+              "url": "https://stackoverflow.com/questions/23984009/disable-logback-in-springboot/55179966#55179966"
+            },
+            {
+              "upvotecount": "1",
+              "text": "To add an exclusion for logback from Netbeans IDE Access the \u003eProjects explorer section for your project Proceed to \u003eDependencies as displayed below Trace 'spring-boot-starter-logging-X.X.X.jar'...",
+              "datecreated": "2019-07-22T13:31:36",
+              "
