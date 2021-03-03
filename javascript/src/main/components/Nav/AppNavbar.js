@@ -6,8 +6,9 @@ import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
+import { action } from "@storybook/addon-actions";
 
-function AppNavbar() {
+function AppNavbar({ appNavbar: { memberState }, onClick }) {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(
     ["/api/myRole", getToken],
@@ -46,30 +47,30 @@ function AppNavbar() {
       <LinkContainer to={""}>
         <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
       </LinkContainer>
-      <Nav>
+      <Nav roleInfo = {memberState}>
           {(isMember || isAdmin) &&
-              <NavbarHover title="Channels" items={ChannelPages} />
+              <NavbarHover title="Channels" items={ChannelPages} onClick={action("clicked channels")}/>
           }
           { isAdmin &&
-              <NavbarHover title="Admin" items={AdminPages} />
+              <NavbarHover title="Admin" items={AdminPages} onClick={action("clicked admin")}/>
           }
           { (isMember || isAdmin)  &&
-              <NavbarHover title="Slack Search" items={SearchPages} />
+              <NavbarHover title="Slack Search" items={SearchPages} onClick={action("clicked slack search")}/>
           }
         <LinkContainer to={"/about"}>
-          <Nav.Link>About</Nav.Link>
+          <Nav.Link onClick={action("clicked about")}>About</Nav.Link>
         </LinkContainer>
           { (isAdmin || isMember) &&
-              <NavbarHover title="Analyze Slack Data" items={DataPages} />
+              <NavbarHover title="Analyze Slack Data" items={DataPages} onClick={action("clicked analyze slack data")}/>
           }
           { (isMember || isAdmin) && 
               <LinkContainer to={"/member/search"}>
-                  <Nav.Link>Google Search</Nav.Link>
+                  <Nav.Link onClick={action("clicked google search")}>Google Search</Nav.Link>
               </LinkContainer> 
           }
       </Nav>
       <Navbar.Collapse className="justify-content-end">
-        <AuthNav />
+        <AuthNav/>
       </Navbar.Collapse>
       </Navbar.Collapse>
     </Navbar>
