@@ -90,16 +90,42 @@ describe("AppNavbar tests", () => {
       </Router>
     );
     const dropDown = getByText(/Slack Search/);
-<<<<<<< Updated upstream
     expect(screen.queryByText('Message Search')).not.toBeTruthy();
     dropDown.click();
     expect(screen.queryByText('Message Search').href).toMatch("/member/messages/search");
-=======
-    //expect(screen.queryByText('Slack Search')).not.toBeTruthy();
-    //dropDown.click();
-    //expect(screen.queryByText('Slack Search').href).toMatch("/member/messages/search");
     expect(dropDown).toBeInTheDocument();
->>>>>>> Stashed changes
+  });
+
+  test("Non dropdown search should be called Google search", () => {
+    useSWR.mockReturnValue({
+      data: {
+        role: "admin"
+      }
+    });
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <AppNavbar />
+      </Router>
+    );
+    const searchLink = getByText(/Google Search/);
+    expect(searchLink.href).toMatch("/member/GoogleSearch");
+  });
+
+  test("Dropdown search should be called Slack search", () => {
+    useSWR.mockReturnValue({
+      data: {
+        role: "admin"
+      }
+    });
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <AppNavbar />
+      </Router>
+    );
+    const SlackSearch = getByText(/Slack Search/);
+    expect(SlackSearch).toBeInTheDocument();;
   });
 });
 
