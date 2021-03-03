@@ -50,7 +50,7 @@ public class SearchTests {
   @Test
   public void test_toString() throws Exception {
     Search s = new Search(1L, "term", 1);
-    String expected = "{ id='1', searchTerm='term', count='1";
+    String expected = "{ id='1', searchTerm='term', count='1'}";
     assertEquals(expected, s.toString());
   }
 
