@@ -23,7 +23,7 @@ public class Search {
   public Search(Long id, String searchTerm, int count){
       this.id = id;
       this.searchTerm = searchTerm;
-      this.count = count
+      this.count = count;
   }
 
   public void setId(long id){
@@ -46,4 +46,30 @@ public class Search {
   public void getCount(){
       return count;
   }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", searchTerm='" + getSearchTerm() + "'" +
+            ", count='" + getCount() + "'" +
+            "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Search)) {
+            return false;
+        }
+        Search search = (Search) o;
+        return Objects.equals(id, search.id) && Objects.equals(searchTerm, search.searchTerm) && count == search.count;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, searchTerm, count);
+    }
+
 }
