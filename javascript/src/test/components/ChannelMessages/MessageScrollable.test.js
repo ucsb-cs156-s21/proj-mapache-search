@@ -217,29 +217,9 @@ describe("MessageScrollableView tests", () => {
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
         setTimeout(function (){
-            const bracketElement = getByText(/<!channel>/);
+            var bracketElement = getByText(/<!channel>/);
             expect(bracketElement).toHaveLength(0);
-        }, 500)
-    });
-
-    test("Text within brackets still remains in message", () => {
-        useSWR.mockReturnValue({
-            data: []
-        });
-        const exampleMessage = {
-            "type": "message",
-            "subtype": "channel_join",
-            "ts": "1594143066.000200",
-            "user": "U017218J9B3",
-            "text": "<!channel> This is an announcement",
-            "channel": "section-6pm",
-            "user_profile": {
-                "real_name": "Test Person"
-            }
-        }
-        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const bracketElement = getByText(/!channel/);
+            bracketElement = getByText(/!channel/);
             expect(bracketElement).toBeInTheDocument();
         }, 500)
     });
