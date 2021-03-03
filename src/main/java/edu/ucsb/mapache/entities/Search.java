@@ -26,7 +26,7 @@ public class Search {
       this.count = count;
   }
 
-  public void setId(long id){
+  public void setId(Long id){
       this.id = id;
   }
   public void setSearchTerm(String s){
