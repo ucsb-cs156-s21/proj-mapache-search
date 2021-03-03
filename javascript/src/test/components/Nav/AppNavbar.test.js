@@ -74,26 +74,7 @@ describe("AppNavbar tests", () => {
       </Router>
     );
     const searchLink = getByText(/Google Search/);
-    expect(searchLink.href).toMatch("/member/GoogleSearch");
-  });
-
-  test("Dropdown search should be called Slack search", () => {
-    useSWR.mockReturnValue({
-      data: {
-        role: "admin"
-      }
-    });
-    const history = createMemoryHistory();
-    const { getByText } = render(
-      <Router history={history}>
-        <AppNavbar />
-      </Router>
-    );
-    const dropDown = getByText(/Slack Search/);
-    expect(screen.queryByText('Message Search')).not.toBeTruthy();
-    dropDown.click();
-    expect(screen.queryByText('Message Search').href).toMatch("/member/messages/search");
-    expect(dropDown).toBeInTheDocument();
+    expect(searchLink.href).toMatch("/member/search");
   });
 
   test("Non dropdown search should be called Google search", () => {
@@ -109,7 +90,7 @@ describe("AppNavbar tests", () => {
       </Router>
     );
     const searchLink = getByText(/Google Search/);
-    expect(searchLink.href).toMatch("/member/GoogleSearch");
+    expect(searchLink.href).toMatch("/member/search");
   });
 
   test("Dropdown search should be called Slack search", () => {

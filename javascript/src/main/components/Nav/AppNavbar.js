@@ -54,7 +54,7 @@ function AppNavbar() {
               <NavbarHover title="Admin" items={AdminPages} />
           }
           { (isMember || isAdmin)  &&
-              <NavbarHover title="Search" items={SearchPages} />
+              <NavbarHover title="Slack Search" items={SearchPages} />
           }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
@@ -63,8 +63,8 @@ function AppNavbar() {
               <NavbarHover title="Analyze Slack Data" items={DataPages} />
           }
           { (isMember || isAdmin) && 
-              <LinkContainer to={"/member/GoogleSearch"}>
-                  <Nav.Link>GoogleSearch</Nav.Link>
+              <LinkContainer to={"/member/search"}>
+                  <Nav.Link>Google Search</Nav.Link>
               </LinkContainer> 
           }
       </Nav>
