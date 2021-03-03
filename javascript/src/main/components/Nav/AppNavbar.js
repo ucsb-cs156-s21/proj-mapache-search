@@ -15,6 +15,32 @@ function AppNavbar() {
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
   const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
   
+<<<<<<< Updated upstream
+=======
+  const ChannelPages = [
+    {link:"/member/channels", name:"List Channels"},
+  ];
+
+  const AdminPages = [
+    {link:"/admin", name:"Maintain Admins",},
+    {link:"/admin/slackUsers", name:"Slack Users",},
+    {link:"/admin/teams", name:"Manage Teams",},
+    {link:"/admin/students", name:"Manage Students",},
+    {link:"/admin/searchInfo", name:"Search Information",},
+  ];
+
+  const SearchPages = [
+    {link:"/member/messages/search", name:"Slack Search"},
+  ];
+
+  const DataPages = [
+    {link:"/member/analyzemessages/reactions", name:"Analyze Reactions",},
+    {link:"/member/analyzemessages/countmessages", name:"Count Messages By User",},
+    {link:"/member/analyzemessages/messagehistogram", name:"Histogram of Messages for a User",},
+    {link:"/member/analyzemessages/searchmessages", name:"Search Messages By User",},
+  ];
+
+>>>>>>> Stashed changes
   return (
     <Navbar bg="dark" variant="dark">
       <LinkContainer to={""}>
@@ -37,14 +63,19 @@ function AppNavbar() {
               </NavDropdown>
           }
           { (isMember || isAdmin)  &&
+<<<<<<< Updated upstream
               <NavDropdown title="Slack Search">
                   <NavDropdown.Item href="/member/messages/search">Message Search</NavDropdown.Item>
               </NavDropdown>
+=======
+              <NavbarHover title="Slack Search" items={SearchPages} />
+>>>>>>> Stashed changes
           }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
           { (isAdmin || isMember) &&
+<<<<<<< Updated upstream
               <NavDropdown title="Analyze Slack Data">    
                   <NavDropdown.Item href="/member/analyzemessages/reactions">Analyze Reactions</NavDropdown.Item>
                   <NavDropdown.Item href="/member/analyzemessages/countmessages">Count Messages By User</NavDropdown.Item>
@@ -55,6 +86,13 @@ function AppNavbar() {
           { (isMember || isAdmin) && 
               <LinkContainer to={"/member/GoogleSearch"}>   
                   <Nav.Link>Google Search</Nav.Link>     
+=======
+          <NavbarHover title="Analyze Slack Data" items={DataPages} />
+          }
+          { (isMember || isAdmin) && 
+              <LinkContainer to={"/member/GoogleSearch"}>
+                  <Nav.Link>Google Search</Nav.Link>
+>>>>>>> Stashed changes
               </LinkContainer> 
           }
       </Nav>
