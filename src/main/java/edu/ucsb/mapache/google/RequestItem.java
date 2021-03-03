@@ -1,4 +1,5 @@
 package edu.ucsb.mapache.google;
+import java.util.Objects;
 
 public class RequestItem{
     private String title;

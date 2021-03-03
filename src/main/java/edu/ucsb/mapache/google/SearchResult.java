@@ -1,6 +1,18 @@
 package edu.ucsb.mapache.google;
+import java.util.Objects;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SearchResult{
+
+    private static final Logger logger = LoggerFactory.getLogger(SearchResult.class);
+
     private String kind;
     private Url url;
     private Queries query;
