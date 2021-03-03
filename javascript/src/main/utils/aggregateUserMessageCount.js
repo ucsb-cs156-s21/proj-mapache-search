@@ -11,7 +11,7 @@ const aggregateUserMessageCount = (agg_messages, agg_slackUsers) => {
             }
         }
         const userCountPair = {
-            name: agg_slackUsers[i].real_name,
+            name: agg_slackUsers[i].profile.real_name,
             count: count.toString()
         }
         userMessageCounts.push(userCountPair);

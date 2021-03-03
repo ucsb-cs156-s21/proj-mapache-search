@@ -13,12 +13,24 @@ const CountMessagesByUser = () => {
         dataField: "count",
         text: 'Message Count'
     }];
+    
     const { getAccessTokenSilently: getToken } = useAuth0();
+    
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
     const { data: messages } = useSWR(["/api/members/messages/allmessages", getToken], fetchWithToken);
 
-    const userMessageCount = messages && slackUsers ? aggregateUserMessageCount(messages, slackUsers) : []
+
     
+    console.log("slackUsers: ");
+    console.log(slackUsers);
+    console.log("messages: ");
+    console.log(messages);
+
+    const userMessageCount = messages && slackUsers ? aggregateUserMessageCount(messages, slackUsers) : []
+
+    console.log(`usermessagecount: ${userMessageCount}`)
+    
+
     return (
         <div>
             <h1>Count Messages By User</h1>
