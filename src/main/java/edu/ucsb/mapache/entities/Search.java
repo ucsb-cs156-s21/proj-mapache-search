@@ -36,14 +36,14 @@ public class Search {
   public void setCount(int c){
       this.count = c;
   }
-  public void getId(){
+  public Long getId(){
       return id;
   }
-  public void getSearchTerm(){
+  public String getSearchTerm(){
       return searchTerm;
   }
 
-  public void getCount(){
+  public int getCount(){
       return count;
   }
 
