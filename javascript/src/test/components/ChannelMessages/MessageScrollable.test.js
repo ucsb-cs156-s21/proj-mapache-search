@@ -246,4 +246,26 @@ describe("MessageScrollableView tests", () => {
         }, 500)
     });
 
+    test("Date and time render correctly", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const date = getByText(/2020-07-07 10:31:06/);
+            expect(date).toBeInTheDocument();
+        }, 500)
+    });
+
 });
