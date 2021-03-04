@@ -1,5 +1,7 @@
 package edu.ucsb.mapache.controllers;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -52,7 +54,7 @@ public class SlackUserController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        Iterable<SlackUser> slackUsers = slackUserRepository.findAll();
+        Set<SlackUser> slackUsers = new HashSet<>(slackUserRepository.findAll());
         String body = mapper.writeValueAsString(slackUsers);
         return ResponseEntity.ok().body(body);
     }
