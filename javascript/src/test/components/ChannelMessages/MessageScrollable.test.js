@@ -308,15 +308,13 @@ describe("MessageScrollableView tests", () => {
             }
         ]
         const {getAllByText} = render(<MessageScrollableView messages={exampleMessage}/>);
-        setTimeout(function (){
             const dates = getAllByText(/2021.{15}/);
             const expectedDate1 = "2021-01-28 15:03:22";
             const expectedDate2 = "2021-01-28 12:51:18";
             const expectedDate3 = "2021-01-21 11:24:32";
-            expect(dates[0]).toEqual(expectedDate1);
-            expect(dates[1]).toEqual(expectedDate2);
-            expect(dates[2]).toEqual(expectedDate3);
-        }, 500)
+            expect(dates[0]).toHaveTextContent(expectedDate1);
+            expect(dates[1]).toHaveTextContent(expectedDate2);
+            expect(dates[2]).toHaveTextContent(expectedDate3);
     });
 
 });
