@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
 
-function AppNavbar({ appNavbar: { memberState }}) {
+function AppNavbar() {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(
     ["/api/myRole", getToken],
@@ -47,22 +47,22 @@ function AppNavbar({ appNavbar: { memberState }}) {
         <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
       </LinkContainer>
       <Nav>
-          {(isMember || isAdmin || memberState === "admin" || memberState === "member") &&
+          {(isMember || isAdmin) &&
               <NavbarHover title="Channels" items={ChannelPages} />
           }
-          {(isAdmin || memberState === "admin") &&
+          { isAdmin &&
               <NavbarHover title="Admin" items={AdminPages} />
           }
-          { (isMember || isAdmin || memberState === "admin" || memberState === "member")  &&
+          { (isMember || isAdmin)  &&
               <NavbarHover title="Slack Search" items={SearchPages} />
           }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
-          { (isAdmin || isMember || memberState === "admin" || memberState === "member") &&
+          { (isAdmin || isMember) &&
               <NavbarHover title="Analyze Slack Data" items={DataPages} />
           }
-          { (isMember || isAdmin || memberState === "admin" || memberState === "member") && 
+          { (isMember || isAdmin) && 
               <LinkContainer to={"/member/search"}>
                   <Nav.Link >Google Search</Nav.Link>
               </LinkContainer> 

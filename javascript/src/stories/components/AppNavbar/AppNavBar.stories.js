@@ -17,20 +17,20 @@ const Template = (args) => (
 export const Guest = Template.bind({});
 Guest.args = {
   appNavbar: {
-    memberState: "guest",
+    isMember: false,
   },
 };
 
 export const Admin = Template.bind({});
 Admin.args = {
   appNavbar: {
-    memberState: "admin",
+    isAdmin: true,
   },
 };
 
 export const Member = Template.bind({});
 Member.args = {
   appNavbar: {
-    memberState: "member",
+    isMember: true,
   },
 };
