@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+import edu.ucsb.mapache.entities.Student;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.TeamEmailListService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,8 +47,12 @@ public class SlackSlashCommandController {
     @Autowired
     ChannelRepository channelRepository;
 
+
     @Autowired
     GoogleSearchService googleSearchService;
+
+    @Autowired
+    TeamEmailListService teamEmailListService;
 
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
@@ -124,6 +129,10 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("search") && textParts[1].equals("google")) {
             return googleSearch(params);
+        }
+
+        if (firstArg.equals("teamlist")) {
+            return getTeamEmail(params);
         }
 
         return unknownCommand(params);
@@ -218,6 +227,19 @@ public class SlackSlashCommandController {
 
         richMessage.setAttachments(attachments);
 
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+    }
+
+    public RichMessage getTeamEmail(SlackSlashCommandParams params) {
+        String[] textParts = params.getTextParts();
+        if(textParts.length < 2) {
+            RichMessage richMessage = new RichMessage("Please enter a team name");
+            return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+        }
+        String teamName = textParts[1];
+        String emailText = teamEmailListService.getEmailsStringFromTeamname(teamName);
+        RichMessage richMessage = new RichMessage(emailText);
+        richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 

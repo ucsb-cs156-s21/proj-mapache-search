@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render} from "@testing-library/react";
 import AppNavbar from "main/components/Nav/AppNavbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { createMemoryHistory } from "history";
@@ -31,17 +31,7 @@ describe("AppNavbar tests", () => {
     const brandElement = getByText(/Mapache Search/);
     expect(brandElement).toBeInTheDocument();
   });
-  test("should have the correct links in the navbar", () => {
-    const history = createMemoryHistory();
-    const { getByText } = render(
-      <Router history={history}>
-        <AppNavbar />
-      </Router>
-    );
-
-    const userInfoLink = getByText(/Profile/);
-    expect(userInfoLink.href).toMatch("/profile");
-  });
+  
 
   test("should render admin links when admin", () => {
     useSWR.mockReturnValue({
@@ -70,4 +60,53 @@ describe("AppNavbar tests", () => {
     );
     expect(queryByText("Admin")).toBe(null);
   });
+
+  test("Non dropdown search should be called Google search", () => {
+    useSWR.mockReturnValue({
+      data: {
+        role: "admin"
+      }
+    });
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <AppNavbar />
+      </Router>
+    );
+    const searchLink = getByText(/Google Search/);
+    expect(searchLink.href).toMatch("/member/search");
+  });
+
+  test("Non dropdown search should be called Google search", () => {
+    useSWR.mockReturnValue({
+      data: {
+        role: "admin"
+      }
+    });
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <AppNavbar />
+      </Router>
+    );
+    const searchLink = getByText(/Google Search/);
+    expect(searchLink.href).toMatch("/member/search");
+  });
+
+  test("Dropdown search should be called Slack search", () => {
+    useSWR.mockReturnValue({
+      data: {
+        role: "admin"
+      }
+    });
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <AppNavbar />
+      </Router>
+    );
+    const SlackSearch = getByText(/Slack Search/);
+    expect(SlackSearch).toBeInTheDocument();;
+  });
 });
+
