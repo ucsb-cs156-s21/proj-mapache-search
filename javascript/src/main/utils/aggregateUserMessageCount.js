@@ -14,11 +14,11 @@ const aggregateUserMessageCount = (agg_messages, agg_slackUsers) => {
             name: agg_slackUsers[i].profile.real_name,
             count: count
         }
-        
+
         /* this if statement is needed because of an edge case where 
            people with multiple emails in the slack workspace show up as
            multiple slackUsers. this is a bug and should be fixed */
-        if (usersAdded.indexOf(agg_slackUsers[i].profile.real_name) == -1) {
+        if (usersAdded.indexOf(agg_slackUsers[i].profile.real_name) === -1) {
             userMessageCounts.push(userCountPair);
             usersAdded.push(agg_slackUsers[i].profile.real_name);  
         }
