@@ -15,9 +15,9 @@ describe('Count Messages By User tests', () => {
     messages.push(message);
     messages.push(message);
     messages.push(message2);
-    const slackUsers = [{real_name:'Jane Doe'}];
+    const slackUsers = [{profile: {real_name:'Jane Doe'}}];
     const answer = aggregateUserMessageCount(messages, slackUsers);
-    const expected = [{name:'Jane Doe', count:'2'}];
+    const expected = [{name:'Jane Doe', count:2}];
     expect(answer).toMatchObject(expected);
   });
 
