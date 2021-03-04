@@ -199,8 +199,7 @@ public class SlackSlashCommandController {
         //         String.format("google search results = %s", body));
         // richMessage.setResponseType("ephemeral");
 
-        RichMessage richMessage = new RichMessage(
-                String.format("The %s bot knows these commands", params.getCommand()));
+        RichMessage richMessage = new RichMessage("Search Results:");
 
         int numAttachments = searchResult.getItems().size();
         Attachment[] attachments2 = new Attachment[numAttachments];

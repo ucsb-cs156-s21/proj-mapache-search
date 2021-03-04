@@ -15,7 +15,7 @@ public class SearchResult{
 
     private String kind;
     private Url url;
-    private Queries query;
+    private Queries queries;
     // skipped over context, search, spelling
     private List<Item> items;
 
@@ -23,10 +23,10 @@ public class SearchResult{
     public SearchResult() {
     }
 
-    public SearchResult(String kind, Url url, Queries query, List<Item> items) {
+    public SearchResult(String kind, Url url, Queries queries, List<Item> items) {
         this.kind = kind;
         this.url = url;
-        this.query = query;
+        this.queries = queries;
         this.items = items;
     }
 
@@ -46,12 +46,12 @@ public class SearchResult{
         this.url = url;
     }
 
-    public Queries getQuery() {
-        return this.query;
+    public Queries getQueries() {
+        return this.queries;
     }
 
-    public void setQuery(Queries query) {
-        this.query = query;
+    public void setQueries(Queries queries) {
+        this.queries = queries;
     }
 
     public List<Item> getItems() {
@@ -72,8 +72,8 @@ public class SearchResult{
         return this;
     }
 
-    public SearchResult query(Queries query) {
-        setQuery(query);
+    public SearchResult queries(Queries queries) {
+        setQueries(queries);
         return this;
     }
 
@@ -90,12 +90,12 @@ public class SearchResult{
             return false;
         }
         SearchResult searchResult = (SearchResult) o;
-        return Objects.equals(kind, searchResult.kind) && Objects.equals(url, searchResult.url) && Objects.equals(query, searchResult.query) && Objects.equals(items, searchResult.items);
+        return Objects.equals(kind, searchResult.kind) && Objects.equals(url, searchResult.url) && Objects.equals(queries, searchResult.queries) && Objects.equals(items, searchResult.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(kind, url, query, items);
+        return Objects.hash(kind, url, queries, items);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SearchResult{
         return "{" +
             " kind='" + getKind() + "'" +
             ", url='" + getUrl() + "'" +
-            ", query='" + getQuery() + "'" +
+            ", queries='" + getQueries() + "'" +
             ", items='" + getItems() + "'" +
             "}";
     }
@@ -118,7 +118,6 @@ public class SearchResult{
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    
             SearchResult searchResult = objectMapper.readValue(json, SearchResult.class);
             return searchResult;
         } catch (JsonProcessingException jpe) {
