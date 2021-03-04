@@ -13,7 +13,9 @@ const Template = (args) => (
     <PureNavbar {...args} />
   </MemoryRouter>
 );
-const commonArgs = {
+
+export const Guest = Template.bind({});
+Guest.args = {
   ChannelPages: [
     { link: "/member/channels", name: "List Channels" },
   ],
@@ -36,21 +38,16 @@ const commonArgs = {
     { link: "/member/analyzemessages/messagehistogram", name: "Histogram of Messages for a User", },
     { link: "/member/analyzemessages/searchmessages", name: "Search Messages By User", },
   ],
-}
-
-export const Guest = Template.bind({});
-Guest.args = {
-  ...commonArgs
 };
 
 export const Admin = Template.bind({});
 Admin.args = {
   isAdmin: true,
-  ...commonArgs
+  ...Guest.args
 };
 
 export const Member = Template.bind({});
 Member.args = {
   isMember: true,
-  ...commonArgs
+  ...Guest.args
 };
