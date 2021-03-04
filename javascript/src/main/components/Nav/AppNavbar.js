@@ -29,7 +29,7 @@ function AppNavbar() {
   ];
 
   const SearchPages = [
-    {link:"/member/messages/search", name:"Message Search"},
+    {link:"/member/messages/search", name:"Slack Search"},
   ];
 
   const DataPages = [
@@ -54,17 +54,17 @@ function AppNavbar() {
               <NavbarHover title="Admin" items={AdminPages} />
           }
           { (isMember || isAdmin)  &&
-              <NavbarHover title="Search" items={SearchPages} />
+              <NavbarHover title="Slack Search" items={SearchPages} />
           }
         <LinkContainer to={"/about"}>
           <Nav.Link>About</Nav.Link>
         </LinkContainer>
           { (isAdmin || isMember) &&
-          <NavbarHover title="Analyze Message Data" items={DataPages} />
+              <NavbarHover title="Analyze Slack Data" items={DataPages} />
           }
           { (isMember || isAdmin) && 
               <LinkContainer to={"/member/search"}>
-                  <Nav.Link>Search</Nav.Link>
+                  <Nav.Link>Google Search</Nav.Link>
               </LinkContainer> 
           }
       </Nav>
