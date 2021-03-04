@@ -268,4 +268,55 @@ describe("MessageScrollableView tests", () => {
         }, 500)
     });
 
+    test("Messages sorted in chronological order", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = [
+            {
+                "type": "message3",
+                "subtype": "channel_join",
+                "ts": "1611257072.000900", //Jan 21, 2021, 11:24:32
+                "user": "U017218J9B3",
+                "text": "<!channel> This is an announcement",
+                "channel": "section-6pm",
+                "user_profile": {
+                    "real_name": "Test Person"
+                }
+            },
+            {     
+                "type": "message1",
+                "subtype": "channel_join",
+                "ts": "1611875002.014300", //Jan 28 2021, 15:03:22
+                "user": "U017218J9B3",
+                "text": "<!channel> This is an announcement",
+                "channel": "section-6pm",
+                "user_profile": {
+                    "real_name": "Test Person"
+                }
+            },
+            {
+                "type": "message2",
+                "subtype": "channel_join",
+                "ts": "1611867078.013800", //Jan 28, 2021, 12:51:18
+                "user": "U017218J9B3",
+                "text": "<!channel> This is an announcement",
+                "channel": "section-6pm",
+                "user_profile": {
+                    "real_name": "Test Person"
+                }
+            }
+        ]
+        const {getAllByText} = render(<MessageScrollableView messages={exampleMessage}/>);
+        setTimeout(function (){
+            const dates = getAllByText(/2021.{15}/);
+            const expectedDate1 = "2021-01-28 15:03:22";
+            const expectedDate2 = "2021-01-28 12:51:18";
+            const expectedDate3 = "2021-01-21 11:24:32";
+            expect(dates[0]).toEqual(expectedDate1);
+            expect(dates[1]).toEqual(expectedDate2);
+            expect(dates[2]).toEqual(expectedDate3);
+        }, 500)
+    });
+
 });
