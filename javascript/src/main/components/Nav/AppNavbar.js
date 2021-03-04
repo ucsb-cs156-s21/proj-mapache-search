@@ -6,9 +6,8 @@ import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
-import { action } from "@storybook/addon-actions";
 
-function AppNavbar({ appNavbar: { memberState }, onClick }) {
+function AppNavbar({ appNavbar: { memberState }}) {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(
     ["/api/myRole", getToken],
@@ -47,25 +46,25 @@ function AppNavbar({ appNavbar: { memberState }, onClick }) {
       <LinkContainer to={""}>
         <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
       </LinkContainer>
-      <Nav roleInfo = {memberState}>
-          {(isMember || isAdmin) &&
-              <NavbarHover title="Channels" items={ChannelPages} onClick={action("clicked channels")}/>
+      <Nav>
+          {(isMember || isAdmin || memberState === "admin" || memberState === "member") &&
+              <NavbarHover title="Channels" items={ChannelPages} />
           }
-          { isAdmin &&
-              <NavbarHover title="Admin" items={AdminPages} onClick={action("clicked admin")}/>
+          {(isAdmin || memberState === "admin") &&
+              <NavbarHover title="Admin" items={AdminPages} />
           }
-          { (isMember || isAdmin)  &&
-              <NavbarHover title="Slack Search" items={SearchPages} onClick={action("clicked slack search")}/>
+          { (isMember || isAdmin || memberState === "admin" || memberState === "member")  &&
+              <NavbarHover title="Slack Search" items={SearchPages} />
           }
         <LinkContainer to={"/about"}>
-          <Nav.Link onClick={action("clicked about")}>About</Nav.Link>
+          <Nav.Link>About</Nav.Link>
         </LinkContainer>
-          { (isAdmin || isMember) &&
-              <NavbarHover title="Analyze Slack Data" items={DataPages} onClick={action("clicked analyze slack data")}/>
+          { (isAdmin || isMember || memberState === "admin" || memberState === "member") &&
+              <NavbarHover title="Analyze Slack Data" items={DataPages} />
           }
-          { (isMember || isAdmin) && 
+          { (isMember || isAdmin || memberState === "admin" || memberState === "member") && 
               <LinkContainer to={"/member/search"}>
-                  <Nav.Link onClick={action("clicked google search")}>Google Search</Nav.Link>
+                  <Nav.Link >Google Search</Nav.Link>
               </LinkContainer> 
           }
       </Nav>
