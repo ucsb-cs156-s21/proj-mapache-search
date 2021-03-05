@@ -44,7 +44,7 @@ public class ItemTests {
     @Test
     public void test_equals1() throws Exception {
         Item item0 = new Item("test", "test", "test", "test", "test", "test", "test", "test", "test", "test");
-        Item item1 = new Item("fail", "test", "test", "test", "test", "test", "test", "test", "test", "test");
+        Item item1 = new Item("fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail");
         String item3 = "fail";
         assertFalse(item0.equals(item1));
         assertFalse(item0.equals(item3));

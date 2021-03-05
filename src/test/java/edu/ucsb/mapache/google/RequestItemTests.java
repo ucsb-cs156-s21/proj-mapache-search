@@ -43,7 +43,7 @@ public class RequestItemTests {
     @Test
     public void test_equals1() throws Exception {
         RequestItem requestItem0 = new RequestItem("test", "test", "test", 42, 42, "test", "test", "test", "test");
-        RequestItem requestItem1 = new RequestItem("fail", "test", "test", 42, 42, "test", "test", "test", "test");
+        RequestItem requestItem1 = new RequestItem("fail", "fail", "fail", 41, 41, "fail", "fail", "fail", "fail");
         String requestItem3 = "fail";
         assertFalse(requestItem0.equals(requestItem1));
         assertFalse(requestItem0.equals(requestItem3));

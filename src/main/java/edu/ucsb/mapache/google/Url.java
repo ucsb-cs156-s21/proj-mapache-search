@@ -41,10 +41,11 @@ public class Url{
         return Objects.equals(type, url.type) && Objects.equals(template, url.template);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, template);
-    }
+    // not relevant to current work
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(type, template);
+    // }
 
     @Override
     public String toString() {

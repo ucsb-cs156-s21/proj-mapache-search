@@ -3,6 +3,7 @@ package edu.ucsb.mapache.google;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,7 +18,7 @@ public class SearchResultTests {
 
 
     @Test
-    public void test_null_extraction() throws Exception {
+    public void test_null_fromJSON() throws Exception {
         String body = "";
         SearchResult searchResult = SearchResult.fromJSON(body);
         assertEquals(searchResult, null);
@@ -25,7 +26,7 @@ public class SearchResultTests {
 
 
     @Test
-    public void test_item_extraction() throws Exception {
+    public void test_item_fromJSON() throws Exception {
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String body = Files.readString(jsonPath);
         SearchResult searchResult = SearchResult.fromJSON(body);
@@ -45,7 +46,7 @@ public class SearchResultTests {
     }
 
     @Test
-    public void test_url_extraction() throws Exception {
+    public void test_url_fromJSON() throws Exception {
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String body = Files.readString(jsonPath);
         SearchResult searchResult = SearchResult.fromJSON(body);
@@ -57,7 +58,7 @@ public class SearchResultTests {
     }
 
     @Test
-    public void test_queries_extraction() throws Exception {
+    public void test_queries_fromJSON() throws Exception {
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String body = Files.readString(jsonPath);
         SearchResult searchResult = SearchResult.fromJSON(body);
@@ -91,5 +92,39 @@ public class SearchResultTests {
         assertTrue(expected.equals(queries));
     }
 
+    @Test
+    public void test_equals0() throws Exception {
+        Url url = new Url("test", "test");
+        List<RequestItem> r= new ArrayList<RequestItem>();
+        r.add(new RequestItem("test", "test", "test", 42, 42, "test", "test", "test", "test"));
+        Queries queries = new Queries(r, r);
+        List<Item> i = new ArrayList<Item>();
+        i.add(new  Item("test", "test", "test", "test", "test", "test", "test", "test", "test", "test"));
+        SearchResult searchResult0 = new SearchResult("test", url, queries, i);
+        SearchResult searchResult1 = new SearchResult("test", url, queries, i);
+        assertTrue(searchResult0.equals(searchResult1));
+        assertTrue(searchResult0.equals(searchResult0));
+    }
+
+    @Test
+    public void test_equals1() throws Exception {
+        Url url = new Url("test", "test");
+        Url url1 = new Url("fail", "fail");
+        List<RequestItem> r= new ArrayList<RequestItem>();
+        r.add(new RequestItem("test", "test", "test", 42, 42, "test", "test", "test", "test"));
+        List<RequestItem> s= new ArrayList<RequestItem>();
+        s.add(new RequestItem("fail", "test", "test", 42, 42, "test", "test", "test", "test"));
+        Queries queries = new Queries(r, r);
+        Queries queries1 = new Queries(s, s);
+        List<Item> i = new ArrayList<Item>();
+        i.add(new  Item("test", "test", "test", "test", "test", "test", "test", "test", "test", "test"));
+        List<Item> j = new ArrayList<Item>();
+        j.add(new  Item("fail", "test", "test", "test", "test", "test", "test", "test", "test", "test"));
+        SearchResult searchResult0 = new SearchResult("test", url, queries, i);
+        SearchResult searchResult1 = new SearchResult("fail", url1, queries1, j);
+        String searchResult2 = "fail";
+        assertFalse(searchResult0.equals(searchResult1));
+        assertFalse(searchResult0.equals(searchResult2));
+    }
 
 }
