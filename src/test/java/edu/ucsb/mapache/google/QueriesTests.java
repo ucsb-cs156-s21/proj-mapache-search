@@ -44,9 +44,11 @@ public class QueriesTests {
         r.add(new RequestItem("test", "test", "test", 42, 42, "test", "test", "test", "test"));
         s.add(new RequestItem("fail", "test", "test", 42, 42, "test", "test", "test", "test"));
         Queries queries0 = new Queries(r, r);
-        Queries queries1 = new Queries(s, s);
-        String queries2 = "fail";
+        Queries queries1 = new Queries(s, r);
+        Queries queries2 = new Queries(r, s);
+        String queries3 = "fail";
         assertFalse(queries0.equals(queries1));
         assertFalse(queries0.equals(queries2));
+        assertFalse(queries0.equals(queries3));
     }
 }

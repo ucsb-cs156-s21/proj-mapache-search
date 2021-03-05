@@ -30,16 +30,6 @@ public class Url{
         this.template = template;
     }
 
-    public Url type(String type) {
-        setType(type);
-        return this;
-    }
-
-    public Url template(String template) {
-        setTemplate(template);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)

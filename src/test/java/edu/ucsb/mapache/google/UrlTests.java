@@ -37,8 +37,10 @@ public class UrlTests {
     public void test_equals1() throws Exception {
         Url url0 = new Url("test", "test");
         Url url1 = new Url("test", "fail");
+        Url url2 = new Url("fail", "test");
         String url3 = "fail";
         assertFalse(url0.equals(url1));
+        assertFalse(url0.equals(url2));
         assertFalse(url0.equals(url3));
     }
 }
