@@ -61,9 +61,15 @@ public class Team {
     builder.append(id, other.id).append(teamName, other.teamName).append(teamDescription, other.teamDescription);
     return builder.isEquals();
   }
+
   @Override
   public String toString() {
     return String.format("Team[id=%d, teamName=%s, teamDescription=%s]", id, teamName, teamDescription);
+  }
+
+  public Team(String teamName, String teamDescription) {
+    this.teamName = teamName;
+    this.teamDescription = teamDescription;
   }
 
 }

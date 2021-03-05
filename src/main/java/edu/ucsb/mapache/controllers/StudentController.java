@@ -19,7 +19,9 @@ import edu.ucsb.mapache.services.CSVToObjectService;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Student;
+import edu.ucsb.mapache.entities.Team;
 import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.repositories.TeamRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class StudentController {
   private final Logger logger = LoggerFactory.getLogger(StudentController.class);
   @Autowired
   private StudentRepository studentRepository;
+
+  @Autowired
+  private TeamRepository teamRepository;
 
   @Autowired
   CSVToObjectService<Student> csvToObjectService;
@@ -113,6 +118,10 @@ public class StudentController {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     Student savedStudent = studentRepository.save(student);
+    if(teamRepository.findByTeamName(student.getTeamName()).isEmpty()) {
+      Team team = new Team (student.getTeamName(), "");
+      teamRepository.save(team);
+    }
     String body = mapper.writeValueAsString(savedStudent);
     return ResponseEntity.ok().body(body);
   }
