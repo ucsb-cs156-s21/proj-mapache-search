@@ -26,6 +26,7 @@ function AppNavbar() {
     {link:"/admin/teams", name:"Manage Teams",},
     {link:"/admin/students", name:"Manage Students",},
     {link:"/admin/searchInfo", name:"Search Information",},
+    {link:"/admin/searchedTerms", name:"Searched Terms",},
   ];
 
   const SearchPages = [
