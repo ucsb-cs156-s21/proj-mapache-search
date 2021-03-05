@@ -32,6 +32,7 @@ public class SearchTests {
     Search s2 = new Search(2L, "email", 2);
     Search s3 = new Search(3L, "email3", 3);
     Search s4 = new Search(1L, "email", 4);
+    Search s5 = new Search(1L, "email5", 1);
 
     assertEquals(s1, s1);
     assertEquals(s2, s2);
@@ -40,7 +41,9 @@ public class SearchTests {
     assertNotEquals(s1, s2);
     assertNotEquals(s2, s3);
     assertNotEquals(s1, s4);
+    assertNotEquals(s1, s5);
     assertEquals(s1.getSearchTerm(), s2.getSearchTerm());
+    assertNotEquals(s1.getSearchTerm(), s3.getSearchTerm());
     assertNotEquals(s1.getId(), s2.getId());
     assertNotEquals(s3.getCount(), s1.getCount());
   }
