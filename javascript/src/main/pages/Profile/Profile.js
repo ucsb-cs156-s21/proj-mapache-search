@@ -14,12 +14,14 @@ const Profile = () => {
     ["/api/myRole", getToken],
     fetchWithToken
   );
-  const emptyToken = {
-    inputApiToken: "",
-  }
+  //const emptyToken = {
+    //inputApiToken: "",
+  //}
 
-  const [apiToken, setApiToken] = useState(emptyToken);
+  const [apiToken, setApiToken] = useState("");
   const [results, setResults] = useState({});
+  const [TokenStatus, setTokenStatus] = useState("You do not have an API Token associated with your account!")
+  let currentApiTokenStatus = <p>You do not have an API Token associated with your account!</p>;
 
   // Function to add token to account here
   const addAPIToken = async (event) => {
@@ -31,11 +33,9 @@ const Profile = () => {
             headers: {
               'content-type': 'application/json',
             }, 
-            body: JSON.stringify({
-              token: apiToken
-            })
+            body: apiToken
           });
-          console.log(`result=${JSON.stringify(result)}`)
+          console.log(`result=${result}`)
           return result;
         } catch (err) {
           console.log(`err=${err}`)
@@ -63,13 +63,16 @@ const Profile = () => {
     const answer = await addAPIToken(e);
     setResults(answer);
     const apiReturn = await fetchApiToken(e);
-    alert('API was submitted: ' + apiReturn);
+    alert('API was submitted: ' + JSON.stringify(apiReturn));
+    setTokenStatus("Your input token is " + apiReturn);
   }
   
-  function returnApiTokenStatus(){
-    return <p>You do not have an API Token associated with your account!</p>;
+  function returnApiTokenStatus() {//check api status
+    //if (apiToken == "")
+      //return <p>You do not have an API Token associated with your account!</p>;
+    //else
+      return <p>{apiToken}</p>;
   }
-  let currentApiTokenStatus = returnApiTokenStatus();
   
   return (
     <Container className="mb-5">
@@ -90,8 +93,7 @@ const Profile = () => {
           }
         </Col>
       </Row>
-
-      {currentApiTokenStatus}
+      {TokenStatus}
 
       <p>
       Don't have an API key or want to learn more? <a href="https://developers.google.com/custom-search/v1/overview">Consider clicking here!</a>
@@ -101,10 +103,9 @@ const Profile = () => {
                 <Form.Group as={Row} controlId="search">
                     <Form.Label column sm={2}>API Search Token</Form.Label>
                     <Col sm={10}>
-                        <Form.Control type="text" placeholder="Enter your API token" onChange={(e) => setApiToken({
-                            ...apiToken,
-                            inputApiToken: e.target.value
-                        })} />
+                        <Form.Control type="text" placeholder="Enter your API token" onChange={(e) => setApiToken(
+                            e.target.value
+                        )} />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>

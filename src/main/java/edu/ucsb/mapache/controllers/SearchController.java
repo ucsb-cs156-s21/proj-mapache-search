@@ -91,14 +91,17 @@ public class SearchController {
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
-       
+        //added code
+        //if (!you.getApiToken().equals(""))
+        apiToken = you.getApiToken();
+
         if(you.getSearchRemain()<=0){
             return searchQuotaExceeded();
         }
         you.setTime(currentTime);
         you.decrSearchRemain();
         appUserRepository.save(you);
-
+        
         SearchParameters sp = new SearchParameters();
         sp.setQuery(searchQuery);
         sp.setPage(1);

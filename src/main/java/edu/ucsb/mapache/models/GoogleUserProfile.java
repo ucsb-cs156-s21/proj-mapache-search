@@ -124,7 +124,7 @@ public class GoogleUserProfile {
   }
 
   // CB - Custom API setter
-  public void setCustomAPI() {
+  public void setCustomAPI(String customAPI) {
     this.customAPI = customAPI;
   }
 
