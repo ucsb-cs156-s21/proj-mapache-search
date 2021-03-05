@@ -100,51 +100,6 @@ public class RequestItem{
         this.cx = cx;
     }
 
-    public RequestItem title(String title) {
-        setTitle(title);
-        return this;
-    }
-
-    public RequestItem totalResults(String totalResults) {
-        setTotalResults(totalResults);
-        return this;
-    }
-
-    public RequestItem searchTerms(String searchTerms) {
-        setSearchTerms(searchTerms);
-        return this;
-    }
-
-    public RequestItem count(int count) {
-        setCount(count);
-        return this;
-    }
-
-    public RequestItem startIndex(int startIndex) {
-        setStartIndex(startIndex);
-        return this;
-    }
-
-    public RequestItem inputEncoding(String inputEncoding) {
-        setInputEncoding(inputEncoding);
-        return this;
-    }
-
-    public RequestItem outputEncoding(String outputEncoding) {
-        setOutputEncoding(outputEncoding);
-        return this;
-    }
-
-    public RequestItem safe(String safe) {
-        setSafe(safe);
-        return this;
-    }
-
-    public RequestItem cx(String cx) {
-        setCx(cx);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -156,10 +111,11 @@ public class RequestItem{
         return Objects.equals(title, requestItem.title) && Objects.equals(totalResults, requestItem.totalResults) && Objects.equals(searchTerms, requestItem.searchTerms) && count == requestItem.count && startIndex == requestItem.startIndex && Objects.equals(inputEncoding, requestItem.inputEncoding) && Objects.equals(outputEncoding, requestItem.outputEncoding) && Objects.equals(safe, requestItem.safe) && Objects.equals(cx, requestItem.cx);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, totalResults, searchTerms, count, startIndex, inputEncoding, outputEncoding, safe, cx);
-    }
+    // Not relavent for current work
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(title, totalResults, searchTerms, count, startIndex, inputEncoding, outputEncoding, safe, cx);
+    // }
 
     @Override
     public String toString() {

@@ -111,56 +111,6 @@ public class Item{
         this.htmlFormattedUrl = htmlFormattedUrl;
     }
 
-    public Item kind(String kind) {
-        setKind(kind);
-        return this;
-    }
-
-    public Item title(String title) {
-        setTitle(title);
-        return this;
-    }
-
-    public Item htmlTitle(String htmlTitle) {
-        setHtmlTitle(htmlTitle);
-        return this;
-    }
-
-    public Item link(String link) {
-        setLink(link);
-        return this;
-    }
-
-    public Item displayLink(String displayLink) {
-        setDisplayLink(displayLink);
-        return this;
-    }
-
-    public Item snippet(String snippet) {
-        setSnippet(snippet);
-        return this;
-    }
-
-    public Item htmlSnippet(String htmlSnippet) {
-        setHtmlSnippet(htmlSnippet);
-        return this;
-    }
-
-    public Item cacheId(String cacheId) {
-        setCacheId(cacheId);
-        return this;
-    }
-
-    public Item formattedUrl(String formattedUrl) {
-        setFormattedUrl(formattedUrl);
-        return this;
-    }
-
-    public Item htmlFormattedUrl(String htmlFormattedUrl) {
-        setHtmlFormattedUrl(htmlFormattedUrl);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -172,10 +122,11 @@ public class Item{
         return Objects.equals(kind, item.kind) && Objects.equals(title, item.title) && Objects.equals(htmlTitle, item.htmlTitle) && Objects.equals(link, item.link) && Objects.equals(displayLink, item.displayLink) && Objects.equals(snippet, item.snippet) && Objects.equals(htmlSnippet, item.htmlSnippet) && Objects.equals(cacheId, item.cacheId) && Objects.equals(formattedUrl, item.formattedUrl) && Objects.equals(htmlFormattedUrl, item.htmlFormattedUrl);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(kind, title, htmlTitle, link, displayLink, snippet, htmlSnippet, cacheId, formattedUrl, htmlFormattedUrl);
-    }
+    // Not relavent for current work
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(kind, title, htmlTitle, link, displayLink, snippet, htmlSnippet, cacheId, formattedUrl, htmlFormattedUrl);
+    // }
 
     @Override
     public String toString() {

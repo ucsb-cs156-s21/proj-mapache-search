@@ -31,16 +31,6 @@ public class Queries{
         this.nextPage = nextPage;
     }
 
-    public Queries request(List<RequestItem> request) {
-        setRequest(request);
-        return this;
-    }
-
-    public Queries nextPage(List<RequestItem> nextPage) {
-        setNextPage(nextPage);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -52,10 +42,11 @@ public class Queries{
         return Objects.equals(request, queries.request) && Objects.equals(nextPage, queries.nextPage);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(request, nextPage);
-    }
+    // Not relavent for current work
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(request, nextPage);
+    // }
 
     @Override
     public String toString() {

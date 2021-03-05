@@ -62,26 +62,6 @@ public class SearchResult{
         this.items = items;
     }
 
-    public SearchResult kind(String kind) {
-        setKind(kind);
-        return this;
-    }
-
-    public SearchResult url(Url url) {
-        setUrl(url);
-        return this;
-    }
-
-    public SearchResult queries(Queries queries) {
-        setQueries(queries);
-        return this;
-    }
-
-    public SearchResult items(List<Item> items) {
-        setItems(items);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -93,10 +73,11 @@ public class SearchResult{
         return Objects.equals(kind, searchResult.kind) && Objects.equals(url, searchResult.url) && Objects.equals(queries, searchResult.queries) && Objects.equals(items, searchResult.items);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(kind, url, queries, items);
-    }
+    // Not relavent for current work
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(kind, url, queries, items);
+    // }
 
     @Override
     public String toString() {

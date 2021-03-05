@@ -2,6 +2,7 @@ package edu.ucsb.mapache.google;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,6 +41,7 @@ public class JsonExtractionTests {
         "https://stackoverflow.com/.../springboot-the-ajp-connector-is-configured-with -secretrequired-true-but-the-s",
         "https://stackoverflow.com/.../\u003cb\u003espringboot\u003c/b\u003e-the-ajp-connector-is-configured-with -secretrequired-true-but-the-s");
         assertEquals(expected.toString(), item.toString());
+        assertTrue(expected.equals(item));
     }
 
     @Test
@@ -47,9 +49,11 @@ public class JsonExtractionTests {
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String body = Files.readString(jsonPath);
         SearchResult searchResult = SearchResult.fromJSON(body);
+        Url url = searchResult.getUrl();
         Url expected = new Url("application/json",
         "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&relatedSite={relatedSite?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json");
-        assertEquals(expected.toString(), searchResult.getUrl().toString());
+        assertEquals(expected.toString(), url.toString());
+        assertTrue(expected.equals(url));
     }
 
     @Test
@@ -57,6 +61,7 @@ public class JsonExtractionTests {
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String body = Files.readString(jsonPath);
         SearchResult searchResult = SearchResult.fromJSON(body);
+        Queries queries = searchResult.getQueries();
         List<RequestItem> r = new ArrayList<RequestItem>();
         r.add(new RequestItem(
         "Google Custom Search - springboot",
@@ -82,6 +87,9 @@ public class JsonExtractionTests {
             "001539284272632380888:kn5n6ubsr7x"
         ));
         Queries expected = new Queries(r, n);
-        assertEquals(expected.toString(), searchResult.getQueries().toString()); 
+        assertEquals(expected.toString(), queries.toString());
+        assertTrue(expected.equals(queries));
     }
+
+
 }
