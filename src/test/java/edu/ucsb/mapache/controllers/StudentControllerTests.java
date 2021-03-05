@@ -330,8 +330,15 @@ public class StudentControllerTests {
   @Test
   public void testUploadFile() throws Exception {
     List<Student> expectedStudents = new ArrayList<Student>();
-    expectedStudents.add(new Student(1L, "email", "team"));
+    expectedStudents.add(new Student(1L, "email", "team1"));
+    expectedStudents.add(new Student(2L, "email", "team2"));
+    List<Team> teams = new ArrayList<Team>();
+    Team team1 = new Team("team1", "");
+    Team team2 = new Team("team2", "");
+    teams.add(team1);
     when(mockCSVToObjectService.parse(any(Reader.class), eq(Student.class))).thenReturn(expectedStudents);
+    when(mockTeamRepository.findByTeamName("team1")).thenReturn(teams);
+    when(mockTeamRepository.findByTeamName("team2")).thenReturn(new ArrayList<Team>());
     MockMultipartFile mockFile = new MockMultipartFile("csv", "test.csv", MediaType.TEXT_PLAIN_VALUE,
         "value,done\ntodo,false".getBytes());
     MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -340,6 +347,7 @@ public class StudentControllerTests {
             multipart("/api/students/upload").file(mockFile).header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
         .andExpect(status().isOk()).andReturn();
     verify(mockStudentRepository, times(1)).saveAll(expectedStudents);
+    verify(mockTeamRepository, times(1)).save(team2);
   }
 
   @Test
