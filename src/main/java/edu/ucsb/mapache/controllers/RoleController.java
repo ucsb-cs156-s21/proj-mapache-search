@@ -26,6 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import edu.ucsb.mapache.models.SearchParameters;
+import org.springframework.beans.factory.annotation.Value;
+import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.SearchSupportService;
+
 @RestController
 @RequestMapping("/api")
 public class RoleController {
@@ -39,6 +44,12 @@ public class RoleController {
 
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
+
+  @Autowired
+  private SearchSupportService searchSupportService;
+
+  @Autowired
+  private GoogleSearchService googleSearchService;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -121,18 +132,17 @@ public class RoleController {
   public ResponseEntity<String> setCustomApiToken(@RequestHeader("Authorization") String authorization, 
   @RequestBody @Valid String token) 
       throws JsonProcessingException {
+        SearchParameters sp = new SearchParameters();
+        sp.setQuery("empty");
+        sp.setPage(1);
+        
+        String i = googleSearchService.getJSON(sp, token);
+        if (i == "{\"error\": \"401: Unauthorized\"}")
+            return new ResponseEntity<> (HttpStatus.NOT_ACCEPTABLE);
+        
         AppUser user = authControllerAdvice.getUser(authorization);
         user.setApiToken(token);
         appUserRepository.save(user);
         return new ResponseEntity<> (HttpStatus.NO_CONTENT);
   }
-
-  /*public static String checkAPITokenStatus(String apikey)
-  {
-    SearchParameters sp = new SearchParameters();
-    sp.setQuery("empty");
-    sp.setPage(1);
-    string i = getJSON(sp, apiKey);
-  }*/
-
 }
