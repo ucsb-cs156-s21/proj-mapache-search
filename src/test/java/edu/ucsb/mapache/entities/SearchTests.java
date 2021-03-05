@@ -31,12 +31,15 @@ public class SearchTests {
     Search s1 = new Search(1L, "email", 1);
     Search s2 = new Search(2L, "email", 2);
     Search s3 = new Search(3L, "email3", 3);
+    Search s4 = new Search(1L, "email", 4);
+
     assertEquals(s1, s1);
     assertEquals(s2, s2);
     assertEquals(s3, s3);
     assertNotEquals(s1, s3);
     assertNotEquals(s1, s2);
     assertNotEquals(s2, s3);
+    assertNotEquals(s1, s4);
     assertEquals(s1.getSearchTerm(), s2.getSearchTerm());
     assertNotEquals(s1.getId(), s2.getId());
     assertNotEquals(s3.getCount(), s1.getCount());
