@@ -33,9 +33,11 @@ const GetMessageContents = ({text, slackUsers}) => {
     return (
         <p>
             {text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
-                for(let i = 0; i < slackUsers.length; i++) {
-                    if(slackUsers[i].id === userId) {
-                        return "@" + slackUsers[i].real_name;
+                if (slackUsers != null){
+                    for(let i = 0; i < slackUsers.length; i++) {
+                        if(slackUsers[i].id === userId) {
+                            return "@" + slackUsers[i].real_name;
+                        }
                     }
                 }
                 return "@" + userId;
