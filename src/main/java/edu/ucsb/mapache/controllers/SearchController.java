@@ -92,7 +92,7 @@ public class SearchController {
             you.setTime(currentTime);
         }
         //added code
-        if (you.getApiToken()!=null)
+        if (you.getApiToken()!="invalid token")
             apiToken = you.getApiToken();
 
         if(you.getSearchRemain()<=0){

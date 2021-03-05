@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PostMapping; 
 
 import edu.ucsb.mapache.models.SearchParameters;
 import org.springframework.beans.factory.annotation.Value;
@@ -132,17 +132,22 @@ public class RoleController {
   public ResponseEntity<String> setCustomApiToken(@RequestHeader("Authorization") String authorization, 
   @RequestBody @Valid String token) 
       throws JsonProcessingException {
+        AppUser user = authControllerAdvice.getUser(authorization);
         SearchParameters sp = new SearchParameters();
         sp.setQuery("empty");
         sp.setPage(1);
         
         String i = googleSearchService.getJSON(sp, token);
-        if (i == "{\"error\": \"401: Unauthorized\"}")
-            return new ResponseEntity<> (HttpStatus.NOT_ACCEPTABLE);
-        
-        AppUser user = authControllerAdvice.getUser(authorization);
-        user.setApiToken(token);
-        appUserRepository.save(user);
+        if (i == "{\"error\": \"401: Unauthorized\"}") {
+          user.clearApiToken();
+          appUserRepository.save(user);
+          return new ResponseEntity<> (HttpStatus.NOT_ACCEPTABLE);
+        }
+        else {
+          user.setApiToken(token);
+          appUserRepository.save(user);
+
+        }
         return new ResponseEntity<> (HttpStatus.NO_CONTENT);
   }
 }

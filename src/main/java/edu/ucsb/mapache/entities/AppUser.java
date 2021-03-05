@@ -24,8 +24,9 @@ public class AppUser {
   @Column(nullable = false)
   private long time;
   // Added below instance variable to associate custom API token w/ an AppUser
+  //default is set to "invalid token"
   @Column(nullable = true)
-  private String apiToken;
+  private String apiToken = "invalid token";
 
   public AppUser() {
     time=0;
@@ -101,6 +102,10 @@ public class AppUser {
 
   public void setApiToken(String apiToken) {
     this.apiToken = apiToken;
+  }
+
+  public void clearApiToken() {
+    this.apiToken = "invalid token";
   }
 
   public AppUser apiToken(String apiToken) {
