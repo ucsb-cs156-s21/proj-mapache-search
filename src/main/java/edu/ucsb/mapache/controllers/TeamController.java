@@ -59,14 +59,9 @@ public class TeamController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        Iterable<Student> studentList = studentRepository.findAll();
-        Set<String> TeamSet = new HashSet<String>();
-        for(Student s: studentList){
-            TeamSet.add(s.getTeamName());
-        }
-        List<String> TeamList = new ArrayList<String>(TeamSet);
+        List<String> teamList = studentRepository.selectDistinctTeamname();
         ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(TeamList);
+        String body = mapper.writeValueAsString(teamList);
         return ResponseEntity.ok().body(body);
     }
 }

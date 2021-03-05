@@ -9,21 +9,15 @@ import {fetchWithToken} from "../../utils/fetch";
 const Teams = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
+    const { data: teamName } = useSWR(["/api/member/teams", getToken], fetchWithToken)
     
-
-    // TODO: update with information from the CSV file, NOT from slackUsers
-    const data = [];
     const columns = [{
-        dataField: 'name',
-        text: 'Name'
-    }, {
         dataField: 'teamName',
         text: 'Team'
     }];
 
-    
     return (
-        <BootstrapTable keyField='name' data={slackUsers || []} columns={columns} />
+        <BootstrapTable keyField='teamName' data={teamName || []} columns={columns} />
     );
 };
 export default Teams;
