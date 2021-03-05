@@ -121,10 +121,16 @@ public class SearchResultTests {
         List<Item> j = new ArrayList<Item>();
         j.add(new  Item("fail", "test", "test", "test", "test", "test", "test", "test", "test", "test"));
         SearchResult searchResult0 = new SearchResult("test", url, queries, i);
-        SearchResult searchResult1 = new SearchResult("fail", url1, queries1, j);
-        String searchResult2 = "fail";
+        SearchResult searchResult1 = new SearchResult("fail", url, queries, i);
+        SearchResult searchResult2 = new SearchResult("test", url1, queries, i);
+        SearchResult searchResult3 = new SearchResult("test", url, queries1, i);
+        SearchResult searchResult4 = new SearchResult("test", url, queries, j);
+        String searchResult5 = "fail";
         assertFalse(searchResult0.equals(searchResult1));
         assertFalse(searchResult0.equals(searchResult2));
+        assertFalse(searchResult0.equals(searchResult3));
+        assertFalse(searchResult0.equals(searchResult4));
+        assertFalse(searchResult0.equals(searchResult5));
     }
 
 }

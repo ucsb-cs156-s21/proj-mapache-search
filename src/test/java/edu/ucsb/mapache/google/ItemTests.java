@@ -44,9 +44,14 @@ public class ItemTests {
     @Test
     public void test_equals1() throws Exception {
         Item item0 = new Item("test", "test", "test", "test", "test", "test", "test", "test", "test", "test");
-        Item item1 = new Item("fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail", "fail");
+        String[] arg = {"test", "test", "test", "test", "test", "test", "test", "test", "test", "test"};
+        for(int i = 0; i<10; i++){
+            arg[i] = "fail";
+            Item item1 = new  Item(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
+            arg[i] = "test";
+            assertFalse(item0.equals(item1));
+        }
         String item3 = "fail";
-        assertFalse(item0.equals(item1));
         assertFalse(item0.equals(item3));
     }
 }
