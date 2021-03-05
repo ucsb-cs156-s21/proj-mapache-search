@@ -92,12 +92,13 @@ public class SearchController {
             you.setTime(currentTime);
         }
         //added code
-        //if (!you.getApiToken().equals(""))
-        apiToken = you.getApiToken();
+        if (you.getApiToken()!=null)
+            apiToken = you.getApiToken();
 
         if(you.getSearchRemain()<=0){
             return searchQuotaExceeded();
         }
+        logger.info("The current api token is {}", apiToken);
         you.setTime(currentTime);
         you.decrSearchRemain();
         appUserRepository.save(you);

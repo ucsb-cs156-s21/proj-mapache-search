@@ -20,8 +20,8 @@ const Profile = () => {
 
   const [apiToken, setApiToken] = useState("");
   const [results, setResults] = useState({});
-  const [TokenStatus, setTokenStatus] = useState("You do not have an API Token associated with your account!")
   let currentApiTokenStatus = <p>You do not have an API Token associated with your account!</p>;
+  const [tokenStatus, setTokenStatus] = useState("");
 
   // Function to add token to account here
   const addAPIToken = async (event) => {
@@ -63,17 +63,22 @@ const Profile = () => {
     const answer = await addAPIToken(e);
     setResults(answer);
     const apiReturn = await fetchApiToken(e);
-    alert('API was submitted: ' + JSON.stringify(apiReturn));
-    setTokenStatus("Your input token is " + apiReturn);
+    alert('API was submitted: ' + apiReturn["token"]);
   }
   
-  function returnApiTokenStatus() {//check api status
-    //if (apiToken == "")
-      //return <p>You do not have an API Token associated with your account!</p>;
-    //else
-      return <p>{apiToken}</p>;
+  async function returnApiTokenStatus(){
+    var apiStatus = await fetchApiToken();
+    var status;
+    if (apiStatus["token"] == null)
+      status = "You do not have an API Token associated with your account!";
+    else
+      status = "Your custom API token is " + apiStatus["token"];
+    setTokenStatus(status);
   }
   
+
+  returnApiTokenStatus();
+
   return (
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
@@ -93,7 +98,8 @@ const Profile = () => {
           }
         </Col>
       </Row>
-      {TokenStatus}
+
+      <p>{tokenStatus}</p>
 
       <p>
       Don't have an API key or want to learn more? <a href="https://developers.google.com/custom-search/v1/overview">Consider clicking here!</a>

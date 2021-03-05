@@ -110,14 +110,13 @@ public class RoleController {
         AppUser user = authControllerAdvice.getUser(authorization);
         String userToken = user.getApiToken();
         Map<String, String> response = new HashMap<>();
-        response.put("Token", userToken);
+        response.put("token", userToken);
         String body = mapper.writeValueAsString(response);
         return ResponseEntity.ok().body(body);
         
   }
 
   //Sets API Token
-
   @PutMapping(value = "/addApiKey")
   public ResponseEntity<String> setCustomApiToken(@RequestHeader("Authorization") String authorization, 
   @RequestBody @Valid String token) 
@@ -127,4 +126,13 @@ public class RoleController {
         appUserRepository.save(user);
         return new ResponseEntity<> (HttpStatus.NO_CONTENT);
   }
+
+  /*public static String checkAPITokenStatus(String apikey)
+  {
+    SearchParameters sp = new SearchParameters();
+    sp.setQuery("empty");
+    sp.setPage(1);
+    string i = getJSON(sp, apiKey);
+  }*/
+
 }

@@ -67,6 +67,7 @@ public class SearchSupportService {
             String lastName = (String) customClaims.get("family_name");
             you.setFirstName(firstName);
             you.setLastName(lastName);
+                
             appUserRepository.save(you);
         }else{
             you=users.get(0);
