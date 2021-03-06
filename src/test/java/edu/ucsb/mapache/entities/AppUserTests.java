@@ -9,7 +9,7 @@ public class AppUserTests {
   @Test
   public void testAppUser_toString() {
     AppUser user = new AppUser(1L, "test@test.org", "test", "user");
-    assertEquals(user.toString(), "AppUser[ id=1, email=test@test.org, firstName=test, lastName=user, searchRemain=100]");
+    assertEquals("AppUser[ id=1, email=test@test.org, firstName=test, lastName=user, searchRemain=100, customAPIToken=invalid token]", user.toString());
   }
 
   @Test
@@ -38,6 +38,21 @@ public class AppUserTests {
     AppUser user = new AppUser();
     user.setLastName("Doris");
     assertEquals("Doris", user.getLastName());
+  }
+
+  @Test
+  public void testAppUser_getandSetApiToken() {
+    AppUser user = new AppUser();
+    user.setApiToken("TestTokenABC123");
+    assertEquals("TestTokenABC123", user.getApiToken());
+  }
+
+  @Test
+  public void testAppUser_clearApiToken() {
+    AppUser user = new AppUser();
+    user.setApiToken("TestTokenABC123");
+    user.clearApiToken();
+    assertEquals("invalid token", user.getApiToken());
   }
 
   @Test

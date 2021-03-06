@@ -93,7 +93,7 @@ public class AppUser {
   }
   @Override
   public String toString() {
-    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s, searchRemain=%d, customAPIToken =%d]", id, email, firstName, lastName, searchRemain, apiToken);
+    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s, searchRemain=%d, customAPIToken=%s]", id, email, firstName, lastName, searchRemain, apiToken);
   }
 
   public String getApiToken() {
