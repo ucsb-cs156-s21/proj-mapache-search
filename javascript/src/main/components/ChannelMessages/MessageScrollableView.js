@@ -51,6 +51,10 @@ const createMarkup = (text, slackUsers) => {
     }
 }
 
+const sortByDate = (a, b) => {
+    return (b.key-a.key);
+}
+
 export default ({ messages, _channel }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
@@ -75,7 +79,7 @@ export default ({ messages, _channel }) => {
                             <p dangerouslySetInnerHTML={createMarkup(el?.text, slackUsers)}></p>
                         </div>
                     )
-                })
+                }).sort(sortByDate)
             }
         </div>
     );

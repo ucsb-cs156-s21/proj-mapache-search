@@ -370,4 +370,54 @@ describe("MessageScrollableView tests", () => {
         
     });
 
+    test("Messages sorted in chronological order", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = [
+            {
+                "type": "message3",
+                "subtype": "channel_join",
+                "ts": "1611257072.000900", //Jan 21, 2021, 11:24:32 (Pacific Time)
+                "user": "U017218J9B3",
+                "text": "<!channel> This is an announcement",
+                "channel": "section-6pm",
+                "user_profile": {
+                    "real_name": "Test Person"
+                }
+            },
+            {     
+                "type": "message1",
+                "subtype": "channel_join",
+                "ts": "1611875002.014300", //Jan 28 2021, 15:03:22 (Pacific Time)
+                "user": "U017218J9B3",
+                "text": "<!channel> This is an announcement",
+                "channel": "section-6pm",
+                "user_profile": {
+                    "real_name": "Test Person"
+                }
+            },
+            {
+                "type": "message2",
+                "subtype": "channel_join",
+                "ts": "1611867078.013800", //Jan 28, 2021, 12:51:18 (Pacific Time)
+                "user": "U017218J9B3",
+                "text": "<!channel> This is an announcement",
+                "channel": "section-6pm",
+                "user_profile": {
+                    "real_name": "Test Person"
+                }
+            }
+        ]
+        const {getAllByText} = render(<MessageScrollableView messages={exampleMessage}/>);
+            //The timestamps in this test are in UTC because Jest tests and the Github tests use UTC timezone
+            const dates = getAllByText(/2021.{15}/);
+            const expectedDate1 = "2021-01-28 23:03:22"; 
+            const expectedDate2 = "2021-01-28 20:51:18";
+            const expectedDate3 = "2021-01-21 19:24:32";
+            expect(dates[0]).toHaveTextContent(expectedDate1);
+            expect(dates[1]).toHaveTextContent(expectedDate2);
+            expect(dates[2]).toHaveTextContent(expectedDate3);
+    });
+
 });
