@@ -319,6 +319,8 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        // the timestamps in this test are in UTC because Jest tests
+        // and Github tests use UTC time zone
         const date = getByText("2021-01-16 21:46:57");
         expect(date).toBeInTheDocument();
         
