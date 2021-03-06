@@ -63,7 +63,7 @@ const Profile = () => {
     const answer = await addAPIToken(e);
     setResults(answer);
     const apiReturn = await fetchApiToken(e);
-    alert('API was submitted: ' + apiReturn["token"]);
+    // alert('Token was successfully updated: ' + apiReturn["token"]);
   }
   
   async function returnApiTokenStatus(){

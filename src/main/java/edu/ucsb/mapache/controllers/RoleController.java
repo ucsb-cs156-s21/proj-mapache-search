@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import edu.ucsb.mapache.models.SearchParameters;
 import org.springframework.beans.factory.annotation.Value;
 import edu.ucsb.mapache.services.GoogleSearchService;
-import edu.ucsb.mapache.services.SearchSupportService;
 
 @RestController
 @RequestMapping("/api")
@@ -44,9 +43,6 @@ public class RoleController {
 
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
-
-  @Autowired
-  private SearchSupportService searchSupportService;
 
   @Autowired
   private GoogleSearchService googleSearchService;
@@ -146,7 +142,6 @@ public class RoleController {
         else {
           user.setApiToken(token);
           appUserRepository.save(user);
-
         }
         return new ResponseEntity<> (HttpStatus.NO_CONTENT);
   }

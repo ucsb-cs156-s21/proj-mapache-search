@@ -7,6 +7,8 @@ import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
+import edu.ucsb.mapache.services.GoogleSearchService;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import java.util.ArrayList;
@@ -45,6 +49,8 @@ public class RoleControllerTests {
   AdminRepository mockAdminRepository;
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
+  @MockBean
+  GoogleSearchService mockGoogleSearchService;
 
   @Test
   public void test_get_users_unauthorizedIfNotAdmin() throws Exception {
@@ -150,5 +156,50 @@ public class RoleControllerTests {
         });
     assertEquals(responseMap.get("role"), "Unique role");
   }
+
+  @Test
+  public void test_apiKey() throws Exception {
+    
+  }
+
+  @Test
+  public void test_addApiKey_success() throws Exception {
+    when(mockGoogleSearchService.getJSON( any(), anyString()  )).thenReturn("");
+    
+    AppUser myUser = new AppUser();
+    // right here, set up myUser either by filling in the constructor above,
+    // and/or users myUser.setApiKey(), myUser.setId(), myUser.setEmail(), whatever you need.
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(myUser);
+
+    String sampleAPIToken = "sampleTokenABCD1234"; // TODO: make this be the apiToken, i.e. the body sent to the api...
+    
+    MvcResult response = mockMvc
+        .perform(put("/api/addApiKey").contentType("application/json").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(sampleAPIToken).header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+
+    // make sure that myUser has the sampleAPIToken in it.
+    myUser.setApiToken(sampleAPIToken);
+    verify(mockAppUserRepository, times(1)).save(myUser);
+  }
+
+  @Test
+  public void test_addApiKey_failure() throws Exception {
+    String errorString = "{\"error\": \"401: Unauthorized\"}";
+    when(mockGoogleSearchService.getJSON( any(), anyString()  )).thenReturn(errorString);
+
+    AppUser myUser = new AppUser();
+
+
+    // FILL IN THE REST...
+
+    // Do something similar.  BUT, you want the string
+    String sampleAPIToken = "invalid token"; // TODO: make this be the apiToken, i.e. the body sent to the api...
+    myUser.setApiToken(sampleAPIToken);
+    verify(mockAppUserRepository, times(1)).save(myUser);
+
+  }
+
+
 
 }
