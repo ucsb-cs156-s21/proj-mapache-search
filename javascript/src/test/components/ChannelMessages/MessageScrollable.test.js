@@ -128,10 +128,9 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-            expect(linkElement.href).toMatch("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
-        }, 500)
+        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
+        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        
     });
 
     test("Unembedded email links are clickable", () => {
@@ -150,10 +149,30 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const linkElement = getByText(/mailto:test@ucsb.edu/);
-            expect(linkElement.href).toMatch("mailto:test@ucsb.edu");
-        }, 500)
+        const linkElement = getByText(/mailto:test@ucsb.edu/);
+        expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
+        
+    });
+
+    test("Unembedded phone links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Call me at <tel:+01234567890>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        const linkElement = getByText("tel:+01234567890");
+        expect(linkElement.href).toEqual("tel:+01234567890");
+        
     });
 
     test("Embedded https links are clickable", () => {
@@ -172,10 +191,9 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const linkElement = getByText(/zoom/);
-            expect(linkElement.href).toMatch("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
-        }, 500)
+        const linkElement = getByText(/zoom/);
+        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        
     });
 
     test("Embedded email links are clickable", () => {
@@ -194,13 +212,54 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const linkElement = getByText(/this email/);
-            expect(linkElement.href).toMatch("mailto:test@ucsb.edu");
-        }, 500)
+        const linkElement = getByText(/this email/);
+        expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
+        
     });
 
-    test("Brackets removed from elements that are not links", () => {
+    test("Embedded phone links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Call me at <tel:+01234567890|+0 123 456 7890>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        const linkElement = getByText("+0 123 456 7890");
+        expect(linkElement.href).toEqual("tel:+01234567890");
+        
+    });
+
+    test("Channel links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Please post in <#C01K1CR63MX|help-jpa02>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        const linkElement = getByText(/#help-jpa02/);
+        expect(linkElement.href).toEqual("http://localhost/member/channels/help-jpa02");
+        
+    });    
+
+    test("Brackets removed from Channel IDs and they are not links", () => {
         useSWR.mockReturnValue({
             data: []
         });
@@ -215,13 +274,12 @@ describe("MessageScrollableView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            var bracketElement = getByText(/<!channel>/);
-            expect(bracketElement).toHaveLength(0);
-            bracketElement = getByText(/!channel/);
-            expect(bracketElement).toBeInTheDocument();
-        }, 500)
+        const {queryByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        var bracketElement = queryByText(/<@channel>/);
+        expect(bracketElement).toEqual(null);
+        bracketElement = queryByText(/@channel/);
+        expect(bracketElement).toBeInTheDocument();
+        
     });
 
     test("Bracketed text that is not an http or mailto link is not clickable", () => {
@@ -240,13 +298,35 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const bracketElement = getByText(/!channel/);
-            expect(bracketElement.href).toMatch(null);
-        }, 500)
+        const bracketElement = getByText(/@channel/);
+        expect(bracketElement.getAttribute("href")).toEqual(null);
+        
     });
 
     test("Date and time render correctly", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1610833617.007900",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        // the timestamps in this test are in UTC because Jest tests
+        // and Github tests use UTC time zone
+        const date = getByText("2021-01-16 21:46:57");
+        expect(date).toBeInTheDocument();
+        
+    });
+
+    test("Channel tags begin with @ and are bolded", () => {
         useSWR.mockReturnValue({
             data: []
         });
@@ -262,10 +342,32 @@ describe("MessageScrollableView tests", () => {
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        setTimeout(function (){
-            const date = getByText(/2020-07-07 10:31:06/);
-            expect(date).toBeInTheDocument();
-        }, 500)
+        const bracketElement = getByText(/@channel/);
+        expect(bracketElement).toHaveStyle("font-weight: bold");
+        
+    });
+
+    test("Brackets removed from elements that are not links", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement <testing>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {queryByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        var bracketElement = queryByText(/<testing>/);
+        expect(bracketElement).toEqual(null);
+        bracketElement = queryByText(/testing/);
+        expect(bracketElement).toBeInTheDocument();
+        
     });
 
     test("Messages sorted in chronological order", () => {
