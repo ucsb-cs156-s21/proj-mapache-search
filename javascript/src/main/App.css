@@ -69,3 +69,10 @@ footer {
   width: 100%;
   overflow: hidden;
 }
+
+.navbar{
+  position:sticky;
+  top:0px;
+  width:100%;
+  z-index:2;
+}
