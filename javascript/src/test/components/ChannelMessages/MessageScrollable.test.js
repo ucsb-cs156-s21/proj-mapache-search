@@ -276,7 +276,7 @@ describe("MessageScrollableView tests", () => {
             {
                 "type": "message3",
                 "subtype": "channel_join",
-                "ts": "1611257072.000900", //Jan 21, 2021, 11:24:32
+                "ts": "1611257072.000900", //Jan 21, 2021, 11:24:32 (Pacific Time)
                 "user": "U017218J9B3",
                 "text": "<!channel> This is an announcement",
                 "channel": "section-6pm",
@@ -287,7 +287,7 @@ describe("MessageScrollableView tests", () => {
             {     
                 "type": "message1",
                 "subtype": "channel_join",
-                "ts": "1611875002.014300", //Jan 28 2021, 15:03:22
+                "ts": "1611875002.014300", //Jan 28 2021, 15:03:22 (Pacific Time)
                 "user": "U017218J9B3",
                 "text": "<!channel> This is an announcement",
                 "channel": "section-6pm",
@@ -298,7 +298,7 @@ describe("MessageScrollableView tests", () => {
             {
                 "type": "message2",
                 "subtype": "channel_join",
-                "ts": "1611867078.013800", //Jan 28, 2021, 12:51:18
+                "ts": "1611867078.013800", //Jan 28, 2021, 12:51:18 (Pacific Time)
                 "user": "U017218J9B3",
                 "text": "<!channel> This is an announcement",
                 "channel": "section-6pm",
@@ -308,8 +308,9 @@ describe("MessageScrollableView tests", () => {
             }
         ]
         const {getAllByText} = render(<MessageScrollableView messages={exampleMessage}/>);
+            //The timestamps in this test are in UTC because Jest tests and the Github tests use UTC timezone
             const dates = getAllByText(/2021.{15}/);
-            const expectedDate1 = "2021-01-28 23:03:22";
+            const expectedDate1 = "2021-01-28 23:03:22"; 
             const expectedDate2 = "2021-01-28 20:51:18";
             const expectedDate3 = "2021-01-21 19:24:32";
             expect(dates[0]).toHaveTextContent(expectedDate1);
