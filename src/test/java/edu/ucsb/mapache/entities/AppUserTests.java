@@ -48,9 +48,9 @@ public class AppUserTests {
   }
 
   @Test
-  public void testAppUser_clearApiToken() {
+  public void testAppUser_apiTokenAndClearApiToken() {
     AppUser user = new AppUser();
-    user.setApiToken("TestTokenABC123");
+    user.apiToken("TestTokenABC123");
     user.clearApiToken();
     assertEquals("invalid token", user.getApiToken());
   }
