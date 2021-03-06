@@ -7,6 +7,44 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
 
+export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
+  return (
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar.Toggle />
+      <Navbar.Collapse>
+        <LinkContainer to="">
+          <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
+        </LinkContainer>
+        <Nav>
+          {(isMember || isAdmin) &&
+            <NavbarHover title="Channels" items={channelPages} />
+          }
+          {isAdmin &&
+            <NavbarHover title="Admin" items={adminPages} />
+          }
+          {(isMember || isAdmin) &&
+            <NavbarHover title="Slack Search" items={searchPages} />
+          }
+          <LinkContainer to="/about">
+            <Nav.Link>About</Nav.Link>
+          </LinkContainer>
+          {(isAdmin || isMember) &&
+            <NavbarHover title="Analyze Slack Data" items={dataPages} />
+          }
+          {(isMember || isAdmin) &&
+            <LinkContainer to="/member/search">
+              <Nav.Link >Google Search</Nav.Link>
+            </LinkContainer>
+          }
+        </Nav>
+        <Navbar.Collapse className="justify-content-end">
+          <AuthNav />
+        </Navbar.Collapse>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+}
+
 function AppNavbar() {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(
@@ -15,65 +53,31 @@ function AppNavbar() {
   );
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
   const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
-  
-  const ChannelPages = [
-    {link:"/member/channels", name:"List Channels"},
+
+  const channelPages = [
+    { link: "/member/channels", name: "List Channels" },
   ];
 
-  const AdminPages = [
-    {link:"/admin", name:"Maintain Admins",},
-    {link:"/admin/slackUsers", name:"Slack Users",},
-    {link:"/admin/teams", name:"Manage Teams",},
-    {link:"/admin/students", name:"Manage Students",},
-    {link:"/admin/searchInfo", name:"Search Information",},
+  const adminPages = [
+    { link: "/admin", name: "Maintain Admins", },
+    { link: "/admin/slackUsers", name: "Slack Users", },
+    { link: "/admin/teams", name: "Manage Teams", },
+    { link: "/admin/students", name: "Manage Students", },
+    { link: "/admin/searchInfo", name: "Search Information", },
   ];
 
-  const SearchPages = [
-    {link:"/member/messages/search", name:"Slack Search"},
+  const searchPages = [
+    { link: "/member/messages/search", name: "Slack Search" },
   ];
 
-  const DataPages = [
-    {link:"/member/analyzemessages/reactions", name:"Analyze Reactions",},
-    {link:"/member/analyzemessages/countmessages", name:"Count Messages By User",},
-    {link:"/member/analyzemessages/messagehistogram", name:"Histogram of Messages for a User",},
-    {link:"/member/analyzemessages/searchmessages", name:"Search Messages By User",},
+  const dataPages = [
+    { link: "/member/analyzemessages/reactions", name: "Analyze Reactions", },
+    { link: "/member/analyzemessages/countmessages", name: "Count Messages By User", },
+    { link: "/member/analyzemessages/messagehistogram", name: "Histogram of Messages for a User", },
+    { link: "/member/analyzemessages/searchmessages", name: "Search Messages By User", },
   ];
 
-  return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Toggle />
-      <Navbar.Collapse>
-      <LinkContainer to={""}>
-        <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
-      </LinkContainer>
-      <Nav>
-          {(isMember || isAdmin) &&
-              <NavbarHover title="Channels" items={ChannelPages} />
-          }
-          { isAdmin &&
-              <NavbarHover title="Admin" items={AdminPages} />
-          }
-          { (isMember || isAdmin)  &&
-              <NavbarHover title="Slack Search" items={SearchPages} />
-          }
-        <LinkContainer to={"/about"}>
-          <Nav.Link>About</Nav.Link>
-        </LinkContainer>
-          { (isAdmin || isMember) &&
-              <NavbarHover title="Analyze Slack Data" items={DataPages} />
-          }
-          { (isMember || isAdmin) && 
-              <LinkContainer to={"/member/search"}>
-                  <Nav.Link>Google Search</Nav.Link>
-              </LinkContainer> 
-          }
-      </Nav>
-      <Navbar.Collapse className="justify-content-end">
-        <AuthNav />
-      </Navbar.Collapse>
-      </Navbar.Collapse>
-    </Navbar>
-  );
+  return (<PureNavbar isAdmin={isAdmin} isMember={isMember} searchPages={searchPages} dataPages={dataPages} channelPages={channelPages} adminPages={adminPages} />);
 }
 
 export default AppNavbar;
