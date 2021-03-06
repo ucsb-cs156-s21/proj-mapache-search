@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
 
-export function PureNavbar({ isAdmin, isMember, ChannelPages, AdminPages, SearchPages, DataPages }) {
+export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Toggle />
@@ -17,22 +17,22 @@ export function PureNavbar({ isAdmin, isMember, ChannelPages, AdminPages, Search
         </LinkContainer>
         <Nav>
           {(isMember || isAdmin) &&
-            <NavbarHover title="Channels" items={ChannelPages} />
+            <NavbarHover title="Channels" items={channelPages} />
           }
           {isAdmin &&
-            <NavbarHover title="Admin" items={AdminPages} />
+            <NavbarHover title="Admin" items={adminPages} />
           }
           {(isMember || isAdmin) &&
-            <NavbarHover title="Slack Search" items={SearchPages} />
+            <NavbarHover title="Slack Search" items={searchPages} />
           }
-          <LinkContainer to={"/about"}>
+          <LinkContainer to="/about">
             <Nav.Link>About</Nav.Link>
           </LinkContainer>
           {(isAdmin || isMember) &&
-            <NavbarHover title="Analyze Slack Data" items={DataPages} />
+            <NavbarHover title="Analyze Slack Data" items={dataPages} />
           }
           {(isMember || isAdmin) &&
-            <LinkContainer to={"/member/search"}>
+            <LinkContainer to="/member/search">
               <Nav.Link >Google Search</Nav.Link>
             </LinkContainer>
           }
@@ -54,11 +54,11 @@ function AppNavbar() {
   const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
   const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
 
-  const ChannelPages = [
+  const channelPages = [
     { link: "/member/channels", name: "List Channels" },
   ];
 
-  const AdminPages = [
+  const adminPages = [
     { link: "/admin", name: "Maintain Admins", },
     { link: "/admin/slackUsers", name: "Slack Users", },
     { link: "/admin/teams", name: "Manage Teams", },
@@ -66,18 +66,18 @@ function AppNavbar() {
     { link: "/admin/searchInfo", name: "Search Information", },
   ];
 
-  const SearchPages = [
+  const searchPages = [
     { link: "/member/messages/search", name: "Slack Search" },
   ];
 
-  const DataPages = [
+  const dataPages = [
     { link: "/member/analyzemessages/reactions", name: "Analyze Reactions", },
     { link: "/member/analyzemessages/countmessages", name: "Count Messages By User", },
     { link: "/member/analyzemessages/messagehistogram", name: "Histogram of Messages for a User", },
     { link: "/member/analyzemessages/searchmessages", name: "Search Messages By User", },
   ];
 
-  return (<PureNavbar isAdmin={isAdmin} isMember={isMember} SearchPages={SearchPages} DataPages={DataPages} ChannelPages={ChannelPages} AdminPages={AdminPages} />);
+  return (<PureNavbar isAdmin={isAdmin} isMember={isMember} searchPages={searchPages} dataPages={dataPages} channelPages={channelPages} adminPages={adminPages} />);
 }
 
 export default AppNavbar;

@@ -16,11 +16,11 @@ const Template = (args) => (
 
 export const Guest = Template.bind({});
 Guest.args = {
-  ChannelPages: [
+  channelPages: [
     { link: "/member/channels", name: "List Channels" },
   ],
 
-  AdminPages: [
+  adminPages: [
     { link: "/admin", name: "Maintain Admins", },
     { link: "/admin/slackUsers", name: "Slack Users", },
     { link: "/admin/teams", name: "Manage Teams", },
@@ -28,11 +28,11 @@ Guest.args = {
     { link: "/admin/searchInfo", name: "Search Information", },
   ],
 
-  SearchPages: [
+  searchPages: [
     { link: "/member/messages/search", name: "Slack Search" },
   ],
 
-  DataPages: [
+  dataPages: [
     { link: "/member/analyzemessages/reactions", name: "Analyze Reactions", },
     { link: "/member/analyzemessages/countmessages", name: "Count Messages By User", },
     { link: "/member/analyzemessages/messagehistogram", name: "Histogram of Messages for a User", },
