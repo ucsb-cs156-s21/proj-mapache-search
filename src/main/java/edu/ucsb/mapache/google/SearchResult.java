@@ -73,12 +73,6 @@ public class SearchResult{
         return Objects.equals(kind, searchResult.kind) && Objects.equals(url, searchResult.url) && Objects.equals(queries, searchResult.queries) && Objects.equals(items, searchResult.items);
     }
 
-    // Not relavent for current work
-    // @Override
-    // public int hashCode() {
-    //     return Objects.hash(kind, url, queries, items);
-    // }
-
     @Override
     public String toString() {
         return "{" +

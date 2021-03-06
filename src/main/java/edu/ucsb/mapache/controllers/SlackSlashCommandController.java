@@ -195,20 +195,7 @@ public class SlackSlashCommandController {
         SearchResult searchResult = SearchResult.fromJSON(body);
         logger.info("searchResult = {}", searchResult);
 
-        // RichMessage richMessage = new RichMessage(
-        //         String.format("google search results = %s", body));
-        // richMessage.setResponseType("ephemeral");
-
         RichMessage richMessage = new RichMessage("Search Results:");
-
-        /*int numAttachments = searchResult.getItems().size();
-        Attachment[] attachments2 = new Attachment[numAttachments];
-        for (int i = 0; i < numAttachments; i++){
-            attachments2[i] = new Attachment();
-            Item item = searchResult.getItems().get(i);
-            attachments2[i].setText(String.format("Title: %s", item.getTitle()));
-        }
-        richMessage.setAttachments(attachments2);*/
 
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }

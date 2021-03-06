@@ -122,12 +122,6 @@ public class Item{
         return Objects.equals(kind, item.kind) && Objects.equals(title, item.title) && Objects.equals(htmlTitle, item.htmlTitle) && Objects.equals(link, item.link) && Objects.equals(displayLink, item.displayLink) && Objects.equals(snippet, item.snippet) && Objects.equals(htmlSnippet, item.htmlSnippet) && Objects.equals(cacheId, item.cacheId) && Objects.equals(formattedUrl, item.formattedUrl) && Objects.equals(htmlFormattedUrl, item.htmlFormattedUrl);
     }
 
-    // Not relavent for current work
-    // @Override
-    // public int hashCode() {
-    //     return Objects.hash(kind, title, htmlTitle, link, displayLink, snippet, htmlSnippet, cacheId, formattedUrl, htmlFormattedUrl);
-    // }
-
     @Override
     public String toString() {
         return "{" +

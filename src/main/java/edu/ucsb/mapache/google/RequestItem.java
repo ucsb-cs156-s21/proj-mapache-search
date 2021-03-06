@@ -111,12 +111,6 @@ public class RequestItem{
         return Objects.equals(title, requestItem.title) && Objects.equals(totalResults, requestItem.totalResults) && Objects.equals(searchTerms, requestItem.searchTerms) && count == requestItem.count && startIndex == requestItem.startIndex && Objects.equals(inputEncoding, requestItem.inputEncoding) && Objects.equals(outputEncoding, requestItem.outputEncoding) && Objects.equals(safe, requestItem.safe) && Objects.equals(cx, requestItem.cx);
     }
 
-    // Not relavent for current work
-    // @Override
-    // public int hashCode() {
-    //     return Objects.hash(title, totalResults, searchTerms, count, startIndex, inputEncoding, outputEncoding, safe, cx);
-    // }
-
     @Override
     public String toString() {
         return "{" +
