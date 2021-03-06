@@ -159,7 +159,15 @@ public class RoleControllerTests {
 
   @Test
   public void test_apiKey() throws Exception {
-    
+    AppUser myUser = new AppUser();
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(myUser);
+    MvcResult response = mockMvc.perform(get("/api/apiKey").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+    String responseString = response.getResponse().getContentAsString();
+    HashMap<String, String> responseMap = mapper.readValue(responseString,
+        new TypeReference<HashMap<String, String>>() {
+        });
+    assertEquals(responseMap.get("token"), "invalid token");
   }
 
   @Test
@@ -167,18 +175,14 @@ public class RoleControllerTests {
     when(mockGoogleSearchService.getJSON( any(), anyString()  )).thenReturn("");
     
     AppUser myUser = new AppUser();
-    // right here, set up myUser either by filling in the constructor above,
-    // and/or users myUser.setApiKey(), myUser.setId(), myUser.setEmail(), whatever you need.
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(myUser);
 
-    String sampleAPIToken = "sampleTokenABCD1234"; // TODO: make this be the apiToken, i.e. the body sent to the api...
+    String sampleAPIToken = "sampleTokenABCD1234"; 
     
-    MvcResult response = mockMvc
-        .perform(put("/api/addApiKey").contentType("application/json").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(put("/api/addApiKey").contentType("application/json").with(csrf()).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("utf-8").content(sampleAPIToken).header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-        .andExpect(status().isOk()).andReturn();
+        .andExpect(status().isNoContent());
 
-    // make sure that myUser has the sampleAPIToken in it.
     myUser.setApiToken(sampleAPIToken);
     verify(mockAppUserRepository, times(1)).save(myUser);
   }
@@ -187,14 +191,14 @@ public class RoleControllerTests {
   public void test_addApiKey_failure() throws Exception {
     String errorString = "{\"error\": \"401: Unauthorized\"}";
     when(mockGoogleSearchService.getJSON( any(), anyString()  )).thenReturn(errorString);
-
     AppUser myUser = new AppUser();
+    when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(myUser);
+    String sampleAPIToken = "invalid token"; 
 
+    mockMvc.perform(put("/api/addApiKey").contentType("application/json").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(sampleAPIToken).header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().is(406));
 
-    // FILL IN THE REST...
-
-    // Do something similar.  BUT, you want the string
-    String sampleAPIToken = "invalid token"; // TODO: make this be the apiToken, i.e. the body sent to the api...
     myUser.setApiToken(sampleAPIToken);
     verify(mockAppUserRepository, times(1)).save(myUser);
 
