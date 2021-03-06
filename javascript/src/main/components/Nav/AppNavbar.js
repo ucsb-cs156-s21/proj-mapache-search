@@ -12,7 +12,7 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Toggle />
       <Navbar.Collapse>
-        <LinkContainer to={""}>
+        <LinkContainer to="">
           <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
         </LinkContainer>
         <Nav>
