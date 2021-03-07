@@ -15,8 +15,10 @@ import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.entities.Search;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
+import edu.ucsb.mapache.repositories.SearchRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +46,9 @@ public class SearchController {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private SearchRepository searchRepository;
 
     @Value("${app.namespace}")
     private String namespace;
@@ -105,6 +110,20 @@ public class SearchController {
         logger.info("sp={} apiToken={}", sp, apiToken);
         String body = googleSearchService.getJSON(sp,apiToken);
         logger.info("body={}", body);
+
+        
+        if(!searchRepository.findBySearchTerm(searchQuery).empty()){
+            int count = searchRepository.findBySearchTerm(searchQuery).getCount() + 1;
+            Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
+            s.setCount(count);
+            searchRepository.save(s);
+        }else{
+            Search s = new Search();
+            s.setSearchTerm(searchQuery);
+            s.setCount(1);
+            searchRepository.save(s);
+        }
+        
 
         return ResponseEntity.ok().body(body);
     }
