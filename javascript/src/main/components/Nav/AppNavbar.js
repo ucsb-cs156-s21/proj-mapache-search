@@ -58,7 +58,7 @@ function AppNavbar() {
     { link: "/member/channels", name: "List Channels" },
   ];
 
-  const AdminPages = [
+  const adminPages = [
     {link:"/admin", name:"Maintain Admins",},
     {link:"/admin/slackUsers", name:"Slack Users",},
     {link:"/admin/teams", name:"Manage Teams",},
