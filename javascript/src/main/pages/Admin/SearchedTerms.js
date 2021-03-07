@@ -20,11 +20,7 @@ const SearchedTerms = () => {
 
     return (
         <>
-            <p>
-                <font size = "5">
-                    <b>Searched Terms</b>
-                </font>
-            </p>
+             <h2>Searched Terms</h2>
             <BootstrapTable keyField='id' data={[]} columns={columns} />
         </>
     );
