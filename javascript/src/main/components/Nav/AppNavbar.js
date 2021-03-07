@@ -59,11 +59,13 @@ function AppNavbar() {
   ];
 
   const adminPages = [
-    { link: "/admin", name: "Maintain Admins", },
-    { link: "/admin/slackUsers", name: "Slack Users", },
-    { link: "/admin/teams", name: "Manage Teams", },
-    { link: "/admin/students", name: "Manage Students", },
-    { link: "/admin/searchInfo", name: "Search Information", },
+    {link:"/admin", name:"Maintain Admins",},
+    {link:"/admin/slackUsers", name:"Slack Users",},
+    {link:"/admin/teams", name:"Manage Teams",},
+    {link:"/admin/students", name:"Manage Students",},
+    {link:"/admin/searchInfo", name:"Search Information",},
+    {link:"/admin/searchedTerms", name:"Searched Terms",},
+
   ];
 
   const searchPages = [
