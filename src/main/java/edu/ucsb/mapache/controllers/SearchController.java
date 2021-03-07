@@ -67,7 +67,6 @@ public class SearchController {
     @Autowired
     private SearchSupportService searchSupportService;
 
-    
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
         response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -96,7 +95,7 @@ public class SearchController {
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
-       
+    
         if(you.getSearchRemain()<=0){
             return searchQuotaExceeded();
         }
@@ -110,8 +109,19 @@ public class SearchController {
         logger.info("sp={} apiToken={}", sp, apiToken);
         String body = googleSearchService.getJSON(sp,apiToken);
         logger.info("body={}", body);
-
         
+        if(!searchRepository.findBySearchTerm(searchQuery).empty()){
+            int count = searchRepository.findBySearchTerm(searchQuery).getCount() + 1;
+            Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
+            s.setCount(count);
+            searchRepository.save(s);
+        }else{
+            Search s = new Search();
+            s.setSearchTerm(searchQuery);
+            s.setCount(1);
+            searchRepository.save(s);
+        }
+    
         if(!searchRepository.findBySearchTerm(searchQuery).empty()){
             int count = searchRepository.findBySearchTerm(searchQuery).getCount() + 1;
             Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
