@@ -15,6 +15,7 @@ import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.entities.Search;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
@@ -62,7 +63,6 @@ public class SearchController {
     @Autowired
     private SearchSupportService searchSupportService;
 
-    
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
         response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -91,7 +91,7 @@ public class SearchController {
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
-       
+    
         if(you.getSearchRemain()<=0){
             return searchQuotaExceeded();
         }
@@ -105,7 +105,6 @@ public class SearchController {
         logger.info("sp={} apiToken={}", sp, apiToken);
         String body = googleSearchService.getJSON(sp,apiToken);
         logger.info("body={}", body);
-
         return ResponseEntity.ok().body(body);
     }
 
