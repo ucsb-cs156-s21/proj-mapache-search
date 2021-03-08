@@ -200,7 +200,7 @@ public class SlackSlashCommandController {
         RichMessage richMessage = new RichMessage("Search Results for" + searchResultQuery.getRequest().get(0).getSearchTerms() +"\nNumber of Results" + searchResultQuery.getRequest().get(0).getCount());
         int numAttachments = searchResult.getItems().size();
         Attachment[] attachments2 = new Attachment[numAttachments];
-        for (int i = 1; i < numAttachments + 2; i++){
+        for (int i = 0; i < numAttachments; i++){
             attachments2[i] = new Attachment();
             Item item = searchResult.getItems().get(i);
             attachments2[i].setText("<"   + item.getLink() + "|" + item.getTitle() + ">\n" + item.getSnippet()+ "\n\n"); 
