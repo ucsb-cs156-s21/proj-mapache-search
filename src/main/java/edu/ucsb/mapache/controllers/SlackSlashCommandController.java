@@ -203,6 +203,11 @@ public class SlackSlashCommandController {
             Item item = searchResult.getItems().get(i);
             attachments2[i].setText("<"   + item.getLink() + "|" + item.getTitle() + ">\n" + item.getSnippet()+ "\n\n"); 
         }
+        if(numAttachments == 0)
+        {
+            attachments2[0].setText("No results found!");
+        }
+        
         richMessage.setAttachments(attachments2);
 
 
