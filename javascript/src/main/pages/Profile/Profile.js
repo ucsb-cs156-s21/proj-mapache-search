@@ -16,11 +16,11 @@ const Profile = () => {
   const [apiToken, setApiToken] = useState("");
   const [tokenStatus, setTokenStatus] = useState("");
 
-  const addAPIToken = () => {
+  const addAPIToken = async () => {
     const url = `/api/addApiKey`;
     
         try {
-          const result =  fetchWithToken(url, getToken, {
+          const result =  await fetchWithToken(url, getToken, {
             method: 'PUT',
             headers: {
               'content-type': 'application/json',
@@ -34,10 +34,10 @@ const Profile = () => {
         } 
   };
 
-  const fetchApiToken = () => {
+  const fetchApiToken = async () => {
     const url = `/api/apiKey`;
     try {
-        const result =  fetchWithToken(url, getToken, {
+        const result =  await fetchWithToken(url, getToken, {
             method: "GET",
             headers: {
                 "content-type": "application/json",

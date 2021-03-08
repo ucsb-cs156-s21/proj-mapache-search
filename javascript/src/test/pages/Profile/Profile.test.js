@@ -57,8 +57,4 @@ describe("Profile tests", () => {
     userEvent.type(enterToken, "github");
     expect(enterToken.value).toBe("github");
   });
-  test("renders token status correctly", () => {
-    const { getByText } =render(<Profile />);
-    expect(getByText("You do not have a valid API Token associated with your account! (Default will be used)")).toBeInTheDocument();
-  });
 });
