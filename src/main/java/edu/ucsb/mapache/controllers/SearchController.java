@@ -110,8 +110,8 @@ public class SearchController {
         String body = googleSearchService.getJSON(sp,apiToken);
         logger.info("body={}", body);
         
-        if(!searchRepository.findBySearchTerm(searchQuery).empty()){
-            int count = searchRepository.findBySearchTerm(searchQuery).getCount() + 1;
+        if(!searchRepository.findBySearchTerm(searchQuery).isEmpty()){
+            int count = searchRepository.findBySearchTerm(searchQuery).get(0).getCount() + 1;
             Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
             s.setCount(count);
             searchRepository.save(s);
@@ -122,8 +122,8 @@ public class SearchController {
             searchRepository.save(s);
         }
     
-        if(!searchRepository.findBySearchTerm(searchQuery).empty()){
-            int count = searchRepository.findBySearchTerm(searchQuery).getCount() + 1;
+        if(!searchRepository.findBySearchTerm(searchQuery).isEmpty()){
+            int count = searchRepository.findBySearchTerm(searchQuery).get(0).getCount() + 1;
             Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
             s.setCount(count);
             searchRepository.save(s);
