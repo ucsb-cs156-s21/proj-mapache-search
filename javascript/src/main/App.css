@@ -87,7 +87,9 @@ footer {
   border-bottom: 4px dashed;
   border-bottom: 4px solid \9;
   content: "";
-.navbar{
+}
+
+.navbar {
   position:sticky;
   top:0px;
   width:100%;
