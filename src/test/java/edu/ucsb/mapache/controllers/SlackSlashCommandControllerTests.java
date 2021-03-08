@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -202,6 +203,8 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_googleSearch() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
+    String retval = "{\"items\": []}";
+    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 
@@ -244,6 +247,8 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_googleSearchMultipleArguments() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
+    String retval = "{\"items\": []}";
+    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 
@@ -266,6 +271,8 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_googleSearch_1() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
+    String retval = "{\"items\": []}";
+    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 
