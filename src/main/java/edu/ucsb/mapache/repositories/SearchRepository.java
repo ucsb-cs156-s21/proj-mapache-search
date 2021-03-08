@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 public interface SearchRepository extends CrudRepository<Search, Long> {
     public List<Search> findAll();
+    public List<Search> findBySearchTerm(String term);
 }
