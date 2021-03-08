@@ -1,15 +1,17 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const channelLink=(channelName) => {
+const channelLinks=(channelName) => {
     const link = `/member/channels/${channelName}`
-    return (
-
-        < a href= {link} > click here </a>
-    );
-
+    return channelName.replace(channelName,'<a href = ' + link + '>' + channelName + '</a>')
 }
 
+const channelMarkup = (channelName) => {
+    channelName = channelLinks(channelName)
+    return {
+        __html: channelName
+    }
+}
 
 const textLinks = (text) => {
     var bracketRegEx = /<(http(?:.*?))>/g;
@@ -22,7 +24,6 @@ const createMarkup = (text) => {
         __html: text
     }
 }
-
 
 export default ({ channels }) => {
 
@@ -44,6 +45,7 @@ export default ({ channels }) => {
     const columns = [{
         dataField: 'name',
         text: 'Name',
+        formatter: (cell) => <p dangerouslySetInnerHTML = {channelMarkup(cell)}></p>,
         sort: true,
         sortCaret: sortCaret
     },{
@@ -58,13 +60,7 @@ export default ({ channels }) => {
         formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell)}></p>,
         sort: true,
         sortCaret: sortCaret
-    },{
-        isDummyField: true,
-        formatter: (_cell, row) => channelLink(row.name),
-        dataField: 'channelLink',
-        text: 'Link'
-    }
-    ];
+    }];
 
     return (
         <BootstrapTable keyField='id' data={channels} columns={columns} />
