@@ -95,10 +95,6 @@ public class SearchController {
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 520308c7ed1cc67ff46ce76cb512d18fe2ce3d35
         if (you.getApiToken()!="invalid token")
             apiToken = you.getApiToken();
 
