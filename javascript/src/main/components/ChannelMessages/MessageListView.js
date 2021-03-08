@@ -44,6 +44,10 @@ const GetMessageContents = ({text, slackUsers}) => {
     );
 }
 
+function timeUserFormatter(value, row, index) {
+    return value + "-" + row.ts;
+}
+
 export default ({ messages }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
@@ -58,22 +62,26 @@ export default ({ messages }) => {
         dataField: 'text',
         text: 'Contents',
         sort: true
-    },
-        {
-            dataField: 'ts',
-            text: 'Time',
-            sort: true,
-            formatter: TimeFormatter,
-            style: {
-                width: "20%"
-            }
+    },{
+        dataField: 'ts',
+        text: 'Time',
+        sort: true,
+        formatter: TimeFormatter,
+        style: {
+            width: "20%"
         }
+    },{
+        dataField: 'user',
+        text: 'User + Time',
+        formatter: timeUserFormatter,
+        hidden: true
+    }
     ];
 
     return (
         <div style={{textAlign: "left"}}>
             <ToolkitProvider
-                keyField="ts"
+                keyField="row.user"
                 data={ messages }
                 columns={ columns }
                 search

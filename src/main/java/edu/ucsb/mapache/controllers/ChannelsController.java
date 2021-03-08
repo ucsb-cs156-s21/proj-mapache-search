@@ -1,5 +1,7 @@
 package edu.ucsb.mapache.controllers;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -57,7 +59,7 @@ public class ChannelsController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
 
-        Iterable<Channel> channels = channelRepository.findAll();
+        Set<Channel> channels = new HashSet<>(channelRepository.findAll());
         String body = mapper.writeValueAsString(channels);
 
         return ResponseEntity.ok().body(body);
@@ -69,7 +71,7 @@ public class ChannelsController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
 
-        Iterable<Message> channels = messageRepository.findByChannel(channel);
+        Set<Message> channels = new HashSet<>(messageRepository.findByChannel(channel));
         String body = mapper.writeValueAsString(channels);
 
         return ResponseEntity.ok().body(body);
