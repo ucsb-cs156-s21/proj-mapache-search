@@ -17,3 +17,4 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
   @Query("SELECT DISTINCT team_name FROM Student")
   List<String> selectDistinctTeamname();
 }
+

@@ -1,0 +1,5 @@
+-- FYI: any camelCase field name becomes camel_case in sql land
+INSERT INTO search(id, search_term, count) VALUES ('1', 'github', '5');
+INSERT INTO search(id, search_term, count) VALUES ('2', 'repo', '3');
+INSERT INTO search(id, search_term, count) VALUES ('6', 'issue', '1');
+INSERT INTO search(id, search_term, count) VALUES ('10', 'mapache', '9');

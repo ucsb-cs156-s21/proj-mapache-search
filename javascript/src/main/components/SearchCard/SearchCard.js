@@ -8,7 +8,7 @@ const SearchCard = ({title, description, link}) => {
         <Card.Title>{title}</Card.Title>
         <Card.Text>
           {description}
-    </Card.Text>
+        </Card.Text>
         <Card.Link href={link}>{link}</Card.Link>
       </Card.Body>
     </Card>
