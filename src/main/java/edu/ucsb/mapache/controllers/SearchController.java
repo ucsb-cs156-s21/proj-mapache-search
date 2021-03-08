@@ -15,8 +15,10 @@ import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.entities.Search;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
+import edu.ucsb.mapache.repositories.SearchRepository;
 import edu.ucsb.mapache.repositories.SlackUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,9 @@ public class SearchController {
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @Autowired
+    private SearchRepository searchRepository;
+
     @Value("${app.namespace}")
     private String namespace;
 
@@ -62,7 +67,6 @@ public class SearchController {
     @Autowired
     private SearchSupportService searchSupportService;
 
-    
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
         response.put("error", String.format("Unauthorized; only %s may access this resource.", roleRequired));
@@ -91,6 +95,10 @@ public class SearchController {
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 520308c7ed1cc67ff46ce76cb512d18fe2ce3d35
         if (you.getApiToken()!="invalid token")
             apiToken = you.getApiToken();
 
@@ -108,6 +116,19 @@ public class SearchController {
         logger.info("sp={} apiToken={}", sp, apiToken);
         String body = googleSearchService.getJSON(sp,apiToken);
         logger.info("body={}", body);
+        
+        if(!searchRepository.findBySearchTerm(searchQuery).isEmpty()){
+            int count = searchRepository.findBySearchTerm(searchQuery).get(0).getCount() + 1;
+            Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
+            s.setCount(count);
+            searchRepository.save(s);
+        }else{
+            Search s = new Search();
+            s.setSearchTerm(searchQuery);
+            s.setCount(1);
+            searchRepository.save(s);
+        }
+        
 
         return ResponseEntity.ok().body(body);
     }

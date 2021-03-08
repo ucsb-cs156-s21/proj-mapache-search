@@ -12,9 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,8 +29,10 @@ import org.springframework.http.MediaType;
 
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.entities.Search;
 import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
+import edu.ucsb.mapache.repositories.SearchRepository;
 import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.SearchSupportService;
 
@@ -48,7 +51,8 @@ public class SearchControllerTests {
   AuthControllerAdvice authControllerAdvice;
   @MockBean
   private SearchSupportService searchSupportService;
-
+  @MockBean
+  private SearchRepository searchRepository;
 
   @Test
   public void test_basicSearch_unauthorizedIfNotMember() throws Exception {
@@ -84,12 +88,15 @@ public class SearchControllerTests {
   }
 
   @Test
-  public void test_searchWithAPIToken() throws Exception {
+  public void test_basicSearch_searchCount_new_searchTerm() throws Exception {
     AppUser appUser = getAppUser();
-    appUser.setApiToken("testTokenABC123");
-    when(googleSearchService.getJSON(any(SearchParameters.class),eq("testTokenABC123"))).thenReturn("SampleResult");
+    List<Search> searches = new ArrayList<Search>();
+
+    when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
+    when(searchRepository.findBySearchTerm("github")).thenReturn(searches);
+
     MvcResult response = mockMvc
         .perform(
             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
@@ -98,7 +105,38 @@ public class SearchControllerTests {
     String responseString = response.getResponse().getContentAsString();
 
     assertEquals("SampleResult", responseString);
+    Search s2 = new Search();
+    s2.setCount(1);
+    s2.setSearchTerm("github");
+    verify(searchRepository, times(1)).save(s2);
+  }
 
+
+  @Test
+  public void test_basicSearch_searchCount_existing_searchTerm() throws Exception {
+    AppUser appUser = getAppUser();
+    Search s = new Search();
+    s.setCount(1);
+    s.setSearchTerm("github");
+    List<Search> searches = new ArrayList<Search>();
+    searches.add(s);
+    when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
+    when(searchRepository.findBySearchTerm("github")).thenReturn(searches);
+
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+
+    assertEquals("SampleResult", responseString);
+    Search s2 = new Search();
+    s2.setCount(2);
+    s2.setSearchTerm("github");
+    verify(searchRepository, times(1)).save(s2);
   }
 
   @Test
