@@ -13,6 +13,7 @@ describe("fetch tests", () => {
     });
     getToken.mockResolvedValue("token");
   });
+
   test("should fetch good response", async () => {
     const response = await fetchWithToken("/api/test", getToken);
 
