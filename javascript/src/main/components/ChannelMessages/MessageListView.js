@@ -64,7 +64,9 @@ export default ({ messages }) => {
         dataField: 'user',
         text: 'User + Time',
         formatter: timeUserFormatter,
-        hidden: true
+        // ideally this would be hidden: true, but codecov is not able
+        // to test this column + timeUserFormatter when it is hidden at the moment
+        hidden: false
     }
     ];
 
