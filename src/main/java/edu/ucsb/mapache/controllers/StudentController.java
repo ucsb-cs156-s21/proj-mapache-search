@@ -19,7 +19,9 @@ import edu.ucsb.mapache.services.CSVToObjectService;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Student;
+import edu.ucsb.mapache.entities.Team;
 import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.repositories.TeamRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class StudentController {
   private final Logger logger = LoggerFactory.getLogger(StudentController.class);
   @Autowired
   private StudentRepository studentRepository;
+
+  @Autowired
+  private TeamRepository teamRepository;
 
   @Autowired
   CSVToObjectService<Student> csvToObjectService;
@@ -107,12 +112,19 @@ public class StudentController {
     String body = mapper.writeValueAsString(student.get());
     return ResponseEntity.ok().body(body);
   }
+  private void saveTeamIfNew(Student student) {
+    if(teamRepository.findByTeamName(student.getTeamName()).isEmpty()) {
+      Team team = new Team (student.getTeamName(), "");
+      teamRepository.save(team);
+    }
+  }
   @PostMapping(value = "", produces = "application/json")
   public ResponseEntity<String> createStudent(@RequestHeader("Authorization") String authorization,
       @RequestBody @Valid Student student) throws JsonProcessingException {
     if (!authControllerAdvice.getIsAdmin(authorization))
       return getUnauthorizedResponse("admin");
     Student savedStudent = studentRepository.save(student);
+    saveTeamIfNew(student);
     String body = mapper.writeValueAsString(savedStudent);
     return ResponseEntity.ok().body(body);
   }
@@ -125,6 +137,11 @@ public class StudentController {
       logger.info(new String(csv.getInputStream().readAllBytes()));
       List<Student> uploadedStudents = csvToObjectService.parse(reader, Student.class);
       List<Student> savedStudents = (List<Student>) studentRepository.saveAll(uploadedStudents);
+
+      uploadedStudents.forEach(student -> {
+          logger.info("Attempting to save team of student: " + student);
+          saveTeamIfNew(student);
+        });
       String body = mapper.writeValueAsString(savedStudents);
       return ResponseEntity.ok().body(body);
     } catch(RuntimeException e){
