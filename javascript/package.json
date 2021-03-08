@@ -34,6 +34,7 @@
   },
   "proxy": "http://localhost:8080",
   "jest": {
+    "globalSetup": "./jest-TZ-setup.js",
     "resetMocks": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
@@ -41,7 +42,7 @@
       "!src/setupTests.js",
       "!src/main/components/Auth/*",
       "!src/index.js",
-      "!src/stories/**/*"	
+      "!src/stories/**/*"
     ],
     "coverageThreshold": {
       "global": {
