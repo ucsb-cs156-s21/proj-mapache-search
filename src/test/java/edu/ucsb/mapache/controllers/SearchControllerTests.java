@@ -88,21 +88,22 @@ public class SearchControllerTests {
 
   }
 
-  
-public void test_searchWithAPIToken() throws Exception {
-    AppUser appUser = getAppUser();
-    appUser.setApiToken("testTokenABC123");
-    when(googleSearchService.getJSON(any(SearchParameters.class),eq("testTokenABC123"))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
-    when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
-    MvcResult response = mockMvc
-        .perform(
-            get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-        .andExpect(status().isOk()).andReturn();
+  @Test
+  public void test_searchWithAPIToken() throws Exception {
+      AppUser appUser = getAppUser();
+      appUser.setApiToken("testTokenABC123");
+      when(googleSearchService.getJSON(any(SearchParameters.class),eq("testTokenABC123"))).thenReturn("SampleResult");
+      when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+      when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
+      MvcResult response = mockMvc
+          .perform(
+              get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+          .andExpect(status().isOk()).andReturn();
 
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals("SampleResult", responseString);
-}
+      String responseString = response.getResponse().getContentAsString();
+      assertEquals("SampleResult", responseString);
+  }
+
 
   @Test
   public void test_basicSearch_searchCount_new_searchTerm() throws Exception {
@@ -209,7 +210,7 @@ public void test_searchWithAPIToken() throws Exception {
   private AppUser getAppUser() {
     AppUser appUser = new AppUser();
     appUser.setId(1);
-    appUser.setEmail("haixinlin@umail.ucsb.edu");
+    appUser.setEmail("haixinlin123@umail.ucsb.edu");
     appUser.setFirstName("Hunter");
     appUser.setLastName("Lin");
     appUser.setSearchRemain(100);
