@@ -25,6 +25,7 @@ import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
 import SearchResults from "./pages/Messages/SearchResults";
+import SearchedTerms from "main/pages/Admin/SearchedTerms";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <AuthorizedRoute path="/admin/slackUsers" exact component={SlackUsers} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/teams" exact component={Teams} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/searchInfo" exact component={SearchInfo} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/admin/searchedTerms" exact component={SearchedTerms} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/search" exact component={Search} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
