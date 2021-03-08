@@ -121,18 +121,6 @@ public class SearchController {
             s.setCount(1);
             searchRepository.save(s);
         }
-    
-        if(!searchRepository.findBySearchTerm(searchQuery).isEmpty()){
-            int count = searchRepository.findBySearchTerm(searchQuery).get(0).getCount() + 1;
-            Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
-            s.setCount(count);
-            searchRepository.save(s);
-        }else{
-            Search s = new Search();
-            s.setSearchTerm(searchQuery);
-            s.setCount(1);
-            searchRepository.save(s);
-        }
         
 
         return ResponseEntity.ok().body(body);
