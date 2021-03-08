@@ -7,59 +7,77 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import TimeFormatter from "./time"
 const { SearchBar } = Search;
 
+const GetUserName = ({message}) => {
+    return <p>{message?.user_profile?.real_name || message.user}</p>;
+}
 
-const GetUserName = ({userId, slackUsers = []}) => {
-    for(let i = 0; i < slackUsers.length; i++) {
-        if(slackUsers[i].id === userId) {
-            return <p> {slackUsers[i].real_name} </p>;
+const UserName = (message) => {
+    return (
+        <GetUserName message={message} />
+    );
+}
+
+const GetMessageContents = (text, slackUsers) => {
+    return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+        if(slackUsers != null) {
+            for(let i = 0; i < slackUsers.length; i++) {
+                if(slackUsers[i].id === userId) {
+                    return "@" + slackUsers[i].real_name;
+                }
+            }
+        }
+        return "@" + userId;
+    })
+}
+
+const formatBracketedText = (text) => {
+    var bracketRegEx = /<(.*?)>/g;
+    var found = text.match(bracketRegEx)
+    if (found){
+        for (let i=0; i<found.length; i++){
+            var current = found[i].replace('<', '');
+            current = current.replace('>', '');
+            if (found[i].includes("|") && (found[i].includes("mailto") || found[i].includes("http") || found[i].includes("tel"))){      // embedded links
+                var links = current.split('|');
+                text = text.replace(found[i], '<a href = ' + links[0] + ' target = "_blank">' + links[1] +'</a>')
+            }else if (found[i].includes("http") || found[i].includes("mailto") || found[i].includes("tel")){                            // unembedded links
+                text = text.replace(found[i], '<a href = ' + current + ' target = "_blank">' + current + '</a>')
+            }else if (found[i].includes("|")){                                                                                          // channel links
+                links = current.split('|');
+                text = text.replace(found[i], '<a href = /member/channels/' + links[1] + '>#' + links[1] + '</a>')
+            }else if (found[i].includes("!")){                                                                                          // channel tags (ex: @channel)
+                text = text.replace(found[i], '<strong> @' + current + '</strong>')
+                text = text.replace("!", "")
+            }else{
+                text = text.replace(found[i], current)
+            }
         }
     }
-    return <p>{userId}</p>;
+    return text;
 }
 
-const UserName = (userId, slackUsers) => {
-    return (
-        <GetUserName userId={userId} slackUsers={slackUsers} />
-    );
-}
-
-const MessageContents = (text, slackUsers) => {
-    return (
-        <GetMessageContents text={text} slackUsers={slackUsers} />
-    );
-}
-
-const GetMessageContents = ({text, slackUsers}) => {
-    return (
-        <p>
-            {text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
-                if (slackUsers != null){
-                    for(let i = 0; i < slackUsers.length; i++) {
-                        if(slackUsers[i].id === userId) {
-                            return "@" + slackUsers[i].real_name;
-                        }
-                    }
-                }
-                return "@" + userId;
-            })}
-        </p>
-    );
+const createMarkup = (text, slackUsers) => {
+    text = GetMessageContents(text, slackUsers)
+    text = formatBracketedText(text)
+    return {
+        __html: text
+    }
 }
 
 export default ({ messages }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
+    
     const columns = [{
         isDummyField: true,
-        formatter: (_cell, row) => UserName(row.user, slackUsers),
+        formatter: (_cell, row) => UserName(row),
         dataField: 'name',
         text: 'Username'
     },{
         isDummyField: true,
-        formatter: (_cell, row) => MessageContents(row.text, slackUsers),
+        formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         dataField: 'text',
-        text: 'Contents',
-        sort: true
+        text: 'Contents'
     },
         {
             dataField: 'ts',
@@ -68,7 +86,7 @@ export default ({ messages }) => {
             formatter: TimeFormatter,
             style: {
                 width: "20%"
-            }
+            },
         }
     ];
 
@@ -78,7 +96,7 @@ export default ({ messages }) => {
                 keyField="ts"
                 data={ messages }
                 columns={ columns }
-                search
+                search={ { searchFormatted: true } }
                 button
             >
                 {
