@@ -3,10 +3,10 @@ import { render } from "@testing-library/react";
 import Profile from "main/pages/Profile/Profile";
 import { useAuth0 } from "@auth0/auth0-react";
 import useSWR from "swr";
-jest.mock("@auth0/auth0-react");
-jest.mock("swr");
 import { fetchWithToken } from "main/utils/fetch";
 import userEvent from "@testing-library/user-event";
+jest.mock("@auth0/auth0-react");
+jest.mock("swr");
 jest.mock("main/utils/fetch");
 
 describe("Profile tests", () => {
@@ -38,6 +38,7 @@ describe("Profile tests", () => {
     const { getByText } =render(<Profile />);
     expect(getByText("Admin")).toBeInTheDocument();
   });
+
   test("renders when submit button is pressed", () => {
     fetchWithToken.mockResolvedValue([]);
     const { getByText } = render(<Profile />);
@@ -55,5 +56,5 @@ describe("Profile tests", () => {
     const enterToken = getByPlaceholderText("Enter your API token");
     userEvent.type(enterToken, "github");
     expect(enterToken.value).toBe("github");
-});
+  });
 });

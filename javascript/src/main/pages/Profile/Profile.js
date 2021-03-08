@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
-import { Form, Row, Container, Col, Badge, InputGroup, FormControl, Button } from "react-bootstrap";
-
+import { Form, Row, Container, Col, Badge, Button } from "react-bootstrap";
 import ReactJson from "react-json-view";
 
 const Profile = () => {
@@ -14,17 +13,10 @@ const Profile = () => {
     ["/api/myRole", getToken],
     fetchWithToken
   );
-  //const emptyToken = {
-    //inputApiToken: "",
-  //}
-
   const [apiToken, setApiToken] = useState("");
-  const [results, setResults] = useState({});
-  let currentApiTokenStatus = <p>You do not have an API Token associated with your account!</p>;
   const [tokenStatus, setTokenStatus] = useState("");
 
-  // Function to add token to account here
-  const addAPIToken = async (event) => {
+  const addAPIToken = async (e) => {
     const url = `/api/addApiKey`;
     
         try {
@@ -42,7 +34,7 @@ const Profile = () => {
         } 
   };
 
-  const fetchApiToken = async (event) => {
+  const fetchApiToken = async (e) => {
     const url = `/api/apiKey`;
     try {
         const result = await fetchWithToken(url, getToken, {
@@ -57,19 +49,17 @@ const Profile = () => {
         console.log(`err=${err}`)
     }
 };
-  // Function to put handle on submit
+
   const handleOnSubmit = async (e) => {
-     e.preventDefault();
-    const answer = await addAPIToken(e);
-    setResults(answer);
-    const apiReturn = await fetchApiToken(e);
-    // alert('Token was successfully updated: ' + apiReturn["token"]);
+    e.preventDefault();
+    await addAPIToken(e);
+    returnApiTokenStatus();
   }
   
   async function returnApiTokenStatus(){
     var apiStatus = await fetchApiToken();
     var status;
-    if (apiStatus["token"] == "invalid token")
+    if (apiStatus["token"] === "invalid token")
       status = "You do not have a valid API Token associated with your account! (Default will be used)";
     else
       status = "Your custom API token is " + apiStatus["token"];

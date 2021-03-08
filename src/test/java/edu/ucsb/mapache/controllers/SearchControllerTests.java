@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -69,6 +70,24 @@ public class SearchControllerTests {
     AppUser appUser = getAppUser();
   
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+
+    assertEquals("SampleResult", responseString);
+
+  }
+
+  @Test
+  public void test_searchWithAPIToken() throws Exception {
+    AppUser appUser = getAppUser();
+    appUser.setApiToken("testTokenABC123");
+    when(googleSearchService.getJSON(any(SearchParameters.class),eq("testTokenABC123"))).thenReturn("SampleResult");
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     MvcResult response = mockMvc
