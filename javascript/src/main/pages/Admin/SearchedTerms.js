@@ -1,11 +1,16 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import useSWR from "swr";
+import {useAuth0} from "@auth0/auth0-react";
+import {fetchWithToken} from "../../utils/fetch";
 
 const SearchedTerms = () => {
-    
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const { data: searchedTerms } = useSWR(["/api/searchedTerms", getToken], fetchWithToken);
+
     console.log(SearchedTerms);
     const columns = [{
-        dataField: 'term',
+        dataField: 'searchTerm',
         text: 'Term',
         sort:true
     }, {
@@ -21,7 +26,7 @@ const SearchedTerms = () => {
     return (
         <>
              <h2>Searched Terms</h2>
-            <BootstrapTable keyField='id' data={[]} columns={columns} />
+            <BootstrapTable keyField='id' data={searchedTerms || []} columns={columns} />
         </>
     );
 };
