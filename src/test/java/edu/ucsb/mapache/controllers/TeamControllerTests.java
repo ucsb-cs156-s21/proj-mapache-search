@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.Student;
-import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.entities.Team;
+import edu.ucsb.mapache.repositories.TeamRepository;
 import edu.ucsb.mapache.services.CSVToObjectService;
 import edu.ucsb.mapache.entities.AppUser;
 
@@ -33,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.eq;
@@ -59,7 +62,7 @@ public class TeamControllerTests {
   private WebApplicationContext webApplicationContext;
 
   @MockBean
-  StudentRepository mockStudentRepository;
+  TeamRepository mockTeamRepository;
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
   @MockBean
@@ -74,24 +77,24 @@ public class TeamControllerTests {
 
   @Test
   public void testGetAllTeams() throws Exception {
-    List<String> expectedTeams = new ArrayList<String>();
-    expectedTeams.add("team1");
+    List<Team> expectedTeams = new ArrayList<Team>();
+    expectedTeams.add(new Team(1L, "team1", "team description"));
     ObjectMapper mapper = new ObjectMapper();
-    when(mockStudentRepository.selectDistinctTeamname()).thenReturn(expectedTeams);
+    when(mockTeamRepository.findAll()).thenReturn(expectedTeams);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     MvcResult response = mockMvc.perform(get("/api/member/teams").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isOk()).andReturn();
-    verify(mockStudentRepository, times(1)).selectDistinctTeamname();
+    verify(mockTeamRepository, times(1)).findAll();
     String responseString = response.getResponse().getContentAsString();
-    List<String> actualTeams = mapper.readValue(responseString, new TypeReference<List<String>>() {
+    List<Team> actualTeams = mapper.readValue(responseString, new TypeReference<List<Team>>() {
     });
     assertEquals(actualTeams, expectedTeams);
   }
 
   @Test
   public void testGetStudents_notAdmin() throws Exception {
-    List<String> expectedTeams = new ArrayList<String>();
-    when(mockStudentRepository.selectDistinctTeamname()).thenReturn(expectedTeams);
+    List<Team> expectedTeams = new ArrayList<Team>();
+    when(mockTeamRepository.findAll()).thenReturn(expectedTeams);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
     MvcResult response = mockMvc.perform(get("/api/member/teams").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken())).andExpect(status().isUnauthorized()).andReturn();

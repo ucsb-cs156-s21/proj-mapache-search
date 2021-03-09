@@ -7,15 +7,23 @@ import {fetchWithToken} from "../../utils/fetch";
 
 const Teams = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const { data: teamName } = useSWR(["/api/member/teams", getToken], fetchWithToken)
+    const { data: teamNames } = useSWR(["/api/member/teams", getToken], fetchWithToken)
     
     const columns = [{
         dataField: 'teamName',
         text: 'Team'
+    },
+    {
+        dataField: 'id',
+        text: 'id'
+    },
+    {
+        dataField: 'teamDescription',
+        text: 'Description'
     }];
 
     return (
-        <BootstrapTable keyField='teamName' data={teamName || []} columns={columns} />
+        <BootstrapTable keyField='teamName' data={teamNames || []} columns={columns} />
     );
 };
 export default Teams;

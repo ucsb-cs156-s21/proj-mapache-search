@@ -23,7 +23,8 @@ import edu.ucsb.mapache.services.CSVToObjectService;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Student;
-import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.entities.Team;
+import edu.ucsb.mapache.repositories.TeamRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class TeamController {
     private final Logger logger = LoggerFactory.getLogger(TeamController.class);
 
     @Autowired
-    private StudentRepository studentRepository;
+    private TeamRepository teamRepository;
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
@@ -59,7 +60,7 @@ public class TeamController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsAdmin(authorization))
             return getUnauthorizedResponse("admin");
-        List<String> teamList = studentRepository.selectDistinctTeamname();
+        Iterable<Team> teamList = teamRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
         String body = mapper.writeValueAsString(teamList);
         return ResponseEntity.ok().body(body);
