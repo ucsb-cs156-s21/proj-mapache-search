@@ -113,9 +113,6 @@ const Profile = () => {
       <Row className="text-left">
         <ReactJson src={user} />
       </Row>
-      <Container className="mb-5"><Row></Row></Container>
-      <Container className="mb-5"><Row></Row></Container>
-      <Container className="mb-5"><Row></Row></Container>
     </Container>
   );
 };

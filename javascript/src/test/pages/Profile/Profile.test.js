@@ -57,4 +57,12 @@ describe("Profile tests", () => {
     userEvent.type(enterToken, "github");
     expect(enterToken.value).toBe("github");
   });
+
+  test("when i enter an invalid token, the text displayed should change to default",  async () => {
+    fetchWithToken.mockResolvedValue({token: "invalid token"});
+    const { getByText } = render(<Profile />);
+    await waitFor(() => expect(getByText("You do not have a valid API Token associated with your account! (Default will be used)")).toBeInTheDocument());
+
+  });
+
 });
