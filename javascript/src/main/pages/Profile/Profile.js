@@ -59,9 +59,9 @@ const Profile = () => {
   async function returnApiTokenStatus(){
     var apiStatus = await fetchApiToken();
     var status;
-    if (apiStatus["token"] === "invalid token")
-      status = "You do not have a valid API Token associated with your account! (Default will be used)";
-    else
+    console.log("apiStatus =", apiStatus);
+    status = "You do not have a valid API Token associated with your account! (Default will be used)";
+    if (apiStatus && apiStatus.hasOwnProperty('token') && apiStatus["token"] !== "invalid token")
       status = "Your custom API token is " + apiStatus["token"];
     setTokenStatus(status);
   }

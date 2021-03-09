@@ -11,6 +11,7 @@ jest.mock("main/utils/fetch");
 
 describe("Profile tests", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     useAuth0.mockReturnValue({
       user: {
         name: "test user",
@@ -62,6 +63,13 @@ describe("Profile tests", () => {
     fetchWithToken.mockResolvedValue({token: "invalid token"});
     const { getByText } = render(<Profile />);
     await waitFor(() => expect(getByText("You do not have a valid API Token associated with your account! (Default will be used)")).toBeInTheDocument());
+
+  });
+
+  test("when i enter an valid token, the text displayed should change to show the token",  async () => {
+    fetchWithToken.mockResolvedValue({token: "validTokenabc123"});
+    const { getByText } = render(<Profile />);
+    await waitFor(() => expect(getByText("Your custom API token is validTokenabc123")).toBeInTheDocument());
 
   });
 
