@@ -7,16 +7,6 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import TimeFormatter from "./time"
 const { SearchBar } = Search;
 
-const GetUserName = ({message}) => {
-    return <p>{message?.user_profile?.real_name || message.user}</p>;
-}
-
-const UserName = (message) => {
-    return (
-        <GetUserName message={message} />
-    );
-}
-
 const GetMessageContents = (text, slackUsers) => {
     return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
         if(slackUsers != null) {
@@ -64,36 +54,52 @@ const createMarkup = (text, slackUsers) => {
     }
 }
 
+function nameFormatter(value, row) {
+    value = row.user;
+    return row.user_profile? row.user_profile.real_name:value;
+}
+
+function timeUserFormatter(value, row) {
+    return value + "-" + row.ts;
+}
+
 export default ({ messages }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
     
     const columns = [{
         isDummyField: true,
-        formatter: (_cell, row) => UserName(row),
+        formatter: nameFormatter,
         dataField: 'name',
         text: 'Username'
     },{
         isDummyField: true,
         formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         dataField: 'text',
-        text: 'Contents'
-    },
-        {
-            dataField: 'ts',
-            text: 'Time',
-            sort: true,
-            formatter: TimeFormatter,
-            style: {
-                width: "20%"
-            },
+        text: 'Contents',
+        sort: true
+    },{
+        dataField: 'ts',
+        text: 'Time',
+        sort: true,
+        formatter: TimeFormatter,
+        style: {
+            width: "20%"
         }
+    },{
+        dataField: 'user',
+        text: 'User + Time',
+        formatter: timeUserFormatter,
+        // ideally this would be hidden: true, but codecov is not able
+        // to test this column + timeUserFormatter when it is hidden at the moment
+        hidden: false
+    }
     ];
 
     return (
         <div style={{textAlign: "left"}}>
             <ToolkitProvider
-                keyField="ts"
+                keyField="row.user"
                 data={ messages }
                 columns={ columns }
                 search={ { searchFormatted: true } }

@@ -95,10 +95,23 @@ public class ChannelsControllerTests {
         MvcResult response = mockMvc
             .perform(get("/api/members/channels").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
             .andExpect(status().isOk()).andReturn();
+        
         String responseString = response.getResponse().getContentAsString();
         List<Channel> channels = mapper.readValue(responseString, new TypeReference<List<Channel>>() {
         });
-        assertEquals(expectedChannels, channels);
+        
+        boolean check = true;
+        for (int i = 0; i < expectedChannels.size(); i++) {
+            if (!channels.contains(expectedChannels.get(i))) {
+                check = false;
+                break;
+            }
+        }
+        if (expectedChannels.size() != channels.size()) {
+            check = false;
+        }
+
+        assertEquals(true, check);
     }
 
     @Test
