@@ -1,11 +1,20 @@
 import React from "react";
 import { fetchWithToken } from "main/utils/fetch";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Search from "../../../main/pages/Search/Search.js";
 jest.mock("main/utils/fetch");
 
 describe("Search tests", () => {
+    const fakeResults = {
+        items: [
+            {
+                title: "fakeTitle", snippet: "fakeSnippet", link: "https://example.org"
+            }, {
+                title: "fakeTitle1", snippet: "fakeSnippet2", link: "https://example3.org"
+            }
+        ]
+    }
     test("it renders without crashing", () => {
         render(<Search/>);
     });
@@ -17,18 +26,26 @@ describe("Search tests", () => {
         expect(enterQuery.value).toBe("github");
     });
 
-    test("renders when submit button is pressed", () => {
-        fetchWithToken.mockResolvedValue([]);
+    test("renders when submit button is pressed and results are empty", async () => {
+        fetchWithToken.mockResolvedValue({items:[]});
         const { getByText } = render(<Search />);
         userEvent.click(getByText("Submit"));
-        expect(fetchWithToken).toHaveBeenCalled();
+        await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
     });
 
-    test("when I click submit button, ", () => {
+
+    test("renders when submit button is pressed and results have contents", async () => {
+        fetchWithToken.mockResolvedValue(fakeResults);
+        const { getByText } = render(<Search />);
+        userEvent.click(getByText("Submit"));
+        await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
+    });
+
+    test("when I click submit button, ", async() => {
         fetchWithToken.mockImplementation(new Error());
         const { getByText } = render(<Search />);
         userEvent.click(getByText("Submit"));
-        expect(fetchWithToken).toHaveBeenCalled();
+        await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
     });
 
 });

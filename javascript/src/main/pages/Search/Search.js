@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import JSONPrettyCard from "main/components/Utilities/JSONPrettyCard";
 import { fetchWithToken } from "main/utils/fetch";
+import SearchCard from "main/components/SearchCard/SearchCard";
+
 
 const Search = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const emptyQuery = {
         searchQuery: "",
     }
-
+    const emptyResults = { items: [] }
+    
+    
     const fetchSearchResults = async (_event) => {
         const url = `/api/member/search/basic?searchQuery=${query.searchQuery}`;
 
@@ -24,6 +27,7 @@ const Search = () => {
             return result;
         } catch (err) {
             console.log(`err=${err}`)
+            return emptyResults;
         }
     };
     const fetchQuota = async (_event) => {
@@ -36,15 +40,17 @@ const Search = () => {
                     "content-type": "application/json",
                 },
             });
-            console.log(`result=${JSON.stringify(result)}`)
+            console.log(`result=${JSON.stringify(result)}`);
             return result;
         } catch (err) {
-            console.log(`err=${err}`)
+            console.log(`err=${err}`);
+            return {quota:0};
         }
     };
 
+    
     const [query, setQuery] = useState(emptyQuery);
-    const [results, setResults] = useState({});
+    const [results, setResults] = useState(emptyResults);
     const [quota, setQuota] = useState(0);
 
     const handleOnSubmit = async (e) => {
@@ -54,6 +60,18 @@ const Search = () => {
         const quotaInfo = await fetchQuota(e);
         setQuota(quotaInfo.quota);
     }
+
+
+    const cardList = results.items.map(search => {
+        console.log("Search = ", search);
+        return (
+            <SearchCard
+                title={search.title}
+                description={search.snippet}
+                link={search.link}
+            />
+        )
+    })
 
     return (
         <>
@@ -76,10 +94,11 @@ const Search = () => {
             <p>
                 searchesRemaining: {quota}
             </p>
-            <JSONPrettyCard
-                expression={"results"}
-                value={results}
-            />
+
+            <div>
+                {cardList}        
+            </div>
+
         </>
     );
 };
