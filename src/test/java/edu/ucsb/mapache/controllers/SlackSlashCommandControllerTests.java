@@ -20,6 +20,11 @@ import edu.ucsb.mapache.repositories.ChannelRepository;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.nio.file.Path;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.TeamEmailListService;
@@ -203,7 +208,8 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_googleSearch() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    String retval = "{\"items\": []}";
+    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+    String retval = Files.readString(jsonPath);
     when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -247,7 +253,8 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_googleSearchMultipleArguments() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    String retval = "{\"items\": []}";
+    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+    String retval = Files.readString(jsonPath);
     when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -271,7 +278,8 @@ public class SlackSlashCommandControllerTests {
   @Test
   public void test_googleSearch_1() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    String retval = "{\"items\": []}";
+    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+    String retval = Files.readString(jsonPath);
     when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
