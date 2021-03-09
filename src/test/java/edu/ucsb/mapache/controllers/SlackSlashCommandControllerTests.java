@@ -3,6 +3,7 @@ package edu.ucsb.mapache.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import edu.ucsb.mapache.config.SecurityConfig;
+import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 
 import org.springframework.http.MediaType;
@@ -29,6 +31,8 @@ import java.nio.file.Path;
 import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 
+import me.ramswaroop.jbot.core.slack.models.Attachment;
+import me.ramswaroop.jbot.core.slack.models.RichMessage;
 
 @WebMvcTest(value = SlackSlashCommandController.class)
 @Import(SecurityConfig.class)
@@ -258,9 +262,7 @@ public class SlackSlashCommandControllerTests {
     when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
     mockMvc
         .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
-                .param("token", slackSlashCommandController.getSlackToken())
-
+        .param("token", slackSlashCommandController.getSlackToken())
         .param("team_id", "value")
         .param("team_domain", "value")
         .param("channel_id", "value")
@@ -274,6 +276,19 @@ public class SlackSlashCommandControllerTests {
         .andExpect(status().is(200));
   }
 
+  @Test
+  public void test_googleSearch_message_format_0() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+    String retval = Files.readString(jsonPath);
+    int index_trim = retval.indexOf("\"items\"");
+    retval = retval.substring(0, index_trim) + "\"items\": []}";
+    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
+    SlackSlashCommandParams params = new SlackSlashCommandParams();
+    params.setText("search google test");
+    RichMessage result = slackSlashCommandController.googleSearch(params);
+    assertEquals("No results found!", result.getAttachments()[0].getText());
+  }
   // WIP unable to test IOexception currently
   @Test
   public void test_googleSearch_1() throws Exception {
@@ -359,32 +374,6 @@ public class SlackSlashCommandControllerTests {
         .param("user_name", "value")
         .param("command", "/mapache")
         .param("text", "placeholder placeholder")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-
-  @Test
-  public void test_googleSearch_5() throws Exception {
-        // content type: https://api.slack.com/interactivity/slash-commands
-    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
-    String retval = Files.readString(jsonPath);
-    int index_trim = retval.indexOf("\"items\"");
-    retval = retval.substring(0, index_trim) + "\"items\": []";
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
-                .param("token", slackSlashCommandController.getSlackToken())
-
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "google search")
         .param("response_url", "value")
         )
         .andExpect(status().is(200));

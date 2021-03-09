@@ -201,17 +201,22 @@ public class SlackSlashCommandController {
         RequestItem ritem = searchResultQuery.getRequest().get(0);
         RichMessage richMessage = new RichMessage("*Showing Results for:* " + ritem.getSearchTerms() +"\n*Number of Results:* " + ritem.getTotalResults() + "\n *Showing:* " + ritem.getCount());
         int numAttachments = searchResult.getItems().size();
-        Attachment[] attachments2 = new Attachment[numAttachments];
-        for (int i = 0; i < numAttachments; i++){
-            attachments2[i] = new Attachment();
-            Item item = searchResult.getItems().get(i);
-            attachments2[i].setText("<"   + item.getLink() + "|" + item.getTitle() + ">\n" + item.getSnippet()+ "\n\n"); 
-        }
+        Attachment[] attachments2;
         if(numAttachments == 0)
         {
+            attachments2 = new Attachment[1];
+            attachments2[0] = new Attachment();
             attachments2[0].setText("No results found!");
         }
-        
+        else
+        {
+            attachments2 = new Attachment[numAttachments];
+            for (int i = 0; i < numAttachments; i++){
+                attachments2[i] = new Attachment();
+                Item item = searchResult.getItems().get(i);
+                attachments2[i].setText("<"   + item.getLink() + "|" + item.getTitle() + ">\n" + item.getSnippet()+ "\n\n"); 
+            }
+        }
         richMessage.setAttachments(attachments2);
 
 
