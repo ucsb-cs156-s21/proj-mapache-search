@@ -1,7 +1,9 @@
 import React from "react";
 
 const HistogramOfMessagesByUser = () => {
-    return <h1>Histogram Of Messages By User</h1>
+    return <div>
+        <h1>Histogram Of Messages By User</h1>
+    </div>
 };
 
 export default HistogramOfMessagesByUser;
