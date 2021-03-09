@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import Profile from "main/pages/Profile/Profile";
 import { useAuth0 } from "@auth0/auth0-react";
 import useSWR from "swr";
