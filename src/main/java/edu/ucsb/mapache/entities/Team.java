@@ -20,6 +20,9 @@ public class Team {
   @CsvBindByPosition(position = 1)
   private String teamDescription;
 
+  public Team() {
+  }
+
   public Team(Long id, String teamName, String teamDescription) {
     this.teamName = teamName;
     this.teamDescription = teamDescription;
