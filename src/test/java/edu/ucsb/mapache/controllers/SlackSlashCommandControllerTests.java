@@ -277,7 +277,7 @@ public class SlackSlashCommandControllerTests {
   }
 
   @Test
-  public void test_googleSearch_message_format_0() throws Exception {
+  public void test_googleSearch_empty_items() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
     Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
     String retval = Files.readString(jsonPath);
