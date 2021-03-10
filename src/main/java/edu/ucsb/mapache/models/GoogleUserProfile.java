@@ -25,9 +25,6 @@ public class GoogleUserProfile {
   private String locale;
   @JsonProperty("updated_at")
   private String updatedAt;
-  // CB - Custom API instance variable 
-  @JsonProperty("custom_api")
-  private String customAPI;
 
   /**
    * @param json - the json string of the object being created
@@ -116,16 +113,6 @@ public class GoogleUserProfile {
 
   public void setUpdatedAt(String updatedAt) {
     this.updatedAt = updatedAt;
-  }
-
-  // CB - Custom API getter
-  public String getCustomAPI() {
-    return this.customAPI;
-  }
-
-  // CB - Custom API setter
-  public void setCustomAPI(String customAPI) {
-    this.customAPI = customAPI;
   }
 
   public String toJSONString() throws Exception {
