@@ -2,7 +2,6 @@ import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
 
-//storybook simulation 
 const SearchedTermsTable = (props) => {
 
     const columns = [{
@@ -21,10 +20,10 @@ const SearchedTermsTable = (props) => {
 
 
     return (
-        <>
+        <div>
              <h2>Searched Terms</h2>
             <BootstrapTable keyField='id' data={props.data} columns={columns} />
-        </>
+        </div>
     );
 };
 export default SearchedTermsTable;
