@@ -1,5 +1,6 @@
 import React from "react";
-  
+
+const AppFooter = () => {
   return (
     <footer className="bg-light p-3 text-center">
       This app is a class project of {" "}
