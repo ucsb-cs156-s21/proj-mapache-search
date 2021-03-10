@@ -6,7 +6,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "../../utils/fetch";
 import { propTypes } from "react-json-pretty";
 
-
+//storybook simulation
 const SearchedTermsTable = (props) => {
 
     const columns = [{
