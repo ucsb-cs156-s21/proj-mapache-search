@@ -13,7 +13,7 @@ const ChannelPageScrollable = () => {
     const { data: messages } = useSWR([`/api/members/channel/${channel}/messages`, getToken], fetchWithToken);
 
 
-    const links = [];
+    // const links = [];
     // messages.map((el) => {
     //     console.log(el?.text);
     // });
