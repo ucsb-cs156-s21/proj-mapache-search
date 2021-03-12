@@ -3,6 +3,10 @@ package edu.ucsb.mapache.controllers;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
@@ -42,6 +46,7 @@ public class MessagesController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
+    // search messages by a particular sender
     @GetMapping("/usersearch")
     public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchUser) throws JsonProcessingException {
@@ -51,7 +56,8 @@ public class MessagesController {
         if (decoded.equals("")) {
             return ResponseEntity.ok().body("[]");
         }
-        Iterable<Message> messages = messageRepository.findByUser(decoded);
+        // Set ensures no duplicate messages
+        Set<Message> messages = new HashSet<>(messageRepository.findByUser(decoded));
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
@@ -64,7 +70,7 @@ public class MessagesController {
         if (searchString.equals("")) {
             return ResponseEntity.ok().body("[]");
         }
-        Iterable<Message> messages = messageRepository.findByText(searchString);
+        Set<Message> messages = new HashSet<>(messageRepository.findByText(searchString));
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
@@ -78,7 +84,7 @@ public class MessagesController {
         if (searchReaction.equals("")) {
             return ResponseEntity.ok().body("[]");
         }
-        Iterable<Message> messages = messageRepository.findByReactionName(searchReaction);
+        Set<Message> messages = new HashSet<>(messageRepository.findByReactionName(searchReaction));
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
@@ -88,7 +94,7 @@ public class MessagesController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
-        Iterable<Message> messages = messageRepository.findAll();
+        Set<Message> messages = new HashSet<>(messageRepository.findAll());
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
