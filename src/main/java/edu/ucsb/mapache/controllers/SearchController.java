@@ -101,7 +101,6 @@ public class SearchController {
         if(you.getSearchRemain()<=0){
             return searchQuotaExceeded();
         }
-        logger.info("The current api token is {}", apiToken);
         you.setTime(currentTime);
         you.decrSearchRemain();
         appUserRepository.save(you);
