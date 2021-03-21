@@ -165,7 +165,6 @@ public class GoogleSearchService {
         if (!searchRepository.findBySearchTerm(searchQuery).isEmpty()) {
             s = searchRepository.findBySearchTerm(searchQuery).get(0);
             s.setCount(s.getCount() + 1);
-            searchRepository.save(s);
         } else {
             s = new Search();
             s.setSearchTerm(searchQuery);
@@ -198,9 +197,8 @@ public class GoogleSearchService {
     }
 
     public static boolean shouldReset(long lastUpdate, long currentTime) {
-        long lastUpdateDate = (lastUpdate - 8 * 60 * 60 * 1000) / (24 * 60 * 60 * 1000);
-        long currentDate = (currentTime - 8 * 60 * 60 * 1000) / (24 * 60 * 60 * 1000);
-        return currentDate > lastUpdateDate;
+        long msPerDay = 24 * 60 * 60 * 1000;
+        return (currentTime - lastUpdate) > msPerDay;
     }
 
 }
