@@ -55,6 +55,11 @@ public class AuthControllerAdvice {
     return service.isMember(getJWT(authorization));
   }
 
+  public boolean getIsMemberOrAdmin(String authorization) {
+    DecodedJWT jwt = getJWT(authorization);
+    return service.isMember(jwt) || service.isAdmin(jwt);
+  }
+
   public AppUser updateAppUsers(String authorization) {
     DecodedJWT jwt = getJWT(authorization);
     Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();

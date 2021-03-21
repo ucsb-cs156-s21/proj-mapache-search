@@ -1,5 +1,6 @@
 package edu.ucsb.mapache.advice;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -132,5 +133,24 @@ public class AuthControllerAdviceTests {
   public void test_getIsAdmin() {
     when(mockMembershipService.isAdmin(any(DecodedJWT.class))).thenReturn(true);
     assertTrue(authControllerAdvice.getIsAdmin(exampleAuthToken));
+  }
+
+  @Test
+  public void test_getIsMemberOrAdmin_TT() {
+    when(mockMembershipService.isAdmin(any(DecodedJWT.class))).thenReturn(true);
+    assertTrue(authControllerAdvice.getIsMemberOrAdmin(exampleAuthToken));
+  }
+
+  @Test
+  public void test_getIsMemberOrAdmin_TF() {
+    when(mockMembershipService.isAdmin(any(DecodedJWT.class))).thenReturn(true);
+    assertTrue(authControllerAdvice.getIsMemberOrAdmin(exampleAuthToken));
+  }
+
+  @Test
+  public void test_getIsMemberOrAdmin_FF() {
+    when(mockMembershipService.isAdmin(any(DecodedJWT.class))).thenReturn(false);
+    when(mockMembershipService.isMember(any(DecodedJWT.class))).thenReturn(false);
+    assertFalse(authControllerAdvice.getIsMemberOrAdmin(exampleAuthToken));
   }
 }

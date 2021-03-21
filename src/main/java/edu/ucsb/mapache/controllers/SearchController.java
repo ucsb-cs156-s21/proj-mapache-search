@@ -84,7 +84,7 @@ public class SearchController {
     @GetMapping("/basic")
     public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchQuery) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMember(authorization) && !authControllerAdvice.getIsAdmin(authorization))
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("member or admin");
 
         AppUser you = searchSupportService.getCurrentUser(authorization);
@@ -132,7 +132,7 @@ public class SearchController {
     @GetMapping("/quota")
     public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMember(authorization) && !authControllerAdvice.getIsAdmin(authorization))
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("member or admin");
 
         AppUser you = searchSupportService.getCurrentUser(authorization);

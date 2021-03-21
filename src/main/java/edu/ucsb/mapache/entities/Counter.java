@@ -14,11 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.ucsb.mapache.repositories.CounterRepository;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Counter {
 
   private static Logger logger = LoggerFactory.getLogger(Counter.class);

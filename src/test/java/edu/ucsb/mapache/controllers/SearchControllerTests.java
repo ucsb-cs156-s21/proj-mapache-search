@@ -70,12 +70,13 @@ public class SearchControllerTests {
         .andExpect(status().is(401));
   }
 
+
   @Test
-  public void test_basicSearch() throws Exception {
+  public void test_basicSearch_asMemberOrAdmin() throws Exception {
     AppUser appUser = getAppUser();
   
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     MvcResult response = mockMvc
         .perform(
@@ -93,7 +94,7 @@ public class SearchControllerTests {
       AppUser appUser = getAppUser();
       appUser.setApiToken("testTokenABC123");
       when(googleSearchService.getJSON(any(SearchParameters.class),eq("testTokenABC123"))).thenReturn("SampleResult");
-      when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+      when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
       when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
       MvcResult response = mockMvc
           .perform(
@@ -111,7 +112,7 @@ public class SearchControllerTests {
     List<Search> searches = new ArrayList<Search>();
 
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     when(searchRepository.findBySearchTerm("github")).thenReturn(searches);
 
@@ -139,7 +140,7 @@ public class SearchControllerTests {
     List<Search> searches = new ArrayList<Search>();
     searches.add(s);
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     when(searchRepository.findBySearchTerm("github")).thenReturn(searches);
 
@@ -162,7 +163,7 @@ public class SearchControllerTests {
     AppUser appUser = getAppUser();
     appUser.setSearchRemain(0);
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     MvcResult response = mockMvc
         .perform(
@@ -175,7 +176,7 @@ public class SearchControllerTests {
   public void test_basicSearch_shouldReset() throws Exception {
     AppUser appUser = getAppUser();
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     when(searchSupportService.shouldReset(anyLong(),anyLong())).thenReturn(true);
     MvcResult response = mockMvc
@@ -193,7 +194,7 @@ public class SearchControllerTests {
     AppUser appUser = getAppUser();
   
     when(googleSearchService.getJSON(any(SearchParameters.class),any(String.class))).thenReturn("SampleResult");
-    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
     when(searchSupportService.getCurrentUser(any(String.class))).thenReturn(appUser);
     MvcResult response = mockMvc
         .perform(
