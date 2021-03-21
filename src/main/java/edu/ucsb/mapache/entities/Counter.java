@@ -1,5 +1,7 @@
 package edu.ucsb.mapache.entities;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -23,26 +25,33 @@ import lombok.NoArgsConstructor;
 public class Counter {
 
   private static Logger logger = LoggerFactory.getLogger(Counter.class);
+  private static Map<String, String> descriptions = new HashMap<String, String>();
+
+  static {
+    descriptions.put("globalGoogleSearchApiTokenUsesToday",
+        "Number of times app.google.search.apiToken has been used today");
+  }
 
   @Id
   private String key;
   @Column(nullable = false)
   private int value;
-  @Column(nullable = true)
-  private String description;
   @Basic
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date lastReset;
 
-  public Counter(String key, int value, String description) {
+  public Counter(String key, int value) {
     this.key = key;
     this.value = value;
-    this.description = description;
     this.lastReset = null;
   }
 
   public void increment() {
     value++;
+  }
+
+  public void decrement() {
+    value--;
   }
 
   public void reset(int value) {
@@ -67,18 +76,19 @@ public class Counter {
     return diff;
   }
 
-  public static void initializeCounter(CounterRepository counterRepository, String key, int value, String description) {
-    logger.info("Initializing key={} value={} description={}", key, value, description);
+  public static Counter initializeCounter(CounterRepository counterRepository, String key, int value) {
+    logger.info("Initializing key={} value={} description={}", key, value, Counter.getDescription(key));
     Optional<Counter> counter = counterRepository.findById(key);
     if (counter.isPresent()) {
       logger.info("key={} already present with value={}", key, counter.get().getValue());
-      return;
+      return counter.get();
     }
     java.util.Date now = new java.util.Date();
-    Counter c = new Counter(key, value, description);
+    Counter c = new Counter(key, value);
     c.setLastReset(now);
     counterRepository.save(c);
     logger.info("New record for counter key={} saved");
+    return c;
   }
 
   /**
@@ -90,24 +100,55 @@ public class Counter {
    * @param description
    */
 
-  public static void resetIfNeeded(CounterRepository counterRepository, String key, int value, long hours) {
-    logger.info("Resetting if needed: key={} value={} hours={}", key, value, hours);
+  public static Counter resetIfNeeded(CounterRepository counterRepository, String key, int value, long hours) {
+    logger.info("resetIfNeeded key={} value={} hours={} description={}", key, value, hours, Counter.getDescription(key));
 
     Optional<Counter> counter = counterRepository.findById(key);
-    if (!counter.isPresent()) {
-      logger.error("Counter with key={} not found", key);
-      return;
+    Counter c = counter.orElse(null);
+    if (c == null) {
+      c = initializeCounter(counterRepository, key, value);
     }
+
     java.util.Date now = new java.util.Date();
-    long diff = hoursDiff(now, counter.get().getLastReset());
+    long diff = hoursDiff(now, c.getLastReset());
     logger.info("Hours since last reset={}", diff);
     if (diff >= hours) {
-      Counter c = counter.get();
       c.setValue(value);
       c.setLastReset(now);
       counterRepository.save(c);
       logger.info("Counter with key={} updated to value={}", key, value);
     }
+    return c;
+  }
+
+  /**
+   * Reset this counter to value shown if more than the number of hours indicated
+   * has passed since last reset; otherwise increment it by one.
+   * 
+   * @param key
+   * @param value
+   * @param description
+   */
+
+  /**
+   * Reset this counter to value shown if more than the number of hours indicated
+   * has passed since last reset; otherwise decrement it by one.
+   * 
+   * @param key
+   * @param value
+   * @param description
+   */
+
+  public static Counter resetOrDecrement(CounterRepository counterRepository, String key, int value, long hours) {
+    logger.info("resetOrDecrement key={} value={} hours={} description={}", key, value, hours, Counter.getDescription(key));
+    Counter c = resetIfNeeded(counterRepository, key, value, hours);
+    c.decrement();
+    counterRepository.save(c);
+    return c;
+  }
+
+  public static String getDescription(String key) {
+    return descriptions.get(key);
   }
 
 }

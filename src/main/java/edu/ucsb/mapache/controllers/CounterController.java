@@ -59,7 +59,7 @@ public class CounterController {
     @GetMapping(value = "/{key}", produces = "application/json")
     public ResponseEntity<String> getCounter(@RequestHeader("Authorization") String authorization,
             @PathVariable("key") String key) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsAdmin(authorization) && !authControllerAdvice.getIsMember(authorization))
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("admin or member");
         Optional<Counter> opt = counterRepository.findById(key);
         if (opt.isEmpty()) {

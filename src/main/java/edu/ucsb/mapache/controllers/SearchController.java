@@ -16,6 +16,7 @@ import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Search;
+import edu.ucsb.mapache.google.SearchResult;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.SearchRepository;
@@ -64,8 +65,7 @@ public class SearchController {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
-    private SearchSupportService searchSupportService;
+
 
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
@@ -74,9 +74,9 @@ public class SearchController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    private ResponseEntity<String> searchQuotaExceeded() throws JsonProcessingException {
+    private ResponseEntity<String> searchQuotaExceeded(String msg) throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
-        response.put("error", "Your Search Quota is now 0");
+        response.put("error", msg);
         String body = mapper.writeValueAsString(response);
         return new ResponseEntity<String>(body, HttpStatus.FORBIDDEN);
     }
@@ -87,46 +87,14 @@ public class SearchController {
         if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("member or admin");
 
-        AppUser you = searchSupportService.getCurrentUser(authorization);
-
-        String apiToken = this.globalApiToken;
-
-        long lastUpdate = you.getTime();
-        long currentTime = (long) (new Date().getTime());
-        if (searchSupportService.shouldReset(lastUpdate, currentTime)) {
-            you.setSearchRemain(100);
-            you.setTime(currentTime);
+        String result = null;
+        try {
+            result = googleSearchService.performSearch( searchQuery,  authorization);
+        } catch (GoogleSearchService.SearchQuotaExceededException e) {
+            return searchQuotaExceeded(e.getMessage());
         }
-        if (you.getApiToken() != "invalid token")
-            apiToken = you.getApiToken();
-
-        if (you.getSearchRemain() <= 0) {
-            return searchQuotaExceeded();
-        }
-        you.setTime(currentTime);
-        you.decrSearchRemain();
-        appUserRepository.save(you);
-
-        SearchParameters sp = new SearchParameters();
-        sp.setQuery(searchQuery);
-        sp.setPage(1);
-        logger.info("sp={} apiToken={}", sp, apiToken);
-        String body = googleSearchService.getJSON(sp, apiToken);
-        logger.info("body={}", body);
-
-        if (!searchRepository.findBySearchTerm(searchQuery).isEmpty()) {
-            int count = searchRepository.findBySearchTerm(searchQuery).get(0).getCount() + 1;
-            Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
-            s.setCount(count);
-            searchRepository.save(s);
-        } else {
-            Search s = new Search();
-            s.setSearchTerm(searchQuery);
-            s.setCount(1);
-            searchRepository.save(s);
-        }
-
-        return ResponseEntity.ok().body(body);
+        
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/quota")
@@ -135,7 +103,7 @@ public class SearchController {
         if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("member or admin");
 
-        AppUser you = searchSupportService.getCurrentUser(authorization);
+        AppUser you = googleSearchService.getCurrentUser(authorization);
         int searchRemain = you.getSearchRemain();
 
         Map<String, Object> response = new HashMap<String, Object>();

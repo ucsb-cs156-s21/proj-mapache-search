@@ -259,7 +259,7 @@
 					<excludes>
 						<!-- Exclude class from test coverage -->
 						<exclude>**/edu/ucsb/mapache/services/SearchSupportService.*</exclude>
-						<exclude>**/edu/ucsb/mapache/services/GoogleSearchService.*</exclude>
+						<!-- <exclude>**/edu/ucsb/mapache/services/GoogleSearchService.*</exclude> -->
 						<exclude>**/edu/ucsb/mapache/config/*</exclude>
 						<exclude>**/edu/ucsb/mapache/DemoApplication.*</exclude>
 						<exclude>**/edu/ucsb/mapache/services/CSVToObjectService.class</exclude>
