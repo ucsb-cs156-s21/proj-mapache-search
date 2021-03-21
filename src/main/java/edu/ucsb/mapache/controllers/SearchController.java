@@ -54,7 +54,7 @@ public class SearchController {
     private String namespace;
 
     @Value("${app.google.search.apiToken}")
-    private String apiToken;
+    private String globalApiToken;
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
@@ -73,6 +73,7 @@ public class SearchController {
         String body = mapper.writeValueAsString(response);
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
+
     private ResponseEntity<String> searchQuotaExceeded() throws JsonProcessingException {
         Map<String, String> response = new HashMap<String, String>();
         response.put("error", "Your Search Quota is now 0");
@@ -81,58 +82,58 @@ public class SearchController {
     }
 
     @GetMapping("/basic")
-    public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization, 
-        @RequestParam String searchQuery)
-        throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMember(authorization))
-            return getUnauthorizedResponse("member");
+    public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization,
+            @RequestParam String searchQuery) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMember(authorization) && !authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("member or admin");
 
         AppUser you = searchSupportService.getCurrentUser(authorization);
 
-        long lastUpdate=you.getTime();
-        long currentTime=(long) (new Date().getTime());
-        if(searchSupportService.shouldReset(lastUpdate,currentTime)){
+        String apiToken = this.globalApiToken;
+
+        long lastUpdate = you.getTime();
+        long currentTime = (long) (new Date().getTime());
+        if (searchSupportService.shouldReset(lastUpdate, currentTime)) {
             you.setSearchRemain(100);
             you.setTime(currentTime);
         }
-        if (you.getApiToken()!="invalid token")
+        if (you.getApiToken() != "invalid token")
             apiToken = you.getApiToken();
 
-        if(you.getSearchRemain()<=0){
+        if (you.getSearchRemain() <= 0) {
             return searchQuotaExceeded();
         }
         you.setTime(currentTime);
         you.decrSearchRemain();
         appUserRepository.save(you);
-        
+
         SearchParameters sp = new SearchParameters();
         sp.setQuery(searchQuery);
         sp.setPage(1);
         logger.info("sp={} apiToken={}", sp, apiToken);
-        String body = googleSearchService.getJSON(sp,apiToken);
+        String body = googleSearchService.getJSON(sp, apiToken);
         logger.info("body={}", body);
-        
-        if(!searchRepository.findBySearchTerm(searchQuery).isEmpty()){
+
+        if (!searchRepository.findBySearchTerm(searchQuery).isEmpty()) {
             int count = searchRepository.findBySearchTerm(searchQuery).get(0).getCount() + 1;
             Search s = searchRepository.findBySearchTerm(searchQuery).get(0);
             s.setCount(count);
             searchRepository.save(s);
-        }else{
+        } else {
             Search s = new Search();
             s.setSearchTerm(searchQuery);
             s.setCount(1);
             searchRepository.save(s);
         }
-        
 
         return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/quota")
     public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization)
-        throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMember(authorization))
-            return getUnauthorizedResponse("member");
+            throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMember(authorization) && !authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("member or admin");
 
         AppUser you = searchSupportService.getCurrentUser(authorization);
         int searchRemain = you.getSearchRemain();

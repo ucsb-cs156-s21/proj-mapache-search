@@ -130,6 +130,15 @@
 			<artifactId>javabean-tester</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+
+		<!-- https://projectlombok.org/setup/maven -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.16</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -255,9 +264,9 @@
 						<exclude>**/edu/ucsb/mapache/DemoApplication.*</exclude>
 						<exclude>**/edu/ucsb/mapache/services/CSVToObjectService.class</exclude>
 						<exclude>**/edu/ucsb/mapache/services/CSVToObjectServiceImpl.class</exclude>
-                        <!-- Exclude full package from test coverage -->
-                        <!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
-                    </excludes>
+						<!-- Exclude full package from test coverage -->
+						<!-- <exclude>**/*com/khan/vaquar/config/**</exclude> -->
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
