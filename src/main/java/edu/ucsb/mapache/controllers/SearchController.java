@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.ucsb.mapache.models.SearchParameters;
 import org.springframework.beans.factory.annotation.Value;
 import edu.ucsb.mapache.services.GoogleSearchService;
-import edu.ucsb.mapache.services.SearchSupportService;
 
 @RestController
 @RequestMapping("/api/member/search")

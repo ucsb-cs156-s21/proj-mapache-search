@@ -113,59 +113,6 @@ public class SearchControllerTests {
       assertEquals("SampleResult", responseString);
   }
 
-
-//   @Test
-//   public void test_basicSearch_searchCount_new_searchTerm() throws Exception {
-//     AppUser appUser = getMockAppUser();
-//     List<Search> searches = new ArrayList<Search>();
-
-//     when(googleSearchService.performSearch(any(String.class),any(String.class))).thenReturn("SampleResult");
-//     when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
-//     when(googleSearchService.getCurrentUser(any(String.class))).thenReturn(appUser);
-//     when(searchRepository.findBySearchTerm("github")).thenReturn(searches);
-
-//     MvcResult response = mockMvc
-//         .perform(
-//             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-//         .andExpect(status().isOk()).andReturn();
-
-//     String responseString = response.getResponse().getContentAsString();
-
-//     assertEquals("SampleResult", responseString);
-//     Search s2 = new Search();
-//     s2.setCount(1);
-//     s2.setSearchTerm("github");
-//     verify(searchRepository, times(1)).save(s2);
-//   }
-
-
-//   @Test
-//   public void test_basicSearch_searchCount_existing_searchTerm() throws Exception {
-//     AppUser appUser = getMockAppUser();
-//     Search s = new Search();
-//     s.setCount(1);
-//     s.setSearchTerm("github");
-//     List<Search> searches = new ArrayList<Search>();
-//     searches.add(s);
-//     when(googleSearchService.performSearch(any(String.class),any(String.class))).thenReturn("SampleResult");
-//     when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
-//     when(googleSearchService.getCurrentUser(any(String.class))).thenReturn(appUser);
-//     when(searchRepository.findBySearchTerm("github")).thenReturn(searches);
-
-//     MvcResult response = mockMvc
-//         .perform(
-//             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-//         .andExpect(status().isOk()).andReturn();
-
-//     String responseString = response.getResponse().getContentAsString();
-
-//     assertEquals("SampleResult", responseString);
-//     Search s2 = new Search();
-//     s2.setCount(2);
-//     s2.setSearchTerm("github");
-//     verify(searchRepository, times(1)).save(s2);
-//   }
-
   @Test
   public void test_basicSearch_searchQuotaExceeded() throws Exception {
    
@@ -180,23 +127,6 @@ public class SearchControllerTests {
     assertEquals(expected,responseString);
   }
 
-//   @Test
-//   public void test_basicSearch_shouldReset() throws Exception {
-//     AppUser appUser = getMockAppUser();
-//     when(googleSearchService.performSearch(any(String.class),any(String.class))).thenReturn("SampleResult");
-//     when(authControllerAdvice.getIsMemberOrAdmin(any(String.class))).thenReturn(true);
-//     when(googleSearchService.getCurrentUser(any(String.class))).thenReturn(appUser);
-//     when(googleSearchService.shouldReset(anyLong(),anyLong())).thenReturn(true);
-//     MvcResult response = mockMvc
-//         .perform(
-//             get("/api/member/search/basic?searchQuery=github").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
-//         .andExpect(status().isOk()).andReturn();
-
-//     String responseString = response.getResponse().getContentAsString();
-
-//     assertEquals("SampleResult", responseString);
-
- // }
   @Test
   public void test_Quota() throws Exception {
     AppUser appUser = getMockAppUser();
