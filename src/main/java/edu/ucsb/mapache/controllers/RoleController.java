@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import edu.ucsb.mapache.models.SearchParameters;
 import org.springframework.beans.factory.annotation.Value;
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 
 @RestController
 @RequestMapping("/api")
@@ -45,7 +46,7 @@ public class RoleController {
   private AuthControllerAdvice authControllerAdvice;
 
   @Autowired
-  private GoogleSearchService googleSearchService;
+  private GoogleSearchServiceHelper googleSearchServiceHelper;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -133,7 +134,7 @@ public class RoleController {
         sp.setQuery("empty");
         sp.setPage(1);
         
-        String i = googleSearchService.getJSON(sp, token);
+        String i = googleSearchServiceHelper.getJSON(sp, token);
         if (i == "{\"error\": \"401: Unauthorized\"}") {
           user.clearApiToken();
           appUserRepository.save(user);

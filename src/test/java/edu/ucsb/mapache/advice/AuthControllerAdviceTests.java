@@ -135,12 +135,6 @@ public class AuthControllerAdviceTests {
     assertTrue(authControllerAdvice.getIsAdmin(exampleAuthToken));
   }
 
-  // @Test
-  // public void test_getIsMemberOrAdmin_TT() {
-  //   when(mockMembershipService.isAdmin(any(DecodedJWT.class))).thenReturn(true);
-  //   assertTrue(authControllerAdvice.getIsMemberOrAdmin(exampleAuthToken));
-  // }
-
   @Test
   public void test_getIsMemberOrAdmin_TF() {
     when(mockMembershipService.isAdmin(any(DecodedJWT.class))).thenReturn(true);

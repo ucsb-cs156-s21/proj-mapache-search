@@ -50,11 +50,5 @@ public class Counter {
     value--;
   }
 
-  public void reset(int value) {
-    this.value = value;
-    java.util.Date now = new java.util.Date();
-    this.lastReset = now;
-  }
-
   
 }

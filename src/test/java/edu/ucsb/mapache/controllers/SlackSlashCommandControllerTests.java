@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.nio.file.Path;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 
@@ -48,7 +49,7 @@ public class SlackSlashCommandControllerTests {
     ChannelRepository channelRepository;
 
     @MockBean
-    GoogleSearchService googleSearchService;
+    GoogleSearchServiceHelper googleSearchServiceHelper;
 
     @MockBean
     TeamEmailListService teamEmailListService;
@@ -143,7 +144,7 @@ public class SlackSlashCommandControllerTests {
         // content type: https://api.slack.com/interactivity/slash-commands
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String retval = Files.readString(jsonPath);
-        when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
@@ -168,7 +169,7 @@ public class SlackSlashCommandControllerTests {
         // content type: https://api.slack.com/interactivity/slash-commands
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String retval = Files.readString(jsonPath);
-        when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken()).param("team_id", "value")
                 .param("team_domain", "value").param("channel_id", "value").param("channel_name", "value")
@@ -183,7 +184,7 @@ public class SlackSlashCommandControllerTests {
         String retval = Files.readString(jsonPath);
         int index_trim = retval.indexOf("\"items\"");
         retval = retval.substring(0, index_trim) + "\"items\": []}";
-        when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
         SlackSlashCommandParams params = new SlackSlashCommandParams();
         params.setText("search google test");
         RichMessage result = slackSlashCommandController.googleSearch(params);
@@ -196,7 +197,7 @@ public class SlackSlashCommandControllerTests {
         // content type: https://api.slack.com/interactivity/slash-commands
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String retval = Files.readString(jsonPath);
-        when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")

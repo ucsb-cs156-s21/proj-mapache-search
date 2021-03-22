@@ -3,9 +3,7 @@ package edu.ucsb.mapache.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.when;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,31 +17,33 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.ucsb.mapache.entities.AppUser;
+import edu.ucsb.mapache.entities.Counter;
 import edu.ucsb.mapache.entities.Search;
-import edu.ucsb.mapache.entities.Student;
+import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.CounterRepository;
 import edu.ucsb.mapache.repositories.SearchRepository;
-import edu.ucsb.mapache.repositories.StudentRepository;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -71,6 +71,9 @@ public class GoogleSearchServiceTests {
 
     @MockBean
     private CounterService counterService;
+
+    @MockBean
+    private GoogleSearchServiceHelper googleSearchServiceHelper;
 
     @Autowired
     private GoogleSearchService googleSearchService;
@@ -200,8 +203,6 @@ public class GoogleSearchServiceTests {
         googleSearchService.decrementSearchesForUser(appUser);
 
         assertEquals(GoogleSearchService.SEARCH_LIMIT - 1, appUser.getSearchRemain());
-        // assertEquals(now.getTime(), appUser.getTime());
-
         verify(appUserRepository, times(1)).save(eq(appUser));
 
     }
@@ -277,7 +278,128 @@ public class GoogleSearchServiceTests {
 
     }
 
-   
+    @Test
+    public void test_decrementGlobalApiSearches_doesNotThrowSearchesLeft()
+            throws GoogleSearchService.SearchQuotaExceededException, ParseException {
 
+        String key = "globalGoogleSearchApiTokenUsesToday";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        java.util.Date now = sdf.parse("06/25/2017 12:35");
+        when(nowService.now()).thenReturn(now);
+
+        Counter c = new Counter(key, 100);
+        c.setLastReset(now);
+        when(counterService.resetOrDecrement(anyString(), anyInt(), anyLong())).thenReturn(c);
+        googleSearchService.decrementGlobalApiSearches();
+    }
+
+    @Test
+    public void test_decrementGlobalApiSearches_throwsWhenQuotaExceeded()
+            throws GoogleSearchService.SearchQuotaExceededException, ParseException {
+
+        String key = "globalGoogleSearchApiTokenUsesToday";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        java.util.Date now = sdf.parse("06/25/2017 12:35");
+        when(nowService.now()).thenReturn(now);
+
+        Counter c = new Counter(key, 0);
+        c.setLastReset(now);
+        when(counterService.resetOrDecrement(anyString(), anyInt(), anyLong())).thenReturn(c);
+
+        Assertions.assertThrows(GoogleSearchService.SearchQuotaExceededException.class, () -> {
+            googleSearchService.decrementGlobalApiSearches();
+        });
+
+    }
+
+    @Test
+    public void test_performSearch_withUsersToken()
+            throws GoogleSearchService.SearchQuotaExceededException, ParseException {
+        AppUser appUser = new AppUser(0L, email, "Phill", "Conrad");
+        appUser.setApiToken("a-fake-valid-token");
+        List<AppUser> users = new ArrayList<>();
+        users.add(appUser);
+
+        when(appUserRepository.findByEmail(email)).thenReturn(users);
+
+        String searchQuery = "spring boot";
+        String expectedJSON = "{\"key\" : \"value\"}";
+
+        when(googleSearchServiceHelper.getJSON(any(SearchParameters.class), anyString())).thenReturn(expectedJSON);
+
+        String result = googleSearchService.performSearch(searchQuery, authorization);
+
+        assertEquals(expectedJSON, result);
+    }
+
+    @Test
+    public void test_performSearch_withGlobalToken()
+            throws GoogleSearchService.SearchQuotaExceededException, ParseException {
+        AppUser appUser = new AppUser(0L, email, "Phill", "Conrad");
+        appUser.setApiToken("invalid token");
+        List<AppUser> users = new ArrayList<>();
+        users.add(appUser);
+
+        String key = "globalGoogleSearchApiTokenUsesToday";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        java.util.Date now = sdf.parse("06/25/2017 12:35");
+        when(nowService.now()).thenReturn(now);
+
+        Counter c = new Counter(key, 100);
+        c.setLastReset(now);
+        when(counterService.resetOrDecrement(anyString(), anyInt(), anyLong())).thenReturn(c);
+
+        when(appUserRepository.findByEmail(email)).thenReturn(users);
+
+        String searchQuery = "spring boot";
+        String expectedJSON = "{\"key\" : \"value\"}";
+
+        when(googleSearchServiceHelper.getJSON(any(SearchParameters.class), anyString())).thenReturn(expectedJSON);
+
+        String result = googleSearchService.performSearch(searchQuery, authorization);
+
+        assertEquals(expectedJSON, result);
+    }
+
+    @Test
+    public void test_performSearch_whenHTTPException()
+            throws GoogleSearchService.SearchQuotaExceededException, ParseException {
+        AppUser appUser = new AppUser(0L, email, "Phill", "Conrad");
+        appUser.setApiToken("invalid token");
+        List<AppUser> users = new ArrayList<>();
+        users.add(appUser);
+
+        String key = "globalGoogleSearchApiTokenUsesToday";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.ENGLISH);
+        java.util.Date now = sdf.parse("06/25/2017 12:35");
+        when(nowService.now()).thenReturn(now);
+
+        Counter c = new Counter(key, 100);
+        c.setLastReset(now);
+        when(counterService.resetOrDecrement(anyString(), anyInt(), anyLong())).thenReturn(c);
+
+        when(appUserRepository.findByEmail(email)).thenReturn(users);
+
+        String searchQuery = "spring boot";
+        String expectedJSON = "{\"error\": \"401: Unauthorized\"}";
+
+        when(googleSearchServiceHelper.getJSON(any(SearchParameters.class), anyString())).thenThrow(HttpClientErrorException.class);
+
+        String result = googleSearchService.performSearch(searchQuery, authorization);
+
+        assertEquals(expectedJSON, result);
+    }
+
+    @Test
+    public void test_isValidAPIToken() {
+        assertFalse(GoogleSearchService.isValidApiToken(null));
+        assertFalse(GoogleSearchService.isValidApiToken(""));
+        assertFalse(GoogleSearchService.isValidApiToken("invalid token"));
+        assertTrue(GoogleSearchService.isValidApiToken("fake-valid-token"));
+    }
 
 }

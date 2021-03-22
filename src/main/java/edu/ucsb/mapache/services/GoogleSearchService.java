@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -45,7 +46,7 @@ public class GoogleSearchService {
     }
 
     private Logger logger = LoggerFactory.getLogger(GoogleSearchService.class);
-    private String searchId = "001539284272632380888:kn5n6ubsr7x";
+    public final static String SEARCH_ID = "001539284272632380888:kn5n6ubsr7x";
     public final static int SEARCH_LIMIT = 100;
 
     @Autowired
@@ -66,6 +67,8 @@ public class GoogleSearchService {
     @Autowired
     private CounterService counterService;
 
+    @Autowired
+    GoogleSearchServiceHelper googleSearchServiceHelper;
 
     @Value("${app.namespace}")
     private String namespace;
@@ -82,35 +85,7 @@ public class GoogleSearchService {
     // This is the full format of the google api endpoint!
     // private static final String SEARCH_ENDPOINT =
     // "https://www.googleapis.com/customsearch/v1?key={key}&cx={searchId}&q={query}&alt={outputFormat}&start={start}&siteSearch={siteRestrict}&dateRestrict={dateRestrict}";
-    private static final String SEARCH_ENDPOINT = "https://www.googleapis.com/customsearch/v1?key={key}&cx={searchId}&q={query}&alt={outputFormat}";
-
-    public String getJSON(SearchParameters params, String apiKey) {
-        logger.info("apiKey=" + apiKey);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-
-        int startIndex = ((params.getPage() - 1) * 10) + 1;
-
-        Map<String, String> uriVariables = Map.of("key", apiKey, "searchId", searchId, "query", params.getQuery(),
-                "outputFormat", "json");
-
-        String retVal = "";
-        try {
-            ResponseEntity<String> re = restTemplate.exchange(SEARCH_ENDPOINT, HttpMethod.GET, entity, String.class,
-                    uriVariables);
-            retVal = re.getBody();
-        } catch (HttpClientErrorException e) {
-            retVal = "{\"error\": \"401: Unauthorized\"}";
-        }
-        logger.info("from GoogleSearchService.getJSON: " + retVal);
-        return retVal;
-    }
+    public static final String SEARCH_ENDPOINT = "https://www.googleapis.com/customsearch/v1?key={key}&cx={searchId}&q={query}&alt={outputFormat}";
 
     public String performSearch(String searchQuery, String authorization) throws SearchQuotaExceededException {
 
@@ -119,23 +94,32 @@ public class GoogleSearchService {
         String userToken = you.getApiToken();
         String result = null;
 
-        if (userToken == null || userToken.equals("") || userToken.equals("invalid token")) {
-            decrementGlobalApiSearches();
-        } else {
+        if (isValidApiToken(userToken)) {
             apiToken = userToken;
             decrementSearchesForUser(you);
+
+        } else {
+            decrementGlobalApiSearches();
         }
 
         SearchParameters sp = new SearchParameters();
         sp.setQuery(searchQuery);
         sp.setPage(1);
         logger.info("sp={} apiToken={}", sp, apiToken);
-        result = getJSON(sp, userToken);
+        try {
+            result = googleSearchServiceHelper.getJSON(sp, userToken);
+        } catch (HttpClientErrorException e) {
+            return "{\"error\": \"401: Unauthorized\"}";
+        }
 
         saveToSearchRepository(searchQuery);
 
         logger.info("result={}", result);
         return result;
+    }
+
+    public static boolean isValidApiToken(String token) {
+        return (token != null && !(token.equals("")) && !(token.equals("invalid token")));
     }
 
     public void decrementSearchesForUser(AppUser you) throws SearchQuotaExceededException {

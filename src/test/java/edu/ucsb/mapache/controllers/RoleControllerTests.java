@@ -7,7 +7,7 @@ import edu.ucsb.mapache.entities.Admin;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.repositories.AdminRepository;
 import edu.ucsb.mapache.repositories.AppUserRepository;
-import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class RoleControllerTests {
   @MockBean
   AuthControllerAdvice mockAuthControllerAdvice;
   @MockBean
-  GoogleSearchService mockGoogleSearchService;
+  GoogleSearchServiceHelper mockGoogleSearchServiceHelper;
 
   @Test
   public void test_get_users_unauthorizedIfNotAdmin() throws Exception {
@@ -172,7 +172,7 @@ public class RoleControllerTests {
 
   @Test
   public void test_addApiKey_success() throws Exception {
-    when(mockGoogleSearchService.getJSON( any(), anyString()  )).thenReturn("");
+    when(mockGoogleSearchServiceHelper.getJSON( any(), anyString()  )).thenReturn("");
     
     AppUser myUser = new AppUser();
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(myUser);
@@ -190,7 +190,7 @@ public class RoleControllerTests {
   @Test
   public void test_addApiKey_failure() throws Exception {
     String errorString = "{\"error\": \"401: Unauthorized\"}";
-    when(mockGoogleSearchService.getJSON( any(), anyString()  )).thenReturn(errorString);
+    when(mockGoogleSearchServiceHelper.getJSON( any(), anyString()  )).thenReturn(errorString);
     AppUser myUser = new AppUser();
     when(mockAuthControllerAdvice.getUser(anyString())).thenReturn(myUser);
     String sampleAPIToken = "invalid token"; 

@@ -26,6 +26,7 @@ import edu.ucsb.mapache.google.Queries;
 import edu.ucsb.mapache.google.SearchResult;
 import edu.ucsb.mapache.google.RequestItem;
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 
@@ -54,7 +55,7 @@ public class SlackSlashCommandController {
 
 
     @Autowired
-    GoogleSearchService googleSearchService;
+    GoogleSearchServiceHelper googleSearchServiceHelper;
 
     @Autowired
     TeamEmailListService teamEmailListService;
@@ -196,7 +197,7 @@ public class SlackSlashCommandController {
 
         sp.setQuery(attachments);
         sp.setPage(1);
-        String body = googleSearchService.getJSON(sp,apiToken);
+        String body = googleSearchServiceHelper.getJSON(sp,apiToken);
 
         SearchResult searchResult = SearchResult.fromJSON(body);
         logger.info("searchResult = {}", searchResult);

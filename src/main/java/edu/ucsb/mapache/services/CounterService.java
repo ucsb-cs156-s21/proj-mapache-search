@@ -47,6 +47,7 @@ public class CounterService {
      */
 
     public long hoursDiff(java.util.Date firstDate, java.util.Date secondDate) {
+        logger.info("firstDate={} secondDate={}",firstDate,secondDate);
         long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
         long diff = TimeUnit.HOURS.convert(diffInMillies, TimeUnit.MILLISECONDS);
         return diff;
