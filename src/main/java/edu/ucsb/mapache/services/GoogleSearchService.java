@@ -38,6 +38,7 @@ public class GoogleSearchService {
 
     public static class SearchQuotaExceededException extends Exception {
         private static final long serialVersionUID = 1L;
+
         public SearchQuotaExceededException(String msg) {
             super(msg);
         }
@@ -47,6 +48,8 @@ public class GoogleSearchService {
     private String searchId = "001539284272632380888:kn5n6ubsr7x";
     public final static int SEARCH_LIMIT = 100;
 
+    @Autowired
+    private NowService nowService;
 
     @Autowired
     private AppUserRepository appUserRepository;
@@ -59,6 +62,10 @@ public class GoogleSearchService {
 
     @Autowired
     private CounterRepository counterRepository;
+
+    @Autowired
+    private CounterService counterService;
+
 
     @Value("${app.namespace}")
     private String namespace;
@@ -105,21 +112,20 @@ public class GoogleSearchService {
         return retVal;
     }
 
-    public String performSearch(String searchQuery, String authorization) 
-    throws SearchQuotaExceededException {
+    public String performSearch(String searchQuery, String authorization) throws SearchQuotaExceededException {
 
         AppUser you = getCurrentUser(authorization);
         String apiToken = globalApiToken;
         String userToken = you.getApiToken();
         String result = null;
 
-        if ( userToken==null || userToken.equals("") || userToken.equals("invalid token")) {            
+        if (userToken == null || userToken.equals("") || userToken.equals("invalid token")) {
             decrementGlobalApiSearches();
         } else {
             apiToken = userToken;
-            decrementSearchesForUser(you); 
+            decrementSearchesForUser(you);
         }
-         
+
         SearchParameters sp = new SearchParameters();
         sp.setQuery(searchQuery);
         sp.setPage(1);
@@ -132,33 +138,31 @@ public class GoogleSearchService {
         return result;
     }
 
-    public int remainingSearches(AppUser you) {
-        return you.getSearchRemain();
-    }
-
     public void decrementSearchesForUser(AppUser you) throws SearchQuotaExceededException {
 
         long lastUpdate = you.getTime();
-        long currentTime = (long) (new java.util.Date().getTime());
-        if ( shouldReset(lastUpdate, currentTime)) {
+        long currentTime = nowService.currentTime();
+        if (shouldReset(lastUpdate, currentTime)) {
             you.setSearchRemain(SEARCH_LIMIT);
             you.setTime(currentTime);
         }
-        you.decrSearchRemain();
-        if (remainingSearches(you) <= 0) {
-            throw new SearchQuotaExceededException("Quota exceeded for user"); 
+        int searchesRemaining = you.getSearchRemain();
+        if (searchesRemaining > 0) {
+            you.decrSearchRemain();
+            appUserRepository.save(you);
         }
-        appUserRepository.save(you);
+        if (you.getSearchRemain() <= 0) {
+            throw new SearchQuotaExceededException("Quota exceeded for user");
+        }
     }
 
     public void decrementGlobalApiSearches() throws SearchQuotaExceededException {
         String key = "globalGoogleSearchApiTokenUsesToday";
-        Counter c = Counter.resetOrDecrement(counterRepository, key, 100, 24);
-        if (c.getValue()<=0) {
+        Counter c = counterService.resetOrDecrement(key, 100, 24);
+        if (c.getValue() <= 0) {
             throw new SearchQuotaExceededException("Global quota exceeded");
         }
     }
-
 
     public void saveToSearchRepository(String searchQuery) {
         Search s;
@@ -176,10 +180,10 @@ public class GoogleSearchService {
     public AppUser getCurrentUser(String authorization) {
         DecodedJWT jwt = getJWT(authorization);
         Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
+        if (customClaims == null)
+            return null;
         String email = (String) customClaims.get("email");
-        logger.info("email={}", email);
         List<AppUser> users = appUserRepository.findByEmail(email);// obtain email of current user
-        logger.info("user={}", users);
         AppUser you = null;
         if (users.isEmpty()) {
             you = new AppUser();
@@ -188,7 +192,6 @@ public class GoogleSearchService {
             String lastName = (String) customClaims.get("family_name");
             you.setFirstName(firstName);
             you.setLastName(lastName);
-
             appUserRepository.save(you);
         } else {
             you = users.get(0);

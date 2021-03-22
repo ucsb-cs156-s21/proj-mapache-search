@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import edu.ucsb.mapache.entities.Counter;
 import edu.ucsb.mapache.repositories.CounterRepository;
+import edu.ucsb.mapache.services.CounterService;
 import edu.ucsb.mapache.services.GoogleSearchService;
 
 // https://reflectoring.io/spring-boot-execute-on-startup/
@@ -21,7 +22,7 @@ public class StartupListener implements ApplicationListener<ApplicationReadyEven
     private Logger logger = LoggerFactory.getLogger(StartupListener.class);
 
     @Autowired
-    CounterRepository counterRepository;
+    CounterService counterService;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
@@ -31,8 +32,8 @@ public class StartupListener implements ApplicationListener<ApplicationReadyEven
 
     public void initializeCounters() {
         int limit = GoogleSearchService.SEARCH_LIMIT;
-        Counter.initializeCounter(counterRepository, "globalGoogleSearchApiTokenUsesToday",limit);
-        Counter.resetIfNeeded(counterRepository, "globalGoogleSearchApiTokenUsesToday", limit, 24);
+        counterService.initializeCounter("globalGoogleSearchApiTokenUsesToday",limit);
+        counterService.resetIfNeeded("globalGoogleSearchApiTokenUsesToday", limit, 24);
     }
 
 }
