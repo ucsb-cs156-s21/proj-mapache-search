@@ -191,9 +191,8 @@ public class SlackSlashCommandControllerTests {
         assertEquals("No results found!", result.getAttachments()[0].getText());
     }
 
-    // WIP unable to test IOexception currently
     @Test
-    public void test_googleSearch_1() throws Exception {
+    public void test_googleSearch_search_google() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
         Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
         String retval = Files.readString(jsonPath);
@@ -209,7 +208,7 @@ public class SlackSlashCommandControllerTests {
     // testing google search
 
     @Test
-    public void test_googleSearch_2() throws Exception {
+    public void test_googleSearch_placeholder_google() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
@@ -220,7 +219,7 @@ public class SlackSlashCommandControllerTests {
     }
 
     @Test
-    public void test_googleSearch_3() throws Exception {
+    public void test_googleSearch_search_placeholder() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 
@@ -233,7 +232,7 @@ public class SlackSlashCommandControllerTests {
     }
 
     @Test
-    public void test_googleSearch_4() throws Exception {
+    public void test_googleSearch_placeholder_placeholder() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
