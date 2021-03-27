@@ -60,12 +60,7 @@ public class SearchResult {
      */
     public String toJSON() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        // try {
         return objectMapper.writeValueAsString(this);
-        // } catch (JsonProcessingException jpe) {
-        //     logger.error("JsonProcessingException: ", jpe);
-        //     return "";
-        // }
     }
 
     /**

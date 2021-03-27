@@ -186,7 +186,6 @@ public class CounterServiceTests {
         Counter cExpected = new Counter("foo", 99);
         cExpected.setLastReset(lessThanADayAgo);
         assertEquals(cExpected, cReturned);
-        // assertEquals(cExpected, savedCounter);
     }
 
     @Test
