@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import lombok.Data;
 
 @Entity
+@Data
 public class AppUser {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,10 @@ public class AppUser {
   private int searchRemain=100;
   @Column(nullable = false)
   private long time;
+  // Added below instance variable to associate custom API token w/ an AppUser
+  //default is set to "invalid token"
+  @Column(nullable = true)
+  private String apiToken = "invalid token";
 
   public AppUser() {
     time=0;
@@ -35,74 +41,14 @@ public class AppUser {
     this.lastName = lastName;
   }
 
-  public String getFirstName() {
-    return this.firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return this.lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public int getSearchRemain(){
-    return searchRemain;
-  }
-
-  public void setSearchRemain(int searchRemain){
-    this.searchRemain=searchRemain;
-  }
 
   public int decrSearchRemain(){
       this.searchRemain--;
       return this.searchRemain;
   }
 
-  public long getTime(){
-    return time;
+  public void clearApiToken() {
+    this.apiToken = "invalid token";
   }
 
-  public void setTime(long time){
-    this.time=time;
-  }
-  @Override
-  public String toString() {
-    return String.format("AppUser[ id=%d, email=%s, firstName=%s, lastName=%s, searchRemain=%d]", id, email, firstName, lastName, searchRemain);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    AppUser user = (AppUser) o;
-    EqualsBuilder builder = new EqualsBuilder();
-    builder.append(id, user.getId()).append(email, user.getEmail()).append(firstName, user.getFirstName())
-        .append(lastName, user.getLastName()).append(searchRemain,user.getSearchRemain());
-
-    return builder.isEquals();
-  }
 }
