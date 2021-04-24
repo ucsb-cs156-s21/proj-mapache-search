@@ -133,4 +133,21 @@ public class SearchResultTests {
         assertFalse(searchResult0.equals(searchResult5));
     }
 
+    @Test
+    public void test_empty() throws Exception {        
+        SearchResult sr = SearchResult.empty();
+        assertEquals("empty",sr.getKind());
+        assertEquals(new Url("",""), sr.getUrl());
+        assertEquals(new ArrayList<Item>(), sr.getItems());
+        assertEquals(new Queries(), sr.getQueries());
+    }
+
+    @Test
+    public void test_toJSON() throws Exception {        
+        SearchResult sr = SearchResult.empty();
+        String actual = sr.toJSON();
+        String expected = "{\"kind\":\"empty\",\"url\":{\"type\":\"\",\"template\":\"\"},\"queries\":{\"request\":null,\"nextPage\":null},\"items\":[]}";
+        assertEquals(expected, actual);
+    }
+
 }

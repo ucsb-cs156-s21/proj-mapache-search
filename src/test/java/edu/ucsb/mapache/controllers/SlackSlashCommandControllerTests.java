@@ -1,7 +1,5 @@
 package edu.ucsb.mapache.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,405 +19,250 @@ import edu.ucsb.mapache.repositories.ChannelRepository;
 
 import org.springframework.http.MediaType;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.nio.file.Path;
 
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
+import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 
-import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 
 @WebMvcTest(value = SlackSlashCommandController.class)
 @Import(SecurityConfig.class)
 public class SlackSlashCommandControllerTests {
-  
-  @Autowired
-  private MockMvc mockMvc;
-  
-  @Autowired
-  SlackSlashCommandController slackSlashCommandController;
 
-  @MockBean
-  ChannelRepository channelRepository;
+    @Autowired
+    private MockMvc mockMvc;
 
+    @Autowired
+    SlackSlashCommandController slackSlashCommandController;
 
-  @MockBean
-  GoogleSearchService googleSearchService;
+    @MockBean
+    NowService nowService;
 
-  @MockBean
-  TeamEmailListService teamEmailListService;
+    @MockBean
+    ChannelRepository channelRepository;
 
-  private final String testURL="/api/public/slash-command";
+    @MockBean
+    GoogleSearchServiceHelper googleSearchServiceHelper;
 
-  @Test
-  public void test_postSlashMessage() throws Exception { 
-    // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @MockBean
+    TeamEmailListService teamEmailListService;
 
-                
-                .param("token", slackSlashCommandController.getSlackToken())
+    private final String testURL = "/api/public/slash-command";
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "value")
-        .param("text", "value")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_badToken() throws Exception {
+    @Test
+    public void test_postSlashMessage() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "value").param("text", "value").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-                
+    @Test
+    public void test_badToken() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", "BADTOKEN")
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "value").param("text", "value").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "value")
-        .param("text", "value")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_emptyCommand() throws Exception {
+    @Test
+    public void test_emptyCommand() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-
-                
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "value").param("text", "").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "value")
-        .param("text", "")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_emptyCommand2() throws Exception {
+    @Test
+    public void test_emptyCommand2() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-
-                
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "value").param("text", "             ").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "value")
-        .param("text", "             ")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_statusCommand() throws Exception {
+    @Test
+    public void test_statusCommand() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "status").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "status")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_timeCommand() throws Exception {
+    @Test
+    public void test_timeCommand() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        java.util.Date now = sdf.parse("06/24/2017");
+
+        when(nowService.now()).thenReturn(now);
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "time").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "time")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_debugCommand() throws Exception {
+    @Test
+    public void test_debugCommand() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "debug").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "debug")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-
-// google search test below
-  @Test
-  public void test_googleSearch() throws Exception {
+    // google search test below
+    @Test
+    public void test_googleSearch() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
-    String retval = Files.readString(jsonPath);
-    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+        Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+        String retval = Files.readString(jsonPath);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "search google 0").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "search google 0")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_googleSearchNotSearchGoogle() throws Exception {
+    @Test
+    public void test_googleSearchNotSearchGoogle() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "notSeach notGoogle").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "notSeach notGoogle")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
+    @Test
+    public void test_googleSearchMultipleArguments() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+        Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+        String retval = Files.readString(jsonPath);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken()).param("team_id", "value")
+                .param("team_domain", "value").param("channel_id", "value").param("channel_name", "value")
+                .param("user_id", "value").param("user_name", "value").param("command", "/mapache")
+                .param("text", "search google two words").param("response_url", "value")).andExpect(status().is(200));
+    }
 
-  @Test
-  public void test_googleSearchMultipleArguments() throws Exception {
+    @Test
+    public void test_googleSearch_empty_items() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
-    String retval = Files.readString(jsonPath);
-    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-        .param("token", slackSlashCommandController.getSlackToken())
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "search google two words")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
+        Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+        String retval = Files.readString(jsonPath);
+        int index_trim = retval.indexOf("\"items\"");
+        retval = retval.substring(0, index_trim) + "\"items\": []}";
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
+        SlackSlashCommandParams params = new SlackSlashCommandParams();
+        params.setText("search google test");
+        RichMessage result = slackSlashCommandController.googleSearch(params);
+        assertEquals("No results found!", result.getAttachments()[0].getText());
+    }
 
-  @Test
-  public void test_googleSearch_empty_items() throws Exception {
+    @Test
+    public void test_googleSearch_search_google() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
-    String retval = Files.readString(jsonPath);
-    int index_trim = retval.indexOf("\"items\"");
-    retval = retval.substring(0, index_trim) + "\"items\": []}";
-    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
-    SlackSlashCommandParams params = new SlackSlashCommandParams();
-    params.setText("search google test");
-    RichMessage result = slackSlashCommandController.googleSearch(params);
-    assertEquals("No results found!", result.getAttachments()[0].getText());
-  }
-  // WIP unable to test IOexception currently
-  @Test
-  public void test_googleSearch_1() throws Exception {
-        // content type: https://api.slack.com/interactivity/slash-commands
-    Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
-    String retval = Files.readString(jsonPath);
-    when(googleSearchService.getJSON(any(), any())).thenReturn(retval);
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+        Path jsonPath = Paths.get("src/test/java/edu/ucsb/mapache/google/sample.json");
+        String retval = Files.readString(jsonPath);
+        when(googleSearchServiceHelper.getJSON(any(), any())).thenReturn(retval);
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "search google").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "search google")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
+    // testing google search
 
-  //testing google search
-
-  @Test
-  public void test_googleSearch_2() throws Exception {
+    @Test
+    public void test_googleSearch_placeholder_google() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "placeholder google").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "placeholder google")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_googleSearch_3() throws Exception {
+    @Test
+    public void test_googleSearch_search_placeholder() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
-                .param("token", slackSlashCommandController.getSlackToken())
-
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "search placeholder")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_googleSearch_4() throws Exception {
-        // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                
-                .param("token", slackSlashCommandController.getSlackToken())
-
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "placeholder placeholder")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-
-  @Test
-  public void test_teamlistCommand() throws Exception {
-    // fixes null error
-    when(teamEmailListService.getEmailsStringFromTeamname("team")).thenReturn("email");
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 
                 .param("token", slackSlashCommandController.getSlackToken())
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "teamlist team")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
-  @Test
-  public void test_teamlistCommand_emptyTeamName() throws Exception {
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "search placeholder").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void test_googleSearch_placeholder_placeholder() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
-    mockMvc
-        .perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "placeholder placeholder").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
-        .param("team_id", "value")
-        .param("team_domain", "value")
-        .param("channel_id", "value")
-        .param("channel_name", "value")
-        .param("user_id", "value")
-        .param("user_name", "value")
-        .param("command", "/mapache")
-        .param("text", "teamlist")
-        .param("response_url", "value")
-        )
-        .andExpect(status().is(200));
-  }
+    @Test
+    public void test_teamlistCommand() throws Exception {
+        // fixes null error
+        when(teamEmailListService.getEmailsStringFromTeamname("team")).thenReturn("email");
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "teamlist team").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void test_teamlistCommand_emptyTeamName() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "teamlist").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
 
 }
-

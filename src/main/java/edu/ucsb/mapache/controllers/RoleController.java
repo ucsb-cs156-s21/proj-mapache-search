@@ -24,6 +24,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping; 
+
+import edu.ucsb.mapache.models.SearchParameters;
+import org.springframework.beans.factory.annotation.Value;
+import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 
 @RestController
 @RequestMapping("/api")
@@ -38,6 +44,9 @@ public class RoleController {
 
   @Autowired
   private AuthControllerAdvice authControllerAdvice;
+
+  @Autowired
+  private GoogleSearchServiceHelper googleSearchServiceHelper;
 
   private ObjectMapper mapper = new ObjectMapper();
 
@@ -99,5 +108,42 @@ public class RoleController {
     response.put("role", role);
     String body = mapper.writeValueAsString(response);
     return ResponseEntity.ok().body(body);
+  }
+
+  // Added two functions below to modify DB to add API Token field
+  
+  @GetMapping("/apiKey")
+  public ResponseEntity<String> getCustomAPIToken(@RequestHeader("Authorization") String authorization)
+      throws JsonProcessingException {
+        AppUser user = authControllerAdvice.getUser(authorization);
+        String userToken = user.getApiToken();
+        Map<String, String> response = new HashMap<>();
+        response.put("token", userToken);
+        String body = mapper.writeValueAsString(response);
+        return ResponseEntity.ok().body(body);
+        
+  }
+
+  //Sets API Token
+  @PutMapping(value = "/addApiKey")
+  public ResponseEntity<String> setCustomApiToken(@RequestHeader("Authorization") String authorization, 
+  @RequestBody @Valid String token) 
+      throws JsonProcessingException {
+        AppUser user = authControllerAdvice.getUser(authorization);
+        SearchParameters sp = new SearchParameters();
+        sp.setQuery("empty");
+        sp.setPage(1);
+        
+        String i = googleSearchServiceHelper.getJSON(sp, token);
+        if (i == "{\"error\": \"401: Unauthorized\"}") {
+          user.clearApiToken();
+          appUserRepository.save(user);
+          return new ResponseEntity<> (HttpStatus.NOT_ACCEPTABLE);
+        }
+        else {
+          user.setApiToken(token);
+          appUserRepository.save(user);
+        }
+        return new ResponseEntity<> (HttpStatus.NO_CONTENT);
   }
 }

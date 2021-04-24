@@ -1,5 +1,6 @@
 package edu.ucsb.mapache.google;
-import java.util.Objects;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,7 +10,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SearchResult{
+import lombok.Data;
+
+@Data
+public class SearchResult {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchResult.class);
 
@@ -18,7 +22,6 @@ public class SearchResult{
     private Queries queries;
     // skipped over context, search, spelling
     private List<Item> items;
-
 
     public SearchResult() {
     }
@@ -30,63 +33,10 @@ public class SearchResult{
         this.items = items;
     }
 
-    public String getKind() {
-        return this.kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    public Url getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(Url url) {
-        this.url = url;
-    }
-
-    public Queries getQueries() {
-        return this.queries;
-    }
-
-    public void setQueries(Queries queries) {
-        this.queries = queries;
-    }
-
-    public List<Item> getItems() {
-        return this.items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof SearchResult)) {
-            return false;
-        }
-        SearchResult searchResult = (SearchResult) o;
-        return Objects.equals(kind, searchResult.kind) && Objects.equals(url, searchResult.url) && Objects.equals(queries, searchResult.queries) && Objects.equals(items, searchResult.items);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " kind='" + getKind() + "'" +
-            ", url='" + getUrl() + "'" +
-            ", queries='" + getQueries() + "'" +
-            ", items='" + getItems() + "'" +
-            "}";
-    }
-
     /**
      * Create a SearchResult object from json representation
      * 
-     * @param json String of json returned by Google Search API 
+     * @param json String of json returned by Google Search API
      * @return a new SearchResult object
      */
     public static SearchResult fromJSON(String json) {
@@ -99,6 +49,30 @@ public class SearchResult{
             logger.error("JsonProcessingException:" + jpe);
             return null;
         }
-        
+
+    }
+
+    /**
+     * Create a SearchResult object from json representation
+     * 
+     * @param json String of json returned by Google Search API
+     * @return a new SearchResult object
+     */
+    public String toJSON() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(this);
+    }
+
+    /**
+     * An empty search result
+     */
+
+    public static SearchResult empty() {
+        SearchResult sr = new SearchResult();
+        sr.setKind("empty");
+        sr.setUrl(new Url("", ""));
+        sr.setItems(new ArrayList<Item>());
+        sr.setQueries(new Queries());
+        return sr;
     }
 }

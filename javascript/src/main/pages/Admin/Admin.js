@@ -54,6 +54,7 @@ const Admin = () => {
             <th>Last Name</th>
             <th>Role</th>
             <th>Change Role</th>
+            <th>Google API Search Token</th>
           </tr>
         </thead>
         <tbody>
@@ -82,6 +83,7 @@ const Admin = () => {
                       }>{buttonText}</Button>
                     }
                   </td>
+                  <td>{user.apiToken}</td>
                 </tr>
               );
             })
