@@ -1,6 +1,6 @@
 # Mapache Search
 
-[![codecov](https://codecov.io/gh/ucsb-cs156-f20/proj-mapache-search/branch/main/graph/badge.svg)](https://codecov.io/gh/ucsb-cs156-f20/proj-mapache-search)
+[![codecov](https://codecov.io/gh/ucsb-cs156-s21/proj-mapache-search/branch/main/graph/badge.svg?token=1Pm4UopT0K)](https://codecov.io/gh/ucsb-cs156-s21/proj-mapache-search)
 
 ## Purpose
 
