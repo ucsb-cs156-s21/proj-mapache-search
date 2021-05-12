@@ -41,7 +41,12 @@ const StudentTable = ({students,deleteStudent}) => {
         formatter: (_cell, row) => renderDeleteButton(row.id)
     });
     return (
-        <BootstrapTable keyField='id' data={students} columns={columns} />
+        <BootstrapTable 
+   bootstrap4={true}
+   keyField='id' 
+   data={channels} 
+   columns={columns} 
+/>
     );
 };
 export default StudentTable;
