@@ -1,12 +1,12 @@
-import React from 'react';
+// import React from 'react';
 
-import About from "main/pages/About/About";
+// import About from "main/pages/About/About";
 
-export default {
-  title: 'pages/About/About',
-  component: About
-};
+// export default {
+//   title: 'pages/About/About',
+//   component: About
+// };
 
-const Template = () => <About />;
+// const Template = () => <About />;
 
-export const Empty = Template.bind({});
+// export const Empty = Template.bind({});
