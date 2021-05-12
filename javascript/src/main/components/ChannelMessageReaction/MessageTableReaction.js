@@ -27,7 +27,7 @@ export default ({ messages=[],reaction }) => {
         <BootstrapTable 
    bootstrap4={true}
    keyField='id' 
-   data={channels} 
+   data={messages} 
    columns={columns} 
 />
     )
