@@ -9,11 +9,14 @@ import NavbarHover from "../Nav/NavbarHover";
 
 export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar className="navbar-custom" expand="lg" bg="dark" variant="dark">
       <Navbar.Toggle />
       <Navbar.Collapse>
         <LinkContainer to="">
-          <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
+        <Navbar.Brand data-testid="brand">
+          <p className="brand"><img className="brand" src={'https://user-images.githubusercontent.com/34492835/117874902-6d8fbc00-b256-11eb-8557-60c7b29b0809.png'}  alt="Mapache Search icon"  /></p>
+          <p className="brand">Mapache Search</p>
+          </Navbar.Brand>
         </LinkContainer>
         <Nav>
           {(isMember || isAdmin) &&
