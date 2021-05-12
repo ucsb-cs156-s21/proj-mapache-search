@@ -82,11 +82,12 @@ const Search = () => {
                         <Form.Control type="text" placeholder="type your query" onChange={(e) => setQuery({
                             ...query,
                             searchQuery: e.target.value
+                            
                         })} />
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Col sm={{ span: 10, offset: 2 }}>
+                    <Col sm={{ span: 10, offset: 6 }}>
                         <Button type="submit">Submit</Button>
                     </Col>
                 </Form.Group>
