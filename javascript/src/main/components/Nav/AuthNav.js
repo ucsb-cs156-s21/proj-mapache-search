@@ -9,7 +9,7 @@ const AuthNav = () => {
     const { user } = useAuth0();
 
     return (
-        <>
+        <div className="py-3 text-center">
             {user ?
                 <>
                     <LinkContainer to="/profile">
@@ -29,7 +29,7 @@ const AuthNav = () => {
             :
                 <LoginButton />
             }
-        </>
+        </div>
     );
 };
 

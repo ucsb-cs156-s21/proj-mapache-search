@@ -22,7 +22,7 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
 
         <AuthNav />
 
-        <Accordion className="w-100 px-3">
+        <Accordion className="w-100 p-3">
           <AccordionItem title="Channels" items={channelPages} />
           <AccordionItem title="Admin" items={adminPages} />
           <AccordionItem title="Slack Search" items={searchPages} authorization={(isMember || isAdmin)} />
