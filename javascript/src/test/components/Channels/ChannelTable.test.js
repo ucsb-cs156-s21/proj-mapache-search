@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import ChannelTable from "main/components/Channels/ChannelTable";
-import userEvent from "@testing-library/user-event";
 
 describe("ChannelTable tests", () => {
 
