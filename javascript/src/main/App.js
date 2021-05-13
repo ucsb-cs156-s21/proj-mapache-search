@@ -30,7 +30,7 @@ import SearchedTerms from "main/pages/Admin/SearchedTerms";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App d-flex">
       <AppNavbar />
       <Container className="flex-grow-1 mt-5">
         <Switch>
@@ -56,8 +56,8 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
         </Switch>
+        <AppFooter />
       </Container>
-      <AppFooter />
     </div>
   );
 }

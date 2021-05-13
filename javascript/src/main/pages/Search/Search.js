@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
 import SearchCard from "main/components/SearchCard/SearchCard";
+import { useEffect } from "react";
 
 
 const Search = () => {
@@ -48,6 +49,13 @@ const Search = () => {
         }
     };
 
+    useEffect(() => {
+        async function getQuota() {
+            const quotaInfo = await fetchQuota();
+            setQuota(quotaInfo.quota);
+        };
+        getQuota();
+    }, []);
     
     const [query, setQuery] = useState(emptyQuery);
     const [results, setResults] = useState(emptyResults);
