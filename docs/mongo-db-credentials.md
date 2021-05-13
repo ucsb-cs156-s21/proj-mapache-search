@@ -29,6 +29,6 @@ To set the value of  `spring.data.mongodb.uri` in `temp-credentials.txt`:
    ```
 
 
-2. Copy and paste that value (the new string with the  `<username>`, `<password>` and `<dbname>` plugged in) as the value of `app.google.search.apiToken`
+2. Copy and paste that value (the new string with the  `<username>`, `<password>` and `<dbname>` plugged in) as the value of `spring.data.mongodb.uri`
 
-3. This value will eventually go into the value of `app.google.search.apiToken` in both `secrets-localhost.properties` and `secrets-heroku.properties`. 
+3. This value will eventually go into the value of `spring.data.mongodb.uri` in both `secrets-localhost.properties` and `secrets-heroku.properties`. 
