@@ -14,7 +14,7 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
       <Navbar.Collapse>
         <LinkContainer to="">
         <Navbar.Brand data-testid="brand">
-          <p className="brand"><img className="brand" src={'navbarlogo.png'}  alt="Mapache Search icon"  /></p>
+          <p className="brand"><img className="brand" src={'/navbarlogo.png'}  alt="Mapache Search icon"  /></p>
           <p className="brand">Mapache Search</p>
           </Navbar.Brand>
         </LinkContainer>
