@@ -12,13 +12,15 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
   return (
     <Navbar className="navbar-custom" expand="lg" bg="dark" variant="dark">
       <Navbar.Toggle />
-      <Navbar.Collapse className="navbar-content flex-column pt-5">
+      <Navbar.Collapse className="navbar-content flex-column py-5">
         <LinkContainer to="">
-          <Navbar.Brand data-testid="brand" className="brand text-center">
+          <Navbar.Brand data-testid="brand" className="brand text-center m-0">
             <img src='/navbarlogo.png' alt="Mapache Search icon" className="mx-auto" />
             <h3 className="text-center py-3">Mapache Search</h3>
           </Navbar.Brand>
         </LinkContainer>
+
+        <AuthNav />
 
         <Accordion className="w-100 px-3">
           <AccordionItem title="Channels" items={channelPages} />
@@ -29,7 +31,7 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
         </Accordion>
 
         <Navbar.Collapse className="justify-content-end">
-          <AuthNav />
+          
         </Navbar.Collapse>
       </Navbar.Collapse>
     </Navbar>
