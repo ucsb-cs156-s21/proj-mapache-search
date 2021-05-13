@@ -11,7 +11,7 @@ export default ({ messages=[],reaction }) => {
     }
     const columns = [{
         dataField: 'user',
-        text: 'User'
+        text: 'Message Author'
     },{
         dataField: 'text',
         text: 'Contents'
