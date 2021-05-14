@@ -1,5 +1,5 @@
 import React from "react";
-import { Accordion, Nav, Navbar } from "react-bootstrap";
+import { Accordion, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import AuthNav from "main/components/Nav/AuthNav";
@@ -9,7 +9,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
 import AccordionItem from "./AccordionItem";
 
-export function NavbarContents({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
+export function NavbarContents({ isAdmin = false, isMember = false, channelPages, adminPages, searchPages, dataPages }) {
   return (
     <>
       <AuthNav />
@@ -25,14 +25,14 @@ export function NavbarContents({ isAdmin, isMember, channelPages, adminPages, se
   );
 }
 
-function AppNavbar() {
+export default function AppNavbar() {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: roleInfo } = useSWR(
     ["/api/myRole", getToken],
     fetchWithToken
   );
-  const isAdmin = roleInfo ? roleInfo.role.toLowerCase() === "admin" : false;
-  const isMember = roleInfo ? roleInfo.role.toLowerCase() === "member" : false;
+  const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
+  const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
 
   const channelPages = [
     { link: "/member/channels", name: "List Channels" },
@@ -45,7 +45,6 @@ function AppNavbar() {
     {link:"/admin/students", name:"Manage Students",},
     {link:"/admin/searchInfo", name:"Search Information",},
     {link:"/admin/searchedTerms", name:"Searched Terms",},
-
   ];
 
   const searchPages = [
@@ -99,5 +98,3 @@ function AppNavbar() {
     </>
   );
 }
-
-export default AppNavbar;
