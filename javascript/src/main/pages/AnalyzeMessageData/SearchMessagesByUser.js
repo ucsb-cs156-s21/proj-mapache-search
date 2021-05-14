@@ -14,7 +14,8 @@ const SearchMessagesByUser = () => {
         setSearchUser(event.target.value);
     };
     
-    const handleSearchUserOnSubmit = () => {
+    const handleSearchUserOnSubmit = (event) => {
+        event.preventDefault();
         const url = `/api/members/messages/usersearch?searchUser=${searchUser}`;
         const options = {
             method: 'GET',
@@ -28,7 +29,7 @@ const SearchMessagesByUser = () => {
     return (
         <>
             <h1> Search Results </h1>
-            <Form>
+            <Form onSubmit={handleSearchUserOnSubmit}>
                 <Form.Group controlId="searchUser" onChange={handleSearchUserOnChange}>
                     <Form.Label>Search User</Form.Label>
                     <Form.Control type="text" placeholder="Enter Search User" />
