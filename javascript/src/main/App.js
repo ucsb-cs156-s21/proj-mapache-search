@@ -30,9 +30,9 @@ import SearchedTerms from "main/pages/Admin/SearchedTerms";
 
 function App() {
   return (
-    <div className="App d-flex">
+    <div className="App d-xl-flex">
       <AppNavbar />
-      <Container className="flex-grow-1 mt-5">
+      <Container className="mt-5 flex-grow-1">
         <Switch>
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/students" exact component={Students} authorizedRoles={["admin"]} />

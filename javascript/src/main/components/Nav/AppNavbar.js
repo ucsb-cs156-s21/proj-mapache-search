@@ -1,6 +1,7 @@
 import React from "react";
 import { Accordion, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 import AuthNav from "main/components/Nav/AuthNav";
 import useSWR from "swr";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -10,31 +11,17 @@ import AccordionItem from "./AccordionItem";
 
 export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
   return (
-    <Navbar className="navbar-custom" expand="lg" bg="dark" variant="dark">
-      <Navbar.Toggle />
-      <Navbar.Collapse className="navbar-content flex-column py-5">
-        <LinkContainer to="">
-          <Navbar.Brand data-testid="brand" className="brand text-center m-0">
-            <img src='/navbarlogo.png' alt="Mapache Search icon" className="mx-auto" />
-            <h3 className="text-center py-3">Mapache Search</h3>
-          </Navbar.Brand>
-        </LinkContainer>
+    <>
+      <AuthNav />
 
-        <AuthNav />
-
-        <Accordion className="w-100 p-3">
-          <AccordionItem title="Channels" items={channelPages} />
-          <AccordionItem title="Admin" items={adminPages} />
-          <AccordionItem title="Slack Search" items={searchPages} authorization={(isMember || isAdmin)} />
-          <AccordionItem title="Analyze Slack Data" items={dataPages} authorization={(isMember || isAdmin)} />
-          <AccordionItem title="Google Search" link="/member/search" authorization={(isMember || isAdmin)} />
-        </Accordion>
-
-        <Navbar.Collapse className="justify-content-end">
-          
-        </Navbar.Collapse>
-      </Navbar.Collapse>
-    </Navbar>
+      <Accordion className="w-100 p-3">
+        <AccordionItem title="Channels" items={channelPages} authorization={(isMember || isAdmin)} />
+        <AccordionItem title="Admin" items={adminPages} authorization={isAdmin} />
+        <AccordionItem title="Slack Search" items={searchPages} authorization={(isMember || isAdmin)} />
+        <AccordionItem title="Analyze Slack Data" items={dataPages} authorization={(isMember || isAdmin)} />
+        <AccordionItem title="Google Search" link="/member/search" authorization={(isMember || isAdmin)} />
+      </Accordion>
+    </>
   );
 }
 
@@ -72,7 +59,45 @@ function AppNavbar() {
     { link: "/member/analyzemessages/searchmessages", name: "Search Messages By User", },
   ];
 
-  return (<PureNavbar isAdmin={isAdmin} isMember={isMember} searchPages={searchPages} dataPages={dataPages} channelPages={channelPages} adminPages={adminPages} />);
+  return (
+    <>
+      <Navbar className="navbar-custom p-0 d-none d-xl-inline" expand="xl">
+        <Navbar.Collapse className="navbar-content flex-column py-5 bg-dark">
+          <LinkContainer to="">
+            <Navbar.Brand data-testid="brand" className="brand text-center m-0">
+              <img src='/navbarlogo.png' alt="Mapache Search icon" className="mx-auto" />
+              <h3 className="text-center py-3 text-light">Mapache Search</h3>
+            </Navbar.Brand>
+          </LinkContainer>
+
+          <PureNavbar
+            isAdmin={isAdmin}
+            isMember={isMember}
+            searchPages={searchPages}
+            dataPages={dataPages}
+            channelPages={channelPages}
+            adminPages={adminPages}
+          />
+        </Navbar.Collapse>
+      </Navbar>
+      <Navbar className="d-flex justify-content-start d-xl-none" expand="xl" bg="dark" variant="dark">
+        <Navbar.Toggle />
+        <Navbar.Brand>
+          <Link className="brand text-light px-3" to="/">Mapache Search</Link>
+        </Navbar.Brand>
+        <Navbar.Collapse className="flex-column bg-dark">
+          <PureNavbar
+            isAdmin={isAdmin}
+            isMember={isMember}
+            searchPages={searchPages}
+            dataPages={dataPages}
+            channelPages={channelPages}
+            adminPages={adminPages}
+          />
+        </Navbar.Collapse>
+      </Navbar>
+    </>
+  );
 }
 
 export default AppNavbar;
