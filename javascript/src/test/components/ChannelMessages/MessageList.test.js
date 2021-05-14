@@ -229,7 +229,7 @@ describe("MessageListView tests", () => {
         }
         const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
         const linkElement = getByText(/#help-jpa02/);
-        expect(linkElement.href).toEqual("http://localhost/member/channels/help-jpa02");
+        expect(linkElement.href).toEqual("http://localhost/member/listViewChannels/help-jpa02");
         
     });    
 
