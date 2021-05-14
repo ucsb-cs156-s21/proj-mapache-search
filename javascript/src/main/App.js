@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="App d-xl-flex">
       <AppNavbar />
-      <Container className="mt-5 flex-grow-1">
+      <Container className="mt-5" fluid="xl">
         <Switch>
           <AuthorizedRoute path="/admin" exact component={Admin} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/admin/students" exact component={Students} authorizedRoles={["admin"]} />
@@ -56,8 +56,8 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/" exact component={Home} />
         </Switch>
-        <AppFooter />
       </Container>
+      <AppFooter />
     </div>
   );
 }

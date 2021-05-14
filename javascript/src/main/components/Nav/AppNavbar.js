@@ -9,7 +9,7 @@ import { fetchWithToken } from "main/utils/fetch";
 import NavbarHover from "../Nav/NavbarHover";
 import AccordionItem from "./AccordionItem";
 
-export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
+export function NavbarContents({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
   return (
     <>
       <AuthNav />
@@ -61,7 +61,7 @@ function AppNavbar() {
 
   return (
     <>
-      <Navbar className="navbar-custom p-0 d-none d-xl-inline" expand="xl">
+      <Navbar className="navbar-custom p-0 d-none d-xl-inline flex-shrink-0" expand="xl">
         <Navbar.Collapse className="navbar-content flex-column py-5 bg-dark">
           <LinkContainer to="">
             <Navbar.Brand data-testid="brand" className="brand text-center m-0">
@@ -69,8 +69,7 @@ function AppNavbar() {
               <h3 className="text-center py-3 text-light">Mapache Search</h3>
             </Navbar.Brand>
           </LinkContainer>
-
-          <PureNavbar
+          <NavbarContents
             isAdmin={isAdmin}
             isMember={isMember}
             searchPages={searchPages}
@@ -80,13 +79,14 @@ function AppNavbar() {
           />
         </Navbar.Collapse>
       </Navbar>
+
       <Navbar className="d-flex justify-content-start d-xl-none" expand="xl" bg="dark" variant="dark">
         <Navbar.Toggle />
         <Navbar.Brand>
-          <Link className="brand text-light px-3" to="/">Mapache Search</Link>
+          <Link className="brand px-3 text-light" to="/">Mapache Search</Link>
         </Navbar.Brand>
-        <Navbar.Collapse className="flex-column bg-dark">
-          <PureNavbar
+        <Navbar.Collapse className="bg-dark">
+          <NavbarContents
             isAdmin={isAdmin}
             isMember={isMember}
             searchPages={searchPages}

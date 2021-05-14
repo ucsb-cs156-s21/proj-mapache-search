@@ -1,16 +1,15 @@
 import React from 'react';
 import { MemoryRouter } from "react-router-dom";
-
-import { PureNavbar } from "main/components/Nav/AppNavbar";
+import { NavbarContents } from "main/components/Nav/AppNavbar";
 
 export default {
   title: 'components/Nav/AppNavbar',
-  component: PureNavbar
+  component: NavbarContents
 };
 
 const Template = (args) => (
   <MemoryRouter>
-    <PureNavbar {...args} />
+    <NavbarContents {...args} />
   </MemoryRouter>
 );
 
