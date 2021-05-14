@@ -16,9 +16,8 @@ const AuthNav = () => {
               <img
                 src={user.picture}
                 alt="Profile"
-                className="rounded-circle d-inline-block"
+                className="rounded-circle d-inline-block mr-2"
                 width="36"
-                style={{ marginRight: 15 }}
               />
               <p className="text-light p-0 d-inline-block">{"Hello, " + user.name}</p>
             </div>

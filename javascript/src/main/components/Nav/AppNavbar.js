@@ -64,8 +64,8 @@ function AppNavbar() {
       <Navbar className="navbar-custom p-0 d-none d-xl-inline flex-shrink-0" expand="xl">
         <Navbar.Collapse className="navbar-content flex-column py-5 bg-dark">
           <LinkContainer to="">
-            <Navbar.Brand data-testid="brand" className="brand text-center m-0">
-              <img src='/navbarlogo.png' alt="Mapache Search icon" className="mx-auto" />
+            <Navbar.Brand data-testid="brand" className="text-center m-0">
+              <img src='/navbarlogo.png' alt="Mapache Search icon" className="mx-auto" width="60%" />
               <h3 className="text-center py-3 text-light">Mapache Search</h3>
             </Navbar.Brand>
           </LinkContainer>
