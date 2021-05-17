@@ -25,7 +25,7 @@ describe("AppFooter tests", () => {
     );
     expect(getByText(/GitHub/i).closest("a")).toHaveAttribute(
       "href",
-      "https://github.com/ucsb-cs156-s21/proj-ucsb-courses-search"
+      "https://github.com/ucsb-cs156-s21/proj-mapache-search"
     );
   });
 });
