@@ -61,6 +61,34 @@ public class MessagesControllerTests {
         }
 
         @Test
+        public void test_usersearch_messages_member() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByUser("springboot")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(false);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/usersearch?searchUser=springboot")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
+
+        @Test
+        public void test_usersearch_messages_admin() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByUser("springboot")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/usersearch?searchUser=springboot")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
+
+        @Test
         public void test_usersearch_messages_with_empty_string() throws Exception {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByUser("")).thenReturn(expectedMessages);
