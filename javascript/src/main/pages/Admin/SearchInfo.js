@@ -10,17 +10,26 @@ const SearchInfo = () => {
 
     const columns = [{
         dataField: 'firstName',
-        text: 'First Name'
+        text: 'First Name',
+        sort: true
     }, {
         dataField: 'lastName',
-        text: 'Last Name'
+        text: 'Last Name',
+        sort: true
     }, {
         dataField: 'searchRemain',
-        text: 'Search Remaining'
+        text: 'Search Remaining',
+        sort: true
     }, {
         dataField: 'email',
-        text: 'Email'
-    }];
+        text: 'Email',
+        sort: true
+    }, {
+        dataField: 'apiToken',
+        text: 'Google Search API Token',
+        sort: true
+    },
+    ];
 
     return (
         <>
@@ -29,7 +38,11 @@ const SearchInfo = () => {
                     <b>All Google Custom Search API Tokens Reset at 0:00 PST Everyday</b>
                 </font>
             </p>
-            <BootstrapTable keyField='id' data={SearchInfo || []} columns={columns} />
+            <BootstrapTable 
+                keyField='id' 
+                bootstrap4={true} 
+                data={SearchInfo || []} 
+                columns={columns} />
         </>
     );
 };
