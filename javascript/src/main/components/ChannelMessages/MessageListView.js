@@ -34,7 +34,7 @@ const formatBracketedText = (text) => {
                 text = text.replace(found[i], '<a href = ' + current + ' target = "_blank">' + current + '</a>')
             }else if (found[i].includes("|")){                                                                                          // channel links
                 links = current.split('|');
-                text = text.replace(found[i], '<a href = /member/channels/' + links[1] + '>#' + links[1] + '</a>')
+                text = text.replace(found[i], '<a href = /member/listViewChannels/' + links[1] + '>#' + links[1] + '</a>')
             }else if (found[i].includes("!")){                                                                                          // channel tags (ex: @channel)
                 text = text.replace(found[i], '<strong> @' + current + '</strong>')
                 text = text.replace("!", "")
