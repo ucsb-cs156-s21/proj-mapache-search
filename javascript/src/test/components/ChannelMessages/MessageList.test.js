@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { getAllByPlaceholderText, queryByPlaceholderText, render } from "@testing-library/react";
 import MessageListView from "main/components/ChannelMessages/MessageListView";
 import useSWR from "swr";
 jest.mock("swr");
@@ -12,9 +12,27 @@ describe("MessageListView tests", () => {
 
     test("renders without crashing", () => {
         useSWR.mockReturnValue({
-            data:  []
+            data: []
         });
         render(<MessageListView messages={[]} />);
+    });
+
+    test("Search bar exists by default", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<MessageListView messages={[]}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).not.toBeNull();
+    });
+
+    test("Search bar removed with searchField prop", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<MessageListView messages={[]} searchField={false}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).toBeNull();
     });
 
     test("Displays username", () => {
