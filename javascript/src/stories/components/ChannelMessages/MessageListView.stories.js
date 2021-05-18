@@ -10,9 +10,8 @@ export default {
 
 const Template = (args) => <MessageListView {...args}/>;
 
-export const List = Template.bind({});
-
-List.args = {
+export const WithSearchBar = Template.bind({});
+WithSearchBar.args = {
   messages: [{
     "type": "message",
     "subtype": "channel_join",
@@ -35,4 +34,10 @@ List.args = {
       "real_name": "Test Person"
     }
   }],
-}
+};
+
+export const NoSearchBar = Template.bind({});
+NoSearchBar.args = {
+    searchField: false,
+    ...WithSearchBar.args
+};
