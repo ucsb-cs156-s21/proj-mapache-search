@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import useSWR from "swr";
 import { fetchWithToken } from "main/utils/fetch";
-import MessageListView from "main/components/ChannelMessages/MessageListView"
+import SearchResultsView from "main/components/ChannelMessages/SearchResultsView"
 import { Form } from "react-bootstrap";
 
 const SearchPage = () => {
@@ -21,7 +21,7 @@ const SearchPage = () => {
                     <Form.Control type="text" placeholder="Enter Search String" />
                 </Form.Group>
             </Form>
-            <MessageListView messages = {searchResults || []} />
+            <SearchResultsView messages = {searchResults || []} />
         </>
     );
 };
