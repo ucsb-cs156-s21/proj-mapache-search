@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllByPlaceholderText, queryByPlaceholderText, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import MessageListView from "main/components/ChannelMessages/MessageListView";
 import useSWR from "swr";
 jest.mock("swr");
