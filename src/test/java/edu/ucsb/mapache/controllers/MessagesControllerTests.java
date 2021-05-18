@@ -50,7 +50,7 @@ public class MessagesControllerTests {
         public void test_usersearch_messages() throws Exception {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByUser("springboot")).thenReturn(expectedMessages);
-                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
                 MvcResult response = mockMvc.perform(get("/api/members/messages/usersearch?searchUser=springboot")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().isOk()).andReturn();
@@ -64,7 +64,7 @@ public class MessagesControllerTests {
         public void test_usersearch_messages_with_empty_string() throws Exception {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByUser("")).thenReturn(expectedMessages);
-                when(mockAuthControllerAdvice.getIsMember(anyString())).thenReturn(true);
+                when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
                 MvcResult response = mockMvc.perform(get("/api/members/messages/usersearch?searchUser=")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().isOk()).andReturn();
