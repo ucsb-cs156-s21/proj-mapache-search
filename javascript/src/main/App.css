@@ -95,3 +95,8 @@ footer {
   width:100%;
   z-index:2;
 }
+
+.user-tag {
+  color: #2c639e;
+  background-color: #eaf5f9;
+}
