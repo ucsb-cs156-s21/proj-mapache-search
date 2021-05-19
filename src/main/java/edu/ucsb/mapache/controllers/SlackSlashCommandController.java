@@ -40,7 +40,9 @@ import java.util.List;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import java.util.HashMap;  
+import java.util.HashMap;    
+import java.util.HashSet;   
+import java.util.Collections; 
 
 import edu.ucsb.mapache.models.SearchParameters;
 
@@ -193,21 +195,23 @@ public class SlackSlashCommandController {
     }  
 
     public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
-        
-        String message = String.format("Displaying all previous messages in %s:\n", params.getChannelName()); 
+        String message = String.format("Displaying all previous messages in %s:\n", params.getChannelName());   
+        HashSet <String> channelMessages = new HashSet<String>(); 
         List<Message> messageList = messageRepository.findByChannel(params.getChannelName());       
-        for(int i = 0; i< messageList.size(); i++){  
-            message = message.concat(messageList.get(i).getTs()+" "+messageList.get(i).getUser() + ": " + messageList.get(i).getText() +"\n");
-        } 
+        for(Message slackMessage : messageList){  
+            channelMessages.add(slackMessage.getTs()+" "+slackMessage.getUser() + ": " + slackMessage.getText() +"\n");
+        }   
+        List<String> channelMessageList = new ArrayList<String>(channelMessages); 
+        Collections.sort(channelMessageList); 
+        for (String output: channelMessageList){  
+            message = message.concat(output); 
+        }
         RichMessage richMessage = new RichMessage(message); 
         richMessage.setResponseType("ephemeral");  
 
         return richMessage.encodedMessage();
-
     }
-
-    
-    
+  
     public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
         
         
