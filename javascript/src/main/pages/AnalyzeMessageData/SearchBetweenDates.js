@@ -33,6 +33,7 @@ const SearchBetweenDates = () => {
                 <Form.Group controlId="searchDate" onChange={handleSearchDateOnChange}>
                     <Form.Label>Search Between Two Dates</Form.Label>
                         <Form.Control type="date" placeholder="mm/dd/yyyy" />
+                        <Form.Control type="date" placeholder="mm/dd/yyyy" />
                         <Button onClick={handleSearchDateOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
