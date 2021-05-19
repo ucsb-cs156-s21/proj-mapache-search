@@ -32,8 +32,9 @@ const SearchBetweenDates = () => {
             <Form onSubmit={handleSearchDateOnSubmit}>
                 <Form.Group controlId="searchDate" onChange={handleSearchDateOnChange}>
                     <Form.Label>Search Between Two Dates</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Search User" />
-                    <Button onClick={handleSearchDateOnSubmit}>Search</Button>
+                        <Form.Control type="date" placeholder="mm/dd/yyyy" />
+                        <Form.Control type="date" placeholder="mm/dd/yyyy" />
+                        <Button onClick={handleSearchDateOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
             <DateChannelMessageList messages = {searchResults} />
