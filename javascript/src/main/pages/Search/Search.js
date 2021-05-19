@@ -87,7 +87,7 @@ const Search = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Col sm={{ span: 10, offset: 6 }}>
+                    <Col sm={{ span: 10, offset: 7 }}>
                         <Button type="submit">Submit</Button>
                     </Col>
                 </Form.Group>
