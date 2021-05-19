@@ -53,7 +53,7 @@ export default ({ channels }) => {
         <BootstrapTable 
             bootstrap4={true}
             keyField='id' 
-            data={messages} 
+            data={channels} 
             columns={columns} 
         />
 
