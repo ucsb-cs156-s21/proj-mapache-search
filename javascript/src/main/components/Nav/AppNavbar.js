@@ -80,7 +80,7 @@ function AppNavbar() {
     { link: "/member/analyzemessages/countmessages", name: "Count Messages By User", },
     { link: "/member/analyzemessages/messagehistogram", name: "Histogram of Messages for a User", },
     { link: "/member/analyzemessages/searchmessages", name: "Search Messages By User", },
-    { link: "/member/analyzemessages/searchdate", name: "Search Messages By Date", },
+    { link: "/member/analyzemessages/datesearch", name: "Search Messages By Date", },
   ];
 
   return (<PureNavbar isAdmin={isAdmin} isMember={isMember} searchPages={searchPages} dataPages={dataPages} channelPages={channelPages} adminPages={adminPages} />);
