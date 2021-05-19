@@ -2,8 +2,8 @@ import React, { useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import { Form, Button } from "react-bootstrap";
-import UserMessageList from "main/components/UserMessages/UserMessageList"
-import UserChannelMessageList from "../../components/UserMessages/UserChannelMessageList";
+import UserMessageList from "main/components/DateMessages/DateMessageList"
+import UserChannelMessageList from "../../components/DateMessages/DateChannelMessageList";
 
 const SearchBetweenDates = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
@@ -36,8 +36,8 @@ const SearchBetweenDates = () => {
                     <Button onClick={handleSearchUserOnSubmit}>Search</Button>
                 </Form.Group>
             </Form>
-            <UserChannelMessageList messages = {searchResults} />
-            <UserMessageList messages = {searchResults} />
+            <DateChannelMessageList messages = {searchResults} />
+            <DateMessageList messages = {searchResults} />
         </>
     );
 };
