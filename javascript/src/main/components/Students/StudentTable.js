@@ -44,7 +44,7 @@ const StudentTable = ({students,deleteStudent}) => {
          <BootstrapTable 
             bootstrap4={true}
             keyField='id' 
-            data={messages} 
+            data={students} 
             columns={columns} 
         />
 
