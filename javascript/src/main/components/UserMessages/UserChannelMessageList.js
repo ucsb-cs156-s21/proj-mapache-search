@@ -33,7 +33,7 @@ export default ({ messages }) => {
         <BootstrapTable 
             bootstrap4={true}
             keyField='id' 
-            data={messagesChannels} 
+            data={messageChannels} 
             columns={columns} 
         />
 
