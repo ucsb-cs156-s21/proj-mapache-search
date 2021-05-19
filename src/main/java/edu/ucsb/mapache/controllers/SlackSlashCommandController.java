@@ -31,7 +31,8 @@ import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;  
 
-import edu.ucsb.mapache.documents.Message;
+import edu.ucsb.mapache.documents.Message;  
+import edu.ucsb.mapache.documents.SlackUserProfile;
 
 import java.io.IOException;
 import java.util.ArrayList;    
