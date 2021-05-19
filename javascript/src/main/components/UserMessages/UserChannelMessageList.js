@@ -31,11 +31,12 @@ export default ({ messages }) => {
 
     return (
         <BootstrapTable 
-   bootstrap4={true}
-   keyField='id' 
-   data={messageChannels} 
-   columns={columns} 
-/>
+            bootstrap4={true}
+            keyField='id' 
+            data={messagesChannels} 
+            columns={columns} 
+        />
+
     );
 };
 
