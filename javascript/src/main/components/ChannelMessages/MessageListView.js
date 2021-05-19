@@ -66,7 +66,7 @@ function timeUserFormatter(value, row) {
 export default ({ messages }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
-    
+
     const columns = [{
         isDummyField: true,
         formatter: nameFormatter,
@@ -74,7 +74,7 @@ export default ({ messages }) => {
         text: 'Username'
     },{
         isDummyField: true,
-        formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
+        formatter: (_cell, row) => <p id = {row.user + row.ts} dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         dataField: 'text',
         text: 'Contents',
         sort: true
