@@ -197,7 +197,7 @@ public class SlackSlashCommandController {
         String message = String.format("Displaying all previous messages in %s:\n", params.getChannelName()); 
         List<Message> messageList = messageRepository.findByChannel(params.getChannelName());       
         for(int i = 0; i< messageList.size(); i++){  
-            message = message.concat(messageList.get(i).getTs()+" "+messageList.get(i).getUser_profile().getDisplay_name() + ": " + messageList.get(i).getText() +"\n");
+            message = message.concat(messageList.get(i).getTs()+" "+messageList.get(i).getUser() + ": " + messageList.get(i).getText() +"\n");
         } 
         RichMessage richMessage = new RichMessage(message); 
         richMessage.setResponseType("ephemeral");  
