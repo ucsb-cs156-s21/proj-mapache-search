@@ -14,6 +14,8 @@ const ChannelPageScrollable = () => {
         <>
             <h1> {channel} </h1>
             <a href={"/member/listViewChannels/" + channel}>Switch to List View to search</a>
+            <br/>
+            <a href={"/member/channels/" + channel + "/links"}>See channel links</a>
 
             <MessageScrollableView messages={messages || []} channel={channel} />
         </>
