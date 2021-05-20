@@ -14,7 +14,8 @@ const ChannelPageList = () => {
         if (!(anchor === "")) {
             var focusElement = document.getElementById(anchor.substr(1));
             if (focusElement) {
-                focusElement.scrollIntoView();
+                focusElement.parentNode.parentNode.style.backgroundColor = "#ccc";
+                focusElement.scrollIntoView({block: "center"});
             }
         };
     }, [messages])
