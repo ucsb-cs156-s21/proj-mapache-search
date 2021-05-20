@@ -68,4 +68,58 @@ describe("ChannelPageList tests", () => {
         const contentsElement = getByText(exampleMessage.text);
         expect(contentsElement).toBeInTheDocument();
     });
+
+    test("Message is scrolled into view", () => {
+        Object.defineProperty(window, 'location', {
+            get() {
+                return { hash: "#U017218J9B31594143066.000200" };
+            },
+        });
+        const mockScrollIntoView = jest.fn();
+        HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Someone has joined the channel",
+            "channel": "section-6pm"
+        }
+
+        useSWR.mockReturnValue({
+            'data': [exampleMessage]
+        });
+
+        const { getByText } = render(<ChannelPageList />);
+        const contentsElement = getByText(exampleMessage.text);
+        expect(mockScrollIntoView).toBeCalledWith({block: "center"});
+    });
+
+    test("Message in context is highlighted", () => {
+        Object.defineProperty(window, 'location', {
+            get() {
+                return { hash: "#U017218J9B31594143066.000200" };
+            },
+        });
+        const mockScrollIntoView = jest.fn();
+        HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Someone has joined the channel",
+            "channel": "section-6pm"
+        }
+
+        useSWR.mockReturnValue({
+            'data': [exampleMessage]
+        });
+
+        const { getByText } = render(<ChannelPageList />);
+        const contentsElement = getByText(exampleMessage.text);
+        expect(window.location.hash).toEqual("#U017218J9B31594143066.000200");
+        expect(contentsElement.parentNode.parentNode.style.backgroundColor).toEqual("rgb(204, 204, 204)");
+    });
 });
+
