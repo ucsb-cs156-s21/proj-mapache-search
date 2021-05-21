@@ -30,7 +30,13 @@ export default ({ messages }) => {
     }
 
     return (
-        <BootstrapTable keyField='channel' data={messageChannels} columns={columns}/>
+        <BootstrapTable 
+            bootstrap4={true}
+            keyField='id' 
+            data={messageChannels} 
+            columns={columns} 
+        />
+
     );
 };
 
