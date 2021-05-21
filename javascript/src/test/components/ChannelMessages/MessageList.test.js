@@ -12,9 +12,27 @@ describe("MessageListView tests", () => {
 
     test("renders without crashing", () => {
         useSWR.mockReturnValue({
-            data:  []
+            data: []
         });
         render(<MessageListView messages={[]} />);
+    });
+
+    test("Search bar exists by default", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<MessageListView messages={[]}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).not.toBeNull();
+    });
+
+    test("Search bar removed with searchField prop", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<MessageListView messages={[]} searchField={false}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).toBeNull();
     });
 
     test("Displays username", () => {
@@ -229,7 +247,7 @@ describe("MessageListView tests", () => {
         }
         const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
         const linkElement = getByText(/#help-jpa02/);
-        expect(linkElement.href).toEqual("http://localhost/member/channels/help-jpa02");
+        expect(linkElement.href).toEqual("http://localhost/member/listViewChannels/help-jpa02");
         
     });    
 
