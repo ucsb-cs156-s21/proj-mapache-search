@@ -57,7 +57,7 @@ const sortByDate = (a, b) => {
 
 const replaceLink = (text) => {
     var link = /<(http(?:.*?))>/g;
-    return text.replace(link, '<a href = "$1">$1</a>');
+    return text.replace(link, '<a href = "$1">$1</a>')
 }
 
 
