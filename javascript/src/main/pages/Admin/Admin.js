@@ -22,7 +22,7 @@ const Admin = () => {
   const getSlackUserForUser = (user, allSlackUsers) => {
     if (allSlackUsers) {
       return allSlackUsers.find(slackUser => {
-        return slackUser.profile.email == user.email;
+        return slackUser.profile.email === user.email;
       });
     }
     return null;
