@@ -198,7 +198,8 @@ public class SlackSlashCommandController {
     public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
         String message = String.format("Displaying all previous messages that match input in %s:\n", params.getChannelName());     
         String[] textParts = params.getTextParts(); 
-        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length-1)); 
+        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length));   
+        message += searchString; 
         HashSet <String> channelMessages = new HashSet<String>(); 
         List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName());       
         for(Message slackMessage : messageList){  
