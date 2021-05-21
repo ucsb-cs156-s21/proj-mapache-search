@@ -21,6 +21,9 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
     List<Message> findByText(String searchString);
 
     @Query("{'reactions': {'$elemMatch': {'name' : ?0} }}")
-    List<Message> findByReactionName(String emojiSymbol);
+    List<Message> findByReactionName(String emojiSymbol);  
+
+    @Query("{$text: { $search: ?0}, 'channel': ?1}")
+    List<Message> findByTextInChannel(String searchString, String searchChannel);  
 }
 

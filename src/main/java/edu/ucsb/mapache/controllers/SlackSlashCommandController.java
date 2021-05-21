@@ -152,7 +152,7 @@ public class SlackSlashCommandController {
             return getTeamEmail(params);
         }   
 
-        if (firstArg.equals("search") && textParts[1].equals("slack") && textParts[2].equals("string")) { 
+        if (firstArg.equals("search") && textParts[1].equals("slack")) { 
             return getPreviousSlackMessages(params);  
         }
 
@@ -195,9 +195,15 @@ public class SlackSlashCommandController {
     }  
 
     public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
-        String message = String.format("Displaying all previous messages in %s:\n", params.getChannelName());   
+        String message = String.format("Displaying all previous messages in %s:\n", params.getChannelName());     
+        String[] textParts = params.getTextParts(); 
+        String searchString = "";     
+        for(int i = 2; i < textParts.length; i++){   
+            if (i != 2) {searchString += " ";}
+            searchString += textParts[i];
+        }
         HashSet <String> channelMessages = new HashSet<String>(); 
-        List<Message> messageList = messageRepository.findByChannel(params.getChannelName());       
+        List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName());       
         for(Message slackMessage : messageList){  
             channelMessages.add(slackMessage.getTs()+" "+slackMessage.getUser() + ": " + slackMessage.getText() +"\n");
         }   
