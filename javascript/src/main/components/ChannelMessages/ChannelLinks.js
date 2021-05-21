@@ -79,10 +79,6 @@ function nameFormatter(value, row) {
     return row.user_profile? row.user_profile.real_name:value;
 }
 
-function timeUserFormatter(value, row) {
-    return value + "-" + row.ts;
-}
-
 export default ({ messages }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
