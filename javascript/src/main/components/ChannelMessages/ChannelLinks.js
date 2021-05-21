@@ -5,7 +5,6 @@ import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import TimeFormatter from "./time"
-import MessageTableReaction from "../ChannelMessageReaction/MessageTableReaction";
 const { SearchBar } = Search;
 
 const GetMessageContents = (text, slackUsers) => {
@@ -31,9 +30,9 @@ const filterLinks = (messages) => {
     // for each message, for each link in it, strip other text & add to links
     link_messages.forEach(function(element) {
         found = element.text.match(bracketRegEx);
-        found.forEach(function(part, index) {
+        found.forEach(function(part) {
             new_message = { ...element };
-            new_message.text = found[index];
+            new_message.text = part;
             links.push(new_message);
         })
     });
