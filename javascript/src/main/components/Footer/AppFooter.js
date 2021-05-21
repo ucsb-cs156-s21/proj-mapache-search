@@ -14,7 +14,7 @@ const AppFooter = () => {
         UCSB
       </a>
       . Check out the source code on {" "}
-      <a href="https://github.com/ucsb-cs156-w21/proj-mapache-search" target="_blank" rel="noreferrer noopener">
+      <a href="https://github.com/ucsb-cs156-s21/proj-mapache-search" target="_blank" rel="noreferrer noopener">
         GitHub
       </a>
       .
