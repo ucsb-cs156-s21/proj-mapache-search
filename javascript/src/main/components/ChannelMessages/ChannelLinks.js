@@ -5,6 +5,7 @@ import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import TimeFormatter from "./time"
+import MessageTableReaction from "../ChannelMessageReaction/MessageTableReaction";
 const { SearchBar } = Search;
 
 const GetMessageContents = (text, slackUsers) => {
@@ -18,6 +19,26 @@ const GetMessageContents = (text, slackUsers) => {
         }
         return "@" + userId;
     })
+}
+
+const filterLinks = (messages) => {
+    // get bracketed text (links)
+    var link_messages = messages.filter(message => (message.text.includes("<") && message.text.includes(">")));
+    var bracketRegEx = /<(.*?)>/g;
+    var links = [];
+    var found;
+    var new_message;
+    // for each message, for each link in it, strip other text & add to links
+    link_messages.forEach(function(element) {
+        found = element.text.match(bracketRegEx);
+        found.forEach(function(part, index) {
+            new_message = { ...element };
+            new_message.text = found[index];
+            console.log(new_message.text);
+            links.push(new_message);
+        })
+    });
+    return links;
 }
 
 const formatBracketedText = (text) => {
@@ -66,6 +87,7 @@ function timeUserFormatter(value, row) {
 export default ({ messages }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
+    const links = filterLinks(messages);
     
     const columns = [{
         isDummyField: true,
@@ -86,11 +108,6 @@ export default ({ messages }) => {
         style: {
             width: "20%"
         }
-    },{
-        dataField: 'message',
-        text: 'Original Message',
-        formatter: timeUserFormatter,
-        hidden: false
     }
     ];
 
@@ -98,7 +115,7 @@ export default ({ messages }) => {
         <div style={{textAlign: "left"}}>
             <ToolkitProvider
                 keyField="row.user"
-                data={ messages }
+                data={ links }
                 columns={ columns }
                 search={ { searchFormatted: true } }
                 button
