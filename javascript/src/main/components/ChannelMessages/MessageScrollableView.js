@@ -55,12 +55,6 @@ const sortByDate = (a, b) => {
     return (b.key-a.key);
 }
 
-const replaceLink = (text) => {
-    var link = /<(http(?:.*?))>/g;
-    return text.replace(link, '<a href = "$1">$1</a>')
-}
-
-
 export default ({ messages, _channel }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
@@ -82,7 +76,7 @@ export default ({ messages, _channel }) => {
                         }}>
                             <strong>{el?.user_profile?.real_name || el.user}</strong>
                             <label style={{marginLeft: 10}}>{TimeFormatter(el?.ts)}</label>
-                            <p>{replaceMessage(el?.text, slackUsers), replaceLink(el?.text)}</p>
+                            <p dangerouslySetInnerHTML={createMarkup(el?.text, slackUsers)}></p>
                         </div>
                     )
                 }).sort(sortByDate)
