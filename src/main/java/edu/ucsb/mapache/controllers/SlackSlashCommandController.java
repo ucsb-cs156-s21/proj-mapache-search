@@ -39,7 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.DecodedJWT;  
+import java.util.Arrays; 
 import java.util.HashMap;    
 import java.util.HashSet;   
 import java.util.Collections; 
@@ -195,13 +196,9 @@ public class SlackSlashCommandController {
     }  
 
     public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
-        String message = String.format("Displaying all previous messages in %s:\n", params.getChannelName());     
+        String message = String.format("Displaying all previous messages that match input in %s:\n", params.getChannelName());     
         String[] textParts = params.getTextParts(); 
-        String searchString = "";     
-        for(int i = 2; i < textParts.length; i++){   
-            if (i != 2) {searchString += " ";}
-            searchString += textParts[i];
-        }
+        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length-1)); 
         HashSet <String> channelMessages = new HashSet<String>(); 
         List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName());       
         for(Message slackMessage : messageList){  
