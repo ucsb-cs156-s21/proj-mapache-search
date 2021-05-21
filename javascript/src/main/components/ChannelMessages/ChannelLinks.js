@@ -34,7 +34,6 @@ const filterLinks = (messages) => {
         found.forEach(function(part, index) {
             new_message = { ...element };
             new_message.text = found[index];
-            console.log(new_message.text);
             links.push(new_message);
         })
     });

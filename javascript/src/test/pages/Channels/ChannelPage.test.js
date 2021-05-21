@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import ChannelPageList from "main/pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "main/pages/Channels/ChannelPageScrollable";
+import ChannelPageLinks from "main/pages/Channels/ChannelPageLinks";
 import { useParams} from "react-router-dom";
 import useSWR from "swr";
 jest.mock("swr");
@@ -28,6 +29,10 @@ describe("ChannelPageList tests", () => {
         render(<ChannelPageScrollable />);
     });
 
+    test("renders without crashing", () => {
+        useSWR.mockReturnValue({});
+        render(<ChannelPageLinks />);
+    });
 
     test("loads messages from the backend", () => {
         const exampleMessage = {
@@ -67,5 +72,25 @@ describe("ChannelPageList tests", () => {
         const { getByText } = render(<ChannelPageScrollable />);
         const contentsElement = getByText(exampleMessage.text);
         expect(contentsElement).toBeInTheDocument();
+    });
+
+    test("loads messages from the backend", () => {
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "channel": "section-6pm"
+        }
+
+
+        useSWR.mockReturnValue({
+            'data': [exampleMessage]
+        });
+
+        const { getByText } = render(<ChannelPageLinks />);
+        const contentsElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
+        expect(contentsElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
     });
 });
