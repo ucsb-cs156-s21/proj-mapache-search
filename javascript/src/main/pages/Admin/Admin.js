@@ -80,7 +80,7 @@ const Admin = () => {
                   <td>{user.email}</td>
                   <td>{user.firstName}</td>
                   <td>{user.lastName}</td>
-                  <td>{role}</td>         
+                  <td>{role}</td>
                   <td>
                     { admin && admin.isPermanentAdmin ?
                       <Badge>Permanent Admin</Badge> :
