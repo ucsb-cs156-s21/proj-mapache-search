@@ -203,7 +203,7 @@ public class SlackSlashCommandController {
         HashSet <String> channelMessages = new HashSet<String>();     
         List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName(), Sort.by(Sort.Direction.ASC, "ts"));       
         for(Message slackMessage : messageList){  
-            channelMessages.add(slackMessage.getUser_profile().getDisplay_name() + ": " + slackMessage.getText() +"\n");
+            channelMessages.add(slackMessage.getUser_profile().getName() + ": " + slackMessage.getText() +"\n");
         }   
         List<String> channelMessageList = new ArrayList<String>(channelMessages); 
         for (String output: channelMessageList){  
