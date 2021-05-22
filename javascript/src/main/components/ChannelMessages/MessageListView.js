@@ -14,11 +14,11 @@ const replaceUserIDs = (text, slackUsers) => {
         if(slackUsers != null) {
             for(let i = 0; i < slackUsers.length; i++) {
                 if(slackUsers[i].id === userId) {
-                    return "@" + slackUsers[i].real_name;
+                    return "<@" + slackUsers[i].real_name + ">";
                 }
             }
         }
-        return "@" + userId;
+        return "<@" + userId + ">";
     })
 }
 
