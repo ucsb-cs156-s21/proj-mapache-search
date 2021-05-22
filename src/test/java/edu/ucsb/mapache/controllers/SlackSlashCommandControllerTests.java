@@ -16,7 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import edu.ucsb.mapache.config.SecurityConfig;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
-import edu.ucsb.mapache.repositories.MessageRepository;
+import edu.ucsb.mapache.repositories.MessageRepository;  
+import edu.ucsb.mapache.repositories.SlackUserRepository; 
 
 import org.springframework.http.MediaType;
 
@@ -50,7 +51,10 @@ public class SlackSlashCommandControllerTests {
     MessageRepository messageRepository; 
 
     @MockBean
-    ChannelRepository channelRepository;
+    ChannelRepository channelRepository;  
+
+    @MockBean 
+    SlackUserRepository slackuserRepository; 
 
     @MockBean
     GoogleSearchServiceHelper googleSearchServiceHelper;

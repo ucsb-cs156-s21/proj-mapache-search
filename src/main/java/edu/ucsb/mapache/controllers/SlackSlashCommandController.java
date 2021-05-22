@@ -20,7 +20,8 @@ import org.springframework.data.domain.Sort;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;  
-import edu.ucsb.mapache.repositories.MessageRepository;
+import edu.ucsb.mapache.repositories.MessageRepository;   
+import edu.ucsb.mapache.repositories.SlackUserRepository;
 import edu.ucsb.mapache.entities.Student;
 import edu.ucsb.mapache.google.Item;
 import edu.ucsb.mapache.google.SearchResult;
@@ -33,7 +34,7 @@ import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;  
 
 import edu.ucsb.mapache.documents.Message;  
-import edu.ucsb.mapache.documents.SlackUserProfile;
+import edu.ucsb.mapache.documents.SlackUser;
 
 import java.io.IOException;
 import java.util.ArrayList;    
@@ -63,7 +64,10 @@ public class SlackSlashCommandController {
     ChannelRepository channelRepository; 
 
     @Autowired  
-    MessageRepository messageRepository; 
+    MessageRepository messageRepository;   
+
+    @Autowired 
+    SlackUserRepository slackuserRepository; 
 
     @Autowired
     GoogleSearchServiceHelper googleSearchServiceHelper;
@@ -202,8 +206,9 @@ public class SlackSlashCommandController {
         String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length)); 
         HashSet <String> channelMessages = new HashSet<String>();     
         List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName(), Sort.by(Sort.Direction.ASC, "ts"));       
-        for(Message slackMessage : messageList){  
-            channelMessages.add(slackMessage.getUser_profile() + ": " + slackMessage.getText() +"\n");
+        for(Message slackMessage : messageList){           
+            List<SlackUser> slackUser = slackuserRepository.findByID(slackMessage.getUser()); 
+            channelMessages.add(slackUser.get(0).getReal_name() + ": " + slackMessage.getText() +"\n");
         }   
         List<String> channelMessageList = new ArrayList<String>(channelMessages); 
         for (String output: channelMessageList){  
