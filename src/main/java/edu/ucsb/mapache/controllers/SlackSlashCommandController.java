@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController;  
+import org.springframework.data.domain.Sort; 
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;  
@@ -198,15 +199,13 @@ public class SlackSlashCommandController {
     public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
         String message = String.format("Displaying all previous messages that match input in %s:\n", params.getChannelName());     
         String[] textParts = params.getTextParts(); 
-        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length));   
-        message += searchString; 
-        HashSet <String> channelMessages = new HashSet<String>(); 
-        List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName());       
+        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length)); 
+        HashSet <String> channelMessages = new HashSet<String>();     
+        List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName(), Sort.by(Sort.Direction.ASC, "ts"));       
         for(Message slackMessage : messageList){  
-            channelMessages.add(slackMessage.getTs()+" "+slackMessage.getUser() + ": " + slackMessage.getText() +"\n");
+            channelMessages.add(slackMessage.getUser_profile().getDisplay_name() + ": " + slackMessage.getText() +"\n");
         }   
         List<String> channelMessageList = new ArrayList<String>(channelMessages); 
-        Collections.sort(channelMessageList); 
         for (String output: channelMessageList){  
             message = message.concat(output); 
         }
