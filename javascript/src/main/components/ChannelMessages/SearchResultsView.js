@@ -67,10 +67,10 @@ function channelFormatter(value, row) {
     return <a href = {'../../member/listViewChannels/' + row.channel + '#' + row.user + row.ts}>{row.channel}</a>;
 }
 
-export default ({ messages }) => {
+export default ({ messages, searchField=true }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
-    console.log(messages);
+
     const columns = [{
         isDummyField: true,
         formatter: channelFormatter,
@@ -117,7 +117,7 @@ export default ({ messages }) => {
                 {
                     props => (
                         <div>
-                            <SearchBar { ...props.searchProps } />
+                            { searchField ? <SearchBar { ...props.searchProps } /> : null }
                             <hr />
                             <BootstrapTable { ...props.baseProps } />
                         </div>

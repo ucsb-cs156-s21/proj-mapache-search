@@ -31,6 +31,7 @@ import SearchedTerms from "main/pages/Admin/SearchedTerms";
 function App() {
   return (
     <div className="App">
+      <AppFooter />
       <AppNavbar />
       <Container className="flex-grow-1 mt-5">
         <Switch>

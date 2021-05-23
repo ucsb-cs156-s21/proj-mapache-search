@@ -12,9 +12,27 @@ describe("SearchResultsView tests", () => {
 
     test("renders without crashing", () => {
         useSWR.mockReturnValue({
-            data:  []
+            data: []
         });
         render(<SearchResultsView messages={[]} />);
+    });
+
+    test("Search bar exists by default", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<SearchResultsView messages={[]}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).not.toBeNull();
+    });
+
+    test("Search bar removed with searchField prop", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<SearchResultsView messages={[]} searchField={false}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).toBeNull();
     });
 
     test("Displays channel", () => {
@@ -384,4 +402,3 @@ describe("SearchResultsView tests", () => {
         
     });
 });
-

@@ -63,7 +63,7 @@ function timeUserFormatter(value, row) {
     return value + "-" + row.ts;
 }
 
-export default ({ messages }) => {
+export default ({ messages, searchField=true }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
 
@@ -108,7 +108,7 @@ export default ({ messages }) => {
                 {
                     props => (
                         <div>
-                            <SearchBar { ...props.searchProps } />
+                            { searchField ? <SearchBar { ...props.searchProps } /> : null }
                             <hr />
                             <BootstrapTable { ...props.baseProps } />
                         </div>
