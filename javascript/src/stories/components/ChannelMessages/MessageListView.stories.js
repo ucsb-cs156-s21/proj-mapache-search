@@ -17,6 +17,6 @@ WithSearchBar.args = {
 
 export const NoSearchBar = Template.bind({});
 NoSearchBar.args = {
-  messages: MessageFixtures.tenMessages,
-  searchField: false
+  searchField: false,
+  ...WithSearchBar.args
 };
