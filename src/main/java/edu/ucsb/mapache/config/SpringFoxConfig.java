@@ -1,4 +1,4 @@
-package edu.ucsb.courses.config;
+package edu.ucsb.mapache.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
