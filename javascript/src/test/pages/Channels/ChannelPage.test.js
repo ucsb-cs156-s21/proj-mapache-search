@@ -90,8 +90,7 @@ describe("ChannelPageList tests", () => {
             'data': [exampleMessage]
         });
 
-        const { getByText } = render(<ChannelPageList />);
-        const contentsElement = getByText(exampleMessage.text);
+        render(<ChannelPageList />);
         expect(mockScrollIntoView).toBeCalledWith({block: "center"});
     });
 

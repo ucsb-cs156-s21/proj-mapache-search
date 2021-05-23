@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react";
+import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
@@ -63,6 +63,7 @@ function timeUserFormatter(value, row) {
     return value + "-" + row.ts;
 }
 
+/*eslint no-unused-vars: ["error", { "args": "after-used" }]*/
 function channelFormatter(value, row) {
     return <a href = {'../../member/listViewChannels/' + row.channel + '#' + row.user + row.ts}>{row.channel}</a>;
 }
