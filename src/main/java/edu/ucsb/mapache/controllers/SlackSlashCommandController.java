@@ -44,7 +44,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;  
 import java.util.Arrays; 
 import java.util.HashMap;    
-import java.util.HashSet;   
+import java.util.LinkedHashSet;   
 import java.util.Collections; 
 
 import edu.ucsb.mapache.models.SearchParameters;
@@ -203,14 +203,18 @@ public class SlackSlashCommandController {
     public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
         String message = String.format("Displaying all previous messages that match input in %s:\n", params.getChannelName());     
         String[] textParts = params.getTextParts(); 
-        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length)); 
-        HashSet <String> channelMessages = new HashSet<String>();     
+        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length));  
         List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName(), Sort.by(Sort.Direction.ASC, "ts"));       
+        LinkedHashSet <String> channelMessages = new LinkedHashSet<String>();    
+        List<String> channelMessageList = new ArrayList<String>(); 
         for(Message slackMessage : messageList){           
-            List<SlackUser> slackUser = slackuserRepository.findByID(slackMessage.getUser()); 
-            channelMessages.add(slackUser.get(0).getReal_name() + ": " + slackMessage.getText() +"\n");
+            List<SlackUser> slackUser = slackuserRepository.findByID(slackMessage.getUser());  
+            String newMessage = slackUser.get(0).getReal_name() + ": " + slackMessage.getText() +"\n";   
+            if(!channelMessages.contains(newMessage)){    
+                channelMessages.add(newMessage); 
+                channelMessageList.add(newMessage);
+            }  
         }   
-        List<String> channelMessageList = new ArrayList<String>(channelMessages); 
         for (String output: channelMessageList){  
             message = message.concat(output); 
         }
