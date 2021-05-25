@@ -39,7 +39,7 @@ const formatBracketedText = (text) => {
             } else if (found[i].includes('@')) {                                                                                        // user tags
                 text = text.replace(found[i], '<span class="user-tag">' + current + '</span>');
             } else if (found[i].includes("!")) {                                                                                        // channel tags (ex: @channel)
-                text = text.replace(found[i], '<strong>@' + current + '</strong>')
+                text = text.replace(found[i], '<strong>@' + current.replace('!', '') + '</strong>')
             } else {
                 text = text.replace(found[i], current)
             }

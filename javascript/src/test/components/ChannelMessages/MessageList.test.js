@@ -344,6 +344,26 @@ describe("MessageListView tests", () => {
         
     });
 
+    test("User tags are styled using the correct css class", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {queryByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const userTag = queryByText(/@(\S+)/);
+        expect(userTag).toHaveClass("user-tag");
+        
+    });
 
 
 });
