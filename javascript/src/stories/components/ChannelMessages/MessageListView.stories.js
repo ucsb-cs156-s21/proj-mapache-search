@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import MessageListView from "main/components/ChannelMessages/MessageListView";
 import MessageFixtures from "fixtures/MessageFixtures";
 
