@@ -22,11 +22,11 @@ const GetMessageContents = (text, slackUsers) => {
 
 const filterLinks = (messages) => {
     // get bracketed text (links)
-    var link_messages = messages.filter(message => (message.text.includes("<") && message.text.includes(">")));
-    var bracketRegEx = /<(.*?)>/g;
-    var links = [];
-    var found;
-    var new_message;
+    let link_messages = messages.filter(message => (message.text.includes("<") && message.text.includes(">")));
+    let bracketRegEx = /<(.*?)>/g;
+    let links = [];
+    let found;
+    let new_message;
     // for each message, for each link in it, strip other text & add to links
     link_messages.forEach(function(element) {
         found = element.text.match(bracketRegEx);
@@ -40,24 +40,24 @@ const filterLinks = (messages) => {
 }
 
 const formatBracketedText = (text) => {
-    var bracketRegEx = /<(.*?)>/g;
-    var found = text.match(bracketRegEx)
+    let bracketRegEx = /<(.*?)>/g;
+    let found = text.match(bracketRegEx)
     if (found){
         for (let i=0; i<found.length; i++){
-            var current = found[i].replace('<', '');
+            let current = found[i].replace('<', '');
             current = current.replace('>', '');
             if (found[i].includes("|") && (found[i].includes("mailto") || found[i].includes("http") || found[i].includes("tel"))){      // embedded links
-                var links = current.split('|');
+                let links = current.split('|');
                 text = text.replace(found[i], '<a href = ' + links[0] + ' target = "_blank">' + links[1] +'</a>')
             } else if (found[i].includes("http") || found[i].includes("mailto") || found[i].includes("tel")){                            // unembedded links
                 text = text.replace(found[i], '<a href = ' + current + ' target = "_blank">' + current + '</a>')
             } else if (found[i].includes("|")){                                                                                          // channel links
-                links = current.split('|');
+                let links = current.split('|');
                 text = text.replace(found[i], '<a href = /member/listViewChannels/' + links[1] + '>#' + links[1] + '</a>')
             } else if (found[i].includes("!")){                                                                                          // channel tags (ex: @channel)
                 text = text.replace(found[i], '<strong> @' + current + '</strong>')
                 text = text.replace("!", "")
-            } else{
+            } else {
                 text = text.replace(found[i], current)
             }
         }
