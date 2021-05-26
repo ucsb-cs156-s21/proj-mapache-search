@@ -1,5 +1,8 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import {useAuth0} from "@auth0/auth0-react";
+import useSWR from "swr";
+import {fetchWithToken} from "../../utils/fetch";
 
 const replaceMessage = (text, slackUsers) => {
     return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
@@ -41,7 +44,8 @@ const formatBracketedText = (text) => {
 }
 
 
-const createMarkup = (text) => {
+const createMarkup = (text, slackUsers) => {
+    text = replaceMessage(text, slackUsers);
     text = formatBracketedText(text);
     return {
         __html: text
@@ -49,13 +53,15 @@ const createMarkup = (text) => {
 }
 
 export default ({ messages = []}) => {
+    const { getAccessTokenSilently: getToken } = useAuth0();
+    const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
     const columns = [{
         dataField: 'channel',
         text: 'Channel'
     },{
         dataField: 'text',
         text: 'Text',
-        formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell)}></p>
+        formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell, slackUsers)}></p>
     }
     ];
 
