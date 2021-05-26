@@ -1,6 +1,19 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
+const replaceMessage = (text, slackUsers) => {
+    return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
+        if(slackUsers != null) {
+            for(let i = 0; i < slackUsers.length; i++) {
+                if(slackUsers[i].id === userId) {
+                    return "@" + slackUsers[i].real_name;
+                }
+            }
+        }
+        return "@" + userId;
+    })
+}
+
 const formatBracketedText = (text) => {
     var bracketRegEx = /<(.*?)>/g;
     var found = text.match(bracketRegEx)
@@ -28,13 +41,7 @@ const formatBracketedText = (text) => {
 }
 
 
-const textLinks = (text) => {
-    var bracketRegEx = /<(http(?:.*?))>/g;
-    return text.replace(bracketRegEx, '<a href = "$1" target = "_blank">$1</a>');
-}
-
 const createMarkup = (text) => {
-    text = textLinks(text)
     text = formatBracketedText(text);
     return {
         __html: text
