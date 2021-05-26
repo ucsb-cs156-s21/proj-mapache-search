@@ -118,7 +118,7 @@ describe("ChannelPageList tests", () => {
         const { getByText } = render(<ChannelPageList />);
         const contentsElement = getByText(exampleMessage.text);
         expect(window.location.hash).toEqual("#U017218J9B31594143066.000200");
-        expect(contentsElement.parentNode.parentNode.style.backgroundColor).toEqual("rgb(204, 204, 204)");
+        expect(contentsElement.parentNode.parentNode.className).toEqual("focused");
     });
 });
 

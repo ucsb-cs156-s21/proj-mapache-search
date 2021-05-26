@@ -14,7 +14,7 @@ const ChannelPageList = () => {
         if (!(anchor === "")) {
             var focusElement = document.getElementById(anchor.substr(1));
             if (focusElement) {
-                focusElement.parentNode.parentNode.style.backgroundColor = "#ccc";
+                focusElement.parentNode.parentNode.className = "focused";
                 focusElement.scrollIntoView({block: "center"});
             }
         };
