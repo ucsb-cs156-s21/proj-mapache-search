@@ -52,8 +52,8 @@ public class SlackUserController {
     @GetMapping("/slackUsers")
     public ResponseEntity<String> users(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
-        if (!authControllerAdvice.getIsAdmin(authorization))
-            return getUnauthorizedResponse("admin");
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
+            return getUnauthorizedResponse("member");
         Set<SlackUser> slackUsers = new HashSet<>(slackUserRepository.findAll());
         String body = mapper.writeValueAsString(slackUsers);
         return ResponseEntity.ok().body(body);
