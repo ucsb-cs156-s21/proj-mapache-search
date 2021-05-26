@@ -12,6 +12,12 @@ export default ({ messages = [] }) => {
     ];
 
     return (
-        <BootstrapTable keyField='ts' data={messages} columns={columns}/>
+        <BootstrapTable 
+            bootstrap4={true}
+            keyField='id' 
+            data={messages} 
+            columns={columns} 
+        />
+
     );
 };

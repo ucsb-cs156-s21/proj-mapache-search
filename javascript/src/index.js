@@ -4,14 +4,18 @@ import App from "main/App";
 import Auth0ProviderWithHistory from "main/components/Auth/Auth0ProviderWithHistory";
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
+import { ToastProvider } from "react-toast-notifications";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Auth0ProviderWithHistory>
-        <App />
+        <ToastProvider autoDismiss={true} autoDismissTimeout={10000}>
+          <App />
+        </ToastProvider>
       </Auth0ProviderWithHistory>
     </BrowserRouter>
   </React.StrictMode>,

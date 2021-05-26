@@ -31,6 +31,7 @@ import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
+import edu.ucsb.mapache.services.TeamListService;
 
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 
@@ -61,6 +62,9 @@ public class SlackSlashCommandControllerTests {
 
     @MockBean
     TeamEmailListService teamEmailListService;
+
+    @MockBean
+    TeamListService teamListService;
 
     private final String testURL = "/api/public/slash-command";
 
@@ -251,7 +255,19 @@ public class SlackSlashCommandControllerTests {
     }
 
     @Test
-    public void test_teamlistCommand() throws Exception {
+    public void test_teamlistCommandRegular() throws Exception {
+        // content type: https://api.slack.com/interactivity/slash-commands
+        when(teamListService.getListOfTeams()).thenReturn("team1");
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "teamlist").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void test_teamlistCommandWithInputtedTeamName() throws Exception {
         // fixes null error
         when(teamEmailListService.getEmailsStringFromTeamname("team")).thenReturn("email");
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -259,17 +275,6 @@ public class SlackSlashCommandControllerTests {
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
                 .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
                 .param("command", "/mapache").param("text", "teamlist team").param("response_url", "value"))
-                .andExpect(status().is(200));
-    }
-
-    @Test
-    public void test_teamlistCommand_emptyTeamName() throws Exception {
-        // content type: https://api.slack.com/interactivity/slash-commands
-        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .param("token", slackSlashCommandController.getSlackToken())
-                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
-                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
-                .param("command", "/mapache").param("text", "teamlist").param("response_url", "value"))
                 .andExpect(status().is(200));
     }   
     
@@ -292,5 +297,7 @@ public class SlackSlashCommandControllerTests {
                 .param("command", "/mapache").param("text", "search slack computer").param("response_url", "value"))
                 .andExpect(status().is(200));
     }
+
+
 
 }
