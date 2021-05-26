@@ -15,11 +15,7 @@ const Search = () => {
     const emptyResults = { items: [] }
 
 
-const [SearchError, setSearchError] = useState(false);
 const { addToast } = useToasts();
-const [errorNotified, setErrorNotified] = useState(false);
-
-
 
     
     const fetchSearchResults = async (_event) => {
