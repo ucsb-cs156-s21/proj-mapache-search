@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from "@testing-library/react";
 import MessageTableReaction from "main/components/ChannelMessageReaction/MessageTableReaction.js";
+import useSWR from "swr";
 
 describe("MessageTableReactions tests", () => {
     test("it renders without crashing", () => {
@@ -8,9 +9,11 @@ describe("MessageTableReactions tests", () => {
     });
     test("row.message_reactions is not null", () => {
         const testMessages = [{
-            user: "test-user",
-            text: "test-text",
-            message_reactions: [{
+            "user_profile": {
+                "real_name": "test-user"
+            },
+            "text": "test-text",
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
