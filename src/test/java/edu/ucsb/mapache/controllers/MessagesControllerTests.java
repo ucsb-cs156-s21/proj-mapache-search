@@ -96,7 +96,35 @@ public class MessagesControllerTests {
         }
 
         @Test
-        public void test_datesearch_messages_with_empty_string() throws Exception {
+        public void test_datesearch_messages_with_empty_string_1() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByDate("", "springboot")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?searchDate=&searchDate2=")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
+
+        @Test
+        public void test_datesearch_messages_with_empty_string_2() throws Exception {
+                List<Message> expectedMessages = new ArrayList<Message>();
+                when(mockMessageRepository.findByDate("springboot", "")).thenReturn(expectedMessages);
+                when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
+                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?searchDate=&searchDate2=")
+                                .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+                                .andExpect(status().isOk()).andReturn();
+                String responseString = response.getResponse().getContentAsString();
+                List<Message> messages = mapper.readValue(responseString, new TypeReference<List<Message>>() {
+                });
+                assertEquals(expectedMessages, messages);
+        }
+
+        @Test
+        public void test_datesearch_messages_with_empty_string_3() throws Exception {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByDate("", "")).thenReturn(expectedMessages);
                 when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
