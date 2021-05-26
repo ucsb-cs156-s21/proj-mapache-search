@@ -122,7 +122,7 @@ describe("MessageTableReactions tests", () => {
         });
         const testMessages = [{
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "Meeting at <https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09>",
             "user_profile": {
                 "real_name": "Test Person"
             },
@@ -133,8 +133,8 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const linkElement = getByText(/https:\/\/us05web.zoom.us\/j\/87975276031\?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09/);
+        expect(linkElement.href).toEqual("https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09");
         
     });
 
@@ -199,7 +199,7 @@ describe("MessageTableReactions tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09|zoom>",
+            "text": "Meeting at <https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09|zoom>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
@@ -212,7 +212,7 @@ describe("MessageTableReactions tests", () => {
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
         const linkElement = getByText(/zoom/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        expect(linkElement.href).toEqual("https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09");
         
     });
 
@@ -315,7 +315,7 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const {queryByText} = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        var bracketElement = queryByText(/<@channel>/);
+        let bracketElement = queryByText(/<@channel>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/@channel/);
         expect(bracketElement).toBeInTheDocument();
@@ -395,7 +395,7 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const {queryByText} = render(<MessageTableReaction messages={testMessages} reaction = {testReaction}/>);
-        var bracketElement = queryByText(/<testing>/);
+        let bracketElement = queryByText(/<testing>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/testing/);
         expect(bracketElement).toBeInTheDocument();
