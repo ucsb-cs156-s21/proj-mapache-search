@@ -31,7 +31,7 @@ const Search = () => {
             return emptyResults;
         }
     };
-    const fetchQuota = async (_event) => {
+    const fetchQuota = useCallback(async (_event) => {
         const url = `/api/member/search/quota`;
 
         try {
@@ -47,7 +47,7 @@ const Search = () => {
             console.log(`err=${err}`);
             return {quota:0};
         }
-    };
+    },[])
 
     
     const [query, setQuery] = useState(emptyQuery);
@@ -61,9 +61,7 @@ const Search = () => {
         };
         getQuota();
     }, [fetchQuota]);
-    const fetchQuota = useCallback(() => {
-
-      }, [])
+   
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
