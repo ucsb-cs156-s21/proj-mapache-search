@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 import edu.ucsb.mapache.entities.Student;
+import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.google.Item;
 import edu.ucsb.mapache.google.SearchResult;
 import edu.ucsb.mapache.google.Queries;
@@ -30,6 +31,7 @@ import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 import edu.ucsb.mapache.services.TeamListService;
+import edu.ucsb.mapache.services.WhoIsService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,6 +65,9 @@ public class SlackSlashCommandController {
 
     @Autowired
     TeamListService teamListService;
+
+    @Autowired
+    WhoIsService whoIsService;
 
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
@@ -145,6 +150,10 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("teamlist")) {
             return getTeamValues(params);
+        }
+
+        if (firstArg.equals("whois")) {
+            return getWhoItIs(params);
         }
 
         return unknownCommand(params);
@@ -275,6 +284,16 @@ public class SlackSlashCommandController {
         String teamName = textParts[1];
         String emailText = teamEmailListService.getEmailsStringFromTeamname(teamName);
         RichMessage richMessage = new RichMessage(emailText);
+        richMessage.setResponseType("in_channel"); // other option is "ephemeral"
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+
+    }
+
+    public RichMessage getWhoItIs(SlackSlashCommandParams params) {
+        String[] textParts = params.getTextParts();
+        String user = textParts[1];
+        String outputText = whoIsService.getOutput(user);
+        RichMessage richMessage = new RichMessage(outputText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
 

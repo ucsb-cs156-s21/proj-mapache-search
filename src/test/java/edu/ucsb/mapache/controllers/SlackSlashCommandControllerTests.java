@@ -30,6 +30,7 @@ import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 import edu.ucsb.mapache.services.TeamListService;
+import edu.ucsb.mapache.services.WhoIsService;
 
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 
@@ -57,6 +58,9 @@ public class SlackSlashCommandControllerTests {
 
     @MockBean
     TeamListService teamListService;
+
+    @MockBean
+    WhoIsService whoIsService;
 
     private final String testURL = "/api/public/slash-command";
 
@@ -243,6 +247,17 @@ public class SlackSlashCommandControllerTests {
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
                 .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
                 .param("command", "/mapache").param("text", "placeholder placeholder").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void test_whoisCommand() throws Exception {
+        when(whoIsService.getOutput("@user")).thenReturn("name, team, email");
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "whois @user").param("response_url", "value"))
                 .andExpect(status().is(200));
     }
 
