@@ -385,10 +385,11 @@ describe("MessageScrollableView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {queryByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
-        const userTag = queryByText(/@(\S+)/);
-        expect(userTag).toHaveClass("user-tag");
-        
+        const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
+        setTimeout(function () {
+            const userTag = getByText(/@Test Person/);
+            expect(userTag).toHaveClass("user-tag");
+        }, 500)
     });
 
     test("Messages sorted in chronological order", () => {

@@ -359,9 +359,11 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {queryByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        const userTag = queryByText(/@(\S+)/);
-        expect(userTag).toHaveClass("user-tag");
+        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        setTimeout(function () {
+            const userTag = getByText(/@Test Person/);
+            expect(userTag).toHaveClass("user-tag");
+        }, 500)
         
     });
 
