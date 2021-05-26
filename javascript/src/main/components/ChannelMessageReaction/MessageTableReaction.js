@@ -62,7 +62,7 @@ export default ({ messages=[],reaction }) => {
         return correctReaction.count;
     }
     const columns = [{
-        dataField: 'user_profile.name',
+        dataField: 'user_profile.real_name',
         text: 'Message Author'
     },{
         formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
