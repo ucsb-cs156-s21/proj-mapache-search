@@ -21,7 +21,7 @@ const SearchPage = () => {
                     <Form.Control type="text" placeholder="Enter Search String" />
                 </Form.Group>
             </Form>
-            <MessageListView messages = {searchResults || []} />
+            <MessageListView messages={searchResults || []} searchField={false} />
         </>
     );
 };
