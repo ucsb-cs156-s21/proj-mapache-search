@@ -4,7 +4,8 @@ import { fetchWithToken } from "main/utils/fetch";
 import { Form, Button } from "react-bootstrap";
 // import DateMessageList from "main/components/DateMessages/DateMessageList"
 // import DateChannelMessageList from "../../components/DateMessages/DateChannelMessageList";
-import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView"
+// import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView"
+import MessageListView from "main/components/ChannelMessages/MessageListView"
 
 const SearchBetweenDates = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
@@ -14,6 +15,9 @@ const SearchBetweenDates = () => {
 
     const handleSearchDateOnChange = (event) => {
         setSearchDate((new Date(event.target.value).getTime() / 1000).toString());
+    };
+
+    const handleSearchDateOnChange2 = (event) => {
         setSearchDate2((new Date(event.target.value).getTime() / 1000).toString());
     };
     const handleSearchDateOnSubmit = (event) => {
@@ -25,6 +29,7 @@ const SearchBetweenDates = () => {
         fetchWithToken(url, getToken, options)
             .then((response) => {
                 setSearchResults(response);
+                console.log(response);
             })
     };
     console.log(typeof searchDate);
@@ -34,18 +39,18 @@ const SearchBetweenDates = () => {
     return (
         <>
             <h1> Search Results </h1>
-            <Form onSubmit={handleSearchDateOnSubmit} onChange={handleSearchDateOnChange}>
-                <Form.Group controlId="searchDate">
+            <Form onSubmit={handleSearchDateOnSubmit}>
+                <Form.Group controlId="searchDate" onChange={handleSearchDateOnChange}>
                     <Form.Label>Start date</Form.Label>
                         <Form.Control type="date" placeholder="mm/dd/yyyy" />
                 </Form.Group>
-                <Form.Group controlId="searchDate2">
+                <Form.Group controlId="searchDate2" onChange={handleSearchDateOnChange2}>
                     <Form.Label>End date</Form.Label>
                         <Form.Control type="date" placeholder="mm/dd/yyyy" />
                 </Form.Group>
                 <Button onClick={handleSearchDateOnSubmit}>Search</Button>
-                <MessageScrollableView messages={messages || []} channel={channel} />
             </Form>
+            <MessageListView messages={searchResults} searchField = {false} />
 
         </>
     );

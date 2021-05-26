@@ -23,6 +23,7 @@ const SearchMessagesByUser = () => {
         fetchWithToken(url, getToken, options)
             .then((response) => {
                 setSearchResults(response);
+                console.log(response);
             })
     };
 
