@@ -47,7 +47,7 @@ const Search = () => {
             console.log(`err=${err}`);
             return {quota:0};
         }
-    },[])
+    },[getToken])
 
     
     const [query, setQuery] = useState(emptyQuery);
