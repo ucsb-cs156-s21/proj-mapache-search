@@ -34,15 +34,18 @@ public class WhoIsServiceTests
   private WhoIsService whoIsService;
 
   @Test
-  public void test_formatTeamEmails() {
+  public void test_formatedOutput() {
       String username = "displayname";
       String email = "email";
+
       List<SlackUser> slackUsers = new ArrayList<SlackUser>();
       SlackUserProfile profileTest = new SlackUserProfile("email","realname","displayname","name");
       slackUsers.add(new SlackUser("101", "name", "realname",profileTest));
+
       List<Student> students = new ArrayList<Student>();
       students.add(new Student(1L, "email", "team1"));
-      String expectedSring = "realname, email";
+
+      String expectedSring = "realname, team1, email";
       when(mockSlackUserRepository.findByUsername(username)).thenReturn(slackUsers);
       when(mockStudentRepository.findByEmail(email)).thenReturn(students);
       assertEquals(expectedSring, whoIsService.getOutput(username));

@@ -26,12 +26,11 @@ public class WhoIsService {
     String team = "";
 
     List<Student> stu = studentRepository.findByEmail(email);
-    if(stu.size()!=0) {
-      Student outputStudent = stu.get(0);
-      team = outputStudent.getTeamName();
-    }
+    Student outputStudent = stu.get(0);
+    team = outputStudent.getTeamName();
+
     String response = "";
-    if (team=="") {
+    if (team!="") {
       response = name + ", " + team + ", " + email;
     }
     else {
