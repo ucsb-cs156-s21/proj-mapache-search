@@ -6,7 +6,12 @@
 
 This app is a course project of <https://ucsb-cs156.github.io>, a course at [UC Santa Barbara](https://ucsb.edu).
 
-The purpose of this application is to allow for searching of a class's slack archive for messages in public channels.
+The purpose of this application is:
+* to allow for searching of a class's slack archive for messages in public channels
+* to provide for web searches related to software development
+* to collect data about those searches
+
+It is software to support research in software engineering education.
 
 
 ## Setting up GitHub Actions
