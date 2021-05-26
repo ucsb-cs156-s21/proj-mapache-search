@@ -35,7 +35,7 @@ const formatBracketedText = (text) => {
                 text = text.replace(found[i], '<a href = ' + current + ' target = "_blank">' + current + '</a>')
             } else if (found[i].includes("|")) {                                                                                        // channel links
                 links = current.split('|');
-                text = text.replace(found[i], '<a href = /member/channels/' + links[1] + '>#' + links[1] + '</a>')
+                text = text.replace(found[i], '<a href = /member/listViewChannels/' + links[1] + '>#' + links[1] + '</a>')
             } else if (found[i].includes('@')) {                                                                                        // user tags
                 text = text.replace(found[i], '<span class="user-tag">' + current + '</span>');
             } else if (found[i].includes("!")) {                                                                                        // channel tags (ex: @channel)
@@ -65,7 +65,7 @@ function timeUserFormatter(value, row) {
     return value + "-" + row.ts;
 }
 
-export default ({ messages }) => {
+export default ({ messages, searchField=true }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { data: slackUsers } = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
 
@@ -110,7 +110,7 @@ export default ({ messages }) => {
                 {
                     props => (
                         <div>
-                            <SearchBar { ...props.searchProps } />
+                            { searchField ? <SearchBar { ...props.searchProps } /> : null }
                             <hr />
                             <BootstrapTable { ...props.baseProps } />
                         </div>

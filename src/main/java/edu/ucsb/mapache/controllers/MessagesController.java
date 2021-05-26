@@ -51,7 +51,7 @@ public class MessagesController {
     public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchUser) throws JsonProcessingException {
         String decoded = searchUser.replaceAll("%20", " ");
-        if (!authControllerAdvice.getIsMember(authorization))
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("member");
         if (decoded.equals("")) {
             return ResponseEntity.ok().body("[]");
