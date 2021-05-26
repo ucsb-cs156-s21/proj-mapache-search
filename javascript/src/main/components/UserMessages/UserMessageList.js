@@ -61,7 +61,7 @@ export default ({ messages = []}) => {
     },{
         dataField: 'text',
         text: 'Text',
-        formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell, slackUsers)}></p>
+        formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>
     }
     ];
 
