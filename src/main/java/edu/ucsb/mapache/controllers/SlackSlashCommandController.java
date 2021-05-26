@@ -206,16 +206,14 @@ public class SlackSlashCommandController {
         String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length));  
         List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName(), Sort.by(Sort.Direction.ASC, "ts"));       
         LinkedHashSet <String> channelMessages = new LinkedHashSet<String>();    
-        List<String> channelMessageList = new ArrayList<String>(); 
         for(Message slackMessage : messageList){           
             List<SlackUser> slackUser = slackuserRepository.findByID(slackMessage.getUser());  
             String newMessage = slackUser.get(0).getReal_name() + ": " + slackMessage.getText() +"\n";   
             if(!channelMessages.contains(newMessage)){    
                 channelMessages.add(newMessage); 
-                channelMessageList.add(newMessage);
             }  
         }   
-        for (String output: channelMessageList){  
+        for (String output: channelMessages){  
             message = message.concat(output); 
         }
         RichMessage richMessage = new RichMessage(message); 
