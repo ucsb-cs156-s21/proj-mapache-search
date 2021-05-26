@@ -59,7 +59,7 @@ const Search = () => {
             setQuota(quotaInfo.quota);
         };
         getQuota();
-    }, []);
+    }, [fetchQuota]);
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
