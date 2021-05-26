@@ -2,9 +2,6 @@ import React, { useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import { Form, Button } from "react-bootstrap";
-// import DateMessageList from "main/components/DateMessages/DateMessageList"
-// import DateChannelMessageList from "../../components/DateMessages/DateChannelMessageList";
-// import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView"
 import MessageListView from "main/components/ChannelMessages/MessageListView"
 
 const SearchBetweenDates = () => {
@@ -34,8 +31,6 @@ const SearchBetweenDates = () => {
     };
     console.log(typeof searchDate);
     console.log(searchDate);
-    // <DateChannelMessageList messages = {searchResults} />
-    // <DateMessageList messages = {searchResults} />
     return (
         <>
             <h1> Search Results </h1>
