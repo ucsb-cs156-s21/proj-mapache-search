@@ -32,6 +32,7 @@ import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;  
+import edu.ucsb.mapache.services.TeamListService;  
 
 import edu.ucsb.mapache.documents.Message;  
 import edu.ucsb.mapache.documents.SlackUser;
