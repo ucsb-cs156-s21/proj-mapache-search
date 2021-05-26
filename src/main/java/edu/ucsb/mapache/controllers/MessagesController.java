@@ -1,5 +1,4 @@
 package edu.ucsb.mapache.controllers;
-
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +57,21 @@ public class MessagesController {
         }
         // Set ensures no duplicate messages
         Set<Message> messages = new HashSet<>(messageRepository.findByUser(decoded));
+        String body = mapper.writeValueAsString(messages);
+        return ResponseEntity.ok().body(body);
+    }
+
+    // search between two dates
+    @GetMapping("/datesearch")
+    public ResponseEntity<String> getMessagesBetweenDates(@RequestHeader("Authorization") String authorization,
+            @RequestParam String searchDate, @RequestParam String searchDate2) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
+            return getUnauthorizedResponse("member");
+        if (searchDate.equals("") || searchDate2.equals("")) {
+            return ResponseEntity.ok().body("[]");
+        }
+        // Set ensures no duplicate messages
+        Set<Message> messages = new HashSet<>(messageRepository.findByDate(searchDate, searchDate2));
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }

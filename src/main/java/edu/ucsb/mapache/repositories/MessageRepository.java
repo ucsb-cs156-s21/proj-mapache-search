@@ -22,5 +22,8 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
 
     @Query("{'reactions': {'$elemMatch': {'name' : ?0} }}")
     List<Message> findByReactionName(String emojiSymbol);
+
+    @Query("{ 'ts'  : { '$gte': ?0, '$lte' : ?1}}")
+    List<Message> findByDate(String searchDate, String searchDate2);
 }
 

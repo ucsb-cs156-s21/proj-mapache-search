@@ -2,8 +2,9 @@ import React, { useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchWithToken } from "main/utils/fetch";
 import { Form, Button } from "react-bootstrap";
-import DateMessageList from "main/components/DateMessages/DateMessageList"
-import DateChannelMessageList from "../../components/DateMessages/DateChannelMessageList";
+// import DateMessageList from "main/components/DateMessages/DateMessageList"
+// import DateChannelMessageList from "../../components/DateMessages/DateChannelMessageList";
+import MessageScrollableView from "main/components/ChannelMessages/MessageScrollableView"
 
 const SearchBetweenDates = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
@@ -12,10 +13,9 @@ const SearchBetweenDates = () => {
     const [ searchResults, setSearchResults ] = useState([]);
 
     const handleSearchDateOnChange = (event) => {
-        setSearchDate(event.target.value);
-        setSearchDate2(event.target.value);
+        setSearchDate((new Date(event.target.value).getTime() / 1000).toString());
+        setSearchDate2((new Date(event.target.value).getTime() / 1000).toString());
     };
-    
     const handleSearchDateOnSubmit = (event) => {
         event.preventDefault();
         const url = `/api/members/messages/datesearch?searchDate=${searchDate}&searchDate2=${searchDate2}`;
@@ -27,7 +27,10 @@ const SearchBetweenDates = () => {
                 setSearchResults(response);
             })
     };
-
+    console.log(typeof searchDate);
+    console.log(searchDate);
+    // <DateChannelMessageList messages = {searchResults} />
+    // <DateMessageList messages = {searchResults} />
     return (
         <>
             <h1> Search Results </h1>
@@ -41,11 +44,12 @@ const SearchBetweenDates = () => {
                         <Form.Control type="date" placeholder="mm/dd/yyyy" />
                 </Form.Group>
                 <Button onClick={handleSearchDateOnSubmit}>Search</Button>
+                <MessageScrollableView messages={messages || []} channel={channel} />
             </Form>
-            <DateChannelMessageList messages = {searchResults} />
-            <DateMessageList messages = {searchResults} />
+
         </>
     );
+    
 };
 
 export default SearchBetweenDates;
