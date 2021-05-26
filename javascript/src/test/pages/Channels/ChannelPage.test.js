@@ -80,7 +80,7 @@ describe("ChannelPageList tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "<https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "<https://youtu.be/dQw4w9WgXcQ>",
             "channel": "section-6pm"
         }
 
@@ -90,7 +90,7 @@ describe("ChannelPageList tests", () => {
         });
 
         const { getByText } = render(<ChannelPageLinks />);
-        const contentsElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-        expect(contentsElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const contentsElement = getByText(/dQw4w/);
+        expect(contentsElement.href).toEqual("https://youtu.be/dQw4w9WgXcQ");
     });
 });

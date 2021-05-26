@@ -113,15 +113,15 @@ describe("MessageListView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "Office hours at <https://youtu.be/dQw4w9WgXcQ>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
             }
         }
         const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const linkElement = getByText(/https:\/\/youtu.be\/dQw4w9WgXcQ/);
+        expect(linkElement.href).toEqual("https://youtu.be/dQw4w9WgXcQ");
         
     });
 
@@ -176,15 +176,15 @@ describe("MessageListView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09|zoom>",
+            "text": "Office hours at <https://youtu.be/dQw4w9WgXcQ>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
             }
         }
         const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        const linkElement = getByText(/zoom/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const linkElement = getByText(/youtu/);
+        expect(linkElement.href).toEqual("https://youtu.be/dQw4w9WgXcQ");
         
     });
 
