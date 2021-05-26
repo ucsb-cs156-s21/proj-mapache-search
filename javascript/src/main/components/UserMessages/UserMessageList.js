@@ -1,13 +1,27 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 
-export default ({ messages = [] }) => {
+
+const textLinks = (text) => {
+    var bracketRegEx = /<(http(?:.*?))>/g;
+    return text.replace(bracketRegEx, '<a href = "$1" target = "_blank">$1</a>');
+}
+
+const createMarkup = (text) => {
+    text = textLinks(text)
+    return {
+        __html: text
+    }
+}
+
+export default ({ messages = []}) => {
     const columns = [{
         dataField: 'channel',
         text: 'Channel'
     },{
         dataField: 'text',
-        text: 'Text'
+        text: 'Text',
+        formatter: (cell) => <p dangerouslySetInnerHTML = {createMarkup(cell)}></p>
     }
     ];
 
@@ -17,6 +31,7 @@ export default ({ messages = [] }) => {
             keyField='id' 
             data={messages} 
             columns={columns} 
+            
         />
 
     );
