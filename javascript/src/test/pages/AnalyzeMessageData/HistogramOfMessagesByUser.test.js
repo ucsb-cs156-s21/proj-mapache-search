@@ -1,6 +1,9 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { waitFor, render } from "@testing-library/react";
 import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
+import userEvent from "@testing-library/user-event";
+import { fetchWithToken } from "main/utils/fetch";
+import { useAuth0 } from "@auth0/auth0-react";
 
 jest.mock("@auth0/auth0-react");
 
