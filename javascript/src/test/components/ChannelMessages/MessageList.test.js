@@ -122,7 +122,7 @@ describe("MessageListView tests", () => {
         const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
-        expect(nameElement.id).toEqual("U017218J9B31594143066.000200");
+        expect(nameElement.parentElement.id).toEqual("U017218J9B31594143066.000200");
     });
 
     test("Unembedded https links are clickable", () => {
