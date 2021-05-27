@@ -12,7 +12,7 @@ const ChannelPageList = () => {
     useEffect(() => {
         const anchor = window.location.hash;
         if (!(anchor === "")) {
-            var focusElement = document.getElementById(anchor.substr(1));
+            const focusElement = document.getElementById(anchor.substr(1));
             if (focusElement) {
                 focusElement.parentNode.parentNode.classList.add("focused");
                 focusElement.scrollIntoView({block: "center"});

@@ -307,7 +307,7 @@ describe("SearchResultsView tests", () => {
             }
         }
         const {queryByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
-        var bracketElement = queryByText(/<@channel>/);
+        let bracketElement = queryByText(/<@channel>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/@channel/);
         expect(bracketElement).toBeInTheDocument();
@@ -395,7 +395,7 @@ describe("SearchResultsView tests", () => {
             }
         }
         const {queryByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
-        var bracketElement = queryByText(/<testing>/);
+        let bracketElement = queryByText(/<testing>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/testing/);
         expect(bracketElement).toBeInTheDocument();
