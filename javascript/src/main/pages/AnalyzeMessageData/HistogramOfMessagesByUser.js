@@ -71,7 +71,7 @@ const HistogramOfMessagesByUser = () => {
             { selectedUser !== '' &&
                 <div>
                     <h3>Activity for {selectedUser}</h3>
-                    <BootstrapTable keyField='week' data={perWeekHistogramData || []} columns={columns}></BootstrapTable>
+                    <BootstrapTable keyField='week' data={perWeekHistogramData} columns={columns}></BootstrapTable>
                 </div>
             }
         </div>

@@ -81,29 +81,26 @@ describe("HistogramOfMessagesByUser tests", () => {
   })
 
   test("Test the date and time stamp range", async () => {
-    var assert = require('assert');
-    assert.throws(
-      function() {
-        throw new Error("Wrong value");
-      },
-      function(err) {
-        if ( (err instanceof Error) && /value/.test(err) ) {
-          return true;
-        }
-      },
-      "unexpected error"
-    );
-
     fetchWithToken.mockResolvedValue(sampleMessageList);
-    const { getByText, getByLabelText, findByText, getByTestId, getElementsByClassName } = render(<HistogramOfMessagesByUser />);
+    const { getByText, getByLabelText } = render(<HistogramOfMessagesByUser />);
     const selectSearchUser = getByLabelText("Enter a user");
-    userEvent.type(selectSearchUser, "Reiley Batelaan");
+    userEvent.type(selectSearchUser, "Test User");
     const goButton = getByText("Go");
     userEvent.click(goButton);
     await waitFor(() => {
-      //findByText("5/9/2021 - 5/15/2021");
-      //expect(getByTestId("messagesByUserTable")).toBeInTheDocument();
       expect(getByText("5/9/2021 - 5/15/2021")).toBeInTheDocument();
+    })
+  })
+
+  test("test if renders when given empty array", async () => {
+    fetchWithToken.mockResolvedValue([]);
+    const { getByText, getByLabelText, queryByText } = render(<HistogramOfMessagesByUser />);
+    const selectSearchUser = getByLabelText("Enter a user");
+    userEvent.type(selectSearchUser, "Test User");
+    const goButton = getByText("Go");
+    userEvent.click(goButton);
+    await waitFor(() => {
+      expect(queryByText("Message Count")).toBeInTheDocument();
     })
   })
 });
