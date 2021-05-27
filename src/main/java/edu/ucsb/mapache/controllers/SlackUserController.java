@@ -58,4 +58,14 @@ public class SlackUserController {
         String body = mapper.writeValueAsString(slackUsers);
         return ResponseEntity.ok().body(body);
     }
+
+    @GetMapping("/slackAdmins")
+    public ResponseEntity<String> admins(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        if (!authControllerAdvice.getIsAdmin(authorization))
+            return getUnauthorizedResponse("admin");
+        Set<SlackUser> slackAdmins = new HashSet<>(slackUserRepository.findAdmins());
+        String body = mapper.writeValueAsString(slackAdmins);
+        return ResponseEntity.ok().body(body);
+    }
 }
