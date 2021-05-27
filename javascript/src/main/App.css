@@ -108,3 +108,7 @@ img.brand {
 p.brand {
   text-align: center;
 }
+
+tr.focused {
+  background-color: #ccc;
+}
