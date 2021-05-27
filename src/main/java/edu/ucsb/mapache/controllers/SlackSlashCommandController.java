@@ -295,25 +295,9 @@ public class SlackSlashCommandController {
     }
 
     public RichMessage getWhoItIs(SlackSlashCommandParams params) {
-        String outputText = "";
-        String outputTeam = "";
-        String name = "";
-        String email = "";
         String[] textParts = params.getTextParts();
-        String username = textParts[1];
-        List<SlackUser> user = slackUserRepository.findByUsername(username);
-        if(user.size()!=0) {
-            SlackUser output = user.get(0);
-            name = output.getProfile().getReal_name();
-            email = output.getProfile().getEmail();
-            outputTeam = whoIsService.getOutput(email);
-        }
-        if(outputTeam!=""){
-            outputText = name + ", " + outputTeam + ", " + email;
-        }
-        else {
-            outputText = name + ", " + email;
-        }
+        String user = textParts[1];
+        String outputText = whoIsService.getOutput(user);
         RichMessage richMessage = new RichMessage(outputText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack

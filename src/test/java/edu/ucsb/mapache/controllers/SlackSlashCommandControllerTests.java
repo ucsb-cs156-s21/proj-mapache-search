@@ -256,6 +256,7 @@ public class SlackSlashCommandControllerTests {
 
     @Test
     public void test_whoisCommand() throws Exception {
+        when(whoIsService.getOutput("@user")).thenReturn("name, team, email");
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
