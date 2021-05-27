@@ -21,11 +21,11 @@ const GetMessageContents = (text, slackUsers) => {
 }
 
 const formatBracketedText = (text) => {
-    var bracketRegEx = /<(.*?)>/g;
-    var found = text.match(bracketRegEx)
+    const bracketRegEx = /<(.*?)>/g;
+    const found = text.match(bracketRegEx)
     if (found){
         for (let i=0; i<found.length; i++){
-            var current = found[i].replace('<', '');
+            let current = found[i].replace('<', '');
             current = current.replace('>', '');
             if (found[i].includes("|") && (found[i].includes("mailto") || found[i].includes("http") || found[i].includes("tel"))){      // embedded links
                 var links = current.split('|');

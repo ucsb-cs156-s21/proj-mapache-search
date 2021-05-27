@@ -44,7 +44,7 @@ describe("SearchResultsView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "Office hours at <https://ucsb.edu>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
@@ -64,7 +64,7 @@ describe("SearchResultsView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "Office hours at <https://ucsb.edu>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
@@ -153,15 +153,15 @@ describe("SearchResultsView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "Office hours at <https://ucsb.edu>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
             }
         }
         const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
-        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const linkElement = getByText(/https:\/\/ucsb.edu/);
+        expect(linkElement.href).toEqual("https://ucsb.edu/");
         
     });
 
@@ -216,7 +216,7 @@ describe("SearchResultsView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09|zoom>",
+            "text": "Office hours at <https://www.ucsb.edu|zoom>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
@@ -224,7 +224,7 @@ describe("SearchResultsView tests", () => {
         }
         const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText(/zoom/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        expect(linkElement.href).toEqual("https://www.ucsb.edu/");
         
     });
 
