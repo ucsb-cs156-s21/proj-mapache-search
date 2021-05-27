@@ -1,6 +1,6 @@
 # Updating Mapache Search from Slack Archive
 
-This directory a python script to help upload slack archives to MongoDB.
+This directory contains a python script to help upload slack archives to MongoDB.
 
 The script `upload_archive.py` will take a Slack Archive export, and upload it to a MongoDB database.
 
