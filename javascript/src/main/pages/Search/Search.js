@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
