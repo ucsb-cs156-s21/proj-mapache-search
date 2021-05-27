@@ -27,9 +27,7 @@ public class WhoIsService {
       if (team!="") {
         response = name + ", " + team + ", " + email;
       }
-      else {
-        response = name + ", " + email;
-      }
+      
       return response;
     }
   }
