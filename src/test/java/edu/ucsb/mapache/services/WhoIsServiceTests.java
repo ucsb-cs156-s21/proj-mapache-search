@@ -38,7 +38,7 @@ public class WhoIsServiceTests
         students.add(new Student(1L, "email", "team1"));
         String expectedSring = "realname, team1, email";
 
-        when(mockSlackUserRepository.findByUsername(username)).thenReturn(slackUsers);
+        when(mockSlackUserRepository.findByName(username)).thenReturn(slackUsers);
         when(mockStudentRepository.findByEmail(email)).thenReturn(students);
         assertEquals(expectedSring, whoIsService.getOutput(username));
     }

@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface SlackUserRepository extends MongoRepository<SlackUser, ObjectId> {
     @Query("{ 'profile.email': ?0}")
     List<SlackUser> findByEmail(String email);
-    
-    @Query("{ 'profile.name': ?0}")
-    List<SlackUser> findByUsername(String username);
+
+    public List<SlackUser> findByName(String name);
 }
