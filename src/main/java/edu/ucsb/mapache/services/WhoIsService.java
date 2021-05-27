@@ -23,11 +23,8 @@ public class WhoIsService {
     Student outputStudent = stu.get(0);
     team = outputStudent.getTeamName();
 
-    String response = "";
-      if (team!="") {
-        response = name + ", " + team + ", " + email;
-      }
-      
-      return response;
+    String response = name + ", " + team + ", " + email;
+    
+    return response;
     }
   }
