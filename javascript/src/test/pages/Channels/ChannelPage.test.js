@@ -34,7 +34,7 @@ describe("ChannelPageList tests", () => {
         render(<ChannelPageLinks />);
     });
 
-    test("loads messages from the backend", () => {
+    test("loads messages from the backend, list page", () => {
         const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
@@ -54,7 +54,7 @@ describe("ChannelPageList tests", () => {
         expect(contentsElement).toBeInTheDocument();
     });
 
-    test("loads messages from the backend", () => {
+    test("loads messages from the backend, scrollable page", () => {
         const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
@@ -74,7 +74,8 @@ describe("ChannelPageList tests", () => {
         expect(contentsElement).toBeInTheDocument();
     });
 
-    test("loads messages from the backend", () => {
+    test("loads messages from the backend, links page", () => {
+
         const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
@@ -84,7 +85,6 @@ describe("ChannelPageList tests", () => {
             "channel": "section-6pm"
         }
 
-
         useSWR.mockReturnValue({
             'data': [exampleMessage]
         });
@@ -92,5 +92,63 @@ describe("ChannelPageList tests", () => {
         const { getByText } = render(<ChannelPageLinks />);
         const contentsElement = getByText(/dQw4w/);
         expect(contentsElement.href).toEqual("https://youtu.be/dQw4w9WgXcQ");
+
+    });
+
+
+
+    test("Message is scrolled into view", () => {
+        Object.defineProperty(window, 'location', {
+            get() {
+                return { hash: "#U017218J9B31594143066.000200" };
+            },
+        });
+        const mockScrollIntoView = jest.fn();
+        HTMLElement.prototype.scrollIntoView = mockScrollIntoView
+
+    const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Someone has joined the channel",
+            "channel": "section-6pm"
+        }
+
+        useSWR.mockReturnValue({
+            'data': [exampleMessage]
+        });
+
+        render(<ChannelPageList />);
+        expect(mockScrollIntoView).toBeCalledWith({block: "center"});
+    });
+
+    test("Message in context is highlighted", () => {
+        Object.defineProperty(window, 'location', {
+            get() {
+                return { hash: "#U017218J9B31594143066.000200" };
+            },
+        });
+        const mockScrollIntoView = jest.fn();
+        HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Someone has joined the channel",
+            "channel": "section-6pm"
+        }
+
+        useSWR.mockReturnValue({
+            'data': [exampleMessage]
+        });
+
+        const { getByText } = render(<ChannelPageList />);
+        const contentsElement = getByText(exampleMessage.text);
+        expect(window.location.hash).toEqual("#U017218J9B31594143066.000200");
+        expect(contentsElement.parentNode.parentNode.className).toEqual("focused");
+
     });
 });
+

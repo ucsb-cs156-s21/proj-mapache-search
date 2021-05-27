@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
 import { useParams} from "react-router-dom";
@@ -9,6 +9,16 @@ const ChannelPageList = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const { channel } = useParams();
     const { data: messages } = useSWR([`/api/members/channel/${channel}/messages`, getToken], fetchWithToken);
+    useEffect(() => {
+        const anchor = window.location.hash;
+        if (!(anchor === "")) {
+            const focusElement = document.getElementById(anchor.substr(1));
+            if (focusElement) {
+                focusElement.parentNode.parentNode.classList.add("focused");
+                focusElement.scrollIntoView({block: "center"});
+            }
+        };
+    }, [messages])
 
     return (
         <>
