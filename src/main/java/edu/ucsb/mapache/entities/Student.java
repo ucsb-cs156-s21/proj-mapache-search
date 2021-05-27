@@ -24,6 +24,10 @@ public class Student {
   @CsvBindByPosition(position = 1)
   private String teamName;
 
+  @Column(nullable = false)
+  @CsvBindByPosition(position = 2)
+  private String last;
+
   public Student() {
   }
 
