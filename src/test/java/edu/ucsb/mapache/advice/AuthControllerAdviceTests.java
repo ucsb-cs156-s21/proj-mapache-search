@@ -87,7 +87,7 @@ public class AuthControllerAdviceTests {
     when(mockSlackUserRepository.findAdminByEmail(exampleUser.getEmail()))
       .thenReturn(new ArrayList<SlackUser>(Arrays.asList(new SlackUser("fakeID", "Fake Name", "Fake Name", new SlackUserProfile(exampleUser.getEmail())))));
     assertEquals(exampleUser, authControllerAdvice.getUser(exampleAuthToken));
-    verify(mockAdminRepository, times(1)).save(new Admin(exampleUser.getEmail(), true));
+    verify(mockAdminRepository, times(1)).save(new Admin(exampleUser.getEmail(), false));
   }
 
   @Test

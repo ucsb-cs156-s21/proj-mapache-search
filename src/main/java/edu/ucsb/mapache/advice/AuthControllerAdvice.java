@@ -79,8 +79,11 @@ public class AuthControllerAdvice {
       user.setEmail(email);
       user.setFirstName((String) customClaims.get("given_name"));
       user.setLastName((String) customClaims.get("family_name"));
-      if (getIsAdmin(authorization) || getIsSlackAdmin(email)) {
+      if (getIsAdmin(authorization)) {
         Admin admin = new Admin(email, true);
+        adminRepository.save(admin);
+      }else if (getIsSlackAdmin(email)) {
+        Admin admin = new Admin(email, false);
         adminRepository.save(admin);
       }
       return appUserRepository.save(user);
