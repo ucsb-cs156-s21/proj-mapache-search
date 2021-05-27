@@ -68,6 +68,37 @@ public class SlackUserControllerTest {
     });
 
     assertEquals(expectedSlackUsers, slackUsers);
+  }
 
+  @Test
+  public void test_getSlackAdmins_unauthorizedIfNotAdmin() throws Exception {
+    mockMvc
+        .perform(
+            get("/api/slackAdmins").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().is(401));
+  }
+
+  @Test
+  public void test_getSlackAdmins_getsListOfSlackAdmins() throws Exception {
+    List<SlackUser> expectedSlackAdmins = new ArrayList<SlackUser>();
+    SlackUser slackAdmin = new SlackUser();
+    slackAdmin.setId("1");
+    slackAdmin.setReal_name("Phillip Conrad");
+    slackAdmin.setName("Phill Conrad");
+    expectedSlackAdmins.add(slackAdmin);
+
+    when(slackUserRepository.findAdmins()).thenReturn(expectedSlackAdmins);
+    when(authControllerAdvice.getIsAdmin(exampleAuthToken)).thenReturn(true);
+
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/slackAdmins").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<SlackUser> slackAdmins = mapper.readValue(responseString, new TypeReference<List<SlackUser>>() {
+    });
+
+    assertEquals(expectedSlackAdmins, slackAdmins);
   }
 }
