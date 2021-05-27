@@ -122,7 +122,7 @@ describe("MessageListView tests", () => {
         const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
-        expect(nameElement.id).toEqual("U017218J9B31594143066.000200");
+        expect(nameElement.parentElement.id).toEqual("U017218J9B31594143066.000200");
     });
 
     test("Unembedded https links are clickable", () => {
@@ -383,6 +383,28 @@ describe("MessageListView tests", () => {
         
     });
 
+    test("User tags are styled using the correct css class", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        setTimeout(function () {
+            const userTag = getByText(/@Test Person/);
+            expect(userTag).toHaveClass("user-tag");
+        }, 500)
+        
+    });
 
 
 });
