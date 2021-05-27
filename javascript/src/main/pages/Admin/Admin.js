@@ -8,11 +8,21 @@ const Admin = () => {
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: users } = useSWR(["/api/users", getToken], fetchWithToken);
   const { data: admins, mutate: mutateAdmins } = useSWR(["/api/admins", getToken], fetchWithToken);
+  const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
 
   const getAdminForUser = (user, allAdmins) => {
     if (allAdmins) {
       return allAdmins.find(admin => {
         return admin.email === user.email;
+      });
+    }
+    return null;
+  }
+
+  const getSlackUserForUser = (user, allSlackUsers) => {
+    if (allSlackUsers) {
+      return allSlackUsers.find(slackUser => {
+        return slackUser.profile.email === user.email;
       });
     }
     return null;
@@ -60,7 +70,8 @@ const Admin = () => {
           {users &&
             users.map(user => {
               const admin = getAdminForUser(user, admins);
-              const role = admin ? "Admin" : "User";
+              const slackUser = getSlackUserForUser(user, slackUsers);
+              const role = admin ? "Admin" : slackUser ? "Member" : "Guest";
               const buttonText = admin ? "Demote" : "Promote"
               return (
                 <tr key={user.id}>
