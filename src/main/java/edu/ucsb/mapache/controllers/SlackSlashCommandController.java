@@ -297,7 +297,7 @@ public class SlackSlashCommandController {
     public RichMessage getWhoItIs(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
         String user = textParts[1];
-//        String outputText = whoIsService.getOutput(user);
+        String outputText = whoIsService.getOutput(user);
         System.out.print(outputText);
         RichMessage richMessage = new RichMessage(user);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
