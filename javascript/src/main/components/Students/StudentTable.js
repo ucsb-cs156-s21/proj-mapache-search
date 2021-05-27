@@ -19,14 +19,23 @@ const StudentTable = ({students,deleteStudent}) => {
     } 
     
     const columns = [{
+        dataField: 'first',
+        text: 'first'
+    }, {
+        dataField: 'last',
+        text: 'last'
+    }, {
+        dataField: 'email',
+        text: 'email'
+    }, {
         dataField: 'id',
         text: 'id'
     }, {
-        dataField: 'email',
-        text: 'Email'
+        dataField: 'section',
+        text: 'section'
     }, {
-        dataField: 'teamName',
-        text: 'Team Name'
+        dataField: 'team',
+        text: 'team'
     }];
     columns.push({
         text: "Edit",

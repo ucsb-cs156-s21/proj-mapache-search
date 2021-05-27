@@ -47,10 +47,14 @@ const Students = () => {
           Make sure that the uploaded CSV contains a header.  Sample format:
         </p>
         <pre style={{whiteSpace: 'pre', textAlign: 'left', width: '20em', marginLeft: 'auto', border: 'solid blue 1px', marginRight: 'auto', padding: '1em'}}>
-        email,teamName<br/>
+        first, last, email, id, section, team<br/>
+        Chris, Gaucho, cgaucho@ucsb.edu, 5pm, s21-5pm-1<br/>
+        Laurie, Del Player, ldelplaya@ucsb.edu, 7pm, s21-7pm-3<br/>
+        ...<br/>
+        {/* email,teamName<br/>
         aaaaa@ucsb.edu,team1<br />
         bbbbb@ucsb.edu,team1<br />
-        ccccc@ucsb.edu,team2<br />
+        ccccc@ucsb.edu,team2<br /> */}
         </pre>
         <StudentCSVButton addTask={uploadedStudents}/>
         <Row style={{paddingTop: 10}}>
