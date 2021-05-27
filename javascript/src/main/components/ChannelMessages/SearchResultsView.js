@@ -21,19 +21,19 @@ const GetMessageContents = (text, slackUsers) => {
 }
 
 const formatBracketedText = (text) => {
-    var bracketRegEx = /<(.*?)>/g;
-    var found = text.match(bracketRegEx)
+    const bracketRegEx = /<(.*?)>/g;
+    const found = text.match(bracketRegEx)
     if (found){
         for (let i=0; i<found.length; i++){
-            var current = found[i].replace('<', '');
+            let current = found[i].replace('<', '');
             current = current.replace('>', '');
             if (found[i].includes("|") && (found[i].includes("mailto") || found[i].includes("http") || found[i].includes("tel"))){      // embedded links
-                var links = current.split('|');
+                const links = current.split('|');
                 text = text.replace(found[i], '<a href = ' + links[0] + ' target = "_blank">' + links[1] +'</a>')
             }else if (found[i].includes("http") || found[i].includes("mailto") || found[i].includes("tel")){                            // unembedded links
                 text = text.replace(found[i], '<a href = ' + current + ' target = "_blank">' + current + '</a>')
             }else if (found[i].includes("|")){                                                                                          // channel links
-                links = current.split('|');
+                const links = current.split('|');
                 text = text.replace(found[i], '<a href = /member/listViewChannels/' + links[1] + '>#' + links[1] + '</a>')
             }else if (found[i].includes("!")){                                                                                          // channel tags (ex: @channel)
                 text = text.replace(found[i], '<strong> @' + current + '</strong>')
@@ -63,18 +63,28 @@ function timeUserFormatter(value, row) {
     return value + "-" + row.ts;
 }
 
+/*eslint no-unused-vars: ["error", { "args": "after-used" }]*/
+function channelFormatter(value, row) {
+    return <a href = {`../../member/listViewChannels/${row.channel}#${row.user + row.ts}`}>{row.channel}</a>;
+}
+
 export default ({ messages, searchField=true }) => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const {data: slackUsers} = useSWR([`/api/slackUsers`, getToken], fetchWithToken);
 
     const columns = [{
         isDummyField: true,
+        formatter: channelFormatter,
+        dataField: 'channel',
+        text: 'Channel'
+    },{
+        isDummyField: true,
         formatter: nameFormatter,
         dataField: 'name',
         text: 'Username'
     },{
         isDummyField: true,
-        formatter: (_cell, row) => <p id = {row.user + row.ts} dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
+        formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         dataField: 'text',
         text: 'Contents',
         sort: true
