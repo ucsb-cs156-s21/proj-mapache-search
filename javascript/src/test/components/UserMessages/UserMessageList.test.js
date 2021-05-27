@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from "@testing-library/react";
+import useSWR from "swr";
 import UserMessageList from "main/components/UserMessages/UserMessageList";
 
 describe("UserMessageList tests", () => {
@@ -39,7 +40,7 @@ describe("UserMessageList tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "<!channel> This is an announcement",
+            "text": "<!channel> Hello channel",
             "channel": "section-7pm",
             "user_profile": {
                 "real_name": "Test Person"
@@ -86,10 +87,10 @@ describe("UserMessageList tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Email me at <mailto:test@ucsb.edu|this email>",
-            "channel": "section-6pm",
+            "text": "My email is <mailto:test@ucsb.edu|this email>",
+            "channel": "section-7pm",
             "user_profile": {
-                "real_name": "Test Person"
+                "real_name": "Test Name"
             }
         }
         const {getByText} = render(<MessageScrollableView messages={[exampleMessage]}/>);
