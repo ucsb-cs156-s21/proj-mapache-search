@@ -26,11 +26,8 @@ const SearchBetweenDates = () => {
         fetchWithToken(url, getToken, options)
             .then((response) => {
                 setSearchResults(response);
-                console.log(response);
             })
     };
-    console.log(typeof searchDate);
-    console.log(searchDate);
     return (
         <>
             <h1> Search Results </h1>
