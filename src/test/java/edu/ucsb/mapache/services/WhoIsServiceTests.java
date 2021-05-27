@@ -42,4 +42,21 @@ public class WhoIsServiceTests
         when(mockStudentRepository.findByEmail(email)).thenReturn(students);
         assertEquals(expectedSring, whoIsService.getOutput(username));
     }
+
+    @Test
+    public void test_formatedOutputWithNoCSV() {
+        String username = "displayname";
+        String email = "email";
+
+        List<SlackUser> slackUsers = new ArrayList<SlackUser>();
+        SlackUserProfile profileTest = new SlackUserProfile("email","realname","displayname","name");
+        slackUsers.add(new SlackUser("101", "name", "realname",profileTest));
+
+        List<Student> students = new ArrayList<Student>();
+        String expectedSring = "realname, email";
+
+        when(mockSlackUserRepository.findByName(username)).thenReturn(slackUsers);
+        when(mockStudentRepository.findByEmail(email)).thenReturn(students);
+        assertEquals(expectedSring, whoIsService.getOutput(username));
+    }
 }

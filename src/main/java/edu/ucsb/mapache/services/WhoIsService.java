@@ -22,10 +22,10 @@ public class WhoIsService {
     List<Student> stu = studentRepository.findByEmail(email);
     if(stu.size()!=0) {
       Student outputStudent = stu.get(0);
-      team = outputStudent.getTeamName();
+      team = outputStudent.getTeamName() + ", ";
     }
 
-    String response = name + ", " + team + ", " + email;
+    String response = name + ", " + team + email;
     
     return response;
     }
