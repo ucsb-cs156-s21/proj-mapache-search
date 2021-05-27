@@ -65,7 +65,7 @@ function timeUserFormatter(value, row) {
 
 /*eslint no-unused-vars: ["error", { "args": "after-used" }]*/
 function channelFormatter(value, row) {
-    return <a href = {'../../member/listViewChannels/' + row.channel + '#' + row.user + row.ts}>{row.channel}</a>;
+    return <a href = {`../../member/listViewChannels/${row.channel}#${row.user + row.ts}`}>{row.channel}</a>;
 }
 
 export default ({ messages, searchField=true }) => {
