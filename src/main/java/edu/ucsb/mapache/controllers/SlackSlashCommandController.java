@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+import edu.ucsb.mapache.repositories.SlackUserRepository;
+import edu.ucsb.mapache.repositories.StudentRepository;
 import edu.ucsb.mapache.entities.Student;
 import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.google.Item;
@@ -35,6 +37,7 @@ import edu.ucsb.mapache.services.WhoIsService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -56,6 +59,8 @@ public class SlackSlashCommandController {
     @Autowired
     ChannelRepository channelRepository;
 
+    @Autowired
+    SlackUserRepository slackUserRepository;
 
     @Autowired
     GoogleSearchServiceHelper googleSearchServiceHelper;
@@ -290,9 +295,25 @@ public class SlackSlashCommandController {
     }
 
     public RichMessage getWhoItIs(SlackSlashCommandParams params) {
+        String outputText = "";
+        String outputTeam = "";
+        String name = "";
+        String email = "";
         String[] textParts = params.getTextParts();
-        String user = textParts[1];
-        String outputText = whoIsService.getOutput(user);
+        String username = textParts[1];
+        List<SlackUser> user = slackUserRepository.findByUsername(username);
+        if(user.size()==1) {
+            SlackUser output = user.get(0);
+            name = output.getProfile().getReal_name();
+            email = output.getProfile().getEmail();
+            outputTeam = whoIsService.getOutput(email);
+        }
+        if(outputTeam!=""){
+            outputText = name + ", " + outputTeam + ", " + email;
+        }
+        else {
+            outputText = name + ", " + email;
+        }
         RichMessage richMessage = new RichMessage(outputText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack

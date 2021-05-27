@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import edu.ucsb.mapache.config.SecurityConfig;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+import edu.ucsb.mapache.repositories.SlackUserRepository;
 
 import org.springframework.http.MediaType;
 
@@ -49,6 +50,9 @@ public class SlackSlashCommandControllerTests {
 
     @MockBean
     ChannelRepository channelRepository;
+
+    @MockBean
+    SlackUserRepository slackUserRepository;
 
     @MockBean
     GoogleSearchServiceHelper googleSearchServiceHelper;
@@ -252,7 +256,6 @@ public class SlackSlashCommandControllerTests {
 
     @Test
     public void test_whoisCommand() throws Exception {
-        when(whoIsService.getOutput("@user")).thenReturn("name, team, email");
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")

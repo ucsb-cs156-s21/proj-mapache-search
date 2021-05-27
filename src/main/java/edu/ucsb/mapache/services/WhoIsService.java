@@ -18,25 +18,12 @@ public class WhoIsService {
   @Autowired
   private StudentRepository studentRepository;
 
-  public String getOutput(String username) {
-    List<SlackUser> user = slackUserRepository.findByUsername(username);
-    SlackUser output = user.get(0);
-    String name = output.getProfile().getReal_name();
-    String email = output.getProfile().getEmail();
+  public String getOutput(String email) {
     String team = "";
-
     List<Student> stu = studentRepository.findByEmail(email);
     Student outputStudent = stu.get(0);
     team = outputStudent.getTeamName();
 
-    String response = "";
-    if (team!="") {
-      response = name + ", " + team + ", " + email;
-    }
-    else {
-      response = name + ", " + email;
-    }
-
-    return response;
+    return team;
   }
 }
