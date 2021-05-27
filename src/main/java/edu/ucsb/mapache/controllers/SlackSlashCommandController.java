@@ -160,6 +160,10 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("teamlist")) {
             return getTeamValues(params);
+        }    
+
+        if (firstArg.equals("search") && textParts[1].equals("slack")) {
+            return getPreviousSlackMessages(params);
         }
 
         return unknownCommand(params);
