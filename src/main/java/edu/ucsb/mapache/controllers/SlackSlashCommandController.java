@@ -302,7 +302,7 @@ public class SlackSlashCommandController {
         String[] textParts = params.getTextParts();
         String username = textParts[1];
         List<SlackUser> user = slackUserRepository.findByUsername(username);
-        if(user.size()==1) {
+        if(user.size()!=0) {
             SlackUser output = user.get(0);
             name = output.getProfile().getReal_name();
             email = output.getProfile().getEmail();
