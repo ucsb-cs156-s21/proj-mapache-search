@@ -53,7 +53,6 @@ function App() {
           <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/messagehistogram" exact component={HistogramOfMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
-          <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/datesearch" exact component={SearchBetweenDates} authorizedRoles={["admin", "member"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/" exact component={Home} />
