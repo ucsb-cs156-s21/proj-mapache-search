@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import MessageListView from "main/components/ChannelMessages/MessageListView";
+import SearchResultsView from "main/components/ChannelMessages/SearchResultsView";
 import useSWR from "swr";
 jest.mock("swr");
 jest.mock("react-router-dom", () => {
@@ -8,20 +8,20 @@ jest.mock("react-router-dom", () => {
         'useParams': jest.fn(),
     };
 });
-describe("MessageListView tests", () => {
+describe("SearchResultsView tests", () => {
 
     test("renders without crashing", () => {
         useSWR.mockReturnValue({
             data: []
         });
-        render(<MessageListView messages={[]} />);
+        render(<SearchResultsView messages={[]} />);
     });
 
     test("Search bar exists by default", () => {
         useSWR.mockReturnValue({
             data: []
         });
-        const {queryByText} = render(<MessageListView messages={[]}/>);
+        const {queryByText} = render(<SearchResultsView messages={[]}/>);
         const searchBar = queryByText(/Search/);
         expect(searchBar).not.toBeNull();
     });
@@ -30,9 +30,49 @@ describe("MessageListView tests", () => {
         useSWR.mockReturnValue({
             data: []
         });
-        const {queryByText} = render(<MessageListView messages={[]} searchField={false}/>);
+        const {queryByText} = render(<SearchResultsView messages={[]} searchField={false}/>);
         const searchBar = queryByText(/Search/);
         expect(searchBar).toBeNull();
+    });
+
+    test("Displays channel", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Office hours at <https://ucsb.edu>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
+        const nameElement = getByText(/section-6pm/);
+        expect(nameElement).toBeInTheDocument();
+    });
+
+    test("Channel links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Office hours at <https://ucsb.edu>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
+        const linkElement = getByText(/section-6pm/);
+        expect(linkElement.href).toEqual("http://localhost/member/listViewChannels/section-6pm#U017218J9B31594143066.000200");
     });
 
     test("Displays username", () => {
@@ -53,7 +93,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getAllByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getAllByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const nameElement = getAllByText(/Test Person/);
         expect(nameElement).toHaveLength(2);
     });
@@ -76,7 +116,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         setTimeout(function (){
             const nameElement = getByText(/Test Person has joined the channel/);
             expect(nameElement).toBeInTheDocument();
@@ -98,31 +138,10 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
 
-    });
-
-    test("Messages have ID", () => {
-        useSWR.mockReturnValue({
-            data: []
-        });
-        const exampleMessage = {
-            "type": "message",
-            "subtype": "channel_join",
-            "ts": "1594143066.000200",
-            "user": "U017218J9B3",
-            "text": "<@U017218J9B3> has joined the channel",
-            "channel": "section-6pm",
-            "user_profile": {
-                "real_name": "Test Person"
-            }
-        }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        const nameElement = getByText(/@U017218J9B3/);
-        expect(nameElement).toBeInTheDocument();
-        expect(nameElement.id).toEqual("U017218J9B31594143066.000200");
     });
 
     test("Unembedded https links are clickable", () => {
@@ -134,15 +153,15 @@ describe("MessageListView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            "text": "Office hours at <https://ucsb.edu>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
+        const linkElement = getByText(/https:\/\/ucsb.edu/);
+        expect(linkElement.href).toEqual("https://ucsb.edu/");
         
     });
 
@@ -161,7 +180,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText(/mailto:test@ucsb.edu/);
         expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
         
@@ -182,7 +201,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText("tel:+01234567890");
         expect(linkElement.href).toEqual("tel:+01234567890");
         
@@ -197,15 +216,15 @@ describe("MessageListView tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09|zoom>",
+            "text": "Office hours at <https://www.ucsb.edu|zoom>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText(/zoom/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        expect(linkElement.href).toEqual("https://www.ucsb.edu/");
         
     });
 
@@ -224,7 +243,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText(/this email/);
         expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
         
@@ -245,7 +264,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText("+0 123 456 7890");
         expect(linkElement.href).toEqual("tel:+01234567890");
         
@@ -266,7 +285,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const linkElement = getByText(/#help-jpa02/);
         expect(linkElement.href).toEqual("http://localhost/member/listViewChannels/help-jpa02");
         
@@ -287,8 +306,8 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {queryByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        var bracketElement = queryByText(/<@channel>/);
+        const {queryByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
+        let bracketElement = queryByText(/<@channel>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/@channel/);
         expect(bracketElement).toBeInTheDocument();
@@ -310,7 +329,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const bracketElement = getByText(/@channel/);
         expect(bracketElement.getAttribute("href")).toEqual(null);
         
@@ -331,7 +350,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         // the timestamps in this test are in UTC because Jest tests
         // and Github tests use UTC time zone
         const date = getByText("2021-01-16 21:46:57");
@@ -354,7 +373,7 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
         const bracketElement = getByText(/@channel/);
         expect(bracketElement).toHaveStyle("font-weight: bold");
         
@@ -375,36 +394,11 @@ describe("MessageListView tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {queryByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        var bracketElement = queryByText(/<testing>/);
+        const {queryByText} = render(<SearchResultsView messages={[exampleMessage]}/>);
+        let bracketElement = queryByText(/<testing>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/testing/);
         expect(bracketElement).toBeInTheDocument();
         
     });
-
-    test("User tags are styled using the correct css class", () => {
-        useSWR.mockReturnValue({
-            data: []
-        });
-        const exampleMessage = {
-            "type": "message",
-            "subtype": "channel_join",
-            "ts": "1594143066.000200",
-            "user": "U017218J9B3",
-            "text": "<@U017218J9B3> has joined the channel",
-            "channel": "section-6pm",
-            "user_profile": {
-                "real_name": "Test Person"
-            }
-        }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        setTimeout(function () {
-            const userTag = getByText(/@Test Person/);
-            expect(userTag).toHaveClass("user-tag");
-        }, 500)
-        
-    });
-
-
 });
