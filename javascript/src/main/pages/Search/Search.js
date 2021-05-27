@@ -57,7 +57,7 @@ const Search = () => {
     useEffect(() => {
         async function getQuota() {
             const quotaInfo = await fetchQuota();
-            console.log("quotaInfo=",quotaInfo)
+            
             if(quotaInfo && quotaInfo.quota)
                 setQuota(quotaInfo.quota);
         };

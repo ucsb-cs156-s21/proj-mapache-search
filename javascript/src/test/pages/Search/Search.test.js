@@ -28,7 +28,7 @@ describe("Search tests", () => {
 
         fetchWithToken.mockImplementation(
             (url) => {
-                console.log(`url=${url}`)
+                
                 if(url === "/api/member/search/quota")
                     return {quota:0};
                 else {
@@ -46,7 +46,7 @@ describe("Search tests", () => {
         
         fetchWithToken.mockImplementation(
             (url) => {
-                console.log(`url=${url}`)
+                
                 if(url === "/api/member/search/quota")
                     return {quota:0};
                 else {
