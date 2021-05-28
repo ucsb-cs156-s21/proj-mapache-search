@@ -7,18 +7,6 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import TimeFormatter from "./time"
 const { SearchBar } = Search;
 
-const GetMessageContents = (text, slackUsers) => {
-    return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
-        if(slackUsers != null) {
-            for(let i = 0; i < slackUsers.length; i++) {
-                if(slackUsers[i].id === userId) {
-                    return "@" + slackUsers[i].real_name;
-                }
-            }
-        }
-        return "@" + userId;
-    })
-}
 
 const filterLinks = (messages) => {
     // get bracketed text (links)
@@ -60,7 +48,6 @@ const formatBracketedText = (text) => {
 }
 
 const createMarkup = (text, slackUsers) => {
-    text = GetMessageContents(text, slackUsers)
     text = formatBracketedText(text)
     return {
         __html: text

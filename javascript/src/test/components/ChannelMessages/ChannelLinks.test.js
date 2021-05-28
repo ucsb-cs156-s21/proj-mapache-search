@@ -92,14 +92,14 @@ describe("ChannelLinks tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Office hours at <https://youtu.be/dQw4w9WgXcQ>",
+            "text": "Office hours <https://youtu.be/dQw4w9WgXcQ|at this link>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
             }
         }
         const {getByText} = render(<ChannelLinks messages={[exampleMessage]}/>);
-        const linkElement = getByText(/you/);
+        const linkElement = getByText(/at this link/);
         expect(linkElement.href).toEqual("https://youtu.be/dQw4w9WgXcQ");
         
     });
