@@ -11,7 +11,10 @@ jest.mock("react-router-dom", () => {
 
 describe("UserMessageList tests", () => {
     test("it renders without crashing", () => {
-        render(<UserMessageList/>);
+        useSWR.mockReturnValue({
+            data: []
+        });
+        render(<UserMessageList messages={[]} channel={""} />);
     });
 
     test("Default message display", () => {
