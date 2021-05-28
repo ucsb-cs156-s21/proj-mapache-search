@@ -37,7 +37,7 @@ describe("SearchMessagesByUser tests", () => {
         expect(selectSearchUser.value).toBe("Test Jones");
     });
 
-    test("Fetch is called once and with correct url when user clicks on search button", async () => {
+    test("Fetch is called twice and with correct url when user clicks on search button", async () => {
         const expectedURL = `/api/members/messages/usersearch?searchUser=Test Jones`;
         const options = {
             method: 'GET',
@@ -49,7 +49,7 @@ describe("SearchMessagesByUser tests", () => {
         const search = getByText("Search");
         userEvent.click(search);
         await waitFor(() => {
-            expect(fetchWithToken).toHaveBeenCalledTimes(1);
+            expect(fetchWithToken).toHaveBeenCalledTimes(2);
             expect(fetchWithToken).toHaveBeenCalledWith(expectedURL, "fakeToken", options);
         });
     });
