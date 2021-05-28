@@ -40,6 +40,28 @@ describe("UserMessageList tests", () => {
         expect(nameElement).toBeInTheDocument();
     });
 
+    test("Username not found", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<UserMessageList messages={[exampleMessage]}/>);
+        setTimeout(function (){
+            const nameElement = getByText(/@U017218J9B3/);
+            expect(nameElement).toBeInTheDocument();
+        }, 500)
+    });
+
     test("Channel tags begin with @ and are bolded", () => {
         useSWR.mockReturnValue({
             data: []
@@ -149,6 +171,48 @@ describe("UserMessageList tests", () => {
         const {getByText} = render(<UserMessageList messages={[exampleMessage]}/>);
         const linkElement = getByText(/this email/);
         expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
+        
+    });
+
+    test("Unembedded https links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Office hours at <https://www.youtube.com/watch?v=Rgx8dpiPwpA>",
+            "channel": "section-7pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<UserMessageList messages={[exampleMessage]}/>);
+        const linkElement = getByText(/https:\/\/www.youtube.com\/watch\?v=Rgx8dpiPwpA/);
+        expect(linkElement.href).toEqual("https://www.youtube.com/watch?v=Rgx8dpiPwpA");
+        
+    });
+
+    test("Unembedded phone links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Call me at <tel:+01234567890>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<UserMessageList messages={[exampleMessage]}/>);
+        const linkElement = getByText("tel:+01234567890");
+        expect(linkElement.href).toEqual("tel:+01234567890");
         
     });
 
