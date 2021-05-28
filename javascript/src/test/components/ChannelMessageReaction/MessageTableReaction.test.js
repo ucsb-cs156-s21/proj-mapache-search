@@ -11,10 +11,16 @@ jest.mock("react-router-dom", () => {
 describe("MessageTableReactions tests", () => {
 
     test("it renders without crashing", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
         render(<MessageTableReaction/>);
     });
 
     test("row.message_reactions is not null", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
         const testMessages = [{
             user: "test-user",
             text: "test-text",
@@ -32,6 +38,7 @@ describe("MessageTableReactions tests", () => {
         expect(testText).toBeInTheDocument();
         expect(testCount).toBeInTheDocument();
     });
+
     test("user id is replaced with username", () => {
         useSWR.mockReturnValue({
             data: [{
@@ -55,11 +62,13 @@ describe("MessageTableReactions tests", () => {
         expect(testText).toBeInTheDocument();
     });
 
-    /*
-    test("link becomes clickable", () => {
+    test("Unembedded https links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
         const testMessages = [{
             user: "test-user",
-            text: "test-text",
+            text: "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
             message_reactions: [{
                 count: 1,
                 name: "test-name"
@@ -67,13 +76,9 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const testUser = getByText(/test-user/);
-        const testText = getByText(/test-text/);
-        const testCount = getByText(/1/);
-        expect(testUser).toBeInTheDocument();
-        expect(testText).toBeInTheDocument();
-        expect(testCount).toBeInTheDocument();
-    }); */
+        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
+        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+    }); 
 });
 
 
