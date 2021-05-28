@@ -197,17 +197,6 @@ describe("MessageTableReactions tests", () => {
         
     });    
 
-
-
-
-
-
-
-
-
-
-
-
     test("Brackets removed from Channel IDs and they are not links", () => {
         useSWR.mockReturnValue({
             data: []
