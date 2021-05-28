@@ -9,11 +9,14 @@ import NavbarHover from "../Nav/NavbarHover";
 
 export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, searchPages, dataPages }) {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar className="navbar-custom" expand="lg" bg="dark" variant="dark">
       <Navbar.Toggle />
       <Navbar.Collapse>
         <LinkContainer to="">
-          <Navbar.Brand data-testid="brand">Mapache Search</Navbar.Brand>
+        <Navbar.Brand data-testid="brand">
+          <p className="brand"><img className="brand" src={'/navbarlogo.png'}  alt="Mapache Search icon"  /></p>
+          <p className="brand">Mapache Search</p>
+          </Navbar.Brand>
         </LinkContainer>
         <Nav>
           {(isMember || isAdmin) &&
@@ -25,9 +28,6 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
           {(isMember || isAdmin) &&
             <NavbarHover title="Slack Search" items={searchPages} />
           }
-          <LinkContainer to="/about">
-            <Nav.Link>About</Nav.Link>
-          </LinkContainer>
           {(isAdmin || isMember) &&
             <NavbarHover title="Analyze Slack Data" items={dataPages} />
           }
