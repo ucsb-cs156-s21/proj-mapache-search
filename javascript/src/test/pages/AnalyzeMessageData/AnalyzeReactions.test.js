@@ -55,7 +55,7 @@ describe("AnalyzeReactions tests", () => {
       const search = getByText("Search");
       userEvent.click(search);
       await waitFor(() => {
-          expect(fetchWithToken).toHaveBeenCalledTimes(1);
+          expect(fetchWithToken).toHaveBeenCalledTimes(2);
           expect(fetchWithToken).toHaveBeenCalledWith(expectedURL, "fakeToken", options);
       });
   });
@@ -72,7 +72,7 @@ describe("AnalyzeReactions tests", () => {
       const search = getByText("Search");
       userEvent.click(search);
       await waitFor(() => {
-          expect(fetchWithToken).toHaveBeenCalledTimes(2);
+          expect(fetchWithToken).toHaveBeenCalledTimes(1);
           expect(fetchWithToken).toHaveBeenCalledWith(expectedURL, "fakeToken", options);
       });
   });
