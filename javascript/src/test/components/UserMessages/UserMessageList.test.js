@@ -83,6 +83,27 @@ describe("UserMessageList tests", () => {
         
     });
 
+    test("Channel links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Please post in <#C01K1CR63MX|help-jpa02>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<UserMessageList messages={[exampleMessage]}/>);
+        const linkElement = getByText   (/#help-jpa02/);
+        expect(linkElement.href).toEqual("http://localhost/member/listViewChannels/help-jpa02");
+        
+    });  
+
     test("Bracketed text that is not an http or mailto link is not clickable", () => {
         useSWR.mockReturnValue({
             data: []
