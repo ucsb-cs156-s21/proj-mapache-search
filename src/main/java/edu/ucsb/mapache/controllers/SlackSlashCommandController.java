@@ -29,6 +29,7 @@ import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
+import edu.ucsb.mapache.services.TeamListService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,6 +60,9 @@ public class SlackSlashCommandController {
 
     @Autowired
     TeamEmailListService teamEmailListService;
+
+    @Autowired
+    TeamListService teamListService;
 
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
@@ -140,7 +144,7 @@ public class SlackSlashCommandController {
         }
 
         if (firstArg.equals("teamlist")) {
-            return getTeamEmail(params);
+            return getTeamValues(params);
         }
 
         return unknownCommand(params);
@@ -259,17 +263,21 @@ public class SlackSlashCommandController {
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
-    public RichMessage getTeamEmail(SlackSlashCommandParams params) {
+    public RichMessage getTeamValues(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
         if(textParts.length < 2) {
-            RichMessage richMessage = new RichMessage("Please enter a team name");
+            String teamlistText = teamListService.getListOfTeams();
+            RichMessage richMessage = new RichMessage(teamlistText);
+            richMessage.setResponseType("in_channel"); // other option is "ephemeral"
             return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
         }
+
         String teamName = textParts[1];
         String emailText = teamEmailListService.getEmailsStringFromTeamname(teamName);
         RichMessage richMessage = new RichMessage(emailText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+
     }
 
     private String timeNow() {
