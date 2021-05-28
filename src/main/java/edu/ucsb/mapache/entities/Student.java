@@ -39,25 +39,28 @@ public class Student {
   public Student() {
   }
 
-  public Student(Long id, String email, String first, String last, String section, String team ) {
+  public Student(Long id,  String first, String last, String email,String section, String team ) {
     this.id = id;
-    this.email = email;
+    
     this.first = first;
     this.last = last;
+    this.email = email;
     this.section = section;
     this.team = team;
   }
-  public Student( String email, String first, String last, String section, String team ) {
-    this.email = email;
+  //1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "s21-5pm-1"
+  public Student(  String first, String last,String email, String section, String team ) {
+    
     this.first = first;
     this.last = last;
+    this.email = email;
     this.section = section;
     this.team = team;
   }
 
   @Override
   public String toString() {
-    return String.format("Student[id=%d, email=%s, first=%s, last=%s, section=%s,team=%s]", id, email, first, last, section, team);
+    return String.format("Student[id=%d, first=%s, last=%s, email=%s, section=%s,team=%s]", id, first, last, email, section, team);
   }
   
   @Override
@@ -77,12 +80,7 @@ public class Student {
   public void setId(Long id) {
     this.id = id;
   }
-  public String getEmail() {
-    return email;
-  }
-  public void setEmail(String email) {
-    this.email = email;
-  }
+  
   public String getFirst() {
     return first;
   }
@@ -94,6 +92,12 @@ public class Student {
   }
   public void setLast(String last) {
     this.last = last;
+  }
+  public String getEmail() {
+    return email;
+  }
+  public void setEmail(String email) {
+    this.email = email;
   }
   public String getSection() {
     return section;

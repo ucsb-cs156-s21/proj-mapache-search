@@ -8,8 +8,11 @@ import Loading from "main/components/Loading/Loading";
 import StudentTable from "main/components/Students/StudentTable";
 import {buildDeleteStudent, buildDeleteAllStudents, uploadStudentsCSV} from "main/services/StudentServices";
 import {useHistory} from "react-router-dom";
+import { useToasts } from 'react-toast-notifications';
+
 
 const Students = () => {
+  const { addToast } = useToasts();
   const history = useHistory();
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: studentList, error, mutate: mutateStudents } = useSWR(
@@ -33,9 +36,15 @@ const Students = () => {
   const deleteAllStudents = buildDeleteAllStudents(
     getToken, mutateStudents
   );
+  
 
+  const onUploadError = (error) => {
+    
+    addToast("Didn't upload right format", { appearance: 'error' });
+    console.log("error=",error.name,error.message);
+  };
   const uploadedStudents = uploadStudentsCSV(
-    getToken, mutateStudents
+    getToken, mutateStudents,onUploadError
   );
 
   return (

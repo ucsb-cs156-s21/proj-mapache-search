@@ -27,7 +27,8 @@ public class StudentTests {
   @Test
   public void testStudent_toString() throws Exception {
     Student student = new Student(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "s21-5pm-1");
-    assertEquals(student.toString(), String.format("Student[id=%d, email=%s, first=%s, last=%s, section=%s,team=%s]", 1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "s21-5pm-1"));
+    //assertEquals(student.toString(), String.format("Student[id=%d, first=%s, last=%s, email=%s, section=%s,team=%s]", 1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "s21-5pm-1"));
+    assertEquals(student.toString(), "Student[id=1, first=Chris, last=Gaucho, email=cgaucho@ucsb.edu, section=5pm,team=s21-5pm-1]");
   }
   @Test
   public void testStudent_equalsSelf_With_Comparison_to_Other_Student_Objects() throws Exception {

@@ -32,7 +32,7 @@ public class TeamListServiceTests {
       students.add(new Student(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "s21-5pm-1"));
       students.add(new Student(2L, "Laurie", "Del Player", "ldelplaya@ucsb.edu", "7pm", "s21-7pm-3"));
       //students.add(new Student(3L, "email3", "team3"));
-      String expectedSring = "team1\nteam2\n";
+      String expectedSring = "s21-5pm-1\ns21-7pm-3\n";
       when(mockStudentRepository.findAll()).thenReturn(students);
       assertEquals(expectedSring, teamListService.getListOfTeams());
   }
