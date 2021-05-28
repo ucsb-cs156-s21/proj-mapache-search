@@ -3,7 +3,6 @@ import { fetchWithToken } from "main/utils/fetch";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Search from "../../../main/pages/Search/Search.js";
-import { ToastProvider } from "react-toast-notifications";
 import { useToasts } from "react-toast-notifications";
 
 jest.mock("main/utils/fetch");
