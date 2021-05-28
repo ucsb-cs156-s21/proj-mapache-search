@@ -22,8 +22,8 @@ const GetMessageContents = (text, slackUsers) => {
 
 const filterLinks = (messages) => {
     // get bracketed text (links)
-    let link_messages = messages.filter(message => (message.text.includes("<") && message.text.includes(">")));
-    let bracketRegEx = /<(.*?)>/g;
+    let link_messages = messages.filter(message => (message.text.includes("<http") && message.text.includes(">")));
+    let bracketRegEx = /<http(.*?)>/g;
     let links = [];
     let found;
     let new_message;
