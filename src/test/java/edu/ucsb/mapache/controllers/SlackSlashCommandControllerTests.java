@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;  
-import org.springframework.data.domain.Sort;
 
 import edu.ucsb.mapache.config.SecurityConfig;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
@@ -37,7 +36,9 @@ import edu.ucsb.mapache.services.TeamListService;
 import java.util.List;  
 import java.util.ArrayList; 
 import edu.ucsb.mapache.documents.Message;   
-import edu.ucsb.mapache.documents.SlackUser;
+import edu.ucsb.mapache.documents.SlackUser;  
+import edu.ucsb.mapache.documents.SlackUserProfile;  
+import edu.ucsb.mapache.documents.MessageReactions;
 
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 
@@ -292,21 +293,11 @@ public class SlackSlashCommandControllerTests {
                 .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
                 .param("command", "/mapache").param("text", "search slack").param("response_url", "value"))
                 .andExpect(status().is(200));
-    }   
-
-    @Test 
-    public void test_slackSearchCommandMultipleArguments() throws Exception {  
-      mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .param("token", slackSlashCommandController.getSlackToken())
-                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
-                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
-                .param("command", "/mapache").param("text", "search slack computer").param("response_url", "value"))
-                .andExpect(status().is(200));
-    }   
+    }    
 
     @Test public void test_slackSlashTextInChannel() throws Exception{       
         List<Message> message = new ArrayList<Message>();
-        when(messageRepository.findByTextInChannel("computer", "general",Sort.by(Sort.Direction.ASC, "ts"))).thenReturn(message);
+        when(messageRepository.findByTextInChannel(any(), any(), any())).thenReturn(message);
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
@@ -315,20 +306,23 @@ public class SlackSlashCommandControllerTests {
                 .andExpect(status().is(200));
     }     
 
-     @Test public void test_find_slackSlashIDinChannel() throws Exception{    
-        List<SlackUser> users = new ArrayList<SlackUser>();      
-        when(slackuserRepository.findByID("slackuser")).thenReturn(users);
+    @Test public void test_find_slackMessages() throws Exception{    
+        List<Message> message = new ArrayList<Message>();   
+        List<MessageReactions> reactions = new ArrayList<MessageReactions>(); 
+        SlackUserProfile profile =  new SlackUserProfile("email");   
+        Message m = new Message("type","subtype","ts","user","text","channel",profile,reactions);   
+        List<SlackUser> users = new ArrayList<SlackUser>();    
+        SlackUser user = new SlackUser("id","name","real_name",profile);
+        users.add(user);  
+        message.add(m);    
+        when(messageRepository.findByTextInChannel(any(), any(), any())).thenReturn(message);  
+        when(slackuserRepository.findByID(any())).thenReturn(users); 
         mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("token", slackSlashCommandController.getSlackToken())
                 .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
                 .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
                 .param("command", "/mapache").param("text","search slack computer").param("response_url", "value"))
-                .andExpect(status().is(200));   
-    }   
+                .andExpect(status().is(200));
+    }     
   
-
-  
-
-
-
 }
