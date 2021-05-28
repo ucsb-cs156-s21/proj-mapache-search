@@ -3,8 +3,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-const { SearchBar } = Search;
 
 const GetMessageContents = (text, slackUsers) => {
     return text.replace(/<@([A-Z0-9]{11})>/g, (_,userId) => {
