@@ -16,7 +16,7 @@ const SearchMessagesByUser = () => {
     
     const handleSearchUserOnSubmit = (event) => {
         event.preventDefault();
-        const url = `/api/members/messages/usersearch?searchUser=${searchUser}`;
+        const url = `/api/members/messages/allmessages/usersearch?searchUser=${searchUser}`;
         const options = {
             method: 'GET',
         }
