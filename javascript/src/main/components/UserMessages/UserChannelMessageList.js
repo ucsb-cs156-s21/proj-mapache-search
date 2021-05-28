@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import { fetchWithToken } from "../../utils/fetch";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default ({ messages }) => {
 
