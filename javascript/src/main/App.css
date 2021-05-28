@@ -108,3 +108,12 @@ img.brand {
 p.brand {
   text-align: center;
 }
+
+.user-tag {
+  color: #2c639e;
+  background-color: #eaf5f9;
+}
+
+tr.focused {
+  background-color: #ccc;
+}
