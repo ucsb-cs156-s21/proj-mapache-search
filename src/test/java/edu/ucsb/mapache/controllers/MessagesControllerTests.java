@@ -76,7 +76,7 @@ public class MessagesControllerTests {
 
         @Test
         public void test_datesearch_messages_unauthorizedIfNotMember() throws Exception {
-                mockMvc.perform(get("/api/members/messages/datesearch?searchDate=springboot&searchDate2=springboot")
+                mockMvc.perform(get("/api/members/messages/datesearch?startDate=springboot&endDate=springboot")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().is(401));
         }
@@ -86,7 +86,7 @@ public class MessagesControllerTests {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByDate("springboot", "springboot")).thenReturn(expectedMessages);
                 when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
-                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?searchDate=springboot&searchDate2=springboot")
+                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?startDate=springboot&endDate=springboot")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().isOk()).andReturn();
                 String responseString = response.getResponse().getContentAsString();
@@ -100,7 +100,7 @@ public class MessagesControllerTests {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByDate("", "springboot")).thenReturn(expectedMessages);
                 when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
-                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?searchDate=&searchDate2=springboot")
+                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?startDate=&endDate=springboot")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().isOk()).andReturn();
                 String responseString = response.getResponse().getContentAsString();
@@ -114,7 +114,7 @@ public class MessagesControllerTests {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByDate("springboot", "")).thenReturn(expectedMessages);
                 when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
-                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?searchDate=springboot&searchDate2=")
+                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?startDate=springboot&endDate=")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().isOk()).andReturn();
                 String responseString = response.getResponse().getContentAsString();
@@ -128,7 +128,7 @@ public class MessagesControllerTests {
                 List<Message> expectedMessages = new ArrayList<Message>();
                 when(mockMessageRepository.findByDate("", "")).thenReturn(expectedMessages);
                 when(mockAuthControllerAdvice.getIsMemberOrAdmin(anyString())).thenReturn(true);
-                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?searchDate=&searchDate2=")
+                MvcResult response = mockMvc.perform(get("/api/members/messages/datesearch?startDate=&endDate=")
                                 .contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
                                 .andExpect(status().isOk()).andReturn();
                 String responseString = response.getResponse().getContentAsString();

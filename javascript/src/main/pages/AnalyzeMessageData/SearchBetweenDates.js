@@ -6,20 +6,20 @@ import MessageListView from "main/components/ChannelMessages/MessageListView"
 
 const SearchBetweenDates = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
-    const [ searchDate, setSearchDate ] = useState(''); 
-    const [ searchDate2, setSearchDate2 ] = useState('');
+    const [ startDate, setStartDate ] = useState(''); 
+    const [ endDate, setEndDate ] = useState('');
     const [ searchResults, setSearchResults ] = useState([]);
 
-    const handleSearchDateOnChange = (event) => {
-        setSearchDate((new Date(event.target.value).getTime() / 1000).toString());
+    const handleStartDateOnChange = (event) => {
+        setStartDate((new Date(event.target.value).getTime() / 1000).toString());
     };
 
-    const handleSearchDateOnChange2 = (event) => {
-        setSearchDate2((new Date(event.target.value).getTime() / 1000).toString());
+    const handleEndDateOnChange = (event) => {
+        setEndDate((new Date(event.target.value).getTime() / 1000).toString());
     };
     const handleSearchDateOnSubmit = (event) => {
         event.preventDefault();
-        const url = `/api/members/messages/datesearch?searchDate=${searchDate}&searchDate2=${searchDate2}`;
+        const url = `/api/members/messages/datesearch?startDate=${startDate}&endDate=${endDate}`;
         const options = {
             method: 'GET',
         }
@@ -32,11 +32,11 @@ const SearchBetweenDates = () => {
         <>
             <h1> Search Results </h1>
             <Form onSubmit={handleSearchDateOnSubmit}>
-                <Form.Group controlId="searchDate" onChange={handleSearchDateOnChange}>
+                <Form.Group controlId="startDate" onChange={handleStartDateOnChange}>
                     <Form.Label>Start date</Form.Label>
                         <Form.Control type="date" placeholder="mm/dd/yyyy" />
                 </Form.Group>
-                <Form.Group controlId="searchDate2" onChange={handleSearchDateOnChange2}>
+                <Form.Group controlId="endDate" onChange={handleEndDateOnChange}>
                     <Form.Label>End date</Form.Label>
                         <Form.Control type="date" placeholder="mm/dd/yyyy" />
                 </Form.Group>

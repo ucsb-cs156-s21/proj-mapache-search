@@ -64,14 +64,14 @@ public class MessagesController {
     // search between two dates
     @GetMapping("/datesearch")
     public ResponseEntity<String> getMessagesBetweenDates(@RequestHeader("Authorization") String authorization,
-            @RequestParam String searchDate, @RequestParam String searchDate2) throws JsonProcessingException {
+            @RequestParam String startDate, @RequestParam String endDate) throws JsonProcessingException {
         if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
             return getUnauthorizedResponse("member");
-        if (searchDate.equals("") || searchDate2.equals("")) {
+        if (startDate.equals("") || endDate.equals("")) {
             return ResponseEntity.ok().body("[]");
         }
         // Set ensures no duplicate messages
-        Set<Message> messages = new HashSet<>(messageRepository.findByDate(searchDate, searchDate2));
+        Set<Message> messages = new HashSet<>(messageRepository.findByDate(startDate, endDate));
         String body = mapper.writeValueAsString(messages);
         return ResponseEntity.ok().body(body);
     }
