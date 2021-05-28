@@ -17,7 +17,7 @@ public class TeamListService {
     List<Student> studentsAll = studentRepository.findAll();
     String teamList = "";
     for (Student s : studentsAll) {
-      teamList += s.getTeamName() + "\n";
+      teamList += s.getTeam() + "\n";
     }
     return teamList;
   }

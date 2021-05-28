@@ -113,8 +113,8 @@ public class StudentController {
     return ResponseEntity.ok().body(body);
   }
   private void saveTeamIfNew(Student student) {
-    if(teamRepository.findByTeamName(student.getTeamName()).isEmpty()) {
-      Team team = new Team (student.getTeamName(), "");
+    if(teamRepository.findByTeamName(student.getTeam()).isEmpty()) {
+      Team team = new Team (student.getTeam(), "");
       teamRepository.save(team);
     }
   }

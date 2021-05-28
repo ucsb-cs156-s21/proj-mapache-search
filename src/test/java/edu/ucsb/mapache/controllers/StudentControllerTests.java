@@ -74,7 +74,7 @@ public class StudentControllerTests {
 
   @Test
   public void createStudent_teamExists() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team1");
+    Student expectedStudent = new Student(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "team1");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     Team team1 = new Team(1L, "team1", "team description");
@@ -96,7 +96,7 @@ public class StudentControllerTests {
 
   @Test
   public void createStudent_newTeam() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     List<Team> empty = new ArrayList<Team>();
@@ -118,7 +118,7 @@ public class StudentControllerTests {
 
   @Test
   public void test_createStudent_unauthorizedIfNotAdmin() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     mockMvc
@@ -129,7 +129,7 @@ public class StudentControllerTests {
 
   @Test
   public void deleteStudent() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm","team");
     when(mockStudentRepository.findById(1L)).thenReturn(Optional.of(expectedStudent));
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     MvcResult response = mockMvc
@@ -147,7 +147,7 @@ public class StudentControllerTests {
   @Test
   public void deleteAllStudents() throws Exception {
     List<Student> expectedStudents = new ArrayList<Student>();
-    expectedStudents.add(new Student(1L, "email", "team"));
+    expectedStudents.add(new Student(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm","team"));
     when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     MvcResult response = mockMvc.perform(delete("/api/students").with(csrf()).contentType(MediaType.APPLICATION_JSON)
@@ -161,7 +161,7 @@ public class StudentControllerTests {
 
   @Test
   public void testDeleteAllStudents_unauthorizedIfNotAdmin() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
@@ -173,7 +173,7 @@ public class StudentControllerTests {
 
   @Test
   public void testDeleteStudent_unauthorizedIfNotAdmin() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm","team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
@@ -206,7 +206,7 @@ public class StudentControllerTests {
 
   @Test
   public void getStudent() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm","team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
@@ -221,7 +221,7 @@ public class StudentControllerTests {
 
   @Test
   public void testGetStudent_notAdmin() throws Exception {
-    Student expectedStudent = new Student(1L, "email", "team");
+    Student expectedStudent = new Student(1L,"Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "team");
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
@@ -232,7 +232,7 @@ public class StudentControllerTests {
   @Test
   public void getAllStudents() throws Exception {
     List<Student> expectedStudents = new ArrayList<Student>();
-    expectedStudents.add(new Student(1L, "email", "team"));
+    expectedStudents.add(new Student(1L, "Chris", "Gaucho", "cgaucho@ucsb.edu", "5pm", "team"));
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedStudents);
     when(mockStudentRepository.findAll()).thenReturn(expectedStudents);
@@ -261,8 +261,8 @@ public class StudentControllerTests {
 
   @Test
   public void updateStudent() throws Exception {
-    Student inputStudent = new Student(1L, "email", "team");
-    Student savedStudent = new Student(1L, "email2", "team");
+    Student inputStudent = new Student(1L, "Chris", "Gaucho", "email1", "5pm", "team");
+    Student savedStudent = new Student(1L, "Chris", "Gaucho", "email2", "5pm", "team");
     String body = objectMapper.writeValueAsString(inputStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockStudentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedStudent));
@@ -279,8 +279,8 @@ public class StudentControllerTests {
 
   @Test
   public void testUpdateStudent_studentAtPathOwned_butTryingToOverwriteAnotherStudent() throws Exception {
-    Student inputStudent = new Student(1L, "email", "team");
-    Student savedStudent = new Student(2L, "email", "team");
+    Student inputStudent = new Student(1L, "Chris", "Gaucho", "email", "5pm", "team");
+    Student savedStudent = new Student(2L, "Chris", "Gaucho", "email", "5pm", "team");
     String body = objectMapper.writeValueAsString(inputStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(false);
     when(mockStudentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedStudent));
@@ -294,8 +294,8 @@ public class StudentControllerTests {
 
   @Test
   public void testUpdateStudent_studentExists_updateValues() throws Exception {
-    Student inputStudent = new Student(1L, "email", "team");
-    Student savedStudent = new Student(1L, "email2", "team2");
+    Student inputStudent = new Student(1L, "Chris", "Gaucho", "email1", "5pm", "team1");
+    Student savedStudent = new Student(1L, "Chris", "Gaucho", "email2", "5pm", "team2");
     String body = objectMapper.writeValueAsString(inputStudent);
     when(mockAuthControllerAdvice.getIsAdmin(anyString())).thenReturn(true);
     when(mockStudentRepository.findById(any(Long.class))).thenReturn(Optional.of(savedStudent));
@@ -330,8 +330,8 @@ public class StudentControllerTests {
   @Test
   public void testUploadFile() throws Exception {
     List<Student> expectedStudents = new ArrayList<Student>();
-    expectedStudents.add(new Student(1L, "email", "team1"));
-    expectedStudents.add(new Student(2L, "email", "team2"));
+    expectedStudents.add(new Student(1L, "Chris", "Gaucho", "email", "5pm", "team1"));
+    expectedStudents.add(new Student(2L, "Chris", "Gaucho", "email", "5pm", "team2"));
     List<Team> teams = new ArrayList<Team>();
     Team team1 = new Team("team1", "");
     Team team2 = new Team("team2", "");
