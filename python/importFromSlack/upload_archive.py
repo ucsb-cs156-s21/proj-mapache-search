@@ -16,6 +16,7 @@ def parse_and_upload():
   users = parse_and_upload_users(archive_path, db)
   channels = parse_and_upload_channels(archive_path, db)
 
+  db[f'messages'].delete_many({})
   for channel in channels:
     parse_and_upload_messages(archive_path, channel, db)
 
@@ -65,7 +66,6 @@ def parse_and_upload_messages(archive_path, channel, db):
 
   print(f'Uploading {len(messages)} messages from channel {channel["name"]}')
   channel_messages_collection = db[f'messages']
-  channel_messages_collection.delete_many({})
   channel_messages_collection.insert_many(messages)
   return messages
 
