@@ -58,9 +58,6 @@ const HistogramOfMessagesByUser = () => {
 
         tableData.forEach(i => {
             label.push(i.week)
-        })
-
-        tableData.forEach(i => {
             datas.push(i.count)
         })
         
