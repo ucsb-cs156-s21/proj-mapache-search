@@ -141,7 +141,7 @@ describe("UserMessageList tests", () => {
             }
         }
         const {queryByText} = render(<UserMessageList messages={[exampleMessage]}/>);
-        var bracketElement = queryByText(/<testing>/);
+        let bracketElement = queryByText(/<testing>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/testing/);
         expect(bracketElement).toBeInTheDocument();
