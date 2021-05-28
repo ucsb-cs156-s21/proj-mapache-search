@@ -1,13 +1,14 @@
 import React from 'react';
 import { render } from "@testing-library/react";
 import MessageTableReaction from "main/components/ChannelMessageReaction/MessageTableReaction.js";
+import useSWR from "swr";
 
 describe("MessageTableReactions tests", () => {
     test("it renders without crashing", () => {
         render(<MessageTableReaction/>);
     });
 
-    test("Displays username", () => {
+        test("Displays username", () => {
         useSWR.mockReturnValue({
             data: [{
                 id: "U017218J9B3",
@@ -25,7 +26,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getAllByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getAllByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const nameElement = getAllByText(/Test Person/);
         expect(nameElement).toHaveLength(2);
     });
@@ -48,7 +49,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         setTimeout(function (){
             const nameElement = getByText(/Test Person has joined the channel/);
             expect(nameElement).toBeInTheDocument();
@@ -70,7 +71,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
 
@@ -91,7 +92,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
         expect(nameElement.parentElement.id).toEqual("U017218J9B31594143066.000200");
@@ -112,7 +113,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
         expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
         
@@ -133,7 +134,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText(/mailto:test@ucsb.edu/);
         expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
         
@@ -154,7 +155,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText("tel:+01234567890");
         expect(linkElement.href).toEqual("tel:+01234567890");
         
@@ -175,7 +176,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText(/zoom/);
         expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
         
@@ -196,7 +197,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText(/this email/);
         expect(linkElement.href).toEqual("mailto:test@ucsb.edu");
         
@@ -217,7 +218,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText("+0 123 456 7890");
         expect(linkElement.href).toEqual("tel:+01234567890");
         
@@ -238,7 +239,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const linkElement = getByText(/#help-jpa02/);
         expect(linkElement.href).toEqual("http://localhost/member/listViewChannels/help-jpa02");
         
@@ -259,7 +260,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {queryByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {queryByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         var bracketElement = queryByText(/<@channel>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/@channel/);
@@ -282,7 +283,7 @@ describe("MessageTableReactions tests", () => {
                 "real_name": "Test Person"
             }
         }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const {getByText} = render(<MessageTableReaction messages={[exampleMessage]}/>);
         const bracketElement = getByText(/@channel/);
         expect(bracketElement.getAttribute("href")).toEqual(null);
         
@@ -305,52 +306,6 @@ describe("MessageTableReactions tests", () => {
         expect(testUser).toBeInTheDocument();
         expect(testText).toBeInTheDocument();
         expect(testCount).toBeInTheDocument();
-    });
-    
-    test("Brackets removed from elements that are not links", () => {
-        useSWR.mockReturnValue({
-            data: []
-        });
-        const exampleMessage = {
-            "type": "message",
-            "subtype": "channel_join",
-            "ts": "1594143066.000200",
-            "user": "U017218J9B3",
-            "text": "<!channel> This is an announcement <testing>",
-            "channel": "section-6pm",
-            "user_profile": {
-                "real_name": "Test Person"
-            }
-        }
-        const {queryByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        var bracketElement = queryByText(/<testing>/);
-        expect(bracketElement).toEqual(null);
-        bracketElement = queryByText(/testing/);
-        expect(bracketElement).toBeInTheDocument();
-        
-    });
-
-    test("User tags are styled using the correct css class", () => {
-        useSWR.mockReturnValue({
-            data: []
-        });
-        const exampleMessage = {
-            "type": "message",
-            "subtype": "channel_join",
-            "ts": "1594143066.000200",
-            "user": "U017218J9B3",
-            "text": "<@U017218J9B3> has joined the channel",
-            "channel": "section-6pm",
-            "user_profile": {
-                "real_name": "Test Person"
-            }
-        }
-        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
-        setTimeout(function () {
-            const userTag = getByText(/@Test Person/);
-            expect(userTag).toHaveClass("user-tag");
-        }, 500)
-        
     });
 });
 
