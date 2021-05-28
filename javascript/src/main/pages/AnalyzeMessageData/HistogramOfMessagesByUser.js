@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Row, Col, Button, Form } from "react-bootstrap";
 import {Bar} from 'react-chartjs-2';
+import { registerables } from "chart.js";
 
 const columns = [{
     dataField: 'week',
@@ -31,10 +32,10 @@ const HistogramOfMessagesByUser = () => {
             method: 'GET',
         }
         const messages = await fetchWithToken(url, getToken, options);
-
+        const sortedMessages = messages.sort((a, b) => a.ts - b.ts);
+        
         let histogramData = {};
-
-        messages.forEach(i => {
+        sortedMessages.forEach(i => {
             //mulitply by 1000 to get timestamp in ms
             const date = new Date(i.ts*1000);
 
@@ -46,9 +47,9 @@ const HistogramOfMessagesByUser = () => {
         })
 
         let tableData = [];
-        Object.keys(histogramData).forEach(week => tableData.push({
-            week: week,
-            count: histogramData[week]
+        Object.keys(histogramData).forEach(i => tableData.push({
+            week: i,
+            count: histogramData[i]
         }));
         setPerWeekHistogramData(tableData);
 
@@ -66,8 +67,14 @@ const HistogramOfMessagesByUser = () => {
             datasets: [{
                 label: "Messages per Week",
                 data: datas,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
+                  ],
+                  borderColor: [
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)'
+                  ],
                 borderWidth: 1
             }],
             options: {
