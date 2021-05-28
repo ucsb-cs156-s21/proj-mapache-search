@@ -122,7 +122,7 @@ describe("MessageTableReactions tests", () => {
         });
         const testMessages = [{
             "user": "U017218J9B3",
-            "text": "Meeting at <https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09>",
+            "text": "Meeting at <https://github.com/ucsb-cs156-s21/proj-mapache-search>",
             "user_profile": {
                 "real_name": "Test Person"
             },
@@ -133,8 +133,8 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const linkElement = getByText(/https:\/\/us05web.zoom.us\/j\/87975276031\?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09/);
-        expect(linkElement.href).toEqual("https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09");
+        const linkElement = getByText(/https:\/\/github.com\/ucsb-cs156-s21\/proj-mapache-search/);
+        expect(linkElement.href).toEqual("https://github.com/ucsb-cs156-s21/proj-mapache-search");
         
     });
 
@@ -199,7 +199,7 @@ describe("MessageTableReactions tests", () => {
             "subtype": "channel_join",
             "ts": "1594143066.000200",
             "user": "U017218J9B3",
-            "text": "Meeting at <https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09|zoom>",
+            "text": "Meeting at <https://github.com/ucsb-cs156-s21/proj-mapache-search>",
             "channel": "section-6pm",
             "user_profile": {
                 "real_name": "Test Person"
@@ -211,8 +211,8 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const linkElement = getByText(/zoom/);
-        expect(linkElement.href).toEqual("https://us05web.zoom.us/j/87975276031?pwd=QUkvLzBJblYwYzNtcnJ5anA0OHk1dz09");
+        const linkElement = getByText(/github/);
+        expect(linkElement.href).toEqual("https://github.com/ucsb-cs156-s21/proj-mapache-search");
         
     });
 
