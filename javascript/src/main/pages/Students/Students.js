@@ -38,13 +38,13 @@ const Students = () => {
   );
   
 
-  const onUploadError = (error) => {
+  // const onUploadError = (error) => {
     
 
-    
-    addToast("Didn't upload right format", { appearance: 'error' });
-    console.log("error=",error.name,error.message);
-  };
+
+  //   //addToast("Didn't upload right format", { appearance: 'error' });
+  //   console.log("error=",error.name,error.message);
+  // };
   const uploadedStudents = uploadStudentsCSV(
     getToken, mutateStudents,onUploadError
   );
