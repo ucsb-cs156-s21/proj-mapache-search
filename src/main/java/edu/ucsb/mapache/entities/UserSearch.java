@@ -17,15 +17,15 @@ public class UserSearch {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(nullable = false)
-  private String UserID;
+  private String userID;
   @Column(nullable = false)
   private String searchTerm;
   @Column(nullable = false)
   private String timestamp;
 
-  public UserSearch(Long id, String UserID, String searchTerm, String timestamp){
+  public UserSearch(Long id, String userID, String searchTerm, String timestamp){
       this.id = id;
-      this.UserID =UserID;
+      this.userID =userID;
       this.searchTerm = searchTerm;
       this.timestamp=timestamp;
   }
