@@ -106,13 +106,7 @@ describe("Search tests", () => {
         await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
       });
       
-    //   test("when I click submit button, ", async() => {
-    //     fetchWithToken.mockImplementation(new Error());
-    //     const { getByText } = render(<Search />);
-    //     userEvent.click(getByText("Submit"));
-    //     await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
-    //   });
-    
+
     test("test what happens where there is an error fetching the search quota", async () => {
         fetchWithToken.mockImplementation(
             (url) => {

@@ -87,7 +87,7 @@ const { addToast } = useToasts();
         e.preventDefault();
         const answer = await fetchSearchResults(e);
 
-        console.log(`answer=${JSON.stringify(answer)}`);
+
 
         setResults(answer);
         const quotaInfo = await fetchQuota(e);
