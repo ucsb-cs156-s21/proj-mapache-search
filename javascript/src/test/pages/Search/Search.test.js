@@ -15,9 +15,7 @@ describe("Search tests", () => {
             }
         ]
     }
-    test("it renders without crashing", () => {
-        render(<Search/>);
-    });
+  
 
     test("when I enter a query, the state for query changes", () => {
         const { getByPlaceholderText } = render(<Search />);
@@ -27,7 +25,17 @@ describe("Search tests", () => {
     });
 
     test("renders when submit button is pressed and results are empty", async () => {
-        fetchWithToken.mockResolvedValue({items:[]});
+
+        fetchWithToken.mockImplementation(
+            (url) => {
+                
+                if(url === "/api/member/search/quota")
+                    return {quota:0};
+                else {
+                    return {items:[]}; 
+                }
+            }
+        );
         const { getByText } = render(<Search />);
         userEvent.click(getByText("Submit"));
         await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
@@ -35,17 +43,22 @@ describe("Search tests", () => {
 
 
     test("renders when submit button is pressed and results have contents", async () => {
-        fetchWithToken.mockResolvedValue(fakeResults);
+        
+        fetchWithToken.mockImplementation(
+            (url) => {
+                
+                if(url === "/api/member/search/quota")
+                    return {quota:0};
+                else {
+                    return fakeResults; 
+                }
+            }
+        );
         const { getByText } = render(<Search />);
         userEvent.click(getByText("Submit"));
         await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
     });
 
-    test("when I click submit button, ", async() => {
-        fetchWithToken.mockImplementation(new Error());
-        const { getByText } = render(<Search />);
-        userEvent.click(getByText("Submit"));
-        await waitFor(() => expect(fetchWithToken).toHaveBeenCalled());
-    });
+    
 
 });
