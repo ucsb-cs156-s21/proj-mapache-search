@@ -4,16 +4,15 @@ import { useAuth0 } from "@auth0/auth0-react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import { Row, Col, Button, Form } from "react-bootstrap";
 import {Bar} from 'react-chartjs-2';
-import { registerables } from "chart.js";
 
 const columns = [{
-    dataField: 'week',
-    text: 'Week'
-},
-{
-    dataField: 'count',
-    text: 'Message Count'
-}
+        dataField: 'week',
+        text: 'Week'
+    },
+    {
+        dataField: 'count',
+        text: 'Message Count'
+    }  
 ];
 
 const msInDay = 86400*1000;
@@ -76,16 +75,7 @@ const HistogramOfMessagesByUser = () => {
                     'rgb(54, 162, 235)'
                   ],
                 borderWidth: 1
-            }],
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            },
-            order: 0,
-            padding: 5,
+            }]
         };
         setHistogramChartData(chartData);
     };
@@ -109,20 +99,11 @@ const HistogramOfMessagesByUser = () => {
             { selectedUser !== '' &&
                 <div>
                     <h3>Histogram of Activity for {selectedUser}</h3>
-                    <Bar
-                        data={histogramChartData}
-                        options={{
-                        title:{
-                            display:true,
-                            text:'Histogram Chart',
-                            fontSize:20
-                        },
-                        legend:{
-                            display:true,
-                            position:'right'
-                        }
-                        }}
-                    />
+                    <Bar data={histogramChartData} />
+                </div>
+            }
+            { selectedUser !== '' &&
+                <div>
                     <h3>Table of Activity for {selectedUser}</h3>
                     <BootstrapTable keyField='week' data={perWeekHistogramData} columns={columns}></BootstrapTable>
                 </div>
