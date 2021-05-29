@@ -64,6 +64,9 @@ public class GoogleSearchService {
 
     @Autowired
     private SearchRepository searchRepository;
+    
+    @Autowired
+    private UserSearchRepository usersearchRepository;
 
     @Autowired
     private CounterRepository counterRepository;
