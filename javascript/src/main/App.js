@@ -44,6 +44,7 @@ function App() {
           <AuthorizedRoute path="/admin/searchedTerms" exact component={SearchedTerms} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/search" exact component={Search} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/searchhistory" exact component={SearchHistory} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageList} authorizedRoles={["admin","member"]} />
