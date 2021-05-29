@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
-import edu.ucsb.mapache.documents.Message;
+import edu.ucsb.mapache.entities.UserSearch;
 import edu.ucsb.mapache.repositories.ChannelRepository;
 import edu.ucsb.mapache.repositories.MessageRepository;
 import edu.ucsb.mapache.repositories.UserSearchRepository;
