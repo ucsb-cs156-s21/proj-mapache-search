@@ -23,6 +23,7 @@ import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesBy
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
+import SearchHistory from "main/pages/SearchHistory/SearchHistory";
 import SearchResults from "./pages/Messages/SearchResults";
 import SearchedTerms from "main/pages/Admin/SearchedTerms";
 
