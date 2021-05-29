@@ -56,7 +56,7 @@ public class SearchHistoryController {
         return ResponseEntity.ok().body(body);
     }
     
-     @GetMapping("/insert")
+    /* @GetMapping("/insert")
     public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization,
             @RequestParam String searchQuery) throws JsonProcessingException {
         if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
@@ -69,5 +69,5 @@ public class SearchHistoryController {
     
         
         return ResponseEntity.ok().body(result);
-    }
+    }*/
 }
