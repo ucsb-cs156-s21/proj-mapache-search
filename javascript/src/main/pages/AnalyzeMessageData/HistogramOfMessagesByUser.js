@@ -45,11 +45,7 @@ const HistogramOfMessagesByUser = () => {
             histogramData[weekString] = histogramData[weekString] > 0? histogramData[weekString]+1 : 1;
         })
 
-        let tableData = [];
-        Object.keys(histogramData).forEach(i => tableData.push({
-            week: i,
-            count: histogramData[i]
-        }));
+        let tableData = Object.keys(histogramData).map(i => histogramData[i]);
         setPerWeekHistogramData(tableData);
 
 
