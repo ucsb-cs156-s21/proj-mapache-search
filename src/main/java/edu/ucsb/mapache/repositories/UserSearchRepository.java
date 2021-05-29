@@ -12,5 +12,5 @@ import java.util.Optional;
 
 public interface UserSearchRepository extends CrudRepository<UserSearch, Long> {
   public List<UserSearch> findAll();
-  public List<UserSearch> findByUserId(String userId);
+  public List<UserSearch> findByUserID(String userID);
 }
