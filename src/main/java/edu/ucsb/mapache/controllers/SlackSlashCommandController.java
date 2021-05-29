@@ -147,6 +147,10 @@ public class SlackSlashCommandController {
             return getTeamValues(params);
         }
 
+        if (firstArg.equals("members")) {
+            return getTeamMembers(params);
+        }
+
         return unknownCommand(params);
 
     }
@@ -278,6 +282,17 @@ public class SlackSlashCommandController {
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
 
+    }
+
+    public Rich Message getTeamMembers(SlackSlashCommandParams params) {
+        String[] textParts = params.getTextParts();
+        if(textPars.length < 2) {
+
+        String teamName = textParts[1];
+        String teamMembersList = MembersListService.getListOfMembers();
+        RichMessage richMessage = new RichMessage(teamMebmersList);
+        richMessage.setResponseType("in_channel"); // other option is "ephemeral"
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
     }
 
     private String timeNow() {
