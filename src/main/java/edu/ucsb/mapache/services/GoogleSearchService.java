@@ -26,6 +26,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Counter;
 import edu.ucsb.mapache.entities.Search;
+import edu.ucsb.mapache.entities.UserSearch;
 import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.CounterRepository;
