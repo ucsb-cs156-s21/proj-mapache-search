@@ -50,7 +50,7 @@ public class SearchHistoryController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
-        Set<UserSearch> usersearch = new HashSet<>(usersearchRepository.findAll());
+        Iterable<UserSearch> usersearch = usersearchRepository.findAll();
         String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
     }
