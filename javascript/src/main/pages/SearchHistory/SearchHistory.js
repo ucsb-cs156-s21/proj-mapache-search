@@ -21,12 +21,12 @@ const SearchHistory = () => {
 
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
+   // const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
 
     return (
         <div>
             <h1>Show Search History</h1>
-            <BootstrapTable keyField='id' data={usersearch} columns={columns} />
+            //<BootstrapTable keyField='id' data={usersearch} columns={columns} />
         </div>
     );
 };
