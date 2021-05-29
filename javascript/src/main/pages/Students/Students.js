@@ -8,7 +8,7 @@ import Loading from "main/components/Loading/Loading";
 import StudentTable from "main/components/Students/StudentTable";
 import {buildDeleteStudent, buildDeleteAllStudents, uploadStudentsCSV} from "main/services/StudentServices";
 import {useHistory} from "react-router-dom";
-import {useToasts } from 'react-toast-notifications';
+import {ToastProvider,useToasts } from 'react-toast-notifications';
 
 
 const Students = () => {
@@ -38,13 +38,13 @@ const Students = () => {
   );
   
 
-  //const onUploadError = (error) => {
+  const onUploadError = (error) => {
     
 
     
-   // addToast("Didn't upload right format", { appearance: 'error' });
-  //  console.log("error=",error.name,error.message);
-//  };
+    addToast("Didn't upload right format", { appearance: 'error' });
+    console.log("error=",error.name,error.message);
+  };
   const uploadedStudents = uploadStudentsCSV(
     getToken, mutateStudents,onUploadError
   );
