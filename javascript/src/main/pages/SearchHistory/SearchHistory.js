@@ -21,15 +21,12 @@ const SearchHistory = () => {
 
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: slackUsers } = useSWR(["/api/slackUsers", getToken], fetchWithToken);
-    const { data: messages } = useSWR(["/api/members/messages/allmessages", getToken], fetchWithToken);
-
-    const userMessageCount = messages && slackUsers ? aggregateUserMessageCount(messages, slackUsers) : []
+    const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
 
     return (
         <div>
             <h1>Show Search History</h1>
-            <BootstrapTable keyField='id' data={userMessageCount} columns={columns} />
+            <BootstrapTable keyField='id' data={usersearch} columns={columns} />
         </div>
     );
 };
