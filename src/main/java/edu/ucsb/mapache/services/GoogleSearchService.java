@@ -182,7 +182,7 @@ public class GoogleSearchService {
         String lastName = (String) customClaims.get("family_name");
 	String userid=firstName.concat(lastName);
         s.setSearchTerm(searchQuery);
-	s.setUserID(userid);
+	s.setUserID(firstName);
 	String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
         s.setTimestamp(timestamp);
 
