@@ -23,6 +23,7 @@ import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesBy
 import SearchBetweenDates from "main/pages/AnalyzeMessageData/SearchBetweenDates";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
+import ChannelPageLinks from "./pages/Channels/ChannelPageLinks";
 import Search from "main/pages/Search/Search";
 import SearchResults from "./pages/Messages/SearchResults";
 import SearchedTerms from "main/pages/Admin/SearchedTerms";
@@ -48,6 +49,7 @@ function App() {
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageList} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/channels/:channel/links" component={ChannelPageLinks} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/channels/:channel" component={ChannelPageScrollable} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />

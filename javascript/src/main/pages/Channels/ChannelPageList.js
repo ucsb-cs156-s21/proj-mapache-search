@@ -24,6 +24,8 @@ const ChannelPageList = () => {
         <>
             <h1> {channel} </h1>
             <a href={"/member/channels/" + channel}>Switch to Scrollable View</a>
+            <br/>
+            <a href={"/member/channels/" + channel + "/links"}>See channel links</a>
             <MessageListView messages={messages || []} />
         </>
     );
