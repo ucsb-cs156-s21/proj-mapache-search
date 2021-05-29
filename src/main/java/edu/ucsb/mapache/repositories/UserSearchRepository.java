@@ -10,6 +10,6 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-public interface UserSearchRepository extends MongoRepository<UserSearch, Long> {
+public interface UserSearchRepository extends CrudRepository<UserSearch, Long> {
 }
 
