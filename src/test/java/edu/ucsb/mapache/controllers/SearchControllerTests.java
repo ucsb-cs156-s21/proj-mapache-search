@@ -149,7 +149,7 @@ public class SearchControllerTests {
 
   @Test
   public void test_getSearches_empty() throws Exception {  
-    List<Search> fakeSearchData = new ArrayList<Search>();
+    List<Search> fakeSearchData = new ArrayList<Search>(); // empty array
 
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
     when(searchRepository.findAll()).thenReturn(fakeSearchData);
@@ -157,12 +157,10 @@ public class SearchControllerTests {
         .perform(
             get("/api/member/search/return").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
         .andExpect(status().isOk()).andReturn();
-    String expected = "[]";
     String responseString = response.getResponse().getContentAsString();
-    assertEquals(expected, responseString);
-
+    assertEquals("[]", responseString); // expect empty because it's an empty array
   }
-
+  
   @Test
   public void test_getSearches_withData() throws Exception {  
     List<Search> fakeSearchData = new ArrayList<Search>();
