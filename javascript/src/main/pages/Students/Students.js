@@ -40,6 +40,8 @@ const Students = () => {
 
   const onUploadError = (error) => {
     
+
+    
     addToast("Didn't upload right format", { appearance: 'error' });
     console.log("error=",error.name,error.message);
   };
