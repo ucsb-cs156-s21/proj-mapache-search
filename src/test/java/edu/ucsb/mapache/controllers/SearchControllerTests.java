@@ -145,4 +145,41 @@ public class SearchControllerTests {
     assertEquals(expected, responseString);
 
   }
+
+
+  @Test
+  public void test_getSearches_empty() throws Exception {  
+    List<Search> fakeSearchData = new ArrayList<Search>();
+
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchRepository.findAll()).thenReturn(fakeSearchData);
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/return").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+    String expected = "[]";
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expected, responseString);
+
+  }
+
+  @Test
+  public void test_getSearches_withData() throws Exception {  
+    List<Search> fakeSearchData = new ArrayList<Search>();
+    Search s = new Search(1L, "Spring Boot", 1);
+    fakeSearchData.add(s);
+
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(searchRepository.findAll()).thenReturn(fakeSearchData);
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/member/search/return").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+
+    String expected = mapper.writeValueAsString(fakeSearchData); // converts Java object to JSON
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expected, responseString);
+
+  }
+
 }

@@ -99,6 +99,9 @@ public class SearchController {
     @GetMapping("/return")
     public ResponseEntity<String> getSearches(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
+        // Note from Prof. Conrad... 
+        // I wonder if this should be .getIsMemberOrAdmin(authorization))  
+        // And... should we be returning everything or plain old members?  Maybe? I don't know...  
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         Iterable<Search> search = searchRepository.findAll();
