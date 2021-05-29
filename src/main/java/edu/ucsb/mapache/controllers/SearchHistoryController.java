@@ -36,7 +36,10 @@ public class SearchHistoryController {
     @Autowired
     UserSearchRepository usersearchRepository;
     @Autowired
-    private AuthControllerAdvice authControllerAdvice;
+    private AuthControllerAdvice authControllerAdvice;     
+    
+    @Value("${app.namespace}")
+    private String namespace;
     
     public DecodedJWT getJWT(String authorization) {
     return JWT.decode(authorization.substring(7));
@@ -61,10 +64,8 @@ public class SearchHistoryController {
         if(!authControllerAdvice.getIsAdmin(authorization)){
             DecodedJWT jwt = getJWT(authorization);
         Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
-        if (customClaims == null)
-            return;
 	    String firstName = (String) customClaims.get("given_name");
-        String lastName = (String) customClaims.get("family_name");
+            String lastName = (String) customClaims.get("family_name");
 	    String userid=firstName.concat(lastName);
         
         Iterable<UserSearch> usersearch = usersearchRepository.findByUserID(userid);
