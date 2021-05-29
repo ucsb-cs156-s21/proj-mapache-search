@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 import edu.ucsb.mapache.services.GoogleSearchService;
+import edu.ucsb.mapache.services.PropertiesService;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -37,15 +39,15 @@ public class SearchHistoryController {
     @Autowired
     UserSearchRepository usersearchRepository;
     @Autowired
-    private AuthControllerAdvice authControllerAdvice;     
-    
-    @Value("${app.namespace}")
-    private String namespace;
-    
+    private AuthControllerAdvice authControllerAdvice;
+
+    @Autowired
+    PropertiesService propertiesService;
+
     public DecodedJWT getJWT(String authorization) {
-    return JWT.decode(authorization.substring(7));
+        return JWT.decode(authorization.substring(7));
     }
-   
+
     private ObjectMapper mapper = new ObjectMapper();
 
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
@@ -55,42 +57,43 @@ public class SearchHistoryController {
         return new ResponseEntity<String>(body, HttpStatus.UNAUTHORIZED);
     }
 
- 
     @GetMapping("/allusersearches")
     public ResponseEntity<String> getSearches(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
-       
-        if(!authControllerAdvice.getIsAdmin(authorization)){
+
+        if (!authControllerAdvice.getIsAdmin(authorization)) {
             DecodedJWT jwt = getJWT(authorization);
-        Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
-	    String firstName = (String) customClaims.get("given_name");
+            Map<String, Object> customClaims = jwt.getClaim(propertiesService.getNamespace()).asMap();
+            String firstName = (String) customClaims.get("given_name");
             String lastName = (String) customClaims.get("family_name");
-	    String userid=firstName.concat(lastName);
-        
-        Iterable<UserSearch> usersearch = usersearchRepository.findByUserID(userid);
-        String body = mapper.writeValueAsString(usersearch);
-        return ResponseEntity.ok().body(body);
+            String userid = firstName.concat(lastName);
+
+            Iterable<UserSearch> usersearch = usersearchRepository.findByUserID(userid);
+            String body = mapper.writeValueAsString(usersearch);
+            return ResponseEntity.ok().body(body);
         }
-   
+
         Iterable<UserSearch> usersearch = usersearchRepository.findAll();
         String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
     }
-    
-    /* @GetMapping("/insert")
-    public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization,
-            @RequestParam String searchQuery) throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
-            return getUnauthorizedResponse("member or admin");
 
-        String result = null;
-       
-        result = googleSearchService.performUserSearch( searchQuery,  authorization);
-        
-    
-        
-        return ResponseEntity.ok().body(result);
-    }*/
+    /*
+     * @GetMapping("/insert") public ResponseEntity<String>
+     * basicSearch(@RequestHeader("Authorization") String authorization,
+     * 
+     * @RequestParam String searchQuery) throws JsonProcessingException { if
+     * (!authControllerAdvice.getIsMemberOrAdmin(authorization)) return
+     * getUnauthorizedResponse("member or admin");
+     * 
+     * String result = null;
+     * 
+     * result = googleSearchService.performUserSearch( searchQuery, authorization);
+     * 
+     * 
+     * 
+     * return ResponseEntity.ok().body(result); }
+     */
 }
