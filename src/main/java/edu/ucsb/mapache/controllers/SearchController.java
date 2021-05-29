@@ -95,6 +95,16 @@ public class SearchController {
         
         return ResponseEntity.ok().body(result);
     }
+    
+    @GetMapping("/return")
+    public ResponseEntity<String> getSearches(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMember(authorization))
+            return getUnauthorizedResponse("member");
+        Iterable<Search> search = searchRepository.findAll();
+        String body = mapper.writeValueAsString(search);
+        return ResponseEntity.ok().body(body);
+    }
 
     @GetMapping("/quota")
     public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization)
