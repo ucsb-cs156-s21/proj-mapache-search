@@ -12,9 +12,27 @@ describe("MessageListView tests", () => {
 
     test("renders without crashing", () => {
         useSWR.mockReturnValue({
-            data:  []
+            data: []
         });
         render(<MessageListView messages={[]} />);
+    });
+
+    test("Search bar exists by default", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<MessageListView messages={[]}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).not.toBeNull();
+    });
+
+    test("Search bar removed with searchField prop", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const {queryByText} = render(<MessageListView messages={[]} searchField={false}/>);
+        const searchBar = queryByText(/Search/);
+        expect(searchBar).toBeNull();
     });
 
     test("Displays username", () => {
@@ -84,6 +102,27 @@ describe("MessageListView tests", () => {
         const nameElement = getByText(/@U017218J9B3/);
         expect(nameElement).toBeInTheDocument();
 
+    });
+
+    test("Messages have ID", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        const nameElement = getByText(/@U017218J9B3/);
+        expect(nameElement).toBeInTheDocument();
+        expect(nameElement.parentElement.id).toEqual("U017218J9B31594143066.000200");
     });
 
     test("Unembedded https links are clickable", () => {
@@ -344,6 +383,28 @@ describe("MessageListView tests", () => {
         
     });
 
+    test("User tags are styled using the correct css class", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            }
+        }
+        const {getByText} = render(<MessageListView messages={[exampleMessage]}/>);
+        setTimeout(function () {
+            const userTag = getByText(/@Test Person/);
+            expect(userTag).toHaveClass("user-tag");
+        }, 500)
+        
+    });
 
 
 });
