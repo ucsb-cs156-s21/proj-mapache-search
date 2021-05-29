@@ -56,7 +56,7 @@ public class SlackUserControllerTest {
     expectedSlackUsers.add(slackUser);
 
     when(slackUserRepository.findAll()).thenReturn(expectedSlackUsers);
-    when(authControllerAdvice.getIsAdmin(exampleAuthToken)).thenReturn(true);
+    when(authControllerAdvice.getIsMemberOrAdmin(exampleAuthToken)).thenReturn(true);
 
     MvcResult response = mockMvc
         .perform(
