@@ -2,6 +2,8 @@ package edu.ucsb.mapache.services;
 
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
+import java.lang.*;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -179,8 +181,9 @@ public class GoogleSearchService {
 	s=new UserSearch();
 	String firstName = (String) customClaims.get("given_name");
         String lastName = (String) customClaims.get("family_name");
+	String userid=firstName.concat(lastName);
         s.setSearchTerm(searchQuery);
-	s.setUserID(firstName+" "+lastName);
+	s.setUserID(userid);
 	String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
         s.setTimestamp(timestamp);
 
