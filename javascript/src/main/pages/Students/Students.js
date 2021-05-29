@@ -38,17 +38,21 @@ const Students = () => {
   );
   
 
-  const onUploadError = (error) => {
-    
-
-    
-    addToast("Didn't upload right format", { appearance: 'error' });
+   const onUploadError = (error) => {
+    const FormWithToasts = () => {
+      const { addToast } = useToasts();
+      addToast("Didn't upload right format", { appearance: 'error' });
     console.log("error=",error.name,error.message);
+    }  
+    const App = () => (
+      <ToastProvider>
+        <FormWithToasts />
+      </ToastProvider>
+    );
   };
   const uploadedStudents = uploadStudentsCSV(
     getToken, mutateStudents,onUploadError
   );
-
   return (
     <>
         <h1>
