@@ -26,7 +26,7 @@ const SearchHistory = () => {
     return (
         <div>
             <h1>Show Search History</h1>
-            //<BootstrapTable keyField='id' data={usersearch} columns={columns} />
+          
         </div>
     );
 };
