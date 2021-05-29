@@ -6,24 +6,24 @@ import {fetchWithToken} from "main/utils/fetch";
 
 const SearchHistory = () => {
     const columns = [{
-        dataField: 'email',
-        text: 'count',
+        dataField: 'UserID',
+        text: 'UserID',
         sort: true
     } , {
-        dataField: 'firstName',
-        text: 'FirstName',
+        dataField: 'searchTerm',
+        text: 'Searchquery',
         sort: true
     }];
 
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: usersearch,error } = useSWR(["/api/searchInfo", getToken], fetchWithToken);
+    const { data: usersearch,error } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
     
     if (error) return <div>failed to load</div>
     return (
         <div>
             <h1>Show Search History</h1>
-            <BootstrapTable keyField='id' data={usersearch} columns={columns} />
+            <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
         </div>
     );
 };
