@@ -65,7 +65,7 @@ footer {
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 100px;
+  height: auto;
   width: 100%;
   overflow: hidden;
 }
@@ -94,4 +94,26 @@ footer {
   top:0px;
   width:100%;
   z-index:2;
+}
+
+.navbar-custom {
+  min-height: 120px;
+}
+
+img.brand {
+  width: 80px;
+  height: 80px;
+}
+
+p.brand {
+  text-align: center;
+}
+
+.user-tag {
+  color: #2c639e;
+  background-color: #eaf5f9;
+}
+
+tr.focused {
+  background-color: #ccc;
 }
