@@ -37,7 +37,7 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
             </LinkContainer>
           }
           {(isMember || isAdmin) &&
-            <LinkContainer to="/member/history">
+            <LinkContainer to="/history">
               <Nav.Link >Search History</Nav.Link>
             </LinkContainer>
           }

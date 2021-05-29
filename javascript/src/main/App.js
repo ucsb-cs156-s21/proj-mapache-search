@@ -25,6 +25,7 @@ import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
 import SearchResults from "./pages/Messages/SearchResults";
 import SearchedTerms from "main/pages/Admin/SearchedTerms";
+import SearchHistory from "./pages/History/History";
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
           <AuthorizedRoute path="/member/analyzemessages/messagehistogram" exact component={HistogramOfMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
           <PrivateRoute path="/profile" component={Profile} />
+          <Route path="/history" component={SearchHistory} />
           <Route path="/" exact component={Home} />
         </Switch>
       </Container>
