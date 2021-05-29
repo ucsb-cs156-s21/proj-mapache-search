@@ -5,18 +5,26 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
 import SearchCard from "main/components/SearchCard/SearchCard";
 
+import { useToasts } from "react-toast-notifications";
+
 
 const Search = () => {
     const { getAccessTokenSilently: getToken } = useAuth0();
     const emptyQuery = {
-        searchQuery: "",
+        searchQuery: ""
     }
     const emptyResults = { items: [] }
-    
+
+
+const { addToast } = useToasts();
+
     
     const fetchSearchResults = async (_event) => {
         const url = `/api/member/search/basic?searchQuery=${query.searchQuery}`;
-
+        if(query.searchQuery === ""){
+            addToast("Please enter search query.", { appearance: "error" });
+            return emptyResults;
+        }
         try {
             const result = await fetchWithToken(url, getToken, {
                 method: "GET",
@@ -25,9 +33,18 @@ const Search = () => {
                 },
             });
             console.log(`result=${JSON.stringify(result)}`)
-            return result;
+            if(result.items){
+                return result;
+            }
+
+            addToast(`Error: ${JSON.stringify(result)}`, { appearance: "error" });
+
+            return emptyResults;
         } catch (err) {
+
+            addToast(`Error: ${err}`, { appearance: "error" });
             console.log(`err=${err}`)
+            
             return emptyResults;
         }
     };
@@ -52,6 +69,7 @@ const Search = () => {
     
     const [query, setQuery] = useState(emptyQuery);
     const [results, setResults] = useState(emptyResults);
+
     const [quota, setQuota] = useState(0);
 
     useEffect(() => {
@@ -68,6 +86,9 @@ const Search = () => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         const answer = await fetchSearchResults(e);
+
+
+
         setResults(answer);
         const quotaInfo = await fetchQuota(e);
         setQuota(quotaInfo.quota);
