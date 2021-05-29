@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useCallback } from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { fetchWithToken } from "main/utils/fetch";
@@ -30,7 +31,7 @@ const Search = () => {
             return emptyResults;
         }
     };
-    const fetchQuota = async (_event) => {
+    const fetchQuota = useCallback(async (_event) => {
         const url = `/api/member/search/quota`;
 
         try {
@@ -46,12 +47,23 @@ const Search = () => {
             console.log(`err=${err}`);
             return {quota:0};
         }
-    };
+    },[getToken])
 
     
     const [query, setQuery] = useState(emptyQuery);
     const [results, setResults] = useState(emptyResults);
     const [quota, setQuota] = useState(0);
+
+    useEffect(() => {
+        async function getQuota() {
+            const quotaInfo = await fetchQuota();
+            
+            if(quotaInfo && quotaInfo.quota)
+                setQuota(quotaInfo.quota);
+        };
+        getQuota();
+    }, [fetchQuota]);
+   
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
