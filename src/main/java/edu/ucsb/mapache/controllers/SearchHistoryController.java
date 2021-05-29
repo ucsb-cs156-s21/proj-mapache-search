@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import edu.ucsb.mapache.services.GoogleSearchService;
 
 @RestController
 @RequestMapping("/api/members/searchhistory")
@@ -46,12 +47,27 @@ public class SearchHistoryController {
 
  
     @GetMapping("/allusersearches")
-    public ResponseEntity<String> getMessages(@RequestHeader("Authorization") String authorization)
+    public ResponseEntity<String> getSearches(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         Iterable<UserSearch> usersearch = usersearchRepository.findAll();
         String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
+    }
+    
+     @GetMapping("/insert")
+    public ResponseEntity<String> basicSearch(@RequestHeader("Authorization") String authorization,
+            @RequestParam String searchQuery) throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMemberOrAdmin(authorization))
+            return getUnauthorizedResponse("member or admin");
+
+        String result = null;
+       
+        result = googleSearchService.performUserSearch( searchQuery,  authorization);
+        
+    
+        
+        return ResponseEntity.ok().body(result);
     }
 }
