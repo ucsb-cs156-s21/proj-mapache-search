@@ -35,7 +35,11 @@ public class SearchHistoryController {
     UserSearchRepository usersearchRepository;
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
-
+    
+    public DecodedJWT getJWT(String authorization) {
+    return JWT.decode(authorization.substring(7));
+    }
+   
     private ObjectMapper mapper = new ObjectMapper();
 
     private ResponseEntity<String> getUnauthorizedResponse(String roleRequired) throws JsonProcessingException {
@@ -51,6 +55,21 @@ public class SearchHistoryController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
+       
+        if(!authControllerAdvice.getIsAdmin(authorization)){
+            DecodedJWT jwt = getJWT(authorization);
+        Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
+        if (customClaims == null)
+            return;
+	    String firstName = (String) customClaims.get("given_name");
+        String lastName = (String) customClaims.get("family_name");
+	    String userid=firstName.concat(lastName);
+        
+        Iterable<UserSearch> usersearch = usersearchRepository.findByUserID(userid);
+        String body = mapper.writeValueAsString(usersearch);
+        return ResponseEntity.ok().body(body);
+        }
+   
         Iterable<UserSearch> usersearch = usersearchRepository.findAll();
         String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
