@@ -68,7 +68,7 @@ describe("MessageTableReactions tests", () => {
         });
         const testMessages = [{
             user: "test-user",
-            text: "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09>",
+            text: "Office hours at <https://www.youtube.com/watch?v=EErY75MXYXI&ab_channel=NyaAnimePartyNyaAnimeParty>",
             message_reactions: [{
                 count: 1,
                 name: "test-name"
@@ -76,8 +76,8 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const linkElement = getByText(/https:\/\/ucsb.zoom.us\/j\/89220034995\?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const linkElement = getByText(/https:\/\/www.youtube.com\/watch\?v=EErY75MXYXI&ab_channel=NyaAnimePartyNyaAnimeParty/);
+        expect(linkElement.href).toEqual("https://www.youtube.com/watch?v=EErY75MXYXI&ab_channel=NyaAnimePartyNyaAnimeParty");
     }); 
 
 
@@ -211,7 +211,7 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const {queryByText} = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        var bracketElement = queryByText(/<@channel>/);
+        let bracketElement = queryByText(/<@channel>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/@channel/);
         expect(bracketElement).toBeInTheDocument();
@@ -271,7 +271,7 @@ describe("MessageTableReactions tests", () => {
         }];
         const testReaction = "test-name";
         const {queryByText} = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        var bracketElement = queryByText(/<testing>/);
+        let bracketElement = queryByText(/<testing>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/testing/);
         expect(bracketElement).toBeInTheDocument();
