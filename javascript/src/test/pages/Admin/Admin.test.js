@@ -21,6 +21,12 @@ describe("Admin tests", () => {
       email: "ldelplaya@usa.gov",
       isPermanentAdmin: false
     },
+    {
+      id: 5,
+      email: "slackuser_appadmin@ucsb.edu",
+      firstName: "Slack User",
+      lastName: "App Admin"
+    }
   ];
   const users = [
     {
@@ -41,7 +47,37 @@ describe("Admin tests", () => {
       firstName: "Laura",
       lastName: "Del Playa"
     },
+    {
+      id: 4,
+      email: "slackuser@ucsb.edu",
+      firstName: "Slack",
+      lastName: "User"
+    },
+    {
+      id: 5,
+      email: "slackuser_appadmin@ucsb.edu",
+      firstName: "Slack User",
+      lastName: "App Admin"
+    }
   ];
+  const slackUsers = [
+    {
+      id: "FAKEID_1",
+      name: "slackuser",
+      profile:
+      {
+        email: "slackuser@ucsb.edu"
+      }
+    },
+    {
+      id: "FAKEID_2",
+      name: "slackuserandappadmin",
+      profile:
+      {
+        email: "slackuser_appadmin@ucsb.edu"
+      }
+    }
+  ]
   const mutateSpy = jest.fn();
   beforeEach(() => {
     useAuth0.mockReturnValue({
@@ -52,11 +88,15 @@ describe("Admin tests", () => {
         return {
           data: users,
         };
-      else
+      else if (endpoint === "/api/admins")
         return {
           data: admins,
           mutate: mutateSpy,
         };
+      else
+        return {
+          data: slackUsers,
+        }
     });
   });
   test("renders without crashing", () => {
@@ -98,8 +138,9 @@ describe("Admin tests", () => {
       expect(getByText(user.firstName)).toBeInTheDocument();
       expect(getByText(user.lastName)).toBeInTheDocument();
     });
-    expect(getByText("User")).toBeInTheDocument();
-    expect(getAllByText("Admin").length).toBe(2);
+    expect(getByText("Guest")).toBeInTheDocument();
+    expect(getByText("Member")).toBeInTheDocument();
+    expect(getAllByText("Admin").length).toBe(admins.length);
   });
 
   test("clicking promote button should trigger user promotion", async () => {
@@ -108,16 +149,16 @@ describe("Admin tests", () => {
       email: users[0].email,
       isPermanentAdmin: false
     });
-    const { getByText } = render(<Admin />);
-    userEvent.click(getByText("Promote"));
+    const { getAllByText } = render(<Admin />);
+    userEvent.click(getAllByText("Promote")[0]);
     await waitFor(() => expect(fetchWithToken).toHaveBeenCalledTimes(1));
     expect(mutateSpy).toHaveBeenCalledTimes(1);
   });
 
   test("clicking demote button should trigger user promotion", async () => {
     fetchWithToken.mockReturnValueOnce({});
-    const { getByText } = render(<Admin />);
-    userEvent.click(getByText("Demote"));
+    const { getAllByText } = render(<Admin />);
+    userEvent.click(getAllByText("Demote")[0]);
     await waitFor(() => expect(fetchWithToken).toHaveBeenCalledTimes(1));
     expect(mutateSpy).toHaveBeenCalledTimes(1);
   });

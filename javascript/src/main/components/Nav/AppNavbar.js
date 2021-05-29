@@ -28,9 +28,6 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
           {(isMember || isAdmin) &&
             <NavbarHover title="Slack Search" items={searchPages} />
           }
-          <LinkContainer to="/about">
-            <Nav.Link>About</Nav.Link>
-          </LinkContainer>
           {(isAdmin || isMember) &&
             <NavbarHover title="Analyze Slack Data" items={dataPages} />
           }
