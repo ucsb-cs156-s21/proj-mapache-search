@@ -13,6 +13,10 @@ const SearchHistory = () => {
         dataField: 'searchTerm',
         text: 'Searchquery',
         sort: true
+    },{
+        dataField: 'timestamp' ,
+        text: 'Timestamp' ,
+        sort: true
     }];
 
     const { getAccessTokenSilently: getToken } = useAuth0();
