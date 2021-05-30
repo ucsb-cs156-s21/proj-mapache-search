@@ -62,6 +62,8 @@ public class SearchHistoryController {
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
+        
+        String body;
 
         if (!authControllerAdvice.getIsAdmin(authorization)) {
             DecodedJWT jwt = getJWT(authorization);
@@ -71,12 +73,12 @@ public class SearchHistoryController {
             String userid = firstName.concat(lastName);
 
             Iterable<UserSearch> usersearch = usersearchRepository.findByUserID(userid);
-            String body = mapper.writeValueAsString(usersearch);
+            body = mapper.writeValueAsString(usersearch);
             return ResponseEntity.ok().body(body);
         }
-
+         
         
-        
+        return ResponseEntity.ok().body(body);
     }
 
 
