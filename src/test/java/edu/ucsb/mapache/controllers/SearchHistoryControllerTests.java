@@ -34,6 +34,7 @@ import org.springframework.http.HttpHeaders;
 import edu.ucsb.mapache.advice.AuthControllerAdvice;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Search;
+import edu.ucsb.mapache.entities.UserSearch;
 import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.SearchRepository;
@@ -46,7 +47,7 @@ import edu.ucsb.mapache.services.PropertiesService;
 public class SearchHistoryControllerTests {
   private String exampleAuthToken = "Bearer blah";
   private String jwtValue = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL3Byb2otbWFwYWNoZS1zZWFyY2guaGVyb2t1YXBwLmNvbSI6eyJlbWFpbCI6InBodGNvbkB1Y3NiLmVkdSIsImdpdmVuX25hbWUiOiJQaGlsbCIsImZhbWlseV9uYW1lIjoiQ29ucmFkIn0sImlzcyI6Imh0dHBzOi8vY3MxNTYtdzIxLXN0YWZmLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTg1Njk0ODIzNDI5ODQ5MzQ5NiIsImF1ZCI6WyJodHRwczovL3Byb2otbWFwYWNoZS1zZWFyY2guaGVyb2t1YXBwLmNvbSIsImh0dHBzOi8vY3MxNTYtdzIxLXN0YWZmLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MTYzNjk5ODIsImV4cCI6MTYxNjQ1NjM4MiwiYXpwIjoiVTFpclFoSHhjUnBnS1FKdVRNWjAyTXg5NFVLeUVDNU8iLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.6nDBZ4Zr5OwYGpCMy1AjRvSqJB7aPfmBq4B3A34XQuE";
-    private String authorization = "Bearer: " + jwtValue;
+  private String authorization = "Bearer: " + jwtValue;
   private ObjectMapper mapper = new ObjectMapper();
   @Autowired
   private MockMvc mockMvc;
@@ -119,6 +120,28 @@ public class SearchHistoryControllerTests {
     // @GetMapping("/allusersearches")
     // public ResponseEntity<String> getSearches(@RequestHeader("Authorization")
     // String authorization)
+    
+    List<UserSearch> expectedUserSearches = new ArrayList<UserSearches>();
+    UserSearch usersearch = new UserSearch();
+    usersearch.setId("1");
+    usersearch.setUserID("PhillipConrad");
+    usersearch.setSearchTerm("Phill Conrad");
+    usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
+    expectedUserSearches.add(usersearch);
+
+    when(userSearchRepository.findAll()).thenReturn(expectedUserSearches);
+    when(authControllerAdvice.getIsMember(exampleAuthToken)).thenReturn(true);
+
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+        .andExpect(status().isOk()).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+    List<UserSearch> usersearches = mapper.readValue(responseString, new TypeReference<List<UserSearch>>() {
+    });
+
+    assertEquals(expectedUserSearches, usersearches);
 
     // I wrote 'case 1' because you'll probably need a few cases, e.g.
     // for not logged in, logged in as admin, logged in as member, etc.
