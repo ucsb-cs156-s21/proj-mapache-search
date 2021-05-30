@@ -174,19 +174,21 @@ public class GoogleSearchService {
 	    UserSearch s;
 	    
 	     DecodedJWT jwt = getJWT(authorization);
-        Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
-        if (customClaims == null)
-            return;
-	s=new UserSearch();
-	String firstName = (String) customClaims.get("given_name");
+        
+         Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
+        
+        s=new UserSearch();
+	    
+        String firstName = (String) customClaims.get("given_name");
         String lastName = (String) customClaims.get("family_name");
-	String userid=firstName.concat(lastName);
+	    String userid=firstName.concat(lastName);
         s.setSearchTerm(searchQuery);
-	s.setUserID(userid);
-	String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
+	
+        s.setUserID(userid);
+	    String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
         s.setTimestamp(timestamp);
 
-	usersearchRepository.save(s);
+	    usersearchRepository.save(s);
 
     }
 
