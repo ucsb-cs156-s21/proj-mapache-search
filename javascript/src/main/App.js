@@ -1,3 +1,4 @@
+  
 import React from "react";
 import "main/App.css";
 import AppNavbar from "main/components/Nav/AppNavbar";
@@ -22,8 +23,8 @@ import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOf
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
-import ChannelPageLinks from "./pages/Channels/ChannelPageLinks";
 import Search from "main/pages/Search/Search";
+import SearchHistory from "main/pages/SearchHistory/SearchHistory";
 import SearchResults from "./pages/Messages/SearchResults";
 import SearchedTerms from "main/pages/Admin/SearchedTerms";
 
@@ -45,10 +46,10 @@ function App() {
           <AuthorizedRoute path="/admin/searchedTerms" exact component={SearchedTerms} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/search" exact component={Search} authorizedRoles={["admin","member"]} />
+          <AuthorizedRoute path="/member/searchhistory" exact component={SearchHistory} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageList} authorizedRoles={["admin","member"]} />
-          <AuthorizedRoute path="/member/channels/:channel/links" component={ChannelPageLinks} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/channels/:channel" component={ChannelPageScrollable} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />
