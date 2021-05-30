@@ -74,7 +74,7 @@ public class SearchHistoryControllerTests {
 
   private AppUser getMockAppUser() {
     AppUser appUser = new AppUser();
-    appUser.setId(1);
+    appUser.setId(1L);
     appUser.setEmail("haixinlin123@umail.ucsb.edu");
     appUser.setFirstName("Hunter");
     appUser.setLastName("Lin");
