@@ -36,6 +36,11 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
               <Nav.Link >Google Search</Nav.Link>
             </LinkContainer>
           }
+          {(isMember || isAdmin) &&
+            <LinkContainer to="/member/searchhistory">
+              <Nav.Link >Search History</Nav.Link>
+            </LinkContainer>
+          }
         </Nav>
         <Navbar.Collapse className="justify-content-end">
           <AuthNav />
