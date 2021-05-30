@@ -21,7 +21,7 @@ const SearchHistory = () => {
 
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: usersearch,error } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
+    const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
     
     return (
         <div>
