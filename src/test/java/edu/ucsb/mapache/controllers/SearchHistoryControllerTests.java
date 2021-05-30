@@ -47,9 +47,9 @@ public class SearchHistoryControllerTests {
   private ObjectMapper mapper = new ObjectMapper();
   @Autowired
   private MockMvc mockMvc;
-  
-  @InjectMocks
-  SearchHistoryController searchhistorycontoller;
+   
+  @Autowired
+  private SearchHistoryController searchhistorycontoller;
   
   @MockBean
   AppUserRepository appUserRepository;
@@ -79,12 +79,15 @@ public class SearchHistoryControllerTests {
     return appUser;
   }
 
-  
   @Test
   public void test_getJWT() {
-    DecodedJWT jwt = searchhistorycontoller.getJWT(exampleAuthToken);
-    assertEquals("John Doe", jwt.getClaim("name").asString());
-  }
+        DecodedJWT actual = searchhistorycontoller.getJWT(authorization);
+        // Writing the code twice is not the best way to do a test.
+        // In this case, I don't yet have a better alterantive to propose.
+        DecodedJWT expected = JWT.decode(authorization.substring(7));
+        // Note that the .equals for DecodedJWT is broken, so we need this instead:
+        assertEquals(expected.getToken(), actual.getToken());
+    }
   
   @Test
   public void test_basicSearch_unauthorizedIfNotMember() throws Exception {
