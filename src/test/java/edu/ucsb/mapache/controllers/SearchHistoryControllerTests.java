@@ -3,6 +3,7 @@ package edu.ucsb.mapache.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.auth0.jwt.JWT;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,9 +122,9 @@ public class SearchHistoryControllerTests {
     // public ResponseEntity<String> getSearches(@RequestHeader("Authorization")
     // String authorization)
     
-    List<UserSearch> expectedUserSearches = new ArrayList<UserSearches>();
+    List<UserSearch> expectedUserSearches = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();
-    usersearch.setId("1");
+    usersearch.setId(1);
     usersearch.setUserID("PhillipConrad");
     usersearch.setSearchTerm("Phill Conrad");
     usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
