@@ -73,6 +73,13 @@ public class SearchHistoryControllerTests {
     return appUser;
   }
 
+  
+  @Test
+  public void test_getJWT() {
+    DecodedJWT jwt = authControllerAdvice.getJWT(exampleAuthToken);
+    assertEquals("John Doe", jwt.getClaim("name").asString());
+  }
+  
   @Test
   public void test_basicSearch_unauthorizedIfNotMember() throws Exception {
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
