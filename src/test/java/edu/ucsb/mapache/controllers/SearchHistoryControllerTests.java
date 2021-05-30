@@ -46,6 +46,10 @@ public class SearchHistoryControllerTests {
   private ObjectMapper mapper = new ObjectMapper();
   @Autowired
   private MockMvc mockMvc;
+  
+  @InjectMocks
+  SearchHistoryController searchhistorycontoller;
+  
   @MockBean
   AppUserRepository appUserRepository;
   @MockBean
@@ -77,7 +81,7 @@ public class SearchHistoryControllerTests {
   
   @Test
   public void test_getJWT() {
-    DecodedJWT jwt = authControllerAdvice.getJWT(exampleAuthToken);
+    DecodedJWT jwt = searchhistorycontoller.getJWT(exampleAuthToken);
     assertEquals("John Doe", jwt.getClaim("name").asString());
   }
   
