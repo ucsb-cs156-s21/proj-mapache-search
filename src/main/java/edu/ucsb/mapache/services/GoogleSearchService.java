@@ -169,7 +169,8 @@ public class GoogleSearchService {
         }
         searchRepository.save(s);
     }
-
+     
+    //new function
     public void saveToUserSearchRepository(String searchQuery,String authorization){
 	    UserSearch s;
 	    
