@@ -23,12 +23,7 @@ public class UserSearch {
   @Column(nullable = false)
   private String timestamp;
 
-  public UserSearch(Long id, String userID, String searchTerm, String timestamp){
-      this.id = id;
-      this.userID =userID;
-      this.searchTerm = searchTerm;
-      this.timestamp=timestamp;
-  }
+ 
 
 
 
