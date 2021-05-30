@@ -63,7 +63,7 @@ public class SearchHistoryController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         
-        String body;
+        String body=null;
 
         if (!authControllerAdvice.getIsAdmin(authorization)) {
             DecodedJWT jwt = getJWT(authorization);
