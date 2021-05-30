@@ -130,17 +130,19 @@ public class SearchHistoryControllerTests {
     usersearch.setSearchTerm("Phill Conrad");
     usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
     expectedUserSearches.add(usersearch);
-
+    ObjectMapper mapper = new ObjectMapper();
+    String requestBody = mapper.writeValueAsString(expectedUserSearches);
     when(userSearchRepository.findAll()).thenReturn(expectedUserSearches);
     when(authControllerAdvice.getIsMember(exampleAuthToken)).thenReturn(true);
-
+   
     MvcResult response = mockMvc
         .perform(
             get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
         .andExpect(status().isOk()).andReturn();
+    verify(userSearchRepository, times(1)).findAll();
 
     String responseString = response.getResponse().getContentAsString();
-    List<UserSearch> usersearches = mapper.readValue(responseString, new TypeReference<List<UserSearch>>() {
+    List<UserSearch> usersearches = objectMapper.readValue(responseString, new TypeReference<List<UserSearch>>() {
     });
 
     assertEquals(expectedUserSearches, usersearches);
