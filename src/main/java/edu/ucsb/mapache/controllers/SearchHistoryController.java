@@ -65,7 +65,7 @@ public class SearchHistoryController {
         
         String body=null;
 
-        Iterable<UserSearch> usersearch = usersearchRepository.findByUserID(userid);
+        Iterable<UserSearch> usersearch = usersearchRepository.findAll();
         body = mapper.writeValueAsString(usersearch);
         
         return ResponseEntity.ok().body(body);
