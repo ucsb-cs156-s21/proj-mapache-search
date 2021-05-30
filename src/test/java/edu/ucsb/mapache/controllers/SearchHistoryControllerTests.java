@@ -124,7 +124,8 @@ public class SearchHistoryControllerTests {
     
     List<UserSearch> expectedUserSearches = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();
-    usersearch.setId(1);
+    long num=1L;
+    usersearch.setId(num);
     usersearch.setUserID("PhillipConrad");
     usersearch.setSearchTerm("Phill Conrad");
     usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
