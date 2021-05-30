@@ -76,7 +76,7 @@ public class SearchHistoryController {
         }
 
         
-        return ResponseEntity.ok().body();
+        
     }
 
 
