@@ -46,7 +46,6 @@ import edu.ucsb.mapache.services.PropertiesService;
 @WebMvcTest(value = SearchHistoryController.class)
 @WithMockUser
 public class SearchHistoryControllerTests {
-  private String exampleAuthToken = "Bearer blah";
   private String jwtValue = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL3Byb2otbWFwYWNoZS1zZWFyY2guaGVyb2t1YXBwLmNvbSI6eyJlbWFpbCI6InBodGNvbkB1Y3NiLmVkdSIsImdpdmVuX25hbWUiOiJQaGlsbCIsImZhbWlseV9uYW1lIjoiQ29ucmFkIn0sImlzcyI6Imh0dHBzOi8vY3MxNTYtdzIxLXN0YWZmLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTg1Njk0ODIzNDI5ODQ5MzQ5NiIsImF1ZCI6WyJodHRwczovL3Byb2otbWFwYWNoZS1zZWFyY2guaGVyb2t1YXBwLmNvbSIsImh0dHBzOi8vY3MxNTYtdzIxLXN0YWZmLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MTYzNjk5ODIsImV4cCI6MTYxNjQ1NjM4MiwiYXpwIjoiVTFpclFoSHhjUnBnS1FKdVRNWjAyTXg5NFVLeUVDNU8iLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.6nDBZ4Zr5OwYGpCMy1AjRvSqJB7aPfmBq4B3A34XQuE";
   private String authorization = "Bearer: " + jwtValue;
   private ObjectMapper mapper = new ObjectMapper();
@@ -135,14 +134,14 @@ public class SearchHistoryControllerTests {
     expectedUserSearches.add(usersearch);
     ObjectMapper mapper = new ObjectMapper();
     String requestBody = mapper.writeValueAsString(expectedUserSearches);
-    when(userSearchRepository.findAll()).thenReturn(expectedUserSearches);
-    when(authControllerAdvice.getIsMember(exampleAuthToken)).thenReturn(true);
+    when(userSearchRepository.findByUserID("PhillipConrad")).thenReturn(expectedUserSearches);
+    when(authControllerAdvice.getIsMember(authorization)).thenReturn(true);
    
     MvcResult response = mockMvc
         .perform(
-            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
         .andExpect(status().isOk()).andReturn();
-    verify(userSearchRepository, times(1)).findAll();
+    verify(userSearchRepository, times(1)).findByUserID("PhillipConrad");
 
     String responseString = response.getResponse().getContentAsString();
     List<UserSearch> usersearches = objectMapper.readValue(responseString, new TypeReference<List<UserSearch>>() {
