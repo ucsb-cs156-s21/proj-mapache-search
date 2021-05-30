@@ -56,6 +56,9 @@ public class SearchHistoryControllerTests {
   @Autowired
   private SearchHistoryController searchhistorycontoller;
   
+  @Autowired
+  private ObjectMapper objectMapper;
+  
   @MockBean
   AppUserRepository appUserRepository;
   @MockBean
