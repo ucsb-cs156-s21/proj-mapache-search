@@ -125,30 +125,29 @@ public class SearchHistoryControllerTests {
     // public ResponseEntity<String> getSearches(@RequestHeader("Authorization")
     // String authorization)
     
-    List<UserSearch> expectedUserSearches = new ArrayList<UserSearch>();
+    List<UserSearch> fakeUserSearchData = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();
     long num=1L;
     usersearch.setId(num);
     usersearch.setUserID("PhillipConrad");
     usersearch.setSearchTerm("Phill Conrad");
     usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
-    expectedUserSearches.add(usersearch);
-    ObjectMapper mapper = new ObjectMapper();
-    String requestBody = mapper.writeValueAsString(expectedUserSearches);
-    when(userSearchRepository.findByUserID("PhillipConrad")).thenReturn(expectedUserSearches);
-    when(authControllerAdvice.getIsMember(authorization)).thenReturn(true);
+    fakeUserSearchData.add(usersearch);
+    
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(userSearchRepository.findByUserID("PhillipConrad")).thenReturn(fakeUserSearchData);
+  
    
     MvcResult response = mockMvc
         .perform(
-            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
+            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
         .andExpect(status().isOk()).andReturn();
-    verify(userSearchRepository, times(1)).findByUserID("PhillipConrad");
-
+    
+    String expected = mapper.writeValueAsString(fakeSearchData);
     String responseString = response.getResponse().getContentAsString();
-    List<UserSearch> usersearches = objectMapper.readValue(responseString, new TypeReference<List<UserSearch>>() {
-    });
+  
 
-    assertEquals(expectedUserSearches, usersearches);
+    assertEquals(expected, responseString);
 
     // I wrote 'case 1' because you'll probably need a few cases, e.g.
     // for not logged in, logged in as admin, logged in as member, etc.
