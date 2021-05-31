@@ -143,7 +143,7 @@ public class SearchHistoryControllerTests {
             get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
         .andExpect(status().isOk()).andReturn();
     
-    String expected = mapper.writeValueAsString(fakeSearchData);
+    String expected = mapper.writeValueAsString(fakeUserSearchData);
     String responseString = response.getResponse().getContentAsString();
   
 
