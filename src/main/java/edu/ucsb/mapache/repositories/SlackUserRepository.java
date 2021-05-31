@@ -13,12 +13,15 @@ public interface SlackUserRepository extends MongoRepository<SlackUser, ObjectId
     @Query("{ 'profile.email': ?0}")
     List<SlackUser> findByEmail(String email);
 
+    public List<SlackUser> findByName(String name);
+
+    @Query("{ 'id': ?0}")
+    List<SlackUser> findByID(String id);
+
     @Query("{ 'is_admin': true, 'profile.email': ?0}")
     List<SlackUser> findAdminByEmail(String email);
     
-    @Query("{ 'id': ?0}")
-    List<SlackUser> findByID(String id);  
-    
     @Query("{ 'is_admin': true}")
     List<SlackUser> findAdmins();
+
 }
