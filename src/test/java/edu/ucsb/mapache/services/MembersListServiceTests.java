@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.ucsb.mapache.entities.Student;
 import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.documents.SlackUser;
+import edu.ucsb.mapache.documents.SlackUserProfile;
+import edu.ucsb.mapache.repositories.SlackUserRepository;
 
 
 @RunWith(SpringRunner.class)
@@ -22,18 +25,31 @@ public class MembersListServiceTests {
 
   @MockBean
   private StudentRepository mockStudentRepository;
+  
+  @MockBean
+  private SlackUserRepository mockSlackUserRepository;
 
   @Autowired
   private MembersListService membersListService;
 
   @Test
-  public void test_formatedMembersList() {
-      List<Student> students = new ArrayList<Student>();
-      students.add(new Student(aL, "email", "team1"));
-      students.add(new Student(bL, "email2", "team1"));
-      students.add(new Student(cL, "email3", "team1"));
-      String expectedSring = "aL\nbL\ncL\n";
-      when(mockStudentRepository.findAll()).thenReturn(students);
-      assertEquals(expectedSring, membersListService.getListOfMembers(String team1);
+  public void test_formatedMembersList() {             
+      String teamname = "team1";
+      String email = "email1";
+
+        List<SlackUser> slackUsers = new ArrayList<SlackUser>();
+    
+        SlackUserProfile profileTest2 = new SlackUserProfile("email1","AName","AName","AName");
+        slackUsers.add(new SlackUser("101", "AName", "AName",profileTest2));
+
+        List<Student> students = new ArrayList<Student>();
+        students.add(new Student(1L, "email1", "team1"));
+                   
+        String expectedSring = "AName\n";
+    
+        when(mockSlackUserRepository.findByTeamName(teamname)).thenReturn(slackUsers);
+        when(mockStudentRepository.findByEmail(email)).thenReturn(students);
+        assertEquals(expectedSring, membersListService.getListOfMembers(teamname));
+                   
   }
 }
