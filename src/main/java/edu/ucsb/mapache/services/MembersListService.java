@@ -1,6 +1,7 @@
 package edu.ucsb.mapache.services;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,11 @@ public class MembersListService {
     
     public String getListOfMembers(String teamName) {
         List<Student> studentsAll = studentRepository.findByTeamName(teamName);
-        List<String> emailList = new ArrayList<String>();
+        ArrayList<String> emailList = new ArrayList<String>();
         for (Student s : studentsAll) {
             emailList.add(s.getEmail());
         }
-        List<String> outputList = new ArrayList<String>();
+        ArrayList<String> outputList = new ArrayList<String>();
         for(String x: emailList){
             List<SlackUser> user = slackUserRepository.findByEmail(x);
             outputList.add(user.get(0).getProfile().getReal_name());
