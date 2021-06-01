@@ -345,7 +345,7 @@ public class SlackSlashCommandController {
     public RichMessage getTeamMembers(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
         String teamName = textParts[1];
-        String teamMembersList = membersListService.getListOfMembers();
+        String teamMembersList = membersListService.getListOfMembers(teamName);
         RichMessage richMessage = new RichMessage(teamMebmersList);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
