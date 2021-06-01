@@ -82,7 +82,7 @@ public class SlackSlashCommandControllerTests {
     @MockBean
     WhoIsService whoIsService;
     
-    @Autowired
+    @MockBean
     MembersListService membersListService;
 
     private final String testURL = "/api/public/slash-command";
