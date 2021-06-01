@@ -152,10 +152,6 @@ public class SearchHistoryControllerTests {
   
 
     assertEquals(expected, responseString);
-
-    // I wrote 'case 1' because you'll probably need a few cases, e.g.
-    // for not logged in, logged in as admin, logged in as member, etc.
-    // depending on what the code is checking for
   }
 
   @Test
@@ -171,7 +167,7 @@ public class SearchHistoryControllerTests {
     fakeUserSearchData.add(usersearch);
     
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
-    when(authControllerAdvice.getIsAdmin(any(String.class))).thenReturn(false);
+    when(authControllerAdvice.getIsAdmin(any(String.class))).thenReturn(true);
     when(userSearchRepository.findAll()).thenReturn(fakeUserSearchData);
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
    
