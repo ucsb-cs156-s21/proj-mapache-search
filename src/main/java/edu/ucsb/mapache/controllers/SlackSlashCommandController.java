@@ -284,7 +284,7 @@ public class SlackSlashCommandController {
 
     }
 
-    public Rich Message getTeamMembers(SlackSlashCommandParams params) {
+    public RichMessage getTeamMembers(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
         if(textPars.length < 2) {
 
