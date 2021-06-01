@@ -1,7 +1,9 @@
 package edu.ucsb.mapache.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +49,7 @@ import edu.ucsb.mapache.services.PropertiesService;
 @WithMockUser
 public class SearchHistoryControllerTests {
   private String exampleAuthToken = "Bearer blah";
+  //JWTCreator.Builder withClaim​(String name, String value)
   private String jwtValue = "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL3Byb2otbWFwYWNoZS1zZWFyY2guaGVyb2t1YXBwLmNvbSI6eyJlbWFpbCI6InBodGNvbkB1Y3NiLmVkdSIsImdpdmVuX25hbWUiOiJQaGlsbCIsImZhbWlseV9uYW1lIjoiQ29ucmFkIn0sImlzcyI6Imh0dHBzOi8vY3MxNTYtdzIxLXN0YWZmLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNTg1Njk0ODIzNDI5ODQ5MzQ5NiIsImF1ZCI6WyJodHRwczovL3Byb2otbWFwYWNoZS1zZWFyY2guaGVyb2t1YXBwLmNvbSIsImh0dHBzOi8vY3MxNTYtdzIxLXN0YWZmLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2MTYzNjk5ODIsImV4cCI6MTYxNjQ1NjM4MiwiYXpwIjoiVTFpclFoSHhjUnBnS1FKdVRNWjAyTXg5NFVLeUVDNU8iLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIn0.6nDBZ4Zr5OwYGpCMy1AjRvSqJB7aPfmBq4B3A34XQuE";
   private String authorization = "Bearer: " + jwtValue;
   private ObjectMapper mapper = new ObjectMapper();
@@ -74,6 +77,7 @@ public class SearchHistoryControllerTests {
 
   @MockBean
   private PropertiesService propertiesService;
+  
 
   private AppUser getMockAppUser() {
     AppUser appUser = new AppUser();
@@ -135,12 +139,12 @@ public class SearchHistoryControllerTests {
     fakeUserSearchData.add(usersearch);
     
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
-    when(userSearchRepository.findByUserID("PhillipConrad")).thenReturn(fakeUserSearchData);
-  
+    when(userSearchRepository.findByUserID("PhillConrad")).thenReturn(fakeUserSearchData);
+    when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
    
     MvcResult response = mockMvc
         .perform(
-            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, exampleAuthToken))
+            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
         .andExpect(status().isOk()).andReturn();
     
     String expected = mapper.writeValueAsString(fakeUserSearchData);
@@ -157,18 +161,29 @@ public class SearchHistoryControllerTests {
   @Test
   public void test_getSearches_case2() throws Exception {
 
-    // write code to test the method
-    //
-    // @GetMapping("/allusersearches")
-    // public ResponseEntity<String> getSearches(@RequestHeader("Authorization")
-    // String authorization)
+    List<UserSearch> fakeUserSearchData = new ArrayList<UserSearch>();
+    UserSearch usersearch = new UserSearch();
+    long num=1L;
+    usersearch.setId(num);
+    usersearch.setUserID("PhillipConrad");
+    usersearch.setSearchTerm("Phill Conrad");
+    usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
+    fakeUserSearchData.add(usersearch);
+    
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsAdmin(any(String.class))).thenReturn(false);
+    when(userSearchRepository.findAll()).thenReturn(fakeUserSearchData);
+    when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
+   
+    MvcResult response = mockMvc
+        .perform(
+            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
+        .andExpect(status().isOk()).andReturn();
+    
+    String expected = mapper.writeValueAsString(fakeUserSearchData);
+    String responseString = response.getResponse().getContentAsString();
+  
 
-    // I wrote 'case 2' because you'll probably need a few cases, e.g.
-    // for not logged in, logged in as admin, logged in as member, etc.
-    // depending on what the code is checking for
-  }
-
-  // ETC... until you've tested all of the cases for all of the methods.
-  // Look in other controller tests for examples
-
+    assertEquals(expected, responseString);
+}
 }
