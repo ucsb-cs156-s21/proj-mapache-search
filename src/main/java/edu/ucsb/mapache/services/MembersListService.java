@@ -32,7 +32,7 @@ public class MembersListService {
         }
         
         java.util.Collections.sort(outputList);
-        String output = ""
+        String output = "";
         for (String s : outputList) {
              output += s + "\n";
         }
