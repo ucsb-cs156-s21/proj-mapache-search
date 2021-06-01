@@ -22,7 +22,7 @@ public class MembersListService {
     public String getListOfMembers(String teamName) {
         List<Student> studentsAll = studentRepository.findByTeamName(teamName);
         List<String> emailList = new String<List>();
-        for (Student s : students) {
+        for (Student s : studentsAll) {
             studentsAll.add(s.getEmail());
         }
         List<String> outputList = new String<List>();
