@@ -6,7 +6,8 @@ import edu.ucsb.mapache.entities.AppUser;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Repository;  
+import org.springframework.data.domain.Sort; 
 import java.util.List;
 
 @Repository
@@ -21,6 +22,9 @@ public interface MessageRepository extends MongoRepository<Message, ObjectId> {
     List<Message> findByText(String searchString);
 
     @Query("{'reactions': {'$elemMatch': {'name' : ?0} }}")
-    List<Message> findByReactionName(String emojiSymbol);
+    List<Message> findByReactionName(String emojiSymbol);  
+
+    @Query("{$text: { $search: ?0}, 'channel': ?1}")
+    List<Message> findByTextInChannel(String searchString, String searchChannel, Sort sort);  
 }
 
