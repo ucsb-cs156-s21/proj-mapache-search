@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import ChannelPageList from "main/pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "main/pages/Channels/ChannelPageScrollable";
+import ChannelPageLinks from "main/pages/Channels/ChannelPageLinks";
 import { useParams} from "react-router-dom";
 import useSWR from "swr";
 jest.mock("swr");
@@ -28,8 +29,12 @@ describe("ChannelPageList tests", () => {
         render(<ChannelPageScrollable />);
     });
 
+    test("renders without crashing", () => {
+        useSWR.mockReturnValue({});
+        render(<ChannelPageLinks />);
+    });
 
-    test("loads messages from the backend", () => {
+    test("loads messages from the backend, list page", () => {
         const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
@@ -49,7 +54,7 @@ describe("ChannelPageList tests", () => {
         expect(contentsElement).toBeInTheDocument();
     });
 
-    test("loads messages from the backend", () => {
+    test("loads messages from the backend, scrollable page", () => {
         const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
@@ -69,6 +74,29 @@ describe("ChannelPageList tests", () => {
         expect(contentsElement).toBeInTheDocument();
     });
 
+    test("loads messages from the backend, links page", () => {
+
+        const exampleMessage = {
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<https://youtu.be/dQw4w9WgXcQ>",
+            "channel": "section-6pm"
+        }
+
+        useSWR.mockReturnValue({
+            'data': [exampleMessage]
+        });
+
+        const { getByText } = render(<ChannelPageLinks />);
+        const contentsElement = getByText(/dQw4w/);
+        expect(contentsElement.href).toEqual("https://youtu.be/dQw4w9WgXcQ");
+
+    });
+
+
+
     test("Message is scrolled into view", () => {
         Object.defineProperty(window, 'location', {
             get() {
@@ -76,8 +104,9 @@ describe("ChannelPageList tests", () => {
             },
         });
         const mockScrollIntoView = jest.fn();
-        HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
-        const exampleMessage = {
+        HTMLElement.prototype.scrollIntoView = mockScrollIntoView
+
+    const exampleMessage = {
             "type": "message",
             "subtype": "channel_join",
             "ts": "1594143066.000200",
@@ -119,6 +148,7 @@ describe("ChannelPageList tests", () => {
         const contentsElement = getByText(exampleMessage.text);
         expect(window.location.hash).toEqual("#U017218J9B31594143066.000200");
         expect(contentsElement.parentNode.parentNode.className).toEqual("focused");
+
     });
 });
 
