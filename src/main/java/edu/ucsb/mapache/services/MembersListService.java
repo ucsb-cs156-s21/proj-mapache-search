@@ -21,11 +21,11 @@ public class MembersListService {
     
     public String getListOfMembers(String teamName) {
         List<Student> studentsAll = studentRepository.findByTeamName(teamName);
-        List<String> emailList = new List<String>();
+        List<String> emailList = new ArrayList<String>();
         for (Student s : studentsAll) {
-            studentsAll.add(s.getEmail());
+            emailList.add(s.getEmail());
         }
-        List<String> outputList = new List<String>();
+        List<String> outputList = new ArrayList<String>();
         for(String x: emailList){
             List<SlackUser> user = slackUserRepository.findByEmail(x);
             outputList.add(user.get(0).getProfile().getReal_name());
