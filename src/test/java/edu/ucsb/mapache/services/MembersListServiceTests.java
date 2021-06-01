@@ -46,9 +46,8 @@ public class MembersListServiceTests {
         students.add(new Student(1L, "email1", "team1"));
                    
         String expectedSring = "AName\n";
-    
-        when(mockSlackUserRepository.findByTeamName(teamname)).thenReturn(slackUsers);
-        when(mockStudentRepository.findByEmail(email)).thenReturn(students);
+        when(mockStudentRepository.findByTeamName(teamname)).thenReturn(students);
+        when(mockSlackUserRepository.findByEmail(email)).thenReturn(slackUsers);
         assertEquals(expectedSring, membersListService.getListOfMembers(teamname));
                    
   }
