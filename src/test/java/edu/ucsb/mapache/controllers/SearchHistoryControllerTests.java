@@ -115,10 +115,11 @@ public class SearchHistoryControllerTests {
     usersearch.setUserID("PhillipConrad");
     usersearch.setSearchTerm("Phill Conrad");
     usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
+    usersearch.setEmail("cool@google.com");
     fakeUserSearchData.add(usersearch);
     
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
-    when(userSearchRepository.findByUserID("PhillConrad")).thenReturn(fakeUserSearchData);
+    when(userSearchRepository.findByEmail(any(String.class))).thenReturn(fakeUserSearchData);
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
    
     MvcResult response = mockMvc
@@ -143,6 +144,7 @@ public class SearchHistoryControllerTests {
     usersearch.setUserID("PhillipConrad");
     usersearch.setSearchTerm("Phill Conrad");
     usersearch.setTimestamp("2021-05-29 13:40:10.561 +0000");
+    usersearch.setEmail("email");
     fakeUserSearchData.add(usersearch);
     
     when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
