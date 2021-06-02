@@ -13,4 +13,6 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
   public List<Student> findAll();
 
   public List<Student> findByTeamName(String teamName);
+
+  public List<Student> findByEmail(String email);
 }
