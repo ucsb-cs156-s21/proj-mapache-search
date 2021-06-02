@@ -22,6 +22,8 @@ public class UserSearch {
   private String searchTerm;
   @Column(nullable = false)
   private String timestamp;
+  @Column(nullable = false)
+  private String email;
 
   
   }
