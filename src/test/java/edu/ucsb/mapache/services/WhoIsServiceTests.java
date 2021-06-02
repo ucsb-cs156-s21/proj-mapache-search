@@ -59,4 +59,17 @@ public class WhoIsServiceTests
         when(mockStudentRepository.findByEmail(email)).thenReturn(students);
         assertEquals(expectedSring, whoIsService.getOutput(username));
     }
+
+    @Test
+    public void test_formatedOutputWhenNoUsernameFound() {
+        String username = "displayname";
+        String email = "email";
+
+        List<SlackUser> slackUsers = new ArrayList<SlackUser>();
+        List<Student> students = new ArrayList<Student>();
+        String expectedSring = "/mapache whois failed: unknown user displayname";
+
+        when(mockSlackUserRepository.findByName(username)).thenReturn(slackUsers);
+        assertEquals(expectedSring, whoIsService.getOutput(username));
+    }
 }
