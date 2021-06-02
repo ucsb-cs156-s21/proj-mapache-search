@@ -38,6 +38,7 @@ import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 import edu.ucsb.mapache.services.TeamListService;
 import edu.ucsb.mapache.services.WhoIsService;
+import edu.ucsb.mapache.services.MembersListService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,6 +95,9 @@ public class SlackSlashCommandController {
 
     @Autowired
     WhoIsService whoIsService;
+    
+    @Autowired
+    MembersListService membersListService;
 
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
@@ -184,6 +188,10 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("whois")) {
             return getWhoItIs(params);
+        }
+
+        if (firstArg.equals("members")) {
+            return getTeamMembers(params);
         }
 
         return unknownCommand(params);
@@ -333,6 +341,16 @@ public class SlackSlashCommandController {
 
     }
 
+
+    public RichMessage getTeamMembers(SlackSlashCommandParams params) {
+        String[] textParts = params.getTextParts();
+        String teamName = textParts[1];
+        String teamMembersList = membersListService.getListOfMembers(teamName);
+        RichMessage richMessage = new RichMessage(teamMembersList);
+        richMessage.setResponseType("in_channel"); // other option is "ephemeral"
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+    }
+    
     public RichMessage getWhoItIs(SlackSlashCommandParams params) {
         String[] textParts = params.getTextParts();
         String user = textParts[1];
@@ -340,6 +358,7 @@ public class SlackSlashCommandController {
         RichMessage richMessage = new RichMessage(outputText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+
 
     }
 
