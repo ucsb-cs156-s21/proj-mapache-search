@@ -73,8 +73,6 @@ export default ({ messages=[],reaction }) => {
         text: 'Message Author'
     },{
         formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
-        dataField: 'text',
-        formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         text: 'Contents'
     },{
         dataField: 'reactions',
