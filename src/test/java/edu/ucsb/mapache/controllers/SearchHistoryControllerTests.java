@@ -94,10 +94,7 @@ public class SearchHistoryControllerTests {
   @Test
   public void test_getJWT() {
         DecodedJWT actual = searchhistorycontoller.getJWT(authorization);
-        // Writing the code twice is not the best way to do a test.
-        // In this case, I don't yet have a better alterantive to propose.
         DecodedJWT expected = JWT.decode(authorization.substring(7));
-        // Note that the .equals for DecodedJWT is broken, so we need this instead:
         assertEquals(expected.getToken(), actual.getToken());
     }
   
@@ -109,25 +106,7 @@ public class SearchHistoryControllerTests {
   }
 
   @Test
-  public void test_quota_unauthorizedIfNotMember() throws Exception {
-
-    // TODO CHANGE TO APPROPRIATE URL FOR THIS CONTROLLER
-
-    // mockMvc
-    // .perform(
-    // get("/api/member/search/quota").contentType("application/json").header(HttpHeaders.AUTHORIZATION,
-    // exampleAuthToken))
-    // .andExpect(status().is(401));
-  }
-
-  @Test
-  public void test_getSearches_case1() throws Exception {
-
-    // write code to test the method
-    //
-    // @GetMapping("/allusersearches")
-    // public ResponseEntity<String> getSearches(@RequestHeader("Authorization")
-    // String authorization)
+  public void test_getSearches_ifisonlymember() throws Exception {
     
     List<UserSearch> fakeUserSearchData = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();
@@ -155,7 +134,7 @@ public class SearchHistoryControllerTests {
   }
 
   @Test
-  public void test_getSearches_case2() throws Exception {
+  public void test_getSearches_ifisadmin() throws Exception {
 
     List<UserSearch> fakeUserSearchData = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();

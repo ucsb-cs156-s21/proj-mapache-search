@@ -65,7 +65,7 @@ public class GoogleSearchService {
 
     @Autowired
     private SearchRepository searchRepository;
-    
+
     @Autowired
     private UserSearchRepository usersearchRepository;
 
@@ -121,7 +121,7 @@ public class GoogleSearchService {
         }
 
         saveToSearchRepository(searchQuery);
-        saveToUserSearchRepository(searchQuery,authorization); 
+        saveToUserSearchRepository(searchQuery, authorization);
 
         logger.info("result={}", result);
         return result;
@@ -170,29 +170,27 @@ public class GoogleSearchService {
         searchRepository.save(s);
     }
 
-    public void saveToUserSearchRepository(String searchQuery,String authorization){
-	    UserSearch s;
-	    
-	     DecodedJWT jwt = getJWT(authorization);
-        
-         Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
-        
-        s=new UserSearch();
-	    
+    public void saveToUserSearchRepository(String searchQuery, String authorization) {
+        UserSearch s;
+
+        DecodedJWT jwt = getJWT(authorization);
+
+        Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
+
+        s = new UserSearch();
+
         String firstName = (String) customClaims.get("given_name");
         String lastName = (String) customClaims.get("family_name");
-	    String userid=firstName.concat(lastName);
+        String userid = firstName.concat(lastName);
         s.setSearchTerm(searchQuery);
-	
+
         s.setUserID(userid);
-	    String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
         s.setTimestamp(timestamp);
 
-	    usersearchRepository.save(s);
+        usersearchRepository.save(s);
 
     }
-
-
 
     public AppUser getCurrentUser(String authorization) {
         DecodedJWT jwt = getJWT(authorization);
