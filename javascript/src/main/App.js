@@ -20,6 +20,7 @@ import AnalyzeReactions from "main/pages/AnalyzeMessageData/AnalyzeReactions";
 import CountMessagesByUser from "main/pages/AnalyzeMessageData/CountMessagesByUser";
 import HistogramOfMessagesByUser from "main/pages/AnalyzeMessageData/HistogramOfMessagesByUser";
 import SearchMessagesByUser from "main/pages/AnalyzeMessageData/SearchMessagesByUser";
+import SearchBetweenDates from "main/pages/AnalyzeMessageData/SearchBetweenDates";
 import ChannelPageList from "./pages/Channels/ChannelPageList";
 import ChannelPageScrollable from "./pages/Channels/ChannelPageScrollable";
 import Search from "main/pages/Search/Search";
@@ -56,6 +57,7 @@ function App() {
           <AuthorizedRoute path="/member/analyzemessages/countmessages" exact component={CountMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/messagehistogram" exact component={HistogramOfMessagesByUser} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/analyzemessages/searchmessages" exact component={SearchMessagesByUser} authorizedRoles={["admin", "member"]} />
+          <AuthorizedRoute path="/member/analyzemessages/datesearch" exact component={SearchBetweenDates} authorizedRoles={["admin", "member"]} />
           <PrivateRoute path="/profile" component={Profile} />
           <Route path="/" exact component={Home} />
         </Switch>
