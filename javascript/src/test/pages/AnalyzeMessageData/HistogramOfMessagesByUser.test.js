@@ -12,6 +12,10 @@ jest.mock("main/utils/fetch", () => ({
   fetchWithToken: jest.fn()
 }));
 
+jest.mock('react-chartjs-2', () => ({
+  Bar: () => null
+}));
+
 const sampleMessageList = [
   {
     "type": "message",
@@ -64,14 +68,14 @@ describe("HistogramOfMessagesByUser tests", () => {
   })
 
   test("Fetch with token is called correctly when user clicks button", async () => {
-    const expectedURL = `/api/members/messages/usersearch?searchUser=Reiley Batelaan`;
+    const expectedURL = `/api/members/messages/usersearch?searchUser=Test User`;
     const options = {
       method: 'GET'
     }
     fetchWithToken.mockResolvedValue(sampleMessageList);
     const { getByText, getByLabelText } = render(<HistogramOfMessagesByUser />);
     const selectSearchUser = getByLabelText("Enter a user");
-    userEvent.type(selectSearchUser, "Reiley Batelaan");
+    userEvent.type(selectSearchUser, "Test User");
     const goButton = getByText("Go");
     userEvent.click(goButton);
     await waitFor(() => {

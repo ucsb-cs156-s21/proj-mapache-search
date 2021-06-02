@@ -14,6 +14,9 @@ public class WhoIsService {
   private StudentRepository studentRepository;
   public String getOutput(String username) {
     List<SlackUser> user = slackUserRepository.findByName(username);
+    if(user.size()==0){
+      return "/mapache whois failed: unknown user "+username;
+    }
     SlackUser output = user.get(0);
     String name = output.getProfile().getReal_name();
     String email = output.getProfile().getEmail();
