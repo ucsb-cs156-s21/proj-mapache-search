@@ -63,11 +63,18 @@ public class SearchHistoryController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         
-        String body=null;
+          if (!authControllerAdvice.getIsAdmin(authorization)) {
+            DecodedJWT jwt = getJWT(authorization);
+            Map<String, Object> customClaims = jwt.getClaim(propertiesService.getNamespace()).asMap();
+            String email = (String) customClaims.get("email");
+
+            Iterable<UserSearch> usersearch = usersearchRepository.findByEmail(email);
+            String body = mapper.writeValueAsString(usersearch);
+            return ResponseEntity.ok().body(body);
+        }
 
         Iterable<UserSearch> usersearch = usersearchRepository.findAll();
-        body = mapper.writeValueAsString(usersearch);
-        
+        String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
     }
 
