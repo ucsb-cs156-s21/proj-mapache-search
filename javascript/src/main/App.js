@@ -26,6 +26,7 @@ import Search from "main/pages/Search/Search";
 import SearchHistory from "main/pages/SearchHistory/SearchHistory";
 import SearchResults from "./pages/Messages/SearchResults";
 import SearchedTerms from "main/pages/Admin/SearchedTerms";
+import ChannelPageLinks from "./pages/Channels/ChannelPageLinks";
 
 
 function App() {
