@@ -1,5 +1,5 @@
 import React from "react";
-import BootstrapTable from 'react-bootstrap-table-next';
+import BootstrapTable  from 'react-bootstrap-table-next';
 import {useAuth0} from "@auth0/auth0-react";
 import useSWR from "swr";
 import {fetchWithToken} from "main/utils/fetch";
@@ -51,6 +51,7 @@ const createMarkup = (text, slackUsers) => {
     }
 }
 
+
 function nameFormatter(value, row) {
     value = row.user;
     return row.user_profile? row.user_profile.real_name:value;
@@ -71,6 +72,7 @@ export default ({ messages=[],reaction }) => {
         formatter: nameFormatter,
         text: 'Message Author'
     },{
+        formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         dataField: 'text',
         formatter: (_cell, row) => <p dangerouslySetInnerHTML = {createMarkup(row.text, slackUsers)}></p>,
         text: 'Contents'

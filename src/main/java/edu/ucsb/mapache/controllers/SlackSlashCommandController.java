@@ -15,11 +15,17 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController;  
+import org.springframework.data.domain.Sort; 
 
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+import edu.ucsb.mapache.repositories.SlackUserRepository;
+import edu.ucsb.mapache.repositories.StudentRepository;
+import edu.ucsb.mapache.repositories.MessageRepository;   
+
 import edu.ucsb.mapache.entities.Student;
+import edu.ucsb.mapache.documents.SlackUser;
 import edu.ucsb.mapache.google.Item;
 import edu.ucsb.mapache.google.SearchResult;
 import edu.ucsb.mapache.google.Queries;
@@ -28,15 +34,27 @@ import edu.ucsb.mapache.google.RequestItem;
 import edu.ucsb.mapache.services.GoogleSearchService;
 import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
+
 import edu.ucsb.mapache.services.TeamEmailListService;
 import edu.ucsb.mapache.services.TeamListService;
+import edu.ucsb.mapache.services.WhoIsService;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+import edu.ucsb.mapache.documents.Message;  
+import edu.ucsb.mapache.documents.SlackUser;
+
+
+import java.util.List;
+
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import java.util.HashMap;
+import com.auth0.jwt.interfaces.DecodedJWT;  
+import java.util.Arrays; 
+import java.util.HashMap;    
+import java.util.LinkedHashSet;   
+import java.util.Collections; 
 
 import edu.ucsb.mapache.models.SearchParameters;
 
@@ -52,7 +70,17 @@ public class SlackSlashCommandController {
     private static final Logger logger = LoggerFactory.getLogger(SlackSlashCommandController.class);
 
     @Autowired
-    ChannelRepository channelRepository;
+    ChannelRepository channelRepository; 
+
+    @Autowired  
+    MessageRepository messageRepository;   
+
+
+    @Autowired
+    SlackUserRepository slackUserRepository;
+
+    @Autowired 
+    SlackUserRepository slackuserRepository; 
 
 
     @Autowired
@@ -63,6 +91,9 @@ public class SlackSlashCommandController {
 
     @Autowired
     TeamListService teamListService;
+
+    @Autowired
+    WhoIsService whoIsService;
 
     @Value("${app.slack.slashCommandToken}")
     private String slackToken;
@@ -145,6 +176,14 @@ public class SlackSlashCommandController {
 
         if (firstArg.equals("teamlist")) {
             return getTeamValues(params);
+        }    
+
+        if (firstArg.equals("search") && textParts[1].equals("slack")) {
+            return getPreviousSlackMessages(params);
+        }
+
+        if (firstArg.equals("whois")) {
+            return getWhoItIs(params);
         }
 
         return unknownCommand(params);
@@ -183,10 +222,24 @@ public class SlackSlashCommandController {
         richMessage.setResponseType("ephemeral");
 
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
-    }
+    }  
 
-    
-    
+    public RichMessage getPreviousSlackMessages(SlackSlashCommandParams params){  
+        String message = String.format("Displaying all previous messages that match input in %s:\n", params.getChannelName());     
+        String[] textParts = params.getTextParts(); 
+        String searchString = String.join(" ",Arrays.copyOfRange(textParts,2,textParts.length));  
+        List<Message> messageList = messageRepository.findByTextInChannel("\"" + searchString + "\"", params.getChannelName(), Sort.by(Sort.Direction.ASC, "ts"));       
+        LinkedHashSet <String> channelMessages = new LinkedHashSet<String>();    
+        for(Message slackMessage : messageList){           
+            List<SlackUser> slackUser = slackuserRepository.findByID(slackMessage.getUser());        
+            message = message.concat(slackUser.get(0).getReal_name() + ": " + slackMessage.getText() +"\n");  
+        }   
+        RichMessage richMessage = new RichMessage(message); 
+        richMessage.setResponseType("ephemeral");  
+
+        return richMessage.encodedMessage();
+    }
+  
     public RichMessage googleSearch(SlackSlashCommandParams params) { // google search
         
         
@@ -275,6 +328,16 @@ public class SlackSlashCommandController {
         String teamName = textParts[1];
         String emailText = teamEmailListService.getEmailsStringFromTeamname(teamName);
         RichMessage richMessage = new RichMessage(emailText);
+        richMessage.setResponseType("in_channel"); // other option is "ephemeral"
+        return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
+
+    }
+
+    public RichMessage getWhoItIs(SlackSlashCommandParams params) {
+        String[] textParts = params.getTextParts();
+        String user = textParts[1];
+        String outputText = whoIsService.getOutput(user);
+        RichMessage richMessage = new RichMessage(outputText);
         richMessage.setResponseType("in_channel"); // other option is "ephemeral"
         return richMessage.encodedMessage(); // don't forget to send the encoded message to Slack
 

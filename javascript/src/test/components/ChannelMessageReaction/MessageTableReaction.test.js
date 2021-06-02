@@ -12,19 +12,21 @@ describe("MessageTableReactions tests", () => {
 
     test("it renders without crashing", () => {
         useSWR.mockReturnValue({
-            data: []
+            data:  []
         });
         render(<MessageTableReaction/>);
     });
 
     test("row.message_reactions is not null", () => {
         useSWR.mockReturnValue({
-            data: []
+            data:  []
         });
         const testMessages = [{
-            user: "test-user",
-            text: "test-text",
-            message_reactions: [{
+            "user_profile": {
+                "real_name": "test-user"
+            },
+            "text": "test-text",
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -38,18 +40,20 @@ describe("MessageTableReactions tests", () => {
         expect(testText).toBeInTheDocument();
         expect(testCount).toBeInTheDocument();
     });
-
-    test("user id is replaced with username", () => {
+    test("row.message_reactions is formatted (user mention)", () => {
         useSWR.mockReturnValue({
             data: [{
                 id: "U017218J9B3",
-                real_name: "Test Person"
+                real_name: "test-person"
             }]
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "<@U017218J9B3> has joined the channel",
-            message_reactions: [{
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -57,40 +61,100 @@ describe("MessageTableReactions tests", () => {
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
         const testUser = getByText(/Test Person/);
-        const testText = getByText(/@Test Person has joined the channel/);
+        const testText = getByText(/@test-person has joined the channel/);
+        const testCount = getByText(/1/);
         expect(testUser).toBeInTheDocument();
         expect(testText).toBeInTheDocument();
+        expect(testCount).toBeInTheDocument();
     });
-
-    test("Unembedded https links are clickable", () => {
+    test("row.message_reactions is formatted (channel mention)", () => {
         useSWR.mockReturnValue({
-            data: []
+            data: [{
+                id: "U017218J9B3",
+                real_name: "test-person"
+            }]
         });
         const testMessages = [{
-            user: "test-user",
-            text: "Office hours at <https://www.youtube.com/watch?v=EErY75MXYXI&ab_channel=NyaAnimePartyNyaAnimeParty>",
-            message_reactions: [{
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const linkElement = getByText(/https:\/\/www.youtube.com\/watch\?v=EErY75MXYXI&ab_channel=NyaAnimePartyNyaAnimeParty/);
-        expect(linkElement.href).toEqual("https://www.youtube.com/watch?v=EErY75MXYXI&ab_channel=NyaAnimePartyNyaAnimeParty");
-    }); 
+        const testUser = getByText(/Test Person/);
+        const testText = getByText(/@test-person has joined the channel/);
+        const testCount = getByText(/1/);
+        expect(testUser).toBeInTheDocument();
+        expect(testText).toBeInTheDocument();
+        expect(testCount).toBeInTheDocument();
+    });
+    test("Username not found", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const testMessages = [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<@U017218J9B3> has joined the channel",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
+                count: 1,
+                name: "test-name"
+            }]
+        }];
+        const testReaction = "test-name";
+        const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
+        const nameElement = getByText(/@U017218J9B3/);
+        expect(nameElement).toBeInTheDocument();
+    });
+    test("Unembedded https links are clickable", () => {
+        useSWR.mockReturnValue({
+            data: []
+        });
+        const testMessages = [{
+            "user": "U017218J9B3",
+            "text": "Meeting at <https://github.com/ucsb-cs156-s21/proj-mapache-search>",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
+                count: 1,
+                name: "test-name"
+            }]
+        }];
+        const testReaction = "test-name";
+        const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
+        const linkElement = getByText(/https:\/\/github.com\/ucsb-cs156-s21\/proj-mapache-search/);
+        expect(linkElement.href).toEqual("https://github.com/ucsb-cs156-s21/proj-mapache-search");
+        
+    });
 
-
-
-    
     test("Unembedded email links are clickable", () => {
         useSWR.mockReturnValue({
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "Email me at <mailto:test@ucsb.edu>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Email me at <mailto:test@ucsb.edu>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -107,9 +171,16 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "Call me at <tel:+01234567890>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Call me at <tel:+01234567890>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -126,17 +197,24 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "Office hours at <https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09|zoom>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Meeting at <https://github.com/ucsb-cs156-s21/proj-mapache-search>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
         }];
         const testReaction = "test-name";
         const { getByText } = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
-        const linkElement = getByText(/zoom/);
-        expect(linkElement.href).toEqual("https://ucsb.zoom.us/j/89220034995?pwd=VTlHNXJpTVgrSEs5QUtlMDdqMC9wQT09");
+        const linkElement = getByText(/github/);
+        expect(linkElement.href).toEqual("https://github.com/ucsb-cs156-s21/proj-mapache-search");
         
     });
 
@@ -145,9 +223,16 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "Email me at <mailto:test@ucsb.edu|this email>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Email me at <mailto:test@ucsb.edu|this email>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -164,9 +249,16 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "Call me at <tel:+01234567890|+0 123 456 7890>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Call me at <tel:+01234567890|+0 123 456 7890>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -183,9 +275,16 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "Please post in <#C01K1CR63MX|help-jpa02>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "Please post in <#C01K1CR63MX|help-jpa02>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -202,9 +301,16 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "<!channel> This is an announcement",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -223,9 +329,16 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "<!channel> This is an announcement",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -236,16 +349,22 @@ describe("MessageTableReactions tests", () => {
         expect(bracketElement.getAttribute("href")).toEqual(null);
         
     });
-    
 
     test("Channel tags begin with @ and are bolded", () => {
         useSWR.mockReturnValue({
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "<!channel> This is an announcement",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
@@ -262,15 +381,22 @@ describe("MessageTableReactions tests", () => {
             data: []
         });
         const testMessages = [{
-            user: "U017218J9B3",
-            text: "<!channel> This is an announcement <testing>",
-            message_reactions: [{
+            "type": "message",
+            "subtype": "channel_join",
+            "ts": "1594143066.000200",
+            "user": "U017218J9B3",
+            "text": "<!channel> This is an announcement <testing>",
+            "channel": "section-6pm",
+            "user_profile": {
+                "real_name": "Test Person"
+            },
+            "message_reactions": [{
                 count: 1,
                 name: "test-name"
             }]
         }];
         const testReaction = "test-name";
-        const {queryByText} = render(<MessageTableReaction messages = {testMessages} reaction = {testReaction}/>);
+        const {queryByText} = render(<MessageTableReaction messages={testMessages} reaction = {testReaction}/>);
         let bracketElement = queryByText(/<testing>/);
         expect(bracketElement).toEqual(null);
         bracketElement = queryByText(/testing/);
