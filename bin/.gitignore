@@ -1,0 +1,92 @@
+# Don't check in a built storybook
+
+javascript/storybook-static
+
+# We don't want node_modules, package.json or package-lock.json at top level
+# Only under javascript/ directory
+
+node_modules
+package.json
+package-lock.json
+!javascript/package.json
+!javascript/package-lock.json
+
+# No emacs backup files
+
+\#*\#
+*~
+
+# Don't store the temporary scratch file for credentials
+# referred to in the setup instructions
+
+temp-credentials.txt
+temp_credentials.txt
+
+# No vim temp files
+
+*.swo
+*.swp
+
+# No MacOS .DS_Store files
+.DS_Store
+
+# other files
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+secrets-*.properties
+localhost.json
+heroku.json
+
+.project
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+javascript/node_modules
+javascript/.pnp
+javascript/.pnp.js
+javascript/# testing
+javascript/coverage
+javascript/# next.js
+javascript/.next/
+javascript/out/
+javascript/# production
+javascript/build
+javascript/# misc
+javascript/.DS_Store
+javascript/.env*
+javascript/production.env
+javascript/# debug
+javascript/npm-debug.log*
+javascript/yarn-debug.log*
+javascript/.now
+javascript/yarn-error.log*

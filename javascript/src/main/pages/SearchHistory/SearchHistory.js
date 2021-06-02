@@ -6,8 +6,8 @@ import {fetchWithToken} from "main/utils/fetch";
 
 const SearchHistory = () => {
     const columns = [{
-        dataField: 'userID',
-        text: 'UserID',
+        dataField: 'email',
+        text: 'Email',
         sort: true
     } , {
         dataField: 'searchTerm',
