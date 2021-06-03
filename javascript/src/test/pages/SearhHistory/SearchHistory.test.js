@@ -1,15 +1,23 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import SearchHistory from 'main/pages/SearchHistory/SearchHistory';
-//import useSWR from "swr";
+import useSWR from "swr";
 
-//jest.mock("swr");
+jest.mock("swr");
 
 
 describe('Slack Users tests', () => {
   
-        test('renders without errors', () => {
+        test('Member User', () => {
             render(<SearchHistory />);
         });
-   
+        
+          test('Admin User', () => {
+            useSWR.mockReturnValue({
+      data: {
+        role: "admin"
+      }
+    });
+            render(<SearchHistory />);
+        });
 });
