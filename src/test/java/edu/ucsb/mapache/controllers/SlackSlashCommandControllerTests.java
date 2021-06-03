@@ -11,11 +11,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;  
 
 import edu.ucsb.mapache.config.SecurityConfig;
 import edu.ucsb.mapache.models.SlackSlashCommandParams;
 import edu.ucsb.mapache.repositories.ChannelRepository;
+import edu.ucsb.mapache.repositories.MessageRepository;
+import edu.ucsb.mapache.repositories.SlackUserRepository;
+
+
 
 import org.springframework.http.MediaType;
 
@@ -30,6 +34,17 @@ import edu.ucsb.mapache.services.GoogleSearchServiceHelper;
 import edu.ucsb.mapache.services.NowService;
 import edu.ucsb.mapache.services.TeamEmailListService;
 import edu.ucsb.mapache.services.TeamListService;
+import edu.ucsb.mapache.services.WhoIsService;
+import edu.ucsb.mapache.services.MembersListService;
+
+
+import java.util.List;  
+import java.util.ArrayList; 
+import edu.ucsb.mapache.documents.Message;   
+import edu.ucsb.mapache.documents.SlackUser;  
+import edu.ucsb.mapache.documents.SlackUserProfile;  
+import edu.ucsb.mapache.documents.MessageReactions;
+
 
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 
@@ -44,10 +59,16 @@ public class SlackSlashCommandControllerTests {
     SlackSlashCommandController slackSlashCommandController;
 
     @MockBean
-    NowService nowService;
+    NowService nowService;  
+
+    @MockBean 
+    MessageRepository messageRepository; 
 
     @MockBean
     ChannelRepository channelRepository;
+
+    @MockBean
+    SlackUserRepository slackUserRepository;
 
     @MockBean
     GoogleSearchServiceHelper googleSearchServiceHelper;
@@ -57,6 +78,12 @@ public class SlackSlashCommandControllerTests {
 
     @MockBean
     TeamListService teamListService;
+
+    @MockBean
+    WhoIsService whoIsService;
+    
+    @MockBean
+    MembersListService membersListService;
 
     private final String testURL = "/api/public/slash-command";
 
@@ -247,6 +274,28 @@ public class SlackSlashCommandControllerTests {
     }
 
     @Test
+    public void test_whoisCommand_correct_response() throws Exception {
+        when(whoIsService.getOutput("@user")).thenReturn("name, team, email");
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "whois @user").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
+    
+    @Test
+    public void test_MembersCommand_correct_response() throws Exception {
+        when(membersListService.getListOfMembers("team")).thenReturn("name");
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "members team").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }
+
+    @Test
     public void test_teamlistCommandRegular() throws Exception {
         // content type: https://api.slack.com/interactivity/slash-commands
         when(teamListService.getListOfTeams()).thenReturn("team1");
@@ -268,8 +317,46 @@ public class SlackSlashCommandControllerTests {
                 .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
                 .param("command", "/mapache").param("text", "teamlist team").param("response_url", "value"))
                 .andExpect(status().is(200));
-    }
+    }   
+    
+    @Test 
+    public void test_slackSearchCommand() throws Exception {  
+      mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text", "search slack").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }    
 
+    @Test public void test_slackSlashTextInChannel() throws Exception{       
+        List<Message> message = new ArrayList<Message>();
+        when(messageRepository.findByTextInChannel(any(), any(), any())).thenReturn(message);
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text","search slack computer").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }     
 
-
+    @Test public void test_find_slackMessages() throws Exception{    
+        List<Message> message = new ArrayList<Message>();   
+        List<MessageReactions> reactions = new ArrayList<MessageReactions>(); 
+        SlackUserProfile profile =  new SlackUserProfile("email");   
+        Message m = new Message("type","subtype","ts","user","text","channel",profile,reactions);   
+        List<SlackUser> users = new ArrayList<SlackUser>();    
+        SlackUser user = new SlackUser("id","name","real_name",profile);
+        users.add(user);  
+        message.add(m);    
+        when(messageRepository.findByTextInChannel(any(), any(), any())).thenReturn(message);  
+        when(slackUserRepository.findByID(any())).thenReturn(users);
+        mockMvc.perform(post(testURL).contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("token", slackSlashCommandController.getSlackToken())
+                .param("team_id", "value").param("team_domain", "value").param("channel_id", "value")
+                .param("channel_name", "value").param("user_id", "value").param("user_name", "value")
+                .param("command", "/mapache").param("text","search slack computer").param("response_url", "value"))
+                .andExpect(status().is(200));
+    }     
+  
 }

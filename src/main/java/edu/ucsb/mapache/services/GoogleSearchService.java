@@ -2,6 +2,7 @@ package edu.ucsb.mapache.services;
 
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
+import java.lang.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +27,14 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import edu.ucsb.mapache.entities.AppUser;
 import edu.ucsb.mapache.entities.Counter;
 import edu.ucsb.mapache.entities.Search;
+import edu.ucsb.mapache.entities.UserSearch;
 import edu.ucsb.mapache.models.SearchParameters;
 import edu.ucsb.mapache.repositories.AppUserRepository;
 import edu.ucsb.mapache.repositories.CounterRepository;
 import edu.ucsb.mapache.repositories.SearchRepository;
+import edu.ucsb.mapache.repositories.UserSearchRepository;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Service object that wraps the Google Custom Search API
@@ -60,6 +65,9 @@ public class GoogleSearchService {
 
     @Autowired
     private SearchRepository searchRepository;
+
+    @Autowired
+    private UserSearchRepository usersearchRepository;
 
     @Autowired
     private CounterRepository counterRepository;
@@ -113,6 +121,7 @@ public class GoogleSearchService {
         }
 
         saveToSearchRepository(searchQuery);
+        saveToUserSearchRepository(searchQuery, authorization);
 
         logger.info("result={}", result);
         return result;
@@ -159,6 +168,29 @@ public class GoogleSearchService {
             s.setCount(1);
         }
         searchRepository.save(s);
+    }
+
+    public void saveToUserSearchRepository(String searchQuery, String authorization) {
+        UserSearch s;
+
+        DecodedJWT jwt = getJWT(authorization);
+
+        Map<String, Object> customClaims = jwt.getClaim(namespace).asMap();
+
+        s = new UserSearch();
+
+        String firstName = (String) customClaims.get("given_name");
+        String lastName = (String) customClaims.get("family_name");
+        String userid = firstName.concat(lastName);
+        String email = (String) customClaims.get("email");
+        s.setSearchTerm(searchQuery);
+        s.setEmail(email);
+        s.setUserID(userid);
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z").format(Calendar.getInstance().getTime());
+        s.setTimestamp(timestamp);
+
+        usersearchRepository.save(s); 
+
     }
 
     public AppUser getCurrentUser(String authorization) {

@@ -36,6 +36,11 @@ export function PureNavbar({ isAdmin, isMember, channelPages, adminPages, search
               <Nav.Link >Google Search</Nav.Link>
             </LinkContainer>
           }
+          {(isMember || isAdmin) &&
+            <LinkContainer to="/member/searchhistory">
+              <Nav.Link >Search History</Nav.Link>
+            </LinkContainer>
+          }
         </Nav>
         <Navbar.Collapse className="justify-content-end">
           <AuthNav />
@@ -77,6 +82,7 @@ function AppNavbar() {
     { link: "/member/analyzemessages/countmessages", name: "Count Messages By User", },
     { link: "/member/analyzemessages/messagehistogram", name: "Histogram of Messages for a User", },
     { link: "/member/analyzemessages/searchmessages", name: "Search Messages By User", },
+    { link: "/member/analyzemessages/datesearch", name: "Search Messages By Date", },
   ];
 
   return (<PureNavbar isAdmin={isAdmin} isMember={isMember} searchPages={searchPages} dataPages={dataPages} channelPages={channelPages} adminPages={adminPages} />);
