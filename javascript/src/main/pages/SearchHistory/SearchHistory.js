@@ -34,7 +34,7 @@ const SearchHistory = () => {
          return (
             <div>
                 <h1>Show Search History</h1>
-                <button  onclick="location.href = '/member/searchhistory';">
+                <button  onclick="location.href = '/member/searchhistory/alluser';">
             ViewAllUsers
         </button>
                 
