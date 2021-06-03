@@ -1,5 +1,6 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import {Redirect} from 'react-router-dom';
 import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "main/utils/fetch";
@@ -18,7 +19,10 @@ const SearchHistory = () => {
         text: 'Timestamp' ,
         sort: true
     }];
-
+    
+ 
+ 
+        
     const { getAccessTokenSilently: getToken } = useAuth0();
     
     const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
@@ -34,7 +38,7 @@ const SearchHistory = () => {
          return (
             <div>
                 <h1>Show Search History</h1>
-                <button  onclick="location.href = '/member/searchhistory/alluser';">
+                <button  onclick="location.href = '/alluser';">
             ViewAllUsers
         </button>
                 
