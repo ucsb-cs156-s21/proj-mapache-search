@@ -73,8 +73,7 @@ public class SearchHistoryController {
     @GetMapping("/specificuser")
     public ResponseEntity<String> getspecificSearches(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
-        if (!authControllerAdvice.getIsMember(authorization))
-            return getUnauthorizedResponse("member");
+       
         
       
             DecodedJWT jwt = getJWT(authorization);
