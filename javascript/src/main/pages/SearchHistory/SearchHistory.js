@@ -24,16 +24,16 @@ const SearchHistory = () => {
         
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
+    const { data: usersearch } = useSWR(["/api/members/searchhistory/specificuser", getToken], fetchWithToken);
     
      const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
         fetchWithToken
       );
       const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
-      const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
+      
    
-    if(isMember){
+    if(isAdmin){
          return (
             <div>
                 <h1>Show Search History</h1>
@@ -44,6 +44,7 @@ const SearchHistory = () => {
             </div>
         );
     }
+    
     return (
         <div>
             <h1>Show Search History</h1>
