@@ -38,8 +38,7 @@ const SearchHistory = () => {
             <div>
                 <h1>Show Search History</h1>
                 <Link to="/member/searchhistory/alluser" className="btn btn-primary">ViewAllUsers</Link>
-            ViewAllUsers
-        </button>
+
                 
         <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
             </div>
