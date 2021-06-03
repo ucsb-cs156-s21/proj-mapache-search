@@ -17,7 +17,7 @@ describe('Search History tests', () => {
         role: "admin"
       }
     });
-        render(<SearchResults />);
+        render(<SearchHistory />);
     });
     
    });   
