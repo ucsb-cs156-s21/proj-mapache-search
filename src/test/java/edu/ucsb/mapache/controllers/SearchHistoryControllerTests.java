@@ -124,7 +124,7 @@ public class SearchHistoryControllerTests {
    
     MvcResult response = mockMvc
         .perform(
-            get("/api/members/searchhistory/specificuser").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
+            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
         .andExpect(status().isOk()).andReturn();
     
     String expected = mapper.writeValueAsString(fakeUserSearchData);
