@@ -9,4 +9,4 @@ describe('All Users tests', () => {
         });
     });   
 });
-© 2021 GitHub, Inc.
+
