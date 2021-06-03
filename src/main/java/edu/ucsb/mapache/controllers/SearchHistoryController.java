@@ -63,7 +63,19 @@ public class SearchHistoryController {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
         
-       if (!authControllerAdvice.getIsAdmin(authorization)) {
+
+        Iterable<UserSearch> usersearch = usersearchRepository.findAll();
+        String body = mapper.writeValueAsString(usersearch);
+        return ResponseEntity.ok().body(body);
+    }
+    
+    @GetMapping("/specificuser")
+    public ResponseEntity<String> getSearches(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMember(authorization))
+            return getUnauthorizedResponse("member");
+        
+      
             DecodedJWT jwt = getJWT(authorization);
             Map<String, Object> customClaims = jwt.getClaim(propertiesService.getNamespace()).asMap();
             String email = (String) customClaims.get("email");
@@ -71,12 +83,8 @@ public class SearchHistoryController {
             Iterable<UserSearch> usersearch = usersearchRepository.findByEmail(email);
             String body = mapper.writeValueAsString(usersearch);
             return ResponseEntity.ok().body(body);
-        }
+        
 
-        Iterable<UserSearch> usersearch = usersearchRepository.findAll();
-        String body = mapper.writeValueAsString(usersearch);
-        return ResponseEntity.ok().body(body);
     }
-
 
 }
