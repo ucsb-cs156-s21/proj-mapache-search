@@ -23,6 +23,7 @@ describe('Slack Users tests', () => {
         role: "Admin"
       }
     });
-            render(<SearchHistory />);
+            const { getByText } = render(<SearchHistory />);
+    expect(getByText("Admin")).toBeInTheDocument();
         });
 });
