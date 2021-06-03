@@ -1,6 +1,6 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
-import {Redirect} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "main/utils/fetch";
