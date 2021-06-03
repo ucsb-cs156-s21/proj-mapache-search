@@ -33,7 +33,7 @@ const SearchHistory = () => {
       const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
       
    
-    if(isAdmin){
+/*    if(isAdmin){
          return (
             <div>
                 <h1>Show Search History</h1>
@@ -43,11 +43,13 @@ const SearchHistory = () => {
         <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
             </div>
         );
-    }
+    }*/
     
     return (
         <div>
             <h1>Show Search History</h1>
+        {isAdmin&&
+            <Link to="/member/searchhistory/alluser" className="btn btn-primary">ViewAllUsers</Link>}
             <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
         </div>
     );
