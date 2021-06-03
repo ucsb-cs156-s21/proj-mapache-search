@@ -4,7 +4,7 @@ import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "main/utils/fetch";
 
-const SearchHistory = () => {
+const Alluser = () => {
     const columns = [{
         dataField: 'userID',
         text: 'UserID',
@@ -21,35 +21,13 @@ const SearchHistory = () => {
 
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: roleInfo } = useSWR(
-        ["/api/myRole", getToken],
-        fetchWithToken
-      );
-      const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
-      const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
-    
     const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
-   
-    if(isMember){
+    
     return (
         <div>
-            <h1>Show Search History</h1>
+            <h1>Show Search History of All Users</h1>
             <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
         </div>
     );
-    }
-
-    if(isAdmin){
-        return (
-            <div>
-                <h1>Show Search History</h1>
-                <button  onclick="location.href = '/member/searchhistory/alluser';">
-            ViewAllUsers
-        </button>
-                
-        <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
-            </div>
-        );
-    }
 };
-export default SearchHistory;
+export default Alluser;

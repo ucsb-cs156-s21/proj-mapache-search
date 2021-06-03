@@ -77,6 +77,24 @@ public class SearchHistoryController {
         String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
     }
+    
+    @GetMapping("/specificusersearches")
+    public ResponseEntity<String> getSearches(@RequestHeader("Authorization") String authorization)
+            throws JsonProcessingException {
+        if (!authControllerAdvice.getIsMember(authorization))
+            return getUnauthorizedResponse("member");
+        
+            DecodedJWT jwt = getJWT(authorization);
+            Map<String, Object> customClaims = jwt.getClaim(propertiesService.getNamespace()).asMap();
+            String email = (String) customClaims.get("email");
+
+            Iterable<UserSearch> usersearch = usersearchRepository.findByEmail(email);
+            String body = mapper.writeValueAsString(usersearch);
+            return ResponseEntity.ok().body(body);
+
+
+
+    }
 
 
 }
