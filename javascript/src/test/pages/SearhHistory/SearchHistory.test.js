@@ -14,7 +14,7 @@ describe('Slack Users tests', () => {
         
           test('Admin User', () => {
             useSWR.mockReturnValue({
-      data: {
+      roleInfor: {
         role: "admin"
       }
     });
