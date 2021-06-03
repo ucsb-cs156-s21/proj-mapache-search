@@ -21,7 +21,11 @@ const SearchHistory = () => {
     }];
     
  
- 
+    onSubmit = () => {
+     
+         return  <Redirect  to="/member/searchhistory/alluser" />
+   
+  }
         
     const { getAccessTokenSilently: getToken } = useAuth0();
     
@@ -38,7 +42,7 @@ const SearchHistory = () => {
          return (
             <div>
                 <h1>Show Search History</h1>
-                <button  onclick="location.href = '/alluser';">
+                <button  onClick={this.onSubmit}>
             ViewAllUsers
         </button>
                 
