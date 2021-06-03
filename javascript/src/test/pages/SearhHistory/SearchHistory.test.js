@@ -9,6 +9,11 @@ jest.mock("swr");
 describe('Slack Users tests', () => {
   
         test('Member User', () => {
+            useSWR.mockReturnValue({
+      roleInfor: {
+        role: "member"
+      }
+    });
             render(<SearchHistory />);
         });
         
