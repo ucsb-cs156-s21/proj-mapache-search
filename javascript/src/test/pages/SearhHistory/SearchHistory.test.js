@@ -6,7 +6,7 @@ jest.mock("@auth0/auth0-react");
 jest.mock("swr");
 
 describe('Search History tests', () => {
-    act(()=>{
+   
         test('test as member', () => {
             render(<SearchHistory />);
         });
@@ -20,5 +20,5 @@ describe('Search History tests', () => {
         render(<SearchHistory />);
     });
     
-   });   
+     
 });
