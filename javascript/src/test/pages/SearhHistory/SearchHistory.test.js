@@ -14,7 +14,7 @@ describe('Search History tests', () => {
         role: "member"
       }
     });
-            const { getByText } = render(<SearchResults />);
+            const { getByText } = render(<SearchHistory />);
     expect(getByText("Member")).toBeInTheDocument();
         });
             
@@ -24,7 +24,7 @@ describe('Search History tests', () => {
         role: "admin"
       }
     });
-        const { getByText } = render(<SearchResults />);
+        const { getByText } = render(<SearchHistory />);
     expect(getByText("Admin")).toBeInTheDocument();
     });
     
