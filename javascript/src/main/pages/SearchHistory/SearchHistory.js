@@ -23,6 +23,25 @@ const SearchHistory = () => {
     
     const { data: usersearch } = useSWR(["/api/members/searchhistory/allusersearches", getToken], fetchWithToken);
     
+     const { data: roleInfo } = useSWR(
+        ["/api/myRole", getToken],
+        fetchWithToken
+      );
+      const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
+      const isMember = roleInfo && roleInfo.role.toLowerCase() === "member";
+   
+    if(isMember){
+         return (
+            <div>
+                <h1>Show Search History</h1>
+                <button  onclick="location.href = '/member/searchhistory';">
+            ViewAllUsers
+        </button>
+                
+        <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
+            </div>
+        );
+    }
     return (
         <div>
             <h1>Show Search History</h1>
