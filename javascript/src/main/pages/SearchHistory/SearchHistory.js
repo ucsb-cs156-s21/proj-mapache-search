@@ -21,7 +21,7 @@ const SearchHistory = () => {
     }];
     
  
-    onSubmit = () => {
+    const onSubmit = () => {
      
          return  <Redirect  to="/member/searchhistory/alluser" />
    
