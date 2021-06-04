@@ -65,7 +65,7 @@ public class SearchHistoryController {
         
       
           if (!authControllerAdvice.getIsAdmin(authorization)) {
-             return getUnauthorizedResponse("member");
+             return getUnauthorizedResponse("admin");
           }
         
         
