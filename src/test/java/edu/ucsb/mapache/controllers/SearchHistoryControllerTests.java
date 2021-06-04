@@ -107,6 +107,7 @@ public class SearchHistoryControllerTests {
 
    @Test
   public void test_allusersearches_unauthorizedIfNotAdmin() throws Exception {
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
     when(authControllerAdvice.getIsAdmin(any(String.class))).thenReturn(false);
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
     mockMvc.perform(get("/api/members/searchhistory/allusersearches").contentType("application/json")
