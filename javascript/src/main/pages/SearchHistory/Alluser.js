@@ -7,11 +7,11 @@ import {fetchWithToken} from "main/utils/fetch";
 const Alluser = () => {
     const columns = [{
         dataField: 'userID',
-        text: 'UserID',
+        text: 'User ID',
         sort: true
     } , {
         dataField: 'searchTerm',
-        text: 'Searchquery',
+        text: 'Search query',
         sort: true
     },{
         dataField: 'timestamp' ,
