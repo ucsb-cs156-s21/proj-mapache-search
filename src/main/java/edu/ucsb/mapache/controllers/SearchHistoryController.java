@@ -58,7 +58,7 @@ public class SearchHistoryController {
     }
 
     @GetMapping("/allusersearches")
-    public ResponseEntity<String> getalluserSearches(@RequestHeader("Authorization") String authorization)
+    public ResponseEntity<String> getAllUserSearches(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
         if (!authControllerAdvice.getIsMember(authorization))
             return getUnauthorizedResponse("member");
@@ -74,8 +74,8 @@ public class SearchHistoryController {
         return ResponseEntity.ok().body(body);
     }
     
-    @GetMapping("/specificuser")
-    public ResponseEntity<String> getspecificSearches(@RequestHeader("Authorization") String authorization)
+    @GetMapping("/mysearches")
+    public ResponseEntity<String> getMySearches(@RequestHeader("Authorization") String authorization)
             throws JsonProcessingException {
        
             if (!authControllerAdvice.getIsMember(authorization))
