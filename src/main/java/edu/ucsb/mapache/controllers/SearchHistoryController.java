@@ -65,10 +65,13 @@ public class SearchHistoryController {
         
       
           if (!authControllerAdvice.getIsAdmin(authorization)) {
+             return getUnauthorizedResponse("member");
+          }
+        
+        
         Iterable<UserSearch> usersearch = usersearchRepository.findAll();
         String body = mapper.writeValueAsString(usersearch);
         return ResponseEntity.ok().body(body);
-          }
     }
     
     @GetMapping("/specificuser")
