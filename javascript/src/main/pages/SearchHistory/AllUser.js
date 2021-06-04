@@ -6,8 +6,8 @@ import {fetchWithToken} from "main/utils/fetch";
 
 const AllUser = () => {
     const columns = [{
-        dataField: 'userID',
-        text: 'User ID',
+        dataField: 'email',
+        text: 'Email',
         sort: true
     } , {
         dataField: 'searchTerm',
