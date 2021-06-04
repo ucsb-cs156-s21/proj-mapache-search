@@ -117,7 +117,7 @@ public class SearchHistoryControllerTests {
   @Test
   public void test_specificusersearches_unauthorizedIfNotMember() throws Exception {
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
-    mockMvc.perform(get("/api/members/searchhistory/specificuser").contentType("application/json")
+    mockMvc.perform(get("/api/members/searchhistory/mysearches").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, exampleAuthToken)).andExpect(status().is(401));
   }
   
@@ -140,7 +140,7 @@ public class SearchHistoryControllerTests {
    
     MvcResult response = mockMvc
         .perform(
-            get("/api/members/searchhistory/specificuser").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
+            get("/api/members/searchhistory/mysearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
         .andExpect(status().isOk()).andReturn();
     
     String expected = mapper.writeValueAsString(fakeUserSearchData);
