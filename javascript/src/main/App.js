@@ -28,7 +28,7 @@ import SearchHistory from "main/pages/SearchHistory/SearchHistory";
 import SearchResults from "./pages/Messages/SearchResults";
 import SearchedTerms from "main/pages/Admin/SearchedTerms";
 import ChannelPageLinks from "./pages/Channels/ChannelPageLinks";
-import Alluser from "main/pages/SearchHistory/AllUser";
+import AllUser from "main/pages/SearchHistory/AllUser";
 
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
           <AuthorizedRoute path="/member/channels" exact component={ChannelList} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/search" exact component={Search} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/searchhistory" exact component={SearchHistory} authorizedRoles={["admin","member"]} />
-          <AuthorizedRoute path="/member/searchhistory/alluser" exact component={Alluser} authorizedRoles={["admin"]} />
+          <AuthorizedRoute path="/member/searchhistory/alluser" exact component={AllUser} authorizedRoles={["admin"]} />
           <AuthorizedRoute path="/member/messages/search" component={SearchResults} authorizedRoles={["admin","member"]} />
           <AuthorizedRoute path="/member/analyzemessages/reactions" exact component={AnalyzeReactions} authorizedRoles={["admin", "member"]} />
           <AuthorizedRoute path="/member/listViewChannels/:channel" component={ChannelPageList} authorizedRoles={["admin","member"]} />

@@ -4,7 +4,7 @@ import useSWR from "swr";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchWithToken} from "main/utils/fetch";
 
-const Alluser = () => {
+const AllUser = () => {
     const columns = [{
         dataField: 'userID',
         text: 'User ID',
@@ -30,4 +30,4 @@ const Alluser = () => {
         </div>
     );
 };
-export default Alluser;
+export default AllUser;
