@@ -10,6 +10,6 @@ describe('Search History tests', () => {
   
       
   test('renders without errors', () => {
-    render(<SlackUsers />);
+    render(<SearchHistory />);
   });
 });
