@@ -7,8 +7,8 @@ import {fetchWithToken} from "main/utils/fetch";
 
 const SearchHistory = () => {
     const columns = [{
-        dataField: 'userID',
-        text: 'UserID',
+        dataField: 'email',
+        text: 'Email',
         sort: true
     } , {
         dataField: 'searchTerm',
@@ -32,24 +32,12 @@ const SearchHistory = () => {
       );
       const isAdmin = roleInfo && roleInfo.role.toLowerCase() === "admin";
       
-   
-/*    if(isAdmin){
-         return (
-            <div>
-                <h1>Show Search History</h1>
-                <Link to="/member/searchhistory/alluser" className="btn btn-primary">ViewAllUsers</Link>
-
-                
-        <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
-            </div>
-        );
-    }*/
     
     return (
         <div>
             <h1>Show Search History</h1>
         {isAdmin&&
-            <Link to="/member/searchhistory/alluser" className="btn btn-primary">ViewAllUsers</Link>}
+            <Link to="/member/searchhistory/alluser" className="btn btn-primary">View All Users</Link>}
             <BootstrapTable keyField='id' data={usersearch || []} columns={columns} />
         </div>
     );
