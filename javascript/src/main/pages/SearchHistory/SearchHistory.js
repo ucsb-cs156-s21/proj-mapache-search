@@ -12,7 +12,7 @@ const SearchHistory = () => {
         sort: true
     } , {
         dataField: 'searchTerm',
-        text: 'Searchquery',
+        text: 'Search Query',
         sort: true
     },{
         dataField: 'timestamp' ,
