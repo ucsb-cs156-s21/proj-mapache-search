@@ -99,12 +99,19 @@ public class SearchHistoryControllerTests {
     }
   
   @Test
-  public void test_basicSearch_unauthorizedIfNotMember() throws Exception {
+  public void test_allusersearches_unauthorizedIfNotMemberOrAdmin() throws Exception {
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
     mockMvc.perform(get("/api/members/searchhistory/allusersearches").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, exampleAuthToken)).andExpect(status().is(401));
   }
 
+  @Test
+  public void test_specificusersearches_unauthorizedIfNotMember() throws Exception {
+    when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
+    mockMvc.perform(get("/api/members/searchhistory/specificuser").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, exampleAuthToken)).andExpect(status().is(401));
+  }
+  
   @Test
   public void test_getSearches_ifisonlymember() throws Exception {
     
@@ -163,4 +170,6 @@ public class SearchHistoryControllerTests {
 
     assertEquals(expected, responseString);
 }
+  
+ 
 }
