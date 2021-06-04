@@ -99,14 +99,30 @@ public class SearchHistoryControllerTests {
     }
   
   @Test
-  public void test_basicSearch_unauthorizedIfNotMember() throws Exception {
+  public void test_allusersearches_unauthorizedIfNotMember() throws Exception {
     when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
     mockMvc.perform(get("/api/members/searchhistory/allusersearches").contentType("application/json")
         .header(HttpHeaders.AUTHORIZATION, exampleAuthToken)).andExpect(status().is(401));
   }
 
+   @Test
+  public void test_allusersearches_unauthorizedIfNotAdmin() throws Exception {
+    when(authControllerAdvice.getIsMember(any(String.class))).thenReturn(true);
+    when(authControllerAdvice.getIsAdmin(any(String.class))).thenReturn(false);
+    when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
+    mockMvc.perform(get("/api/members/searchhistory/allusersearches").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, exampleAuthToken)).andExpect(status().is(401));
+  }
+  
   @Test
-  public void test_getSearches_ifisonlymember() throws Exception {
+  public void test_specificusersearches_unauthorizedIfNotMember() throws Exception {
+    when(propertiesService.getNamespace()).thenReturn("https://proj-mapache-search.herokuapp.com");
+    mockMvc.perform(get("/api/members/searchhistory/mysearches").contentType("application/json")
+        .header(HttpHeaders.AUTHORIZATION, exampleAuthToken)).andExpect(status().is(401));
+  }
+  
+  @Test
+  public void test_specificusersearches_ifismember() throws Exception {
     
     List<UserSearch> fakeUserSearchData = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();
@@ -124,7 +140,7 @@ public class SearchHistoryControllerTests {
    
     MvcResult response = mockMvc
         .perform(
-            get("/api/members/searchhistory/allusersearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
+            get("/api/members/searchhistory/mysearches").contentType("application/json").header(HttpHeaders.AUTHORIZATION, authorization))
         .andExpect(status().isOk()).andReturn();
     
     String expected = mapper.writeValueAsString(fakeUserSearchData);
@@ -135,7 +151,7 @@ public class SearchHistoryControllerTests {
   }
 
   @Test
-  public void test_getSearches_ifisadmin() throws Exception {
+  public void test__allusersearches_ifisadmin() throws Exception {
 
     List<UserSearch> fakeUserSearchData = new ArrayList<UserSearch>();
     UserSearch usersearch = new UserSearch();
@@ -163,4 +179,6 @@ public class SearchHistoryControllerTests {
 
     assertEquals(expected, responseString);
 }
+  
+ 
 }
