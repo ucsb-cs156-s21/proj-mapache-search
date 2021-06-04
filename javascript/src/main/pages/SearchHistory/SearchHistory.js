@@ -24,7 +24,7 @@ const SearchHistory = () => {
         
     const { getAccessTokenSilently: getToken } = useAuth0();
     
-    const { data: usersearch } = useSWR(["/api/members/searchhistory/specificuser", getToken], fetchWithToken);
+    const { data: usersearch } = useSWR(["/api/members/searchhistory/mysearches", getToken], fetchWithToken);
     
      const { data: roleInfo } = useSWR(
         ["/api/myRole", getToken],
