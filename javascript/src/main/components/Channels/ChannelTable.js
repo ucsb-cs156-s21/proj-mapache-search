@@ -51,7 +51,6 @@ export default ({ channels }) => {
     return (
         
         <BootstrapTable 
-            bootstrap4={true}
             keyField='id' 
             data={channels} 
             columns={columns} 
