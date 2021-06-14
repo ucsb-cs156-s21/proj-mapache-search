@@ -12,7 +12,7 @@ export const StudentCSVButton = ({ addTask }) => {
                 try{
                     await addTask(file);
                 } catch(error){
-                    console.log("Caught error");
+                    console.log("Caught error",error);
                 }
                 fileRef.current.value = "";
                 setFile(null);

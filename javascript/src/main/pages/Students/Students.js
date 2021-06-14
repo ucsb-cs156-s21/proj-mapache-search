@@ -8,8 +8,12 @@ import Loading from "main/components/Loading/Loading";
 import StudentTable from "main/components/Students/StudentTable";
 import {buildDeleteStudent, buildDeleteAllStudents, uploadStudentsCSV} from "main/services/StudentServices";
 import {useHistory} from "react-router-dom";
+import {ToastProvider,useToasts } from 'react-toast-notifications';
 
-const Students = () => {
+
+const Students = () => { 
+
+  const { addToast } = useToasts();
   const history = useHistory();
   const { getAccessTokenSilently: getToken } = useAuth0();
   const { data: studentList, error, mutate: mutateStudents } = useSWR(
@@ -33,13 +37,21 @@ const Students = () => {
   const deleteAllStudents = buildDeleteAllStudents(
     getToken, mutateStudents
   );
+  
 
+  const onUploadError = (error) => {
+    
+
+
+    addToast("Didn't upload right format", { appearance: 'error' });
+    console.log("error=",error.name,error.message);
+  };
   const uploadedStudents = uploadStudentsCSV(
-    getToken, mutateStudents
+    getToken, mutateStudents,onUploadError
   );
 
   return (
-    <>
+    <ToastProvider>
         <h1>
             Upload CSV File of Students
         </h1>
@@ -47,10 +59,14 @@ const Students = () => {
           Make sure that the uploaded CSV contains a header.  Sample format:
         </p>
         <pre style={{whiteSpace: 'pre', textAlign: 'left', width: '20em', marginLeft: 'auto', border: 'solid blue 1px', marginRight: 'auto', padding: '1em'}}>
-        email,teamName<br/>
+        first, last, email, id, section, team<br/>
+        Chris, Gaucho, cgaucho@ucsb.edu, 5pm, s21-5pm-1<br/>
+        Laurie, Del Player, ldelplaya@ucsb.edu, 7pm, s21-7pm-3<br/>
+        ...<br/>
+        {/* email,teamName<br/>
         aaaaa@ucsb.edu,team1<br />
         bbbbb@ucsb.edu,team1<br />
-        ccccc@ucsb.edu,team2<br />
+        ccccc@ucsb.edu,team2<br /> */}
         </pre>
         <StudentCSVButton addTask={uploadedStudents}/>
         <Row style={{paddingTop: 10}}>
@@ -64,7 +80,7 @@ const Students = () => {
         <br/><br/>
         <StudentTable students={studentList} deleteStudent={deleteStudent}/>
         <br/><br/><br/><br/><br/><br/>
-    </>
+    </ToastProvider>
   );
 };
 
